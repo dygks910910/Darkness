@@ -1,0 +1,39 @@
+﻿Build started 10/22/2011 11:04:51 AM.
+     1>Project "D:\Data\Books\Book IV\Code\Chapter 6\Box\Box.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Release\Box.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       CustomBuild:
+         fxc compile for release: D:\Data\Books\Book IV\Code\Chapter 6\Box\FX\color.fx
+         Microsoft (R) Direct3D Shader Compiler 9.29.952.3111
+         Copyright (C) Microsoft Corporation 2002-2009. All rights reserved.
+         
+         compilation succeeded; see D:\Data\Books\Book IV\Code\Chapter 6\Box\FX\color.fxo
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\Common\d3dApp.cpp ..\..\Common\d3dUtil.cpp ..\..\Common\GameTimer.cpp ..\..\Common\GeometryGenerator.cpp ..\..\Common\MathHelper.cpp BoxDemo.cpp
+         d3dApp.cpp
+         d3dUtil.cpp
+         GameTimer.cpp
+         GeometryGenerator.cpp
+         MathHelper.cpp
+         BoxDemo.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Data\Books\Book IV\Code\Chapter 6\Box\Release\Box.exe" /INCREMENTAL:NO /NOLOGO d3d11.lib d3dx11.lib D3DCompiler.lib Effects11.lib dxerr.lib dxgi.lib dxguid.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Release\Box.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"D:\Data\Books\Book IV\Code\Chapter 6\Box\Release\Box.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\Data\Books\Book IV\Code\Chapter 6\Box\Release\Box.lib" /MACHINE:X86 Release\d3dApp.obj
+         Release\d3dUtil.obj
+         Release\GameTimer.obj
+         Release\GeometryGenerator.obj
+         Release\MathHelper.obj
+         Release\BoxDemo.obj
+            Creating library D:\Data\Books\Book IV\Code\Chapter 6\Box\Release\Box.lib and object D:\Data\Books\Book IV\Code\Chapter 6\Box\Release\Box.exp
+         Generating code
+         Finished generating code
+         Box.vcxproj -> D:\Data\Books\Book IV\Code\Chapter 6\Box\Release\Box.exe
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"D:\Data\Books\Book IV\Code\Chapter 6\Box\Release\Box.exe;#1" /manifest Release\Box.exe.intermediate.manifest
+       FinalizeBuildStatus:
+         Deleting file "Release\Box.unsuccessfulbuild".
+         Touching "Release\Box.lastbuildstate".
+     1>Done Building Project "D:\Data\Books\Book IV\Code\Chapter 6\Box\Box.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:11.04
