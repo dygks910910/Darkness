@@ -13,7 +13,7 @@
 #include <d3dx11.h>
 #include "d3dx11Effect.h"
 #include <xnamath.h>
-#include <dxerr.h>
+#include "dxerr.h"
 #include <cassert>
 #include <ctime>
 #include <algorithm>
@@ -35,7 +35,7 @@
 		HRESULT hr = (x);                                      \
 		if(FAILED(hr))                                         \
 		{                                                      \
-			DXTrace(__FILE__, (DWORD)__LINE__, hr, L#x, true); \
+			DXTrace(WFILE, (DWORD)__LINE__, hr, L#x, true); \
 		}                                                      \
 	}
 	#endif
