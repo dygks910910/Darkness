@@ -93,12 +93,11 @@ c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.
 c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathvector.inl(1269): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
 c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathmisc.inl(518): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
 c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathmisc.inl(519): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
-  코드를 생성하고 있습니다...
-  건너뛰고 있습니다... (관련된 변경 내용 없음)
-  d3dUtil.cpp
-  d3dApp.cpp
-  TextureMgr.cpp
-  GeometryGenerator.cpp
-  Camera.cpp
-  Box.vcxproj -> D:\Project\Darkness\Client\Debug\Box.exe
-  Box.vcxproj -> D:\Project\Darkness\Client\Debug\Box.pdb (Full PDB)
+Effects11d.lib(d3dxGlobal.obj) : warning LNK4099: 'Effects11.pdb' PDB를 'Effects11d.lib(d3dxGlobal.obj)' 또는 'D:\졸업작품Darkness\Darkness\Client\Debug\Effects11.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+Effects11d.lib(EffectAPI.obj) : warning LNK4099: 'Effects11.pdb' PDB를 'Effects11d.lib(EffectAPI.obj)' 또는 'D:\졸업작품Darkness\Darkness\Client\Debug\Effects11.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+Effects11d.lib(EffectLoad.obj) : warning LNK4099: 'Effects11.pdb' PDB를 'Effects11d.lib(EffectLoad.obj)' 또는 'D:\졸업작품Darkness\Darkness\Client\Debug\Effects11.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+Effects11d.lib(EffectNonRuntime.obj) : warning LNK4099: 'Effects11.pdb' PDB를 'Effects11d.lib(EffectNonRuntime.obj)' 또는 'D:\졸업작품Darkness\Darkness\Client\Debug\Effects11.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+Effects11d.lib(EffectReflection.obj) : warning LNK4099: 'Effects11.pdb' PDB를 'Effects11d.lib(EffectReflection.obj)' 또는 'D:\졸업작품Darkness\Darkness\Client\Debug\Effects11.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+Effects11d.lib(EffectRuntime.obj) : warning LNK4099: 'Effects11.pdb' PDB를 'Effects11d.lib(EffectRuntime.obj)' 또는 'D:\졸업작품Darkness\Darkness\Client\Debug\Effects11.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+  Box.vcxproj -> D:\졸업작품Darkness\Darkness\Client\Debug\Box.exe
+  Box.vcxproj -> D:\졸업작품Darkness\Darkness\Client\Debug\Box.pdb (Full PDB)
