@@ -21,6 +21,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BoxDemo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Common\Camera.cpp">
       <Filter>Common</Filter>
     </ClCompile>
@@ -28,6 +31,9 @@
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="Common\d3dUtil.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\dxerr.cpp">
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="Common\GameTimer.cpp">
@@ -49,12 +55,6 @@
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="Common\xnacollision.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="BoxDemo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Common\dxerr.cpp">
       <Filter>Common</Filter>
     </ClCompile>
   </ItemGroup>
@@ -79,6 +79,9 @@
     <ClInclude Include="Common\d3dxGlobal.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="Common\dxerr.h">
+      <Filter>Common</Filter>
+    </ClInclude>
     <ClInclude Include="Common\GameTimer.h">
       <Filter>Common</Filter>
     </ClInclude>
@@ -98,9 +101,6 @@
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Common\xnacollision.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\dxerr.h">
       <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
