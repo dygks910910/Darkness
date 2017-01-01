@@ -19,6 +19,9 @@
     <Filter Include="FX">
       <UniqueIdentifier>{ddb510f0-86c2-4ad3-a801-361c96e98c4e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\00 FBXLoader">
+      <UniqueIdentifier>{5da1884c-11e5-4726-8152-11357aa4f2c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BoxDemo.cpp">
@@ -56,6 +59,9 @@
     </ClCompile>
     <ClCompile Include="Common\dxerr.cpp">
       <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="FBXLoader.cpp">
+      <Filter>Source Files\00 FBXLoader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -102,6 +108,9 @@
     </ClInclude>
     <ClInclude Include="Common\dxerr.h">
       <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="FBXLoader.h">
+      <Filter>Source Files\00 FBXLoader</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

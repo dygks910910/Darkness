@@ -12,6 +12,15 @@
 #include "d3dApp.h"
 #include "d3dx11Effect.h"
 #include "MathHelper.h"
+#include "FBXLoader.h"
+#ifdef _DEBUG
+
+#include <iostream>
+
+#pragma comment( linker, "/entry:WinMainCRTStartup /subsystem:console" )
+
+#endif
+
 
 struct Vertex
 {
@@ -109,7 +118,15 @@ bool BoxApp::Init()
 	BuildGeometryBuffers();
 	BuildFX();
 	BuildVertexLayout();
-
+	CFBXLoader fbxLoader;
+	/*
+	2017 / 1 / 1 / 21:37
+	작성자:박요한(dygks910910@daum.net)
+	설명:간단한 형태의 FBX로더클래스.
+	*/
+	fbxLoader.Init();
+	fbxLoader.LoadFile("C:\\Users\\dygks\\Desktop\\Darkness fbx\\crawler.fbx");
+	fbxLoader.PrintNode();
 	return true;
 }
 
