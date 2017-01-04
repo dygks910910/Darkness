@@ -19,8 +19,8 @@
     <Filter Include="FX">
       <UniqueIdentifier>{ddb510f0-86c2-4ad3-a801-361c96e98c4e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\00 FBXLoader">
-      <UniqueIdentifier>{5da1884c-11e5-4726-8152-11357aa4f2c7}</UniqueIdentifier>
+    <Filter Include="Source Files\00 FBXImporter">
+      <UniqueIdentifier>{b57f4d8b-82dc-4fce-89a0-a7f81e2c7e15}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -60,8 +60,14 @@
     <ClCompile Include="Common\dxerr.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="FBXLoader.cpp">
-      <Filter>Source Files\00 FBXLoader</Filter>
+    <ClCompile Include="FBXImporter.cpp">
+      <Filter>Source Files\00 FBXImporter</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities.cpp">
+      <Filter>Source Files\00 FBXImporter</Filter>
+    </ClCompile>
+    <ClCompile Include="MathHelperFBX.cpp">
+      <Filter>Source Files\00 FBXImporter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -109,8 +115,20 @@
     <ClInclude Include="Common\dxerr.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="FBXLoader.h">
-      <Filter>Source Files\00 FBXLoader</Filter>
+    <ClInclude Include="Vertex.h">
+      <Filter>Source Files\00 FBXImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="FBXImporter.h">
+      <Filter>Source Files\00 FBXImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities.h">
+      <Filter>Source Files\00 FBXImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="MathHelperFBX.h">
+      <Filter>Source Files\00 FBXImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialFBX.h">
+      <Filter>Source Files\00 FBXImporter</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
