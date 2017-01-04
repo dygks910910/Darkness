@@ -12,13 +12,13 @@ public:
 	virtual void UpdateScene(float dt);
 	virtual void DrawScene();
 
-	virtual void OnMouseDown(WPARAM btnState, int x, int y) { }
-	virtual void OnMouseUp(WPARAM btnState, int x, int y) { }
-	virtual void OnMouseMove(WPARAM btnState, int x, int y) { }
+	virtual void OnMouseDown(WPARAM btnState, int x, int y);
+	virtual void OnMouseUp(WPARAM btnState, int x, int y);
+	virtual void OnMouseMove(WPARAM btnState, int x, int y) ;
 private:
-	void BuildGeometryBuffers() {};
-	void BuildFX() {};
-	void BuildVertexLayout() {};
+	void BuildGeometryBuffers() ;
+	void BuildFX() ;
+	void BuildVertexLayout() ;
 
 private:
 	ID3D11Buffer* mBuildingVB;

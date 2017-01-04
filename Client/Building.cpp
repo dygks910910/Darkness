@@ -6,6 +6,15 @@ CBuilding::CBuilding(HINSTANCE hInstance):D3DApp(hInstance), mBuildingVB(0), mBu
   mfxWorldViewProj(0), mInputLayout(0), 
   mTheta(1.5f*MathHelper::Pi), mPhi(0.25f*MathHelper::Pi), mRadius(5.0f)
 {
+	mMainWndCaption = L"Box Demo";
+
+	mLastMousePos.x = 0;
+	mLastMousePos.y = 0;
+
+	XMMATRIX I = XMMatrixIdentity();
+	XMStoreFloat4x4(&mWorld, I);
+	XMStoreFloat4x4(&mView, I);
+	XMStoreFloat4x4(&mProj, I);
 }
 
 
@@ -18,7 +27,7 @@ bool CBuilding::Init()
 	if (!D3DApp::Init())
 		return false;
 
-	FBXImporter* fbxImporter = new FBXImporter;
+	//FBXImporter* fbxImporter = new FBXImporter;
 
 	//fbxImporter->Initialize();
 	//fbxImporter->LoadScene("C:\\Users\\dygks\\Desktop\\Darkness fbx\\Building_11.fbx"," ");
@@ -87,4 +96,146 @@ void CBuilding::DrawScene()
 	}
 
 	HR(mSwapChain->Present(0, 0));
+}
+
+void CBuilding::OnMouseDown(WPARAM btnState, int x, int y)
+{
+	mLastMousePos.x = x;
+	mLastMousePos.y = y;
+
+	SetCapture(mhMainWnd);
+}
+
+void CBuilding::OnMouseUp(WPARAM btnState, int x, int y)
+{
+	ReleaseCapture();
+}
+
+void CBuilding::OnMouseMove(WPARAM btnState, int x, int y)
+{
+	if ((btnState & MK_LBUTTON) != 0)
+	{
+		// Make each pixel correspond to a quarter of a degree.
+		float dx = XMConvertToRadians(0.25f*static_cast<float>(x - mLastMousePos.x));
+		float dy = XMConvertToRadians(0.25f*static_cast<float>(y - mLastMousePos.y));
+
+		// Update angles based on input to orbit camera around box.
+		mTheta += dx;
+		mPhi += dy;
+
+		// Restrict the angle mPhi.
+		mPhi = MathHelper::Clamp(mPhi, 0.1f, MathHelper::Pi - 0.1f);
+	}
+	else if ((btnState & MK_RBUTTON) != 0)
+	{
+		// Make each pixel correspond to 0.005 unit in the scene.
+		float dx = 0.005f*static_cast<float>(x - mLastMousePos.x);
+		float dy = 0.005f*static_cast<float>(y - mLastMousePos.y);
+
+		// Update the camera radius based on input.
+		mRadius += dx - dy;
+
+		// Restrict the radius.
+		mRadius = MathHelper::Clamp(mRadius, 3.0f, 15.0f);
+	}
+
+	mLastMousePos.x = x;
+	mLastMousePos.y = y;
+}
+
+void CBuilding::BuildGeometryBuffers()
+{
+	int vertexCount=0, indexCount = 0;
+	Vertex* pVertices = nullptr;
+	UINT* pIndices = nullptr;
+	FBXImporter* importer = new FBXImporter;
+	importer->Initialize();
+	importer->LoadScene("Darkness fbx\\Building_11.fbx");
+
+	pVertices = new Vertex[importer->GetVertexCnt()];
+	vertexCount = importer->SetVertex(pVertices);
+	pIndices = new UINT[importer->GetIndexCnt()];
+	indexCount = importer->SetIndex(pIndices);
+
+	//버텍스 버퍼Desc
+	D3D11_BUFFER_DESC vbd;
+	vbd.Usage = D3D11_USAGE_IMMUTABLE;
+	vbd.ByteWidth = vertexCount * sizeof(Vertex);
+	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	vbd.CPUAccessFlags = 0;
+	vbd.MiscFlags = 0;
+	vbd.StructureByteStride = 0;
+
+	D3D11_SUBRESOURCE_DATA vinitData;
+	vinitData.pSysMem = pVertices;
+	HR(md3dDevice->CreateBuffer(&vbd, &vinitData, &mBuildingVB));
+	//인덱스버퍼 Desc
+	D3D11_BUFFER_DESC ibd;
+	ibd.Usage = D3D11_USAGE_IMMUTABLE;
+	ibd.ByteWidth = sizeof(UINT)*indexCount;
+	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	ibd.CPUAccessFlags = 0;
+	ibd.MiscFlags = 0;
+	ibd.StructureByteStride = 0;
+
+	D3D11_SUBRESOURCE_DATA iinitData;
+	iinitData.pSysMem = pIndices;
+	HR(md3dDevice->CreateBuffer(&ibd, &iinitData, &mBuildingIB));
+
+	importer->CleanupFbxManager();
+	delete importer;
+	delete[] pVertices;
+	delete[] pIndices;
+}
+
+void CBuilding::BuildFX()
+{
+	DWORD shaderFlags = 0;
+#if defined( DEBUG ) || defined( _DEBUG )
+	shaderFlags |= D3D10_SHADER_DEBUG;
+	shaderFlags |= D3D10_SHADER_SKIP_OPTIMIZATION;
+#endif
+
+	ID3D10Blob* compiledShader = 0;
+	ID3D10Blob* compilationMsgs = 0;
+	HRESULT hr = D3DX11CompileFromFile(L"FX/color.fx", 0, 0, 0, "fx_5_0", shaderFlags,
+		0, 0, &compiledShader, &compilationMsgs, 0);
+
+	// compilationMsgs can store errors or warnings.
+	if (compilationMsgs != 0)
+	{
+		MessageBoxA(0, (char*)compilationMsgs->GetBufferPointer(), 0, 0);
+		ReleaseCOM(compilationMsgs);
+	}
+
+	// Even if there are no compilationMsgs, check to make sure there were no other errors.
+	if (FAILED(hr))
+	{
+		DXTrace(WFILE, (DWORD)__LINE__, hr, L"D3DX11CompileFromFile", true);
+	}
+
+	HR(D3DX11CreateEffectFromMemory(compiledShader->GetBufferPointer(), compiledShader->GetBufferSize(),
+		0, md3dDevice, &mFX));
+
+	// Done with compiled shader.
+	ReleaseCOM(compiledShader);
+
+	mTech = mFX->GetTechniqueByName("ColorTech");
+	mfxWorldViewProj = mFX->GetVariableByName("gWorldViewProj")->AsMatrix();
+}
+
+void CBuilding::BuildVertexLayout()
+{
+	// Create the vertex input layout.
+	D3D11_INPUT_ELEMENT_DESC vertexDesc[] =
+	{
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+	};
+
+	// Create the input layout
+	D3DX11_PASS_DESC passDesc;
+	mTech->GetPassByIndex(0)->GetDesc(&passDesc);
+	HR(md3dDevice->CreateInputLayout(vertexDesc, 2, passDesc.pIAInputSignature,
+		passDesc.IAInputSignatureSize, &mInputLayout));
 }

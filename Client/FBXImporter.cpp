@@ -29,12 +29,11 @@ bool FBXImporter::Initialize()
 	return true;
 }
 
-bool FBXImporter::LoadScene(const char* inFileName, const char* inOutputPath)
+bool FBXImporter::LoadScene(const char* inFileName)
 {
 	LARGE_INTEGER start;
 	LARGE_INTEGER end;
 	mInputFilePath = inFileName;
-	mOutputFilePath = inOutputPath;
 
 	QueryPerformanceCounter(&start);
 	FbxImporter* fbxImporter = FbxImporter::Create(mFBXManager, "myImporter");
@@ -57,60 +56,46 @@ bool FBXImporter::LoadScene(const char* inFileName, const char* inOutputPath)
 	QueryPerformanceCounter(&end);
 	std::cout << "Loading FBX File: " << ((end.QuadPart - start.QuadPart) / static_cast<float>(mCPUFreq.QuadPart)) << "s\n";
 
-	return true;
-}
 
-void FBXImporter::ImportFBX()
-{
-	LARGE_INTEGER start;
-	LARGE_INTEGER end;
-
+	//////////////////////////////////////////////////////////////////////////
+	//파일읽어들이기 정의부분
 	// Get the clean name of the model
 	std::string genericFileName = Utilities::GetFileName(mInputFilePath);
 	genericFileName = Utilities::RemoveSuffix(genericFileName);
-
-	QueryPerformanceCounter(&start);
 	ProcessSkeletonHierarchy(mFBXScene->GetRootNode());
 	if (mSkeleton.mJoints.empty())
 	{
 		mHasAnimation = false;
 	}
-
-	std::cout << "\n\n\n\nExporting Model:" << genericFileName << "\n";
-	QueryPerformanceCounter(&end);
-	std::cout << "Processing Skeleton Hierarchy: " << ((end.QuadPart - start.QuadPart) / static_cast<float>(mCPUFreq.QuadPart)) << "s\n";
-
-	QueryPerformanceCounter(&start);
+	std::cout << "Processing Skeleton Hierarchy: " << "s\n";
 	ProcessGeometry(mFBXScene->GetRootNode());
-	QueryPerformanceCounter(&end);
-	std::cout << "Processing Geometry: " << ((end.QuadPart - start.QuadPart) / static_cast<float>(mCPUFreq.QuadPart)) << "s\n";
-
-	QueryPerformanceCounter(&start);
+	std::cout << "Processing Geometry: " << "s\n";
 	Optimize();
-	QueryPerformanceCounter(&end);
-	std::cout << "Optimization: " << ((end.QuadPart - start.QuadPart) / static_cast<float>(mCPUFreq.QuadPart)) << "s\n";
+	std::cout << "Optimization: " << "s\n";
 	//PrintMaterial();
 	std::cout << "\n\n";
 
 
 	/*
-		std::string outputMeshName = mOutputFilePath + genericFileName + ".itpmesh";
-		std::ofstream meshOutput(outputMeshName);
-		*///WriteMeshToStream(std::cout);
+	std::string outputMeshName = mOutputFilePath + genericFileName + ".itpmesh";
+	std::ofstream meshOutput(outputMeshName);
+	*///WriteMeshToStream(std::cout);
 
 	if (mHasAnimation)
 	{
+		std::cout << "애니메이션 있음." << std::endl;
 		/*std::string outputNnimName = mOutputFilePath + genericFileName + ".itpanim";
 		std::ofstream animOutput(outputNnimName);*/
 		//WriteAnimationToStream(std::cout);
 	}
 	//CleanupFbxManager();
 	std::cout << "\n\Import Done!\n";
+	return true;
 }
+
 
 int FBXImporter::SetVertex(Vertex* pVertex)
 {
-	pVertex = new Vertex[mVertices.size()];
 	for (int i = 0; i < mVertices.size(); ++i)
 	{
 		pVertex[i].Pos = mVertices[i].mPosition;
@@ -126,7 +111,6 @@ int FBXImporter::SetIndex(UINT * pIndex)
 	작성자:박요한(dygks910910@daum.net)
 	설명:0,2,1순으로 triangle을 바꿔줘야함.
 	*/
-	pIndex = new UINT[mTriangleCount*3];
 	for (int i = 0; i < mTriangleCount; ++i)
 	{
 		pIndex[i] = mTriangles[i].mIndices[0];
@@ -905,6 +889,49 @@ void FBXImporter::PrintTriangles()
 	{
 		std::cout << "Triangle# " << i + 1 << " Material Index: " << mTriangles[i].mMaterialIndex << "\n";
 	}
+}
+
+void FBXImporter::WriteMeshToStream(std::ostream& inStream)
+{
+	inStream << "<?xml version='1.0' encoding='UTF-8' ?>" << std::endl;
+	inStream << "<itpmesh>" << std::endl;
+	if (mHasAnimation)
+	{
+		inStream << "\t<!-- position, normal, skinning weights, skinning indices, texture-->" << std::endl;
+		inStream << "\t<format>pnst</format>" << std::endl;
+	}
+	else
+	{
+		inStream << "\t<format>pnt</format>" << std::endl;
+	}
+	inStream << "\t<texture>" << mMaterialLookUp[0]->mDiffuseMapName << "</texture>" << std::endl;
+	inStream << "\t<triangles count='" << mTriangleCount << "'>" << std::endl;
+
+	for (unsigned int i = 0; i < mTriangleCount; ++i)
+	{
+		// We need to change the culling order
+		inStream << "\t\t<tri>" << mTriangles[i].mIndices[0] << "," << mTriangles[i].mIndices[2] << "," << mTriangles[i].mIndices[1] << "</tri>" << std::endl;
+	}
+	inStream << "\t</triangles>" << std::endl;
+
+
+	inStream << "\t<vertices count='" << mVertices.size() << "'>" << std::endl;
+	for (unsigned int i = 0; i < mVertices.size(); ++i)
+	{
+		inStream << "\t\t<vtx>" << std::endl;
+		inStream << "\t\t\t<pos>" << mVertices[i].mPosition.x << "," << mVertices[i].mPosition.y << "," << -mVertices[i].mPosition.z << "</pos>" << std::endl;
+		inStream << "\t\t\t<norm>" << mVertices[i].mNormal.x << "," << mVertices[i].mNormal.y << "," << -mVertices[i].mNormal.z << "</norm>" << std::endl;
+		if (mHasAnimation)
+		{
+			inStream << "\t\t\t<sw>" << static_cast<float>(mVertices[i].mVertexBlendingInfos[0].mBlendingWeight) << "," << static_cast<float>(mVertices[i].mVertexBlendingInfos[1].mBlendingWeight) << "," << static_cast<float>(mVertices[i].mVertexBlendingInfos[2].mBlendingWeight) << "," << static_cast<float>(mVertices[i].mVertexBlendingInfos[3].mBlendingWeight) << "</sw>" << std::endl;
+			inStream << "\t\t\t<si>" << mVertices[i].mVertexBlendingInfos[0].mBlendingIndex << "," << mVertices[i].mVertexBlendingInfos[1].mBlendingIndex << "," << mVertices[i].mVertexBlendingInfos[2].mBlendingIndex << "," << mVertices[i].mVertexBlendingInfos[3].mBlendingIndex << "</si>" << std::endl;
+		}
+		inStream << "\t\t\t<tex>" << mVertices[i].mUV.x << "," << 1.0f - mVertices[i].mUV.y << "</tex>" << std::endl;
+		inStream << "\t\t</vtx>" << std::endl;
+	}
+
+	inStream << "\t</vertices>" << std::endl;
+	inStream << "</itpmesh>" << std::endl;
 }
 
 void FBXImporter::CleanupFbxManager()
