@@ -22,6 +22,9 @@
     <Filter Include="Source Files\00 FBXImporter">
       <UniqueIdentifier>{b57f4d8b-82dc-4fce-89a0-a7f81e2c7e15}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\00 Building">
+      <UniqueIdentifier>{51bfc9d3-f2b9-4bcb-86b0-de0ba4f9e085}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BoxDemo.cpp">
@@ -68,6 +71,12 @@
     </ClCompile>
     <ClCompile Include="MathHelperFBX.cpp">
       <Filter>Source Files\00 FBXImporter</Filter>
+    </ClCompile>
+    <ClCompile Include="Building.cpp">
+      <Filter>Source Files\00 Building</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -129,6 +138,12 @@
     </ClInclude>
     <ClInclude Include="MaterialFBX.h">
       <Filter>Source Files\00 FBXImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Building.h">
+      <Filter>Source Files\00 Building</Filter>
+    </ClInclude>
+    <ClInclude Include="BoxDemo.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

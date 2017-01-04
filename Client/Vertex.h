@@ -4,6 +4,12 @@
 #include <algorithm>
 
 
+struct Vertex
+{
+	XMFLOAT3 Pos;
+	XMFLOAT4 Color;
+};
+
 struct PNTVertex
 {
 	XMFLOAT3 mPosition;

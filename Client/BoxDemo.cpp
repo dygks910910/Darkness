@@ -8,83 +8,7 @@
 //      Hold the right mouse button down to zoom in and out.
 //
 //***************************************************************************************
-
-#include "d3dApp.h"
-#include "d3dx11Effect.h"
-#include "MathHelper.h"
-#include "FBXImporter.h"
-#ifdef _DEBUG
-
-#include <iostream>
-
-#pragma comment( linker, "/entry:WinMainCRTStartup /subsystem:console" )
-
-#endif
-
-
-struct Vertex
-{
-	XMFLOAT3 Pos;
-	XMFLOAT4 Color;
-};
-
-class BoxApp : public D3DApp
-{
-public:
-	BoxApp(HINSTANCE hInstance);
-	~BoxApp();
-
-	bool Init();
-	void OnResize();
-	void UpdateScene(float dt);
-	void DrawScene(); 
-
-	void OnMouseDown(WPARAM btnState, int x, int y);
-	void OnMouseUp(WPARAM btnState, int x, int y);
-	void OnMouseMove(WPARAM btnState, int x, int y);
-
-private:
-	void BuildGeometryBuffers();
-	void BuildFX();
-	void BuildVertexLayout();
-
-private:
-	ID3D11Buffer* mBoxVB;
-	ID3D11Buffer* mBoxIB;
-
-	ID3DX11Effect* mFX;
-	ID3DX11EffectTechnique* mTech;
-	ID3DX11EffectMatrixVariable* mfxWorldViewProj;
-
-	ID3D11InputLayout* mInputLayout;
-
-	XMFLOAT4X4 mWorld;
-	XMFLOAT4X4 mView;
-	XMFLOAT4X4 mProj;
-
-	float mTheta;
-	float mPhi;
-	float mRadius;
-
-	POINT mLastMousePos;
-};
-
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
-				   PSTR cmdLine, int showCmd)
-{
-	// Enable run-time memory check for debug builds.
-#if defined(DEBUG) | defined(_DEBUG)
-	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
-#endif
-
-	BoxApp theApp(hInstance);
-	
-	if( !theApp.Init() )
-		return 0;
-	
-	return theApp.Run();
-}
- 
+#include "BoxDemo.h"
 
 BoxApp::BoxApp(HINSTANCE hInstance)
 : D3DApp(hInstance), mBoxVB(0), mBoxIB(0), mFX(0), mTech(0),
@@ -115,11 +39,6 @@ bool BoxApp::Init()
 	if(!D3DApp::Init())
 		return false;
 
-	FBXImporter* fbxImporter = new FBXImporter;
-	
-	fbxImporter->Initialize();
-	fbxImporter->LoadScene("C:\\Users\\dygks\\Desktop\\Darkness fbx\\Building_11.fbx"," ");
-	fbxImporter->ImportFBX();
 
 	BuildGeometryBuffers();
 	BuildFX();
