@@ -78,6 +78,9 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RandomEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="FX\color.fx">
@@ -142,8 +145,11 @@
     <ClInclude Include="Building.h">
       <Filter>Source Files\00 Building</Filter>
     </ClInclude>
+    <ClInclude Include="RandomEngine.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
     <ClInclude Include="BoxDemo.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

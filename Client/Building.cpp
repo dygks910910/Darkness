@@ -102,7 +102,6 @@ void CBuilding::OnMouseDown(WPARAM btnState, int x, int y)
 {
 	mLastMousePos.x = x;
 	mLastMousePos.y = y;
-
 	SetCapture(mhMainWnd);
 }
 
@@ -150,7 +149,7 @@ void CBuilding::BuildGeometryBuffers()
 	UINT* pIndices = nullptr;
 	FBXImporter* importer = new FBXImporter;
 	importer->Initialize();
-	importer->LoadScene("Darkness fbx\\Building_11.fbx");
+	importer->LoadScene("test.fbx");
 
 	pVertices = new Vertex[importer->GetVertexCnt()];
 	vertexCount = importer->SetVertex(pVertices);

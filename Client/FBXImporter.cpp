@@ -3,7 +3,6 @@
 #include <fstream>
 #include <sstream>
 #include <iomanip>
-
 FBXImporter::FBXImporter()
 {
 	mFBXManager = nullptr;
@@ -96,10 +95,11 @@ bool FBXImporter::LoadScene(const char* inFileName)
 
 int FBXImporter::SetVertex(Vertex* pVertex)
 {
+	
 	for (int i = 0; i < mVertices.size(); ++i)
 	{
 		pVertex[i].Pos = mVertices[i].mPosition;
-		pVertex[i].Color = XMFLOAT4(0, 0, 0, 0);
+		pVertex[i].Color = XMFLOAT4(0,0 ,0 ,0 );
 	}
 	return mVertices.size();
 }

@@ -99,6 +99,7 @@
     <ClCompile Include="FBXImporter.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MathHelperFBX.cpp" />
+    <ClCompile Include="RandomEngine.cpp" />
     <ClCompile Include="Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -131,6 +132,7 @@
     <ClInclude Include="FBXImporter.h" />
     <ClInclude Include="MaterialFBX.h" />
     <ClInclude Include="MathHelperFBX.h" />
+    <ClInclude Include="RandomEngine.h" />
     <ClInclude Include="Utilities.h" />
     <ClInclude Include="Vertex.h" />
   </ItemGroup>
