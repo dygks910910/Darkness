@@ -15,6 +15,7 @@
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Box</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <ProjectName>Darkness</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -83,8 +84,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BoxDemo.cpp" />
-    <ClCompile Include="Building.cpp" />
     <ClCompile Include="Common\Camera.cpp" />
     <ClCompile Include="Common\d3dApp.cpp" />
     <ClCompile Include="Common\d3dUtil.cpp" />
@@ -96,11 +95,14 @@
     <ClCompile Include="Common\TextureMgr.cpp" />
     <ClCompile Include="Common\Waves.cpp" />
     <ClCompile Include="Common\xnacollision.cpp" />
-    <ClCompile Include="FBXImporter.cpp" />
-    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Effects.cpp" />
     <ClCompile Include="MathHelperFBX.cpp" />
-    <ClCompile Include="RandomEngine.cpp" />
-    <ClCompile Include="Utilities.cpp" />
+    <ClCompile Include="ParticlesDemo.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
+    <ClCompile Include="RenderStates.cpp" />
+    <ClCompile Include="Sky.cpp" />
+    <ClCompile Include="Terrain.cpp" />
+    <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="FX\color.fx">
@@ -114,8 +116,6 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BoxDemo.h" />
-    <ClInclude Include="Building.h" />
     <ClInclude Include="Common\Camera.h" />
     <ClInclude Include="Common\d3dApp.h" />
     <ClInclude Include="Common\d3dUtil.h" />
@@ -129,11 +129,13 @@
     <ClInclude Include="Common\TextureMgr.h" />
     <ClInclude Include="Common\Waves.h" />
     <ClInclude Include="Common\xnacollision.h" />
-    <ClInclude Include="FBXImporter.h" />
+    <ClInclude Include="Effects.h" />
     <ClInclude Include="MaterialFBX.h" />
     <ClInclude Include="MathHelperFBX.h" />
-    <ClInclude Include="RandomEngine.h" />
-    <ClInclude Include="Utilities.h" />
+    <ClInclude Include="ParticleSystem.h" />
+    <ClInclude Include="RenderStates.h" />
+    <ClInclude Include="Sky.h" />
+    <ClInclude Include="Terrain.h" />
     <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

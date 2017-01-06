@@ -19,17 +19,8 @@
     <Filter Include="FX">
       <UniqueIdentifier>{ddb510f0-86c2-4ad3-a801-361c96e98c4e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\00 FBXImporter">
-      <UniqueIdentifier>{b57f4d8b-82dc-4fce-89a0-a7f81e2c7e15}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\00 Building">
-      <UniqueIdentifier>{51bfc9d3-f2b9-4bcb-86b0-de0ba4f9e085}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BoxDemo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Common\Camera.cpp">
       <Filter>Common</Filter>
     </ClCompile>
@@ -63,22 +54,28 @@
     <ClCompile Include="Common\dxerr.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="FBXImporter.cpp">
-      <Filter>Source Files\00 FBXImporter</Filter>
-    </ClCompile>
-    <ClCompile Include="Utilities.cpp">
-      <Filter>Source Files\00 FBXImporter</Filter>
-    </ClCompile>
-    <ClCompile Include="MathHelperFBX.cpp">
-      <Filter>Source Files\00 FBXImporter</Filter>
-    </ClCompile>
-    <ClCompile Include="Building.cpp">
-      <Filter>Source Files\00 Building</Filter>
-    </ClCompile>
-    <ClCompile Include="Main.cpp">
+    <ClCompile Include="ParticleSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RandomEngine.cpp">
+    <ClCompile Include="RenderStates.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sky.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Terrain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticlesDemo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Effects.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MathHelperFBX.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Vertex.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -127,28 +124,28 @@
     <ClInclude Include="Common\dxerr.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="Vertex.h">
-      <Filter>Source Files\00 FBXImporter</Filter>
-    </ClInclude>
-    <ClInclude Include="FBXImporter.h">
-      <Filter>Source Files\00 FBXImporter</Filter>
-    </ClInclude>
-    <ClInclude Include="Utilities.h">
-      <Filter>Source Files\00 FBXImporter</Filter>
-    </ClInclude>
-    <ClInclude Include="MathHelperFBX.h">
-      <Filter>Source Files\00 FBXImporter</Filter>
-    </ClInclude>
-    <ClInclude Include="MaterialFBX.h">
-      <Filter>Source Files\00 FBXImporter</Filter>
-    </ClInclude>
-    <ClInclude Include="Building.h">
-      <Filter>Source Files\00 Building</Filter>
-    </ClInclude>
-    <ClInclude Include="RandomEngine.h">
+    <ClInclude Include="ParticleSystem.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="BoxDemo.h">
+    <ClInclude Include="RenderStates.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sky.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Effects.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialFBX.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MathHelperFBX.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
