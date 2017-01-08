@@ -19,6 +19,15 @@
     <Filter Include="FX">
       <UniqueIdentifier>{ddb510f0-86c2-4ad3-a801-361c96e98c4e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\00 FBXLoader">
+      <UniqueIdentifier>{e3d6ba9d-5e76-4f0e-83e7-9e8b4bd227ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\00 Box">
+      <UniqueIdentifier>{578660b4-2d1c-4319-96c3-3b2d00c61175}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\00 Building">
+      <UniqueIdentifier>{5391424d-f5cc-4c9c-85eb-c581058908ae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Camera.cpp">
@@ -66,9 +75,6 @@
     <ClCompile Include="Terrain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ParticlesDemo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Effects.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -77,6 +83,21 @@
     </ClCompile>
     <ClCompile Include="Vertex.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Maincpp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FbxLoader.cpp">
+      <Filter>Source Files\00 FBXLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="Box.cpp">
+      <Filter>Source Files\00 Box</Filter>
+    </ClCompile>
+    <ClCompile Include="Building.cpp">
+      <Filter>Source Files\00 Building</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -147,6 +168,18 @@
     </ClInclude>
     <ClInclude Include="Vertex.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FbxLoader.h">
+      <Filter>Source Files\00 FBXLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="Box.h">
+      <Filter>Source Files\00 Box</Filter>
+    </ClInclude>
+    <ClInclude Include="Building.h">
+      <Filter>Source Files\00 Building</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

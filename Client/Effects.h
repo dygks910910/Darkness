@@ -215,8 +215,8 @@ public:
 	void SetEmitPosW(const XMFLOAT3& v)                 { EmitPosW->SetRawValue(&v, 0, sizeof(XMFLOAT3)); }
 	void SetEmitDirW(const XMFLOAT3& v)                 { EmitDirW->SetRawValue(&v, 0, sizeof(XMFLOAT3)); }
 
-	void SetTexArray(ID3D11ShaderResourceView* tex)     { TexArray->SetResource(tex); }
-	void SetRandomTex(ID3D11ShaderResourceView* tex)    { RandomTex->SetResource(tex); }
+	void SetTexArray(ID3D11ShaderResourceView* tex)   { TexArray->SetResource(tex); }
+	void SetRandomTex(ID3D11ShaderResourceView* tex)  { RandomTex->SetResource(tex); }
 	
 	ID3DX11EffectTechnique* StreamOutTech;
 	ID3DX11EffectTechnique* DrawTech;

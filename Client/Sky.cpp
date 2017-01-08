@@ -94,7 +94,6 @@ void Sky::Draw(ID3D11DeviceContext* dc, const Camera& camera)
     for(UINT p = 0; p < techDesc.Passes; ++p)
     {
         ID3DX11EffectPass* pass = Effects::SkyFX->SkyTech->GetPassByIndex(p);
-
 		pass->Apply(0, dc);
 
 		dc->DrawIndexed(mIndexCount, 0, 0);
