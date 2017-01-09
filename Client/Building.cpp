@@ -11,7 +11,7 @@ CBuilding::~CBuilding()
 {
 	ReleaseCOM(mBuildingVB);
 	ReleaseCOM(mBuildingIB);
-	ReleaseCOM(mBoxMapSRV);
+	ReleaseCOM(mbuildingMapSRV);
 
 
 }
@@ -53,21 +53,21 @@ void CBuilding::Init(ID3D11Device * d3ddevice)
 	HR(md3dDevice->CreateBuffer(&ibd, &iinitData, &mBuildingIB));
 
 	HR(D3DX11CreateShaderResourceViewFromFile(md3dDevice,
-		L"Textures/chest.dds", 0, 0, &mBoxMapSRV, 0));
+		L"Textures/chest.dds", 0, 0, &mbuildingMapSRV, 0));
 
-	mBoxMat.Ambient = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
-	mBoxMat.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	mBoxMat.Specular = XMFLOAT4(0.4f, 0.4f, 0.4f, 16.0f);
+	mBuildingMat.Ambient = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
+	mBuildingMat.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	mBuildingMat.Specular = XMFLOAT4(0.4f, 0.4f, 0.4f, 16.0f);
 
 	XMMATRIX boxOffset = XMMatrixTranslation(0.0f, 8.0f, 120.0f);
 	
-	XMStoreFloat4x4(&mBoxWorld,  boxOffset );
+	XMStoreFloat4x4(&mBuildingWorld,  boxOffset );
 	indecesCount = ib.size();
 	vb.clear();
 	ib.clear();
 }
 
-void CBuilding::Draw(ID3D11DeviceContext * md3dImmediateContext, Camera mCam)
+void CBuilding::Draw(ID3D11DeviceContext * md3dImmediateContext, const Camera& mCam)
 {
 	float blendFactor[] = { 0.0f, 0.0f, 0.0f, 0.0f };
 
@@ -84,7 +84,7 @@ void CBuilding::Draw(ID3D11DeviceContext * md3dImmediateContext, Camera mCam)
 		md3dImmediateContext->IASetIndexBuffer(mBuildingIB, DXGI_FORMAT_R32_UINT, 0);
 
 		// Set per object constants.
-		XMMATRIX world = XMLoadFloat4x4(&mBoxWorld);
+		XMMATRIX world = XMLoadFloat4x4(&mBuildingWorld);
 		XMMATRIX worldInvTranspose = MathHelper::InverseTranspose(world);
 		XMMATRIX worldViewProj = world*mCam.View()*mCam.Proj();
 
@@ -92,8 +92,8 @@ void CBuilding::Draw(ID3D11DeviceContext * md3dImmediateContext, Camera mCam)
 		Effects::BasicFX->SetWorldInvTranspose(worldInvTranspose);
 		Effects::BasicFX->SetWorldViewProj(worldViewProj);
 		Effects::BasicFX->SetTexTransform(XMMatrixIdentity());
-		Effects::BasicFX->SetMaterial(mBoxMat);
-		Effects::BasicFX->SetDiffuseMap(mBoxMapSRV);
+		Effects::BasicFX->SetMaterial(mBuildingMat);
+		Effects::BasicFX->SetDiffuseMap(mbuildingMapSRV);
 
 		//md3dImmediateContext->OMSetBlendState(RenderStates::AlphaToCoverageBS, blendFactor, 0xffffffff);
 		boxTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
