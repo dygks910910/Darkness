@@ -1,0 +1,47 @@
+#pragma once
+#include "Scene.h"
+#include "GameTimer.h"
+/*
+2017 / 1 / 10 / 6:04
+작성자:박요한(dygks910910@daum.net)
+설명:메인 게임씬.
+*/
+class CSceneMainGame :
+	public CScene
+{
+
+	Sky* mSky;
+	//지형
+	Terrain mTerrain;
+	ID3D11ShaderResourceView* mFlareTexSRV;
+	ID3D11ShaderResourceView* mRainTexSRV;
+	ID3D11ShaderResourceView* mRandomTexSRV;
+
+	ParticleSystem mFire;
+	ParticleSystem mRain;
+	//기본조명.
+	DirectionalLight mDirLights[3];
+	GameTimer mTimer;
+	Camera mCam;
+	//testCube
+	CBox mBox;
+	//testBuilding
+	CBuilding mBuilding;
+
+	bool mWalkCamMode;
+
+	POINT mLastMousePos;
+public:
+	CSceneMainGame();
+	~CSceneMainGame();
+	virtual bool Init(ID3D11Device* device, ID3D11DeviceContext* dc,
+		IDXGISwapChain* swapChain, ID3D11RenderTargetView* renderTargetView,
+		ID3D11DepthStencilView* depthStencilView);
+	virtual void UpdateScene(const float& dt);
+	virtual void Draw();
+	virtual void OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWnd);
+	virtual void OnMouseUp(WPARAM btnState, int x, int y);
+	virtual void OnMouseMove(WPARAM btnState, int x, int y);
+	virtual void OnResize(const float& aspectRatio);
+};
+

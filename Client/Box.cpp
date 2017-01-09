@@ -81,7 +81,7 @@ void CBox::Draw(ID3D11DeviceContext* md3dImmediateContext, Camera mCam)
 	
 	D3DX11_TECHNIQUE_DESC techDesc;
 	ID3DX11EffectTechnique* boxTech;
-	boxTech = Effects::BasicFX->Light3TexAlphaClipTech;
+	boxTech = Effects::BasicFX->Light0TexAlphaClipTech;
 
 	UINT stride = sizeof(Vertex::Basic32);
 	UINT offset = 0;
@@ -96,8 +96,8 @@ void CBox::Draw(ID3D11DeviceContext* md3dImmediateContext, Camera mCam)
 		XMMATRIX worldInvTranspose = MathHelper::InverseTranspose(world);
 		XMMATRIX worldViewProj = world*mCam.View()*mCam.Proj();
 
-		Effects::BasicFX->SetWorld(world);
-		Effects::BasicFX->SetWorldInvTranspose(worldInvTranspose);
+		//Effects::BasicFX->SetWorld(world);
+		//Effects::BasicFX->SetWorldInvTranspose(worldInvTranspose);
 		Effects::BasicFX->SetWorldViewProj(worldViewProj);
 		Effects::BasicFX->SetTexTransform(XMMatrixIdentity());
 		Effects::BasicFX->SetMaterial(mBoxMat);

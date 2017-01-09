@@ -6,7 +6,7 @@
 
 ID3D11RasterizerState* RenderStates::WireframeRS = 0;
 ID3D11RasterizerState* RenderStates::NoCullRS    = 0;
-	 
+ID3D11RasterizerState* RenderStates::SolidRS = 0;
 ID3D11BlendState*      RenderStates::AlphaToCoverageBS = 0;
 ID3D11BlendState*      RenderStates::TransparentBS     = 0;
 
@@ -27,6 +27,11 @@ void RenderStates::InitAll(ID3D11Device* device)
 	//
 	// NoCullRS
 	//
+	/*
+	2017 / 1 / 10 / 6:52
+	작성자:박요한(dygks910910@daum.net)
+	설명:와이어펜스같은 경우사용.
+	*/
 	D3D11_RASTERIZER_DESC noCullDesc;
 	ZeroMemory(&noCullDesc, sizeof(D3D11_RASTERIZER_DESC));
 	noCullDesc.FillMode = D3D11_FILL_SOLID;
@@ -36,6 +41,20 @@ void RenderStates::InitAll(ID3D11Device* device)
 
 	HR(device->CreateRasterizerState(&noCullDesc, &NoCullRS));
 
+
+	/*
+	2017 / 1 / 10 / 6:49
+	작성자:박요한(dygks910910@daum.net)
+	설명:FILL_SOLID,CULL_BACK,
+	*/
+	D3D11_RASTERIZER_DESC solidCullDesc;
+	ZeroMemory(&solidCullDesc, sizeof(D3D11_RASTERIZER_DESC));
+	solidCullDesc.FillMode = D3D11_FILL_SOLID;
+	solidCullDesc.CullMode = D3D11_CULL_BACK;
+	solidCullDesc.FrontCounterClockwise = false;
+	solidCullDesc.DepthClipEnable = true;
+
+	HR(device->CreateRasterizerState(&solidCullDesc, &SolidRS));
 	//
 	// AlphaToCoverageBS
 	//

@@ -23,7 +23,7 @@ void CBuilding::Init(ID3D11Device * d3ddevice)
 	std::vector<Vertex::Basic32> vb;
 	std::vector<UINT> ib;
 
-	loader.LoadFBX("test2.FBX",vb,ib);
+	loader.LoadFBX("Darkness FBX\\crawler.fbx",vb,ib);
 	//
 	// Extract the vertex elements we are interested in and pack the
 	// vertices of all the meshes into one vertex buffer.
@@ -85,13 +85,13 @@ void CBuilding::Draw(ID3D11DeviceContext * md3dImmediateContext, const Camera& m
 
 		// Set per object constants.
 		XMMATRIX world = XMLoadFloat4x4(&mBuildingWorld);
-		XMMATRIX worldInvTranspose = MathHelper::InverseTranspose(world);
+		//XMMATRIX worldInvTranspose = MathHelper::InverseTranspose(world);
 		XMMATRIX worldViewProj = world*mCam.View()*mCam.Proj();
 
-		Effects::BasicFX->SetWorld(world);
-		Effects::BasicFX->SetWorldInvTranspose(worldInvTranspose);
+		//Effects::BasicFX->SetWorld(world);
+		//Effects::BasicFX->SetWorldInvTranspose(worldInvTranspose);
 		Effects::BasicFX->SetWorldViewProj(worldViewProj);
-		Effects::BasicFX->SetTexTransform(XMMatrixIdentity());
+		//Effects::BasicFX->SetTexTransform(XMMatrixIdentity());
 		Effects::BasicFX->SetMaterial(mBuildingMat);
 		Effects::BasicFX->SetDiffuseMap(mbuildingMapSRV);
 

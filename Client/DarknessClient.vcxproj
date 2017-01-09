@@ -182,11 +182,11 @@
     <ClCompile Include="Common\xnacollision.cpp" />
     <ClCompile Include="Effects.cpp" />
     <ClCompile Include="FbxLoader.cpp" />
-    <ClCompile Include="Maincpp.cpp" />
-    <ClCompile Include="MathHelperFBX.cpp" />
+    <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="RenderStates.cpp" />
+    <ClCompile Include="SceneMainGame.cpp" />
     <ClCompile Include="Sky.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="Vertex.cpp" />
@@ -226,11 +226,11 @@
     <ClInclude Include="Common\xnacollision.h" />
     <ClInclude Include="Effects.h" />
     <ClInclude Include="FbxLoader.h" />
-    <ClInclude Include="MaterialFBX.h" />
-    <ClInclude Include="MathHelperFBX.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="RenderStates.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneMainGame.h" />
     <ClInclude Include="Sky.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="Vertex.h" />

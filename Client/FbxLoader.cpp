@@ -16,7 +16,6 @@ CFbxLoader::~CFbxLoader()
 	{
 		delete mSubMeshes[i];
 	}
-
 	mSubMeshes.Clear();
 }
 void CFbxLoader::Init(const char * pFileName)
@@ -137,6 +136,9 @@ void CFbxLoader::PrintVertexByNode(FbxNode* pNode)
 
 void CFbxLoader::LoadElement(const FbxMesh* pMesh, std::vector<Vertex::Basic32>& vb, std::vector<UINT>& ib)
 {
+	// pMesh가 NULL일 경우도 있기 때문에 NULL일 경우 return.
+	if (!pMesh)
+		return;
 	if (!pMesh->GetNode())
 		std::cout << "메쉬 오류" << std::endl;
 
@@ -386,9 +388,10 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh, std::vector<Vertex::Basic32>&
 				{
 					bool lUnmappedUV;
 					pMesh->GetPolygonVertexUV(lPolygonIndex, lVerticeIndex, lUVName, lCurrentUV, lUnmappedUV);
-					tempfloat2.x = lCurrentUV[0];
-					tempfloat2.y = lCurrentUV[1];
-
+					
+					tempfloat2.x = static_cast<float>(lCurrentUV[0]);
+					tempfloat2.y = static_cast<float>(lCurrentUV[1]);
+					
 					vb[lVertexCount].Tex = tempfloat2;
 					/*lUVs[lVertexCount * UV_STRIDE] = static_cast<float>(lCurrentUV[0]);
 					lUVs[lVertexCount * UV_STRIDE + 1] = static_cast<float>(lCurrentUV[1]);

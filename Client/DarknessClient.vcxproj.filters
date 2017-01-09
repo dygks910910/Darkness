@@ -22,11 +22,38 @@
     <Filter Include="Source Files\00 FBXLoader">
       <UniqueIdentifier>{e3d6ba9d-5e76-4f0e-83e7-9e8b4bd227ef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\00 Box">
+    <Filter Include="Source Files\99 Scene">
+      <UniqueIdentifier>{4f8f113f-6a06-43f2-9261-cfd65ef93d27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\00 Object">
+      <UniqueIdentifier>{58efbd12-b275-4fcc-aae5-23b9e8394dff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\00 Object\00 Box">
       <UniqueIdentifier>{578660b4-2d1c-4319-96c3-3b2d00c61175}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\00 Building">
+    <Filter Include="Source Files\00 Object\00 Building">
       <UniqueIdentifier>{5391424d-f5cc-4c9c-85eb-c581058908ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\01 Effects">
+      <UniqueIdentifier>{0c80e789-8bf3-4901-b728-61b78654b4a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Sky">
+      <UniqueIdentifier>{409c8258-139d-4350-b1b9-e2d0f36860fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Terrain">
+      <UniqueIdentifier>{6531c057-db56-4940-b46e-1ff971072e5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MainGame">
+      <UniqueIdentifier>{b9598f8b-563f-4be6-8c34-101ea0f233e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\00 Object\Vertex">
+      <UniqueIdentifier>{7e0ece3b-4bbd-4fd4-a408-21858e329224}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\01 Effects\RenderState">
+      <UniqueIdentifier>{f854c84c-be84-461c-b2b6-5325efb76ba0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\01 Effects\ParticleSystem">
+      <UniqueIdentifier>{0567adf7-8142-499e-8ae9-890af9cb7352}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -63,41 +90,41 @@
     <ClCompile Include="Common\dxerr.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="ParticleSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderStates.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Sky.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Terrain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Effects.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MathHelperFBX.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Vertex.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Maincpp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MainGame.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="FbxLoader.cpp">
       <Filter>Source Files\00 FBXLoader</Filter>
     </ClCompile>
     <ClCompile Include="Box.cpp">
-      <Filter>Source Files\00 Box</Filter>
+      <Filter>Source Files\00 Object\00 Box</Filter>
     </ClCompile>
     <ClCompile Include="Building.cpp">
-      <Filter>Source Files\00 Building</Filter>
+      <Filter>Source Files\00 Object\00 Building</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Effects.cpp">
+      <Filter>Source Files\01 Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>Source Files\01 Effects\ParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneMainGame.cpp">
+      <Filter>Source Files\99 Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Sky.cpp">
+      <Filter>Source Files\Sky</Filter>
+    </ClCompile>
+    <ClCompile Include="Terrain.cpp">
+      <Filter>Source Files\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderStates.cpp">
+      <Filter>Source Files\01 Effects\RenderState</Filter>
+    </ClCompile>
+    <ClCompile Include="Vertex.cpp">
+      <Filter>Source Files\00 Object\Vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame.cpp">
+      <Filter>Source Files\MainGame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -145,41 +172,41 @@
     <ClInclude Include="Common\dxerr.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="ParticleSystem.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderStates.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Sky.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Terrain.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Effects.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MaterialFBX.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MathHelperFBX.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Vertex.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MainGame.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="FbxLoader.h">
       <Filter>Source Files\00 FBXLoader</Filter>
     </ClInclude>
     <ClInclude Include="Box.h">
-      <Filter>Source Files\00 Box</Filter>
+      <Filter>Source Files\00 Object\00 Box</Filter>
     </ClInclude>
     <ClInclude Include="Building.h">
-      <Filter>Source Files\00 Building</Filter>
+      <Filter>Source Files\00 Object\00 Building</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Source Files\99 Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Effects.h">
+      <Filter>Source Files\01 Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>Source Files\01 Effects\ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneMainGame.h">
+      <Filter>Source Files\99 Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Sky.h">
+      <Filter>Source Files\Sky</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain.h">
+      <Filter>Source Files\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderStates.h">
+      <Filter>Source Files\01 Effects\RenderState</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>Source Files\00 Object\Vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame.h">
+      <Filter>Source Files\MainGame</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
