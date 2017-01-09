@@ -30,12 +30,13 @@
 
 #include <d3d10_1.h>
 //#include <d3d11_1.h>
-
-//#if !defined(WINAPI_FAMILY) || WINAPI_FAMILY != WINAPI_FAMILY_PHONE_APP
-//#include <wincodec.h>
-//#include <d2derr.h>
-//#include <dwrite.h>
-//#endif
+#include<d3d11.h>
+/*
+#if !defined(WINAPI_FAMILY) || WINAPI_FAMILY != WINAPI_FAMILY_PHONE_APP
+#include <wincodec.h>
+#include <d2derr.h>
+#include <dwrite.h>
+#endif*/
 
 #define XAUDIO2_E_INVALID_CALL          0x88960001
 #define XAUDIO2_E_XMA_DECODER_ERROR     0x88960002
