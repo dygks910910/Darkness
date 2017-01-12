@@ -376,7 +376,7 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh, std::vector<Vertex::Basic32>&
 					pMesh->GetPolygonVertexNormal(lPolygonIndex, lVerticeIndex, lCurrentNormal);
 					tempFloat3.x = static_cast<float>(lCurrentNormal[0]);
 					tempFloat3.y = static_cast<float>(lCurrentNormal[1]);
-					tempFloat3.z = static_cast<float>(lCurrentNormal[2]);
+					tempFloat3.z = static_cast<float>(lCurrentNormal[2] * -1.0f);
 					vb[lVertexCount].Normal = tempFloat3;
 
 					/*lNormals[lVertexCount * NORMAL_STRIDE] = static_cast<float>(lCurrentNormal[0]);
@@ -388,9 +388,14 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh, std::vector<Vertex::Basic32>&
 				{
 					bool lUnmappedUV;
 					pMesh->GetPolygonVertexUV(lPolygonIndex, lVerticeIndex, lUVName, lCurrentUV, lUnmappedUV);
-					
+					/*
+					2017 / 1 / 13 / 7:41
+					작성자:박요한(dygks910910@daum.net)
+					설명:왼손좌표계를 오른손좌표계로 변경하기위해서
+					uv의 y를 뒤집어 줘야함.
+					*/
 					tempfloat2.x = static_cast<float>(lCurrentUV[0]);
-					tempfloat2.y = static_cast<float>(lCurrentUV[1]);
+					tempfloat2.y = 1.0f-static_cast<float>(lCurrentUV[1]);
 					
 					vb[lVertexCount].Tex = tempfloat2;
 					/*lUVs[lVertexCount * UV_STRIDE] = static_cast<float>(lCurrentUV[0]);

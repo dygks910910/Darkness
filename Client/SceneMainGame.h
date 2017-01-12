@@ -23,6 +23,8 @@ class CSceneMainGame :
 	DirectionalLight mDirLights[3];
 	GameTimer mTimer;
 	Camera mCam;
+	//¹Ì´Ï¸Ê Ä«¸Þ¶ó
+	Camera mMinimapCam;
 	//testCube
 	CBox mBox;
 	//testBuilding
@@ -31,10 +33,19 @@ class CSceneMainGame :
 	bool mWalkCamMode;
 
 	POINT mLastMousePos;
+	//D3D11_VIEWPORT mMinimapViewport;
+	//D3D11_VIEWPORT* mMainGameViewport;
+	////¹Ì´Ï¸Ê ·»´õÅ¸°Ùºä
+	//ID3D11RenderTargetView* mRenderTV;
+	////¹Ì´Ï¸Ê µö½ºÅÙ½Ç ºä.
+	//ID3D11DepthStencilView* mDepstencilV;
+	//ID3D11Texture2D* mMinimapDSBuffer;
 public:
 	CSceneMainGame();
 	~CSceneMainGame();
-	virtual bool Init(ID3D11Device* device, ID3D11DeviceContext* dc);
+	virtual bool Init(ID3D11Device* device, ID3D11DeviceContext* dc,
+		IDXGISwapChain* swapChain,ID3D11RenderTargetView* renderTargetView
+		, D3D11_VIEWPORT* viewPort);
 	virtual void UpdateScene(const float& dt);
 	virtual void Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 		IDXGISwapChain* swapChain, ID3D11RenderTargetView* renderTargetView,

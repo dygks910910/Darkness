@@ -130,7 +130,7 @@
       <Filter>Source Files\99 Scene</Filter>
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\99 Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -218,7 +218,7 @@
       <Filter>Source Files\99 Scene</Filter>
     </ClInclude>
     <ClInclude Include="SceneManager.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\99 Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

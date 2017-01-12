@@ -23,7 +23,9 @@ public:
 	CSceneManager();
 	~CSceneManager();
 
-	bool Init(ID3D11Device* device, ID3D11DeviceContext* dc);
+	bool Init(ID3D11Device* device, ID3D11DeviceContext* dc,
+		IDXGISwapChain* swapChain,ID3D11RenderTargetView* renderTargetView,
+		D3D11_VIEWPORT* viewport);
 	void UpdateScene(const float& dt);
 	void Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 		IDXGISwapChain* swapChain, ID3D11RenderTargetView* renderTargetView,
@@ -36,7 +38,6 @@ public:
 		ID3D11Device* device, ID3D11DeviceContext* dc);
 	void SetSceneKey(const std::string& sceneName) { mSceneKey = sceneName; }
 };
-
 namespace SceneName
 {
 	const std::string MainScene = "MainGameScene";

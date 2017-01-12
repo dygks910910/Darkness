@@ -53,15 +53,15 @@ void CBuilding::Init(ID3D11Device * d3ddevice)
 	HR(md3dDevice->CreateBuffer(&ibd, &iinitData, &mBuildingIB));
 
 	HR(D3DX11CreateShaderResourceViewFromFile(md3dDevice,
-		L"Textures/chest.dds", 0, 0, &mbuildingMapSRV, 0));
+		L"Darkness fbx/crawler_diffuse 1.png", 0, 0, &mbuildingMapSRV, 0));
 
 	mBuildingMat.Ambient = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
 	mBuildingMat.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	mBuildingMat.Specular = XMFLOAT4(0.4f, 0.4f, 0.4f, 16.0f);
 
 	XMMATRIX boxOffset = XMMatrixTranslation(0.0f, 8.0f, 120.0f);
-	
-	XMStoreFloat4x4(&mBuildingWorld,  boxOffset );
+	XMMATRIX rotation = XMMatrixRotationRollPitchYaw(0, 45, 0);
+	XMStoreFloat4x4(&mBuildingWorld, rotation*boxOffset );
 	indecesCount = ib.size();
 	vb.clear();
 	ib.clear();

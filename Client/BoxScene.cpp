@@ -15,7 +15,9 @@ CBoxScene::~CBoxScene()
 	SafeDelete(mSky);
 }
 
-bool CBoxScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc)
+bool CBoxScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
+	IDXGISwapChain* swapChain, ID3D11RenderTargetView* renderTargetView
+	, D3D11_VIEWPORT* viewPort)
 {
 	mLastMousePos.x = 0;
 	mLastMousePos.y = 0;

@@ -15,11 +15,13 @@ CSceneMainGame::~CSceneMainGame()
 }
 
 
-bool CSceneMainGame::Init(ID3D11Device* device, ID3D11DeviceContext* dc)
+bool CSceneMainGame::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
+	IDXGISwapChain* swapChain, ID3D11RenderTargetView* renderTargetView, 
+	D3D11_VIEWPORT* viewPort)
 {
 	mLastMousePos.x = 0;
 	mLastMousePos.y = 0;
-
+	mMinimapCam.SetPosition(XMFLOAT3(0, 100, 100));
 	mCam.SetPosition(0.0f, 2.0f, 100.0f);
 
 	mDirLights[0].Ambient = XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
@@ -78,6 +80,57 @@ bool CSceneMainGame::Init(ID3D11Device* device, ID3D11DeviceContext* dc)
 	Effects::BasicFX->SetFogColor(Colors::Silver);
 	Effects::BasicFX->SetFogStart(15.0f);
 	Effects::BasicFX->SetFogRange(175.0f);
+	/*
+	2017 / 1 / 13 / 4:11
+	작성자:박요한(dygks910910@daum.net)
+	설명:미니맵을 그리기 위한 작업.
+	*/
+	//D3D11_VIEWPORT viewportMinimap;
+	//viewportMinimap.TopLeftX = 700;
+	//viewportMinimap.TopLeftY = 500;
+	//viewportMinimap.Width = 100;
+	//viewportMinimap.Height = 100;
+	//viewportMinimap.MaxDepth = 1	;
+	//viewportMinimap.MinDepth = 0;
+
+	//
+	//ID3D11Texture2D* backBuffer;
+	//swapChain->GetBuffer(1, __uuidof(ID3D11Texture2D),
+	//	reinterpret_cast<void**>(&backBuffer));
+	//device->CreateRenderTargetView(backBuffer,0, &mRenderTV);
+	//ReleaseCOM(backBuffer);
+
+	//D3D11_TEXTURE2D_DESC depthStencilDesc;
+
+	//depthStencilDesc.Width = 100;
+	//depthStencilDesc.Height = 100;
+	//depthStencilDesc.MipLevels = 1;
+	//depthStencilDesc.ArraySize = 1;
+	//depthStencilDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	//// No MSAA
+	//depthStencilDesc.SampleDesc.Count = 1;
+	//depthStencilDesc.SampleDesc.Quality = 0;
+	//depthStencilDesc.Usage = D3D11_USAGE_DEFAULT;
+	//depthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	//depthStencilDesc.CPUAccessFlags = 0;
+	//depthStencilDesc.MiscFlags = 0;
+	//ID3D11RenderTargetView* renderTVarr[2] = {renderTargetView,mRenderTV};
+
+	//HR(device->CreateTexture2D(&depthStencilDesc, 0,&mMinimapDSBuffer));
+	//HR(device->CreateDepthStencilView(mMinimapDSBuffer, 0, &mDepstencilV));
+	//dc->OMSetRenderTargets(2, renderTVarr, mDepstencilV);
+	//ReleaseCOM(renderTVarr[0]);
+	//ReleaseCOM(renderTVarr[1]);
+
+	//mMinimapViewport = viewportMinimap;
+	//mMainGameViewport = viewPort;
+
+	//D3D11_VIEWPORT mViewportArr[2];
+
+	//mViewportArr[0] = *viewPort;
+	//mViewportArr[1] = viewportMinimap;
+
+	//dc->RSSetViewports(2,mViewportArr);
 
 	mTimer.Start();
 	return true;
@@ -140,6 +193,8 @@ void CSceneMainGame::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	IDXGISwapChain* swapChain, ID3D11RenderTargetView* renderTargetView,
 	ID3D11DepthStencilView* depthStencilView)
 {
+	//미니맵 출력.
+
 	dc->ClearRenderTargetView(renderTargetView, reinterpret_cast<const float*>(&Colors::Silver));
 	dc->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	//기본입력배치.
@@ -197,6 +252,7 @@ void CSceneMainGame::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	dc->OMSetDepthStencilState(0, 0);
 	dc->OMSetBlendState(0, blendFactor, 0xffffffff);
 
+	
 	HR(swapChain->Present(0, 0));
 
 }

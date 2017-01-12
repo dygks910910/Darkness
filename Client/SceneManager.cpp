@@ -12,7 +12,9 @@ CSceneManager::~CSceneManager()
 		delete p->second;
 	}
 }
-bool CSceneManager::Init(ID3D11Device * device, ID3D11DeviceContext * dc)
+bool CSceneManager::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
+	IDXGISwapChain* swapChain, ID3D11RenderTargetView* renderTargetView,
+	D3D11_VIEWPORT* viewport)
 {
 	
 	/*
@@ -22,7 +24,8 @@ bool CSceneManager::Init(ID3D11Device * device, ID3D11DeviceContext * dc)
 	*/
 	mSceneKey = SceneName::MainScene;
 	mScenes.insert(make_pair(SceneName::MainScene, new CSceneMainGame));
-	mScenes[mSceneKey]->Init(device, dc);
+	mScenes[mSceneKey]->Init(device, dc,swapChain,
+		renderTargetView,viewport);
 
 	/*
 	2017 / 1 / 12 / 20:07
@@ -31,7 +34,8 @@ bool CSceneManager::Init(ID3D11Device * device, ID3D11DeviceContext * dc)
 	*/
 
 	mScenes.insert(make_pair(SceneName::test, new CBoxScene));
-	mScenes[SceneName::test]->Init(device, dc);
+	mScenes[SceneName::test]->Init(device, dc,swapChain,renderTargetView
+	,  viewport);
 
 	return true;
 }
@@ -78,7 +82,6 @@ void CSceneManager::OnResize(const float & aspectRatio)
 void CSceneManager::ChangeScene(std::string sceneName, const float & dt, ID3D11Device * device, ID3D11DeviceContext * dc)
 {
 	mSceneKey = sceneName;
-	mScenes[mSceneKey]->Init(device, dc);
 	//mScenes[mSceneKey]->UpdateScene(dt);
 }
 

@@ -45,7 +45,8 @@ bool CMainGame::Init()
 	Effects::InitAll(md3dDevice);
 	InputLayouts::InitAll(md3dDevice);
 	RenderStates::InitAll(md3dDevice);
-	mSceneManager->Init(md3dDevice, md3dImmediateContext);
+	mSceneManager->Init(md3dDevice, md3dImmediateContext,
+		mSwapChain,mRenderTargetView,&mScreenViewport);
 	return true;
 }
 
