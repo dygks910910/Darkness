@@ -19,7 +19,7 @@ CMainGame::CMainGame(HINSTANCE hInstance)
 	mMainWndCaption = L"Darkness";
 	mEnable4xMsaa = false;
 
-	mainGameScene = new CSceneMainGame;
+	mSceneManager = new CSceneManager;
 
 }
 
@@ -27,8 +27,8 @@ CMainGame::~CMainGame()
 {
 	md3dImmediateContext->ClearState();
 
-	SafeDelete(mainGameScene);
-	
+	SafeDelete(mSceneManager);
+
 	Effects::DestroyAll();
 	InputLayouts::DestroyAll();
 	RenderStates::DestroyAll();
@@ -45,27 +45,26 @@ bool CMainGame::Init()
 	Effects::InitAll(md3dDevice);
 	InputLayouts::InitAll(md3dDevice);
 	RenderStates::InitAll(md3dDevice);
-	mainGameScene->Init(md3dDevice, md3dImmediateContext,
-		mSwapChain, mRenderTargetView, mDepthStencilView);
-
+	mSceneManager->Init(md3dDevice, md3dImmediateContext,
+		mSwapChain, mRenderTargetView,mDepthStencilView);
 	return true;
 }
 
 void CMainGame::OnResize()
 {
 	D3DApp::OnResize();
-	mainGameScene->OnResize(AspectRatio());
+	mSceneManager->OnResize(AspectRatio());
 	
 }
 
 void CMainGame::UpdateScene(float dt)
 {
-	mainGameScene->UpdateScene(dt);
+	mSceneManager->UpdateScene(dt);
 }
 
 void CMainGame::DrawScene()
 {
-	mainGameScene->Draw();
+	mSceneManager->Draw();
 	
 
 }
@@ -73,16 +72,16 @@ void CMainGame::DrawScene()
 
 void CMainGame::OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWnd)
 {
-	mainGameScene->OnMouseDown(btnState, x, y,mhMainWnd);
+	mSceneManager->OnMouseDown(btnState, x, y,mhMainWnd);
 }
 
 void CMainGame::OnMouseUp(WPARAM btnState, int x, int y)
 {
-	mainGameScene->OnMouseUp(btnState, x, y);
+	mSceneManager->OnMouseUp(btnState, x, y);
 }
 
 void CMainGame::OnMouseMove(WPARAM btnState, int x, int y)
 {
-	mainGameScene->OnMouseMove(btnState, x, y);
+	mSceneManager->OnMouseMove(btnState, x, y);
 }
 

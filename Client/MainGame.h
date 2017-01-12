@@ -16,6 +16,8 @@
 #include "Box.h"
 #include "Building.h"
 #include "SceneMainGame.h"
+#include "BoxScene.h"
+#include "SceneManager.h"
 class CMainGame : public D3DApp
 {
 public:
@@ -26,11 +28,12 @@ public:
 	void OnResize();
 	void UpdateScene(float dt);
 	void DrawScene();
-	void OnMouseDown(WPARAM btnState, int x, int y,const HWND& mhMainWnd);
+	void OnMouseDown(WPARAM btnState, int x, int y,
+		const HWND& mhMainWnd);
 	void OnMouseUp(WPARAM btnState, int x, int y);
 	void OnMouseMove(WPARAM btnState, int x, int y);
 
 private:
-	CScene* mainGameScene;
+	CSceneManager* mSceneManager;
 	
 };
