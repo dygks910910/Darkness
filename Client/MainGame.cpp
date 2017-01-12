@@ -45,8 +45,7 @@ bool CMainGame::Init()
 	Effects::InitAll(md3dDevice);
 	InputLayouts::InitAll(md3dDevice);
 	RenderStates::InitAll(md3dDevice);
-	mSceneManager->Init(md3dDevice, md3dImmediateContext,
-		mSwapChain, mRenderTargetView,mDepthStencilView);
+	mSceneManager->Init(md3dDevice, md3dImmediateContext);
 	return true;
 }
 
@@ -59,12 +58,25 @@ void CMainGame::OnResize()
 
 void CMainGame::UpdateScene(float dt)
 {
+	if (GetAsyncKeyState('C') & 0x8000)
+	{
+		mSceneManager->ChangeScene(SceneName::test, dt,
+			md3dDevice, md3dImmediateContext);
+		mSceneManager->SetSceneKey(SceneName::test);
+	}
+	if (GetAsyncKeyState('X') & 0x8000)
+	{
+		mSceneManager->ChangeScene(SceneName::MainScene, dt,
+			md3dDevice, md3dImmediateContext);
+		mSceneManager->SetSceneKey(SceneName::MainScene);
+	}
 	mSceneManager->UpdateScene(dt);
 }
 
 void CMainGame::DrawScene()
 {
-	mSceneManager->Draw();
+	mSceneManager->Draw(md3dDevice,md3dImmediateContext,
+		mSwapChain,mRenderTargetView,mDepthStencilView);
 	
 
 }

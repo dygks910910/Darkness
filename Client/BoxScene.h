@@ -25,16 +25,15 @@ class CBoxScene:
 	//CBuilding mBuilding;
 
 	bool mWalkCamMode;
-
 	POINT mLastMousePos;
 public:
 	CBoxScene();
 	~CBoxScene();
-	virtual bool Init(ID3D11Device* device, ID3D11DeviceContext* dc,
+	virtual bool Init(ID3D11Device* device, ID3D11DeviceContext* dc);
+	virtual void UpdateScene(const float& dt);
+	virtual void Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 		IDXGISwapChain* swapChain, ID3D11RenderTargetView* renderTargetView,
 		ID3D11DepthStencilView* depthStencilView);
-	virtual void UpdateScene(const float& dt);
-	virtual void Draw();
 	virtual void OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWnd);
 	virtual void OnMouseUp(WPARAM btnState, int x, int y);
 	virtual void OnMouseMove(WPARAM btnState, int x, int y);

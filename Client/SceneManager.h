@@ -6,12 +6,7 @@
 #include<string.h>
 class CSceneManager
 {
-	ID3D11Device* md3dDevice;
-	ID3D11DeviceContext* md3dImmediateContext;
-	IDXGISwapChain* mSwapChain;
-	ID3D11RenderTargetView* mRenderTargetView;
-	ID3D11DepthStencilView* mDepthStencilView;
-	
+private:
 /*
 2017 / 1 / 12 / 20:14
 작성자:박요한(dygks910910@daum.net)
@@ -28,16 +23,18 @@ public:
 	CSceneManager();
 	~CSceneManager();
 
-	bool Init(ID3D11Device* device, ID3D11DeviceContext* dc,
+	bool Init(ID3D11Device* device, ID3D11DeviceContext* dc);
+	void UpdateScene(const float& dt);
+	void Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 		IDXGISwapChain* swapChain, ID3D11RenderTargetView* renderTargetView,
 		ID3D11DepthStencilView* depthStencilView);
-	void UpdateScene(const float& dt);
-	void Draw();
 	void OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWnd);
 	void OnMouseUp(WPARAM btnState, int x, int y);
 	void OnMouseMove(WPARAM btnState, int x, int y);
 	void OnResize(const float& aspectRatio);
-	void ChangeScene(std::string sceneName, const float& dt);
+	void ChangeScene(std::string sceneName, const float& dt,
+		ID3D11Device* device, ID3D11DeviceContext* dc);
+	void SetSceneKey(const std::string& sceneName) { mSceneKey = sceneName; }
 };
 
 namespace SceneName

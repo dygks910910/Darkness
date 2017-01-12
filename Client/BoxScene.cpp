@@ -15,15 +15,8 @@ CBoxScene::~CBoxScene()
 	SafeDelete(mSky);
 }
 
-bool CBoxScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc, IDXGISwapChain * swapChain, ID3D11RenderTargetView * renderTargetView, ID3D11DepthStencilView * depthStencilView)
+bool CBoxScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc)
 {
-	md3dDevice = device;
-	md3dImmediateContext = dc;
-	mSwapChain = swapChain;
-	mRenderTargetView = renderTargetView;
-	mDepthStencilView = depthStencilView;
-
-
 	mLastMousePos.x = 0;
 	mLastMousePos.y = 0;
 
@@ -45,10 +38,10 @@ bool CBoxScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc, IDXGISwapC
 	mDirLights[2].Direction = XMFLOAT3(-0.47735f, -0.47735f, -0.57735f);
 
 	//draw를 위한 세팅.
-	mBox.Init(md3dDevice);
+	mBox.Init(device);
 	XMMATRIX boxOffset = XMMatrixIdentity();
 	//mBuilding.Init(md3dDevice);
-	mSky = new Sky(md3dDevice, L"Textures/sunsetcube1024.dds", 5000.0f);
+	mSky = new Sky(device, L"Textures/sunsetcube1024.dds", 5000.0f);
 
 	Terrain::InitInfo tii;
 	tii.HeightMapFilename = L"Textures/terrain.raw";
@@ -63,7 +56,7 @@ bool CBoxScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc, IDXGISwapC
 	tii.HeightmapHeight = 2049;
 	tii.CellSpacing = 0.5f;
 
-	mTerrain.Init(md3dDevice, md3dImmediateContext, tii);
+	mTerrain.Init(device, dc, tii);
 
 // 	mRandomTexSRV = d3dHelper::CreateRandomTexture1DSRV(md3dDevice);
 
@@ -143,28 +136,30 @@ void CBoxScene::UpdateScene(const float & dt)
 	mCam.UpdateViewMatrix();
 }
 
-void CBoxScene::Draw()
+void CBoxScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
+	IDXGISwapChain* swapChain, ID3D11RenderTargetView* renderTargetView,
+	ID3D11DepthStencilView* depthStencilView)
 {
-	md3dImmediateContext->ClearRenderTargetView(mRenderTargetView, reinterpret_cast<const float*>(&Colors::Silver));
-	md3dImmediateContext->ClearDepthStencilView(mDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	dc->ClearRenderTargetView(renderTargetView, reinterpret_cast<const float*>(&Colors::Silver));
+	dc->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	//기본입력배치.
-	md3dImmediateContext->IASetInputLayout(InputLayouts::Basic32);
-	md3dImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	dc->IASetInputLayout(InputLayouts::Basic32);
+	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	/*
 	2017 / 1 / 10 / 7:00
 	작성자:박요한(dygks910910@daum.net)
 	설명:컬링이필요없는경우사용.ex)와이어펜스.
 	*/
-	md3dImmediateContext->RSSetState(RenderStates::NoCullRS);
-	mBox.Draw(md3dImmediateContext, mCam);
+	dc->RSSetState(RenderStates::NoCullRS);
+	mBox.Draw(dc, mCam);
 
 	/*
 	2017 / 1 / 10 / 7:00
 	작성자:박요한(dygks910910@daum.net)
 	설명:투명도가 없는곳에서 사용.
 	*/
-	md3dImmediateContext->RSSetState(RenderStates::SolidRS);
+	dc->RSSetState(RenderStates::SolidRS);
 	/*mBuilding.Draw(md3dImmediateContext, mCam);*/
 
 
@@ -172,20 +167,20 @@ void CBoxScene::Draw()
 	float blendFactor[] = { 0.0f, 0.0f, 0.0f, 0.0f };
 
 	if (GetAsyncKeyState('1') & 0x8000)
-		md3dImmediateContext->RSSetState(RenderStates::WireframeRS);
-	mTerrain.Draw(md3dImmediateContext, mCam, mDirLights);
+		dc->RSSetState(RenderStates::WireframeRS);
+	mTerrain.Draw(dc, mCam, mDirLights);
 
 
 
 
-	md3dImmediateContext->RSSetState(0);
+	dc->RSSetState(0);
 
-	mSky->Draw(md3dImmediateContext, mCam);
+	mSky->Draw(dc, mCam);
 
 	// Draw particle systems last so it is blended with scene.
 	//파티클 입력배치.
-	md3dImmediateContext->IASetInputLayout(InputLayouts::Particle);
-	md3dImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+	dc->IASetInputLayout(InputLayouts::Particle);
+	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 	//불 파티클.
 // 	mFire.SetEyePos(mCam.GetPosition());
 // 	mFire.Draw(md3dImmediateContext, mCam);
@@ -198,11 +193,11 @@ void CBoxScene::Draw()
 
 
 	// restore default states.
-	md3dImmediateContext->RSSetState(0);
-	md3dImmediateContext->OMSetDepthStencilState(0, 0);
-	md3dImmediateContext->OMSetBlendState(0, blendFactor, 0xffffffff);
+	dc->RSSetState(0);
+	dc->OMSetDepthStencilState(0, 0);
+	dc->OMSetBlendState(0, blendFactor, 0xffffffff);
 
-	HR(mSwapChain->Present(0, 0));
+	HR(swapChain->Present(0, 0));
 }
 
 void CBoxScene::OnMouseDown(WPARAM btnState, int x, int y, const HWND & mhMainWnd)

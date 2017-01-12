@@ -15,17 +15,8 @@ CSceneMainGame::~CSceneMainGame()
 }
 
 
-bool CSceneMainGame::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
-	IDXGISwapChain* swapChain, ID3D11RenderTargetView* renderTargetView,
-	ID3D11DepthStencilView* depthStencilView)
+bool CSceneMainGame::Init(ID3D11Device* device, ID3D11DeviceContext* dc)
 {
-	md3dDevice = device;
-	md3dImmediateContext = dc;
-	mSwapChain = swapChain;
-	mRenderTargetView = renderTargetView;
-	mDepthStencilView = depthStencilView;
-
-
 	mLastMousePos.x = 0;
 	mLastMousePos.y = 0;
 
@@ -47,10 +38,10 @@ bool CSceneMainGame::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	mDirLights[2].Direction = XMFLOAT3(-0.47735f, -0.47735f, -0.57735f);
 
 	//draw를 위한 세팅.
-	mBox.Init(md3dDevice);
+	mBox.Init(device);
 	XMMATRIX boxOffset = XMMatrixIdentity();
-	mBuilding.Init(md3dDevice);
-	mSky = new Sky(md3dDevice, L"Textures/sunsetcube1024.dds", 5000.0f);
+	mBuilding.Init(device);
+	mSky = new Sky(device, L"Textures/sunsetcube1024.dds", 5000.0f);
 
 	Terrain::InitInfo tii;
 	tii.HeightMapFilename = L"Textures/terrain.raw";
@@ -65,22 +56,22 @@ bool CSceneMainGame::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	tii.HeightmapHeight = 2049;
 	tii.CellSpacing = 0.5f;
 
-	mTerrain.Init(md3dDevice, md3dImmediateContext, tii);
+	mTerrain.Init(device, dc, tii);
 
-	mRandomTexSRV = d3dHelper::CreateRandomTexture1DSRV(md3dDevice);
+	mRandomTexSRV = d3dHelper::CreateRandomTexture1DSRV(device);
 
 	std::vector<std::wstring> flares;
 	flares.push_back(L"Textures\\flare0.dds");
-	mFlareTexSRV = d3dHelper::CreateTexture2DArraySRV(md3dDevice, md3dImmediateContext, flares);
+	mFlareTexSRV = d3dHelper::CreateTexture2DArraySRV(device, dc, flares);
 
-	mFire.Init(md3dDevice, Effects::FireFX, mFlareTexSRV, mRandomTexSRV, 500);
+	mFire.Init(device, Effects::FireFX, mFlareTexSRV, mRandomTexSRV, 500);
 	mFire.SetEmitPos(XMFLOAT3(0.0f, 1.0f, 120.0f));
 
 	std::vector<std::wstring> raindrops;
 	raindrops.push_back(L"Textures\\raindrop.dds");
-	mRainTexSRV = d3dHelper::CreateTexture2DArraySRV(md3dDevice, md3dImmediateContext, raindrops);
+	mRainTexSRV = d3dHelper::CreateTexture2DArraySRV(device, dc, raindrops);
 
-	mRain.Init(md3dDevice, Effects::RainFX, mRainTexSRV, mRandomTexSRV, 10000);
+	mRain.Init(device, Effects::RainFX, mRainTexSRV, mRandomTexSRV, 10000);
 
 
 	Effects::BasicFX->SetDirLights(mDirLights);
@@ -145,66 +136,68 @@ void CSceneMainGame::UpdateScene(const float & dt)
 	mCam.UpdateViewMatrix();
 }
 
-void CSceneMainGame::Draw()
+void CSceneMainGame::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
+	IDXGISwapChain* swapChain, ID3D11RenderTargetView* renderTargetView,
+	ID3D11DepthStencilView* depthStencilView)
 {
-	md3dImmediateContext->ClearRenderTargetView(mRenderTargetView, reinterpret_cast<const float*>(&Colors::Silver));
-	md3dImmediateContext->ClearDepthStencilView(mDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	dc->ClearRenderTargetView(renderTargetView, reinterpret_cast<const float*>(&Colors::Silver));
+	dc->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	//기본입력배치.
-	md3dImmediateContext->IASetInputLayout(InputLayouts::Basic32);
-	md3dImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	dc->IASetInputLayout(InputLayouts::Basic32);
+	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	/*
 	2017 / 1 / 10 / 7:00
 	작성자:박요한(dygks910910@daum.net)
 	설명:컬링이필요없는경우사용.ex)와이어펜스.
 	*/
-	md3dImmediateContext->RSSetState(RenderStates::NoCullRS);
-	mBox.Draw(md3dImmediateContext, mCam);
+	dc->RSSetState(RenderStates::NoCullRS);
+	mBox.Draw(dc, mCam);
 
 	/*
 	2017 / 1 / 10 / 7:00
 	작성자:박요한(dygks910910@daum.net)
 	설명:투명도가 없는곳에서 사용.
 	*/
-	md3dImmediateContext->RSSetState(RenderStates::SolidRS);
-	mBuilding.Draw(md3dImmediateContext, mCam);
+	dc->RSSetState(RenderStates::SolidRS);
+	mBuilding.Draw(dc, mCam);
 	
 
 
 	float blendFactor[] = { 0.0f, 0.0f, 0.0f, 0.0f };
 
 	if (GetAsyncKeyState('1') & 0x8000)
-		md3dImmediateContext->RSSetState(RenderStates::WireframeRS);
-	mTerrain.Draw(md3dImmediateContext, mCam, mDirLights);
+		dc->RSSetState(RenderStates::WireframeRS);
+	mTerrain.Draw(dc, mCam, mDirLights);
 	
 	
 
 
-	md3dImmediateContext->RSSetState(0);
+	dc->RSSetState(0);
 
-	mSky->Draw(md3dImmediateContext, mCam);
+	mSky->Draw(dc, mCam);
 
 	// Draw particle systems last so it is blended with scene.
 	//파티클 입력배치.
-	md3dImmediateContext->IASetInputLayout(InputLayouts::Particle);
-	md3dImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+	dc->IASetInputLayout(InputLayouts::Particle);
+	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 	//불 파티클.
 	mFire.SetEyePos(mCam.GetPosition());
-	mFire.Draw(md3dImmediateContext, mCam);
-	md3dImmediateContext->OMSetBlendState(0, blendFactor, 0xffffffff); // restore default
+	mFire.Draw(dc, mCam);
+	dc->OMSetBlendState(0, blendFactor, 0xffffffff); // restore default
 	//비 파티클.
 	mRain.SetEyePos(mCam.GetPosition());
 	mRain.SetEmitPos(mCam.GetPosition());
-	mRain.Draw(md3dImmediateContext, mCam);
+	mRain.Draw(dc, mCam);
 
 
 
 	// restore default states.
-	md3dImmediateContext->RSSetState(0);
-	md3dImmediateContext->OMSetDepthStencilState(0, 0);
-	md3dImmediateContext->OMSetBlendState(0, blendFactor, 0xffffffff);
+	dc->RSSetState(0);
+	dc->OMSetDepthStencilState(0, 0);
+	dc->OMSetBlendState(0, blendFactor, 0xffffffff);
 
-	HR(mSwapChain->Present(0, 0));
+	HR(swapChain->Present(0, 0));
 
 }
 

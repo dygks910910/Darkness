@@ -12,15 +12,9 @@ CSceneManager::~CSceneManager()
 		delete p->second;
 	}
 }
-bool CSceneManager::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
-	IDXGISwapChain * swapChain, ID3D11RenderTargetView * renderTargetView,
-	ID3D11DepthStencilView * depthStencilView)
+bool CSceneManager::Init(ID3D11Device * device, ID3D11DeviceContext * dc)
 {
-	md3dDevice = device;
-	md3dImmediateContext = dc;
-	mSwapChain = swapChain;
-	mRenderTargetView = renderTargetView;
-	mDepthStencilView = depthStencilView;
+	
 	/*
 	2017 / 1 / 12 / 20:07
 	작성자:박요한(dygks910910@daum.net)
@@ -28,7 +22,7 @@ bool CSceneManager::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	*/
 	mSceneKey = SceneName::MainScene;
 	mScenes.insert(make_pair(SceneName::MainScene, new CSceneMainGame));
-	mScenes[mSceneKey]->Init(device, dc, swapChain, renderTargetView, depthStencilView);
+	mScenes[mSceneKey]->Init(device, dc);
 
 	/*
 	2017 / 1 / 12 / 20:07
@@ -37,8 +31,7 @@ bool CSceneManager::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	*/
 
 	mScenes.insert(make_pair(SceneName::test, new CBoxScene));
-	mScenes[SceneName::test]->Init(device, dc, swapChain,
-		renderTargetView, depthStencilView);
+	mScenes[SceneName::test]->Init(device, dc);
 
 	return true;
 }
@@ -50,17 +43,20 @@ void CSceneManager::UpdateScene(const float & dt)
 	작성자:박요한(dygks910910@daum.net)
 	설명:씬 변경.Test
 	*/
-	if (GetAsyncKeyState('C') & 0x8000) {
+	/*if (GetAsyncKeyState('C') & 0x8000) {
 		mSceneKey = SceneName::MainScene;
 		ChangeScene(SceneName::MainScene, dt);
-	}
+	}*/
 
 
 	mScenes[mSceneKey]->UpdateScene(dt);
 }
-void CSceneManager::Draw()
+void CSceneManager::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
+	IDXGISwapChain* swapChain, ID3D11RenderTargetView* renderTargetView,
+	ID3D11DepthStencilView* depthStencilView)
 {
-	mScenes[mSceneKey]->Draw();
+	mScenes[mSceneKey]->Draw(device,dc,
+		swapChain,renderTargetView,depthStencilView);
 }
 void CSceneManager::OnMouseDown(WPARAM btnState, int x, int y, const HWND & mhMainWnd)
 {
@@ -79,10 +75,10 @@ void CSceneManager::OnResize(const float & aspectRatio)
 	//mScenes[mSceneKey]->OnResize(aspectRatio);
 }
 
-void CSceneManager::ChangeScene(std::string sceneName,const float& dt)
+void CSceneManager::ChangeScene(std::string sceneName, const float & dt, ID3D11Device * device, ID3D11DeviceContext * dc)
 {
 	mSceneKey = sceneName;
-	mScenes[mSceneKey]->Init(md3dDevice, md3dImmediateContext, mSwapChain,
-		mRenderTargetView, mDepthStencilView);
+	mScenes[mSceneKey]->Init(device, dc);
 	//mScenes[mSceneKey]->UpdateScene(dt);
 }
+

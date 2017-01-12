@@ -15,21 +15,15 @@
 class CScene
 {
 public:
-	virtual bool Init(ID3D11Device* device, ID3D11DeviceContext* dc,
+	virtual bool Init(ID3D11Device* device, ID3D11DeviceContext* dc) = 0;
+	virtual void UpdateScene(const float& dt) = 0;
+	virtual void Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 		IDXGISwapChain* swapChain, ID3D11RenderTargetView* renderTargetView,
 		ID3D11DepthStencilView* depthStencilView) = 0;
-	virtual void UpdateScene(const float& dt) = 0;
-	virtual void Draw() = 0;
 	virtual void OnMouseDown(WPARAM btnState, int x, int y,const HWND& mhMainWnd)=0;
 	virtual void OnMouseUp(WPARAM btnState, int x, int y)=0;
 	virtual void OnMouseMove(WPARAM btnState, int x, int y)=0;
 	virtual void OnResize(const float& aspectRatio) = 0;
 	virtual ~CScene() {};
-protected:
-	ID3D11Device* md3dDevice;
-	ID3D11DeviceContext* md3dImmediateContext;
-	IDXGISwapChain* mSwapChain;
-	ID3D11RenderTargetView* mRenderTargetView;
-	ID3D11DepthStencilView* mDepthStencilView;
 };
 
