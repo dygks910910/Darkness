@@ -131,7 +131,7 @@ bool CSceneMainGame::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	//mViewportArr[1] = viewportMinimap;
 
 	//dc->RSSetViewports(2,mViewportArr);
-
+	
 	mTimer.Start();
 	return true;
 }

@@ -65,6 +65,7 @@ void CBuilding::Init(ID3D11Device * d3ddevice)
 	indecesCount = ib.size();
 	vb.clear();
 	ib.clear();
+	loader.Destroy();
 }
 
 void CBuilding::Draw(ID3D11DeviceContext * md3dImmediateContext, const Camera& mCam)
