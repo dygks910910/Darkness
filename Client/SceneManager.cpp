@@ -33,9 +33,9 @@ bool CSceneManager::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	설명:TestScene생성.
 	*/
 
-	mScenes.insert(make_pair(SceneName::test, new CBoxScene));
-	mScenes[SceneName::test]->Init(device, dc,swapChain,renderTargetView
-	,  viewport);
+// 	mScenes.insert(make_pair(SceneName::test, new CBoxScene));
+// 	mScenes[SceneName::test]->Init(device, dc,swapChain,renderTargetView
+// 	,  viewport);
 
 	return true;
 }

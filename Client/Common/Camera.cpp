@@ -11,6 +11,7 @@ Camera::Camera()
 	  mLook(0.0f, 0.0f, 1.0f)
 {
 	SetLens(0.25f*MathHelper::Pi, 1.0f, 1.0f, 1000.0f);
+	mOthomtx = XMMatrixOrthographicLH(100, 100, SCREEN_NEAR, SCREEN_DEPTH);
 }
 
 Camera::~Camera()
@@ -162,6 +163,11 @@ XMMATRIX Camera::Proj()const
 XMMATRIX Camera::ViewProj()const
 {
 	return XMMatrixMultiply(View(), Proj());
+}
+
+XMMATRIX Camera::othMtx() const
+{
+	return mOthomtx;
 }
 
 void Camera::Strafe(float d)

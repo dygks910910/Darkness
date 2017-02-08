@@ -55,6 +55,9 @@
     <Filter Include="Source Files\01 Effects\ParticleSystem">
       <UniqueIdentifier>{0567adf7-8142-499e-8ae9-890af9cb7352}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\BitmapClass">
+      <UniqueIdentifier>{fadee7c4-acae-4ef8-b832-750764ae638e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Camera.cpp">
@@ -131,6 +134,15 @@
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
       <Filter>Source Files\99 Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="minimapclass.cpp">
+      <Filter>Source Files\BitmapClass</Filter>
+    </ClCompile>
+    <ClCompile Include="bitmapclass.cpp">
+      <Filter>Source Files\BitmapClass</Filter>
+    </ClCompile>
+    <ClCompile Include="textureclass.cpp">
+      <Filter>Source Files\BitmapClass</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -219,6 +231,15 @@
     </ClInclude>
     <ClInclude Include="SceneManager.h">
       <Filter>Source Files\99 Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="minimapclass.h">
+      <Filter>Source Files\BitmapClass</Filter>
+    </ClInclude>
+    <ClInclude Include="bitmapclass.h">
+      <Filter>Source Files\BitmapClass</Filter>
+    </ClInclude>
+    <ClInclude Include="textureclass.h">
+      <Filter>Source Files\BitmapClass</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

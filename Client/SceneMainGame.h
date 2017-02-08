@@ -1,6 +1,7 @@
 #pragma once
 #include "Scene.h"
 #include "GameTimer.h"
+#include "minimapclass.h"
 /*
 2017 / 1 / 10 / 6:04
 ÀÛ¼ºÀÚ:¹Ú¿äÇÑ(dygks910910@daum.net)
@@ -9,37 +10,29 @@
 class CSceneMainGame :
 	public CScene
 {
-
+	//¹Ì´Ï¸Ê
+	MiniMapClass mMiniMap;
 	Sky* mSky;
 	//ÁöÇü
 	Terrain mTerrain;
-	ID3D11ShaderResourceView* mFlareTexSRV;
-	ID3D11ShaderResourceView* mRainTexSRV;
-	ID3D11ShaderResourceView* mRandomTexSRV;
 
+	ID3D11DepthStencilState* mDepthStencilState;
+	ID3D11DepthStencilState* mDepthDisableState;
+	D3D11_VIEWPORT mMinimapViewport;
+	D3D11_VIEWPORT* mMainGameViewport;
+
+/*
 	ParticleSystem mFire;
-	ParticleSystem mRain;
+	ParticleSystem mRain;*/
 	//±âº»Á¶¸í.
 	DirectionalLight mDirLights[3];
 	GameTimer mTimer;
 	Camera mCam;
-	//¹Ì´Ï¸Ê Ä«¸Þ¶ó
-	Camera mMinimapCam;
-	//testCube
 	CBox mBox;
-	//testBuilding
-	CBuilding mBuilding;
-
+	CBuilding mCrawler;
 	bool mWalkCamMode;
 
 	POINT mLastMousePos;
-	//D3D11_VIEWPORT mMinimapViewport;
-	//D3D11_VIEWPORT* mMainGameViewport;
-	////¹Ì´Ï¸Ê ·»´õÅ¸°Ùºä
-	//ID3D11RenderTargetView* mRenderTV;
-	////¹Ì´Ï¸Ê µö½ºÅÙ½Ç ºä.
-	//ID3D11DepthStencilView* mDepstencilV;
-	//ID3D11Texture2D* mMinimapDSBuffer;
 public:
 	CSceneMainGame();
 	~CSceneMainGame();
@@ -54,5 +47,6 @@ public:
 	virtual void OnMouseUp(WPARAM btnState, int x, int y);
 	virtual void OnMouseMove(WPARAM btnState, int x, int y);
 	virtual void OnResize(const float& aspectRatio);
+	void DrawScene(const Camera & camera, bool drawCenterSphere);
 };
 

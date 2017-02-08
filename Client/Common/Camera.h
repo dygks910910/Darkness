@@ -12,7 +12,8 @@
 #define CAMERA_H
 
 #include "d3dUtil.h"
-
+const float SCREEN_DEPTH = 1000.0f;
+const float SCREEN_NEAR = 0.1f;
 class Camera
 {
 public:
@@ -57,7 +58,7 @@ public:
 	XMMATRIX View()const;
 	XMMATRIX Proj()const;
 	XMMATRIX ViewProj()const;
-
+	XMMATRIX othMtx()const;
 	// Strafe/Walk the camera a distance d.
 	void Strafe(float d);
 	void Walk(float d);
@@ -85,6 +86,7 @@ private:
 	float mNearWindowHeight;
 	float mFarWindowHeight;
 
+	XMMATRIX mOthomtx;
 	// Cache View/Proj matrices.
 	XMFLOAT4X4 mView;
 	XMFLOAT4X4 mProj;

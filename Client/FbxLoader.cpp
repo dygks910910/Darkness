@@ -398,6 +398,7 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh, std::vector<Vertex::Basic32>&
 					tempfloat2.y = 1.0f-static_cast<float>(lCurrentUV[1]);
 					
 					vb[lVertexCount].Tex = tempfloat2;
+					//std::cout <<"("<< tempfloat2.x << "," << tempfloat2.y<< ")"<<std::endl;
 					/*lUVs[lVertexCount * UV_STRIDE] = static_cast<float>(lCurrentUV[0]);
 					lUVs[lVertexCount * UV_STRIDE + 1] = static_cast<float>(lCurrentUV[1]);
 					std::cout << lCurrentUV;*/
@@ -412,7 +413,7 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh, std::vector<Vertex::Basic32>&
 	delete[] lNormals;
 	delete[] lUVs;
 	delete[] lIndices;*/
-
+	//std::cout << vb.size();
 }
 
 void CFbxLoader::PrintNode(FbxNode * pNode)
