@@ -167,7 +167,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="bitmapclass.cpp" />
+    <ClCompile Include="BitMap.cpp" />
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="BoxScene.cpp" />
     <ClCompile Include="Building.cpp" />
@@ -186,14 +186,14 @@
     <ClCompile Include="FbxLoader.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainGame.cpp" />
-    <ClCompile Include="minimapclass.cpp" />
+    <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="RenderStates.cpp" />
     <ClCompile Include="SceneMainGame.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Sky.cpp" />
     <ClCompile Include="Terrain.cpp" />
-    <ClCompile Include="textureclass.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -214,7 +214,7 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="bitmapclass.h" />
+    <ClInclude Include="BitMap.h" />
     <ClInclude Include="Box.h" />
     <ClInclude Include="BoxScene.h" />
     <ClInclude Include="Building.h" />
@@ -234,7 +234,7 @@
     <ClInclude Include="Effects.h" />
     <ClInclude Include="FbxLoader.h" />
     <ClInclude Include="MainGame.h" />
-    <ClInclude Include="minimapclass.h" />
+    <ClInclude Include="MiniMap.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="RenderStates.h" />
     <ClInclude Include="Scene.h" />
@@ -242,7 +242,7 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Sky.h" />
     <ClInclude Include="Terrain.h" />
-    <ClInclude Include="textureclass.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <ItemGroup>

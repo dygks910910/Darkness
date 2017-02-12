@@ -135,13 +135,13 @@
     <ClCompile Include="SceneManager.cpp">
       <Filter>Source Files\99 Scene</Filter>
     </ClCompile>
-    <ClCompile Include="minimapclass.cpp">
+    <ClCompile Include="Texture.cpp">
       <Filter>Source Files\BitmapClass</Filter>
     </ClCompile>
-    <ClCompile Include="bitmapclass.cpp">
+    <ClCompile Include="BitMap.cpp">
       <Filter>Source Files\BitmapClass</Filter>
     </ClCompile>
-    <ClCompile Include="textureclass.cpp">
+    <ClCompile Include="MiniMap.cpp">
       <Filter>Source Files\BitmapClass</Filter>
     </ClCompile>
   </ItemGroup>
@@ -232,13 +232,13 @@
     <ClInclude Include="SceneManager.h">
       <Filter>Source Files\99 Scene</Filter>
     </ClInclude>
-    <ClInclude Include="minimapclass.h">
+    <ClInclude Include="Texture.h">
       <Filter>Source Files\BitmapClass</Filter>
     </ClInclude>
-    <ClInclude Include="bitmapclass.h">
+    <ClInclude Include="BitMap.h">
       <Filter>Source Files\BitmapClass</Filter>
     </ClInclude>
-    <ClInclude Include="textureclass.h">
+    <ClInclude Include="MiniMap.h">
       <Filter>Source Files\BitmapClass</Filter>
     </ClInclude>
   </ItemGroup>

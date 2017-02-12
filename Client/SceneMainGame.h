@@ -1,7 +1,7 @@
 #pragma once
 #include "Scene.h"
 #include "GameTimer.h"
-#include "minimapclass.h"
+#include "MiniMap.h"
 /*
 2017 / 1 / 10 / 6:04
 작성자:박요한(dygks910910@daum.net)
@@ -11,7 +11,7 @@ class CSceneMainGame :
 	public CScene
 {
 	//미니맵
-	MiniMapClass mMiniMap;
+	CMiniMap mMiniMap;
 	Sky* mSky;
 	//지형
 	Terrain mTerrain;

@@ -1,34 +1,25 @@
-////////////////////////////////////////////////////////////////////////////////
-// Filename: minimapclass.cpp
-////////////////////////////////////////////////////////////////////////////////
-#include "minimapclass.h"
+#include "MiniMap.h"
 
 
-MiniMapClass::MiniMapClass()
+
+CMiniMap::CMiniMap()
 {
-	m_MiniMapBitmap = 0;
-	m_Border = 0;
-	m_Point = 0;
 }
 
-
-MiniMapClass::MiniMapClass(const MiniMapClass& other)
+CMiniMap::CMiniMap(const CMiniMap & other)
 {
 }
 
 
-MiniMapClass::~MiniMapClass()
+CMiniMap::~CMiniMap()
 {
 }
 
-
-bool MiniMapClass::Initialize(ID3D11Device* device,
-	int screenWidth, int screenHeight, XMMATRIX viewMatrix, float terrainWidth,
-	float terrainHeight)
+bool CMiniMap::Initialize(ID3D11Device * device, int screenWidth, int screenHeight, XMMATRIX viewMatrix, float terrainWidth, float terrainHeight)
 {
 	bool result;
 	m_worldMtx = XMMatrixTranslation(0, 8, 10);
-// 	m_worldMtx = XMMatrixIdentity();
+	// 	m_worldMtx = XMMatrixIdentity();
 	// Initialize the location of the mini-map on the screen.
 	m_mapLocationX = 700;
 	m_mapLocationY = 600;
@@ -45,44 +36,44 @@ bool MiniMapClass::Initialize(ID3D11Device* device,
 	m_terrainHeight = terrainHeight;
 
 	// Create the mini-map bitmap object.
-	m_MiniMapBitmap = new BitmapClass;
-	if(!m_MiniMapBitmap)
+	m_MiniMapBitmap = new CBitMap;
+	if (!m_MiniMapBitmap)
 	{
 		return false;
 	}
 
 	// Initialize the mini-map bitmap object.
 	result = m_MiniMapBitmap->Initialize(device, screenWidth, screenHeight, L"colorm01.dds", 100, 100);
-	if(!result)
+	if (!result)
 	{
 		MessageBox(0, L"Could not initialize the mini-map object.", L"Error", MB_OK);
 		return false;
 	}
 
 	// Create the border bitmap object.
-	m_Border = new BitmapClass;
-	if(!m_Border)
+	m_Border = new CBitMap;
+	if (!m_Border)
 	{
 		return false;
 	}
 
 	// Initialize the border bitmap object.
 	result = m_Border->Initialize(device, screenWidth, screenHeight, L"border01.dds", 104, 104);
-	if(!result)
+	if (!result)
 	{
 		MessageBox(0, L"Could not initialize the border object.", L"Error", MB_OK);
 		return false;
 	}
 
 	// Create the point bitmap object.
-	m_Point = new BitmapClass;
-	if(!m_Point)
+	m_Point = new CBitMap;
+	if (!m_Point)
 	{
 		return false;
 	}
 	// Initialize the point bitmap object.
 	result = m_Point->Initialize(device, screenWidth, screenHeight, L"point01.dds", 3, 3);
-	if(!result)
+	if (!result)
 	{
 		MessageBox(0, L"Could not initialize the point object.", L"Error", MB_OK);
 		return false;
@@ -91,11 +82,10 @@ bool MiniMapClass::Initialize(ID3D11Device* device,
 	return true;
 }
 
-
-void MiniMapClass::Shutdown()
+void CMiniMap::Shutdown()
 {
 	// Release the point bitmap object.
-	if(m_Point)
+	if (m_Point)
 	{
 		m_Point->Shutdown();
 		delete m_Point;
@@ -103,7 +93,7 @@ void MiniMapClass::Shutdown()
 	}
 
 	// Release the border bitmap object.
-	if(m_Border)
+	if (m_Border)
 	{
 		m_Border->Shutdown();
 		delete m_Border;
@@ -111,7 +101,7 @@ void MiniMapClass::Shutdown()
 	}
 
 	// Release the mini-map bitmap object.
-	if(m_MiniMapBitmap)
+	if (m_MiniMapBitmap)
 	{
 		m_MiniMapBitmap->Shutdown();
 		delete m_MiniMapBitmap;
@@ -121,19 +111,18 @@ void MiniMapClass::Shutdown()
 	return;
 }
 
-
-bool MiniMapClass::Render(ID3D11DeviceContext* deviceContext,const Camera& camera)
+bool CMiniMap::Render(ID3D11DeviceContext * deviceContext, const Camera & camera)
 {
 	bool result;
 	// center Sky about eye in world space
 	XMFLOAT3 eyePos = camera.GetPosition();
-	
+
 	XMMATRIX WVP = XMMatrixMultiply(m_worldMtx, m_worldMtx*camera.Proj()*camera.othMtx());
 	Effects::BasicFX->SetWorldViewProj(WVP);
 	Effects::BasicFX->SetDiffuseMap(m_Border->GetTexture());
 	// Put the border bitmap vertex and index buffers on the graphics pipeline to prepare them for drawing.
-	result = m_Border->Render(deviceContext, (m_mapLocationX - 2), (m_mapLocationY - 2),camera);
-	if(!result)
+	result = m_Border->Render(deviceContext, (m_mapLocationX - 2), (m_mapLocationY - 2), camera);
+	if (!result)
 	{
 		return false;
 	}
@@ -153,7 +142,7 @@ bool MiniMapClass::Render(ID3D11DeviceContext* deviceContext,const Camera& camer
 
 	// Put the mini-map bitmap vertex and index buffers on the graphics pipeline to prepare them for drawing.
 	result = m_MiniMapBitmap->Render(deviceContext, m_mapLocationX, m_mapLocationY, camera);
-	if(!result)
+	if (!result)
 	{
 		return false;
 	}
@@ -170,7 +159,7 @@ bool MiniMapClass::Render(ID3D11DeviceContext* deviceContext,const Camera& camer
 
 	// Put the point bitmap vertex and index buffers on the graphics pipeline to prepare them for drawing.
 	result = m_Point->Render(deviceContext, m_pointLocationX, m_pointLocationY, camera);
-	if(!result)
+	if (!result)
 	{
 		return false;
 	}
@@ -187,29 +176,28 @@ bool MiniMapClass::Render(ID3D11DeviceContext* deviceContext,const Camera& camer
 	return true;
 }
 
-
-void MiniMapClass::PositionUpdate(float positionX, float positionZ)
+void CMiniMap::PositionUpdate(float positionX, float positionZ)
 {
 	float percentX, percentY;
 
 
 	// Ensure the point does not leave the minimap borders even if the camera goes past the terrain borders.
-	if(positionX < 0)
+	if (positionX < 0)
 	{
 		positionX = 0;
 	}
 
-	if(positionZ < 0)
+	if (positionZ < 0)
 	{
 		positionZ = 0;
 	}
 
-	if(positionX > m_terrainWidth)
+	if (positionX > m_terrainWidth)
 	{
 		positionX = m_terrainWidth;
 	}
 
-	if(positionZ > m_terrainHeight)
+	if (positionZ > m_terrainHeight)
 	{
 		positionZ = m_terrainHeight;
 	}
