@@ -11,6 +11,7 @@
 
 namespace Vertex
 {
+	
 	// Basic 32-byte vertex structure.
 	struct Basic32
 	{
@@ -18,7 +19,6 @@ namespace Vertex
 		XMFLOAT3 Normal;
 		XMFLOAT2 Tex;
 	};
-
 	struct Terrain
 	{
 		XMFLOAT3 Pos;

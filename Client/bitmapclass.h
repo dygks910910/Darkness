@@ -18,25 +18,26 @@
 #include "textureclass.h"
 #include "Effects.h"
 #include "Camera.h"
-
+#include "Vertex.h"
 ////////////////////////////////////////////////////////////////////////////////
 // Class name: BitmapClass
 ////////////////////////////////////////////////////////////////////////////////
 class BitmapClass
 {
 private:
-	struct VertexType
+	/*struct VertexType
 	{
 		D3DXVECTOR3 position;
 	    D3DXVECTOR2 texture;
-	};
+	};*/
 
 public:
 	BitmapClass();
 	BitmapClass(const BitmapClass&);
 	~BitmapClass();
 
-	bool Initialize(ID3D11Device*, int, int, WCHAR*, int, int);
+	bool Initialize(ID3D11Device* device, int screenWidth, int screenHeight,
+		WCHAR* textureFilename, int bitmapWidth, int bitmapHeight);
 	void Shutdown();
 	bool Render(ID3D11DeviceContext*, int, int, const Camera& camera);
 

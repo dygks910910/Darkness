@@ -27,14 +27,15 @@ bool MiniMapClass::Initialize(ID3D11Device* device,
 	float terrainHeight)
 {
 	bool result;
-	m_worldMtx = XMMatrixTranslation(0, 8, 120);
+	m_worldMtx = XMMatrixTranslation(0, 8, 10);
+// 	m_worldMtx = XMMatrixIdentity();
 	// Initialize the location of the mini-map on the screen.
-	m_mapLocationX = 150;
-	m_mapLocationY = 75;
+	m_mapLocationX = 700;
+	m_mapLocationY = 600;
 
 	// Set the size of the mini-map.
-	m_mapSizeX = 150.0f;
-	m_mapSizeY = 150.0f;
+	m_mapSizeX = 100.0f;
+	m_mapSizeY = 100.0f;
 
 	// Store the base view matrix.
 	m_viewMatrix = viewMatrix;
@@ -51,7 +52,7 @@ bool MiniMapClass::Initialize(ID3D11Device* device,
 	}
 
 	// Initialize the mini-map bitmap object.
-	result = m_MiniMapBitmap->Initialize(device, screenWidth, screenHeight, L"colorm01.dds", 150, 150);
+	result = m_MiniMapBitmap->Initialize(device, screenWidth, screenHeight, L"colorm01.dds", 100, 100);
 	if(!result)
 	{
 		MessageBox(0, L"Could not initialize the mini-map object.", L"Error", MB_OK);
@@ -66,7 +67,7 @@ bool MiniMapClass::Initialize(ID3D11Device* device,
 	}
 
 	// Initialize the border bitmap object.
-	result = m_Border->Initialize(device, screenWidth, screenHeight, L"border01.dds", 154, 154);
+	result = m_Border->Initialize(device, screenWidth, screenHeight, L"border01.dds", 104, 104);
 	if(!result)
 	{
 		MessageBox(0, L"Could not initialize the border object.", L"Error", MB_OK);
@@ -127,9 +128,7 @@ bool MiniMapClass::Render(ID3D11DeviceContext* deviceContext,const Camera& camer
 	// center Sky about eye in world space
 	XMFLOAT3 eyePos = camera.GetPosition();
 	
-	
-
-	XMMATRIX WVP = XMMatrixMultiply(m_worldMtx, m_worldMtx*camera.ViewProj());
+	XMMATRIX WVP = XMMatrixMultiply(m_worldMtx, m_worldMtx*camera.Proj()*camera.othMtx());
 	Effects::BasicFX->SetWorldViewProj(WVP);
 	Effects::BasicFX->SetDiffuseMap(m_Border->GetTexture());
 	// Put the border bitmap vertex and index buffers on the graphics pipeline to prepare them for drawing.
@@ -138,7 +137,16 @@ bool MiniMapClass::Render(ID3D11DeviceContext* deviceContext,const Camera& camer
 	{
 		return false;
 	}
+	D3DX11_TECHNIQUE_DESC techDesc;
+	Effects::BasicFX->Light0TexTech->GetDesc(&techDesc);
 
+	for (UINT p = 0; p < techDesc.Passes; ++p)
+	{
+		ID3DX11EffectPass* pass = Effects::BasicFX->Light0TexTech->GetPassByIndex(p);
+		pass->Apply(0, deviceContext);
+
+		deviceContext->DrawIndexed(6, 0, 0);
+	}
 	// Render the border bitmap using the texture shader.
 	//textureShader->Render(deviceContext, m_Border->GetIndexCount(), worldMatrix, m_viewMatrix, orthoMatrix, m_Border->GetTexture());
 	Effects::BasicFX->SetDiffuseMap(m_MiniMapBitmap->GetTexture());
@@ -149,7 +157,13 @@ bool MiniMapClass::Render(ID3D11DeviceContext* deviceContext,const Camera& camer
 	{
 		return false;
 	}
+	for (UINT p = 0; p < techDesc.Passes; ++p)
+	{
+		ID3DX11EffectPass* pass = Effects::BasicFX->Light0TexTech->GetPassByIndex(p);
+		pass->Apply(0, deviceContext);
 
+		deviceContext->DrawIndexed(6, 0, 0);
+	}
 	// Render the mini-map bitmap using the texture shader.
 	//textureShader->Render(deviceContext, m_MiniMapBitmap->GetIndexCount(), worldMatrix, m_viewMatrix, orthoMatrix, m_MiniMapBitmap->GetTexture());
 	Effects::BasicFX->SetDiffuseMap(m_Point->GetTexture());
@@ -160,7 +174,13 @@ bool MiniMapClass::Render(ID3D11DeviceContext* deviceContext,const Camera& camer
 	{
 		return false;
 	}
+	for (UINT p = 0; p < techDesc.Passes; ++p)
+	{
+		ID3DX11EffectPass* pass = Effects::BasicFX->Light0TexTech->GetPassByIndex(p);
+		pass->Apply(0, deviceContext);
 
+		deviceContext->DrawIndexed(6, 0, 0);
+	}
 	// Render the point bitmap using the texture shader.
 	//textureShader->Render(deviceContext, m_Point->GetIndexCount(), worldMatrix, m_viewMatrix, orthoMatrix, m_Point->GetTexture());
 

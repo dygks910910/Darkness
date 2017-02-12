@@ -103,7 +103,7 @@ ID3D11ShaderResourceView* BitmapClass::GetTexture()
 
 bool BitmapClass::InitializeBuffers(ID3D11Device* device)
 {
-	VertexType* vertices;
+	Vertex::Basic32* vertices;
 	unsigned long* indices;
 	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
 	D3D11_SUBRESOURCE_DATA vertexData, indexData;
@@ -118,7 +118,7 @@ bool BitmapClass::InitializeBuffers(ID3D11Device* device)
 	m_indexCount = m_vertexCount;
 
 	// Create the vertex array.
-	vertices = new VertexType[m_vertexCount];
+	vertices = new Vertex::Basic32[m_vertexCount];
 	if(!vertices)
 	{
 		return false;
@@ -132,7 +132,7 @@ bool BitmapClass::InitializeBuffers(ID3D11Device* device)
 	}
 
 	// Initialize vertex array to zeros at first.
-	memset(vertices, 0, (sizeof(VertexType) * m_vertexCount));
+	memset(vertices, 0, (sizeof(Vertex::Basic32) * m_vertexCount));
 
 	// Load the index array with data.
 	for(i=0; i<m_indexCount; i++)
@@ -142,7 +142,7 @@ bool BitmapClass::InitializeBuffers(ID3D11Device* device)
 
 	// Set up the description of the static vertex buffer.
     vertexBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-    vertexBufferDesc.ByteWidth = sizeof(VertexType) * m_vertexCount;
+    vertexBufferDesc.ByteWidth = sizeof(Vertex::Basic32) * m_vertexCount;
     vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
     vertexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
     vertexBufferDesc.MiscFlags = 0;
@@ -214,11 +214,10 @@ void BitmapClass::ShutdownBuffers()
 bool BitmapClass::UpdateBuffers(ID3D11DeviceContext* deviceContext, int positionX, int positionY)
 {
 	float left, right, top, bottom;
-	VertexType* vertices;
+	Vertex::Basic32* vertices;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	VertexType* verticesPtr;
+	Vertex::Basic32* verticesPtr;
 	HRESULT result;
-
 
 	// If the position we are rendering this bitmap to has not changed then don't update the vertex buffer since it
 	// currently has the correct parameters.
@@ -244,7 +243,7 @@ bool BitmapClass::UpdateBuffers(ID3D11DeviceContext* deviceContext, int position
 	bottom = top - (float)m_bitmapHeight;
 
 	// Create the vertex array.
-	vertices = new VertexType[m_vertexCount];
+	vertices = new Vertex::Basic32[m_vertexCount];
 	if(!vertices)
 	{
 		return false;
@@ -252,24 +251,31 @@ bool BitmapClass::UpdateBuffers(ID3D11DeviceContext* deviceContext, int position
 
 	// Load the vertex array with data.
 	// First triangle.
-	vertices[0].position = D3DXVECTOR3(left, top, 0.0f);  // Top left.
-	vertices[0].texture = D3DXVECTOR2(0.0f, 0.0f);
+	vertices[0].Pos = XMFLOAT3(left, top, 0.0f);  // Top left.
+	vertices[0].Tex = XMFLOAT2(0.0f, 0.0f);
+	vertices[0].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
-	vertices[1].position = D3DXVECTOR3(right, bottom, 0.0f);  // Bottom right.
-	vertices[1].texture = D3DXVECTOR2(1.0f, 1.0f);
 
-	vertices[2].position = D3DXVECTOR3(left, bottom, 0.0f);  // Bottom left.
-	vertices[2].texture = D3DXVECTOR2(0.0f, 1.0f);
+	vertices[1].Pos= XMFLOAT3(right, bottom, 0.0f);  // Bottom right.
+	vertices[1].Tex= XMFLOAT2(1.0f, 1.0f);
+	vertices[1].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
+
+	vertices[2].Pos = XMFLOAT3(left, bottom, 0.0f);  // Bottom left.
+	vertices[2].Tex = XMFLOAT2(0.0f, 1.0f);
+	vertices[2].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
 	// Second triangle.
-	vertices[3].position = D3DXVECTOR3(left, top, 0.0f);  // Top left.
-	vertices[3].texture = D3DXVECTOR2(0.0f, 0.0f);
+	vertices[3].Pos = XMFLOAT3(left, top, 0.0f);  // Top left.
+	vertices[3].Tex = XMFLOAT2(0.0f, 0.0f);
+	vertices[3].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
-	vertices[4].position = D3DXVECTOR3(right, top, 0.0f);  // Top right.
-	vertices[4].texture = D3DXVECTOR2(1.0f, 0.0f);
+	vertices[4].Pos = XMFLOAT3(right, top, 0.0f);  // Top right.
+	vertices[4].Tex = XMFLOAT2(1.0f, 0.0f);
+	vertices[4].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
-	vertices[5].position = D3DXVECTOR3(right, bottom, 0.0f);  // Bottom right.
-	vertices[5].texture = D3DXVECTOR2(1.0f, 1.0f);
+	vertices[5].Pos = XMFLOAT3(right, bottom, 0.0f);  // Bottom right.
+	vertices[5].Tex = XMFLOAT2(1.0f, 1.0f);
+	vertices[5].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
 	// Lock the vertex buffer so it can be written to.
 	result = deviceContext->Map(m_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
@@ -279,10 +285,10 @@ bool BitmapClass::UpdateBuffers(ID3D11DeviceContext* deviceContext, int position
 	}
 
 	// Get a pointer to the data in the vertex buffer.
-	verticesPtr = (VertexType*)mappedResource.pData;
+	verticesPtr = (Vertex::Basic32*)mappedResource.pData;
 
 	// Copy the data into the vertex buffer.
-	memcpy(verticesPtr, (void*)vertices, (sizeof(VertexType) * m_vertexCount));
+	memcpy(verticesPtr, (void*)vertices, (sizeof(Vertex::Basic32) * m_vertexCount));
 
 	// Unlock the vertex buffer.
 	deviceContext->Unmap(m_vertexBuffer, 0);
@@ -302,7 +308,7 @@ void BitmapClass::RenderBuffers(ID3D11DeviceContext* deviceContext, const Camera
 	
 
 	// Set vertex buffer stride and offset.
-	stride = sizeof(VertexType); 
+	stride = sizeof(Vertex::Basic32);
 	offset = 0;
     
 	// Set the vertex buffer to active in the input assembler so it can be rendered.
@@ -314,16 +320,6 @@ void BitmapClass::RenderBuffers(ID3D11DeviceContext* deviceContext, const Camera
     // Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	D3DX11_TECHNIQUE_DESC techDesc;
-	Effects::BasicFX->Light0TexTech->GetDesc(&techDesc);
-
-	for (UINT p = 0; p < techDesc.Passes; ++p)
-	{
-		ID3DX11EffectPass* pass = Effects::BasicFX->Light0TexTech->GetPassByIndex(p);
-		pass->Apply(0, deviceContext);
-
-		deviceContext->DrawIndexed(6, 0, 0);
-	}
 	return;
 }
 
