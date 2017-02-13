@@ -18,12 +18,14 @@ class CSceneMainGame :
 
 	ID3D11DepthStencilState* mDepthStencilState;
 	ID3D11DepthStencilState* mDepthDisableState;
-	D3D11_VIEWPORT mMinimapViewport;
-	D3D11_VIEWPORT* mMainGameViewport;
+	ID3D11ShaderResourceView* mRandomTexSRV;
+	ID3D11ShaderResourceView* mFlareTexSRV;
+	ID3D11ShaderResourceView* mRainTexSRV;
+	ID3D11Buffer* mInstancedBuffer;
 
-/*
+
 	ParticleSystem mFire;
-	ParticleSystem mRain;*/
+	ParticleSystem mRain;
 	//기본조명.
 	DirectionalLight mDirLights[3];
 	GameTimer mTimer;
@@ -37,8 +39,7 @@ public:
 	CSceneMainGame();
 	~CSceneMainGame();
 	virtual bool Init(ID3D11Device* device, ID3D11DeviceContext* dc,
-		IDXGISwapChain* swapChain,ID3D11RenderTargetView* renderTargetView
-		, D3D11_VIEWPORT* viewPort);
+		IDXGISwapChain* swapChain,ID3D11RenderTargetView* renderTargetView);
 	virtual void UpdateScene(const float& dt);
 	virtual void Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 		IDXGISwapChain* swapChain, ID3D11RenderTargetView* renderTargetView,
@@ -47,6 +48,5 @@ public:
 	virtual void OnMouseUp(WPARAM btnState, int x, int y);
 	virtual void OnMouseMove(WPARAM btnState, int x, int y);
 	virtual void OnResize(const float& aspectRatio);
-	void DrawScene(const Camera & camera, bool drawCenterSphere);
 };
 

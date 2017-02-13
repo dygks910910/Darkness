@@ -2,15 +2,15 @@
 
 
 
-CSceneMainGame::CSceneMainGame():mSky(0)/*, mRandomTexSRV(0), mFlareTexSRV(0), mRainTexSRV(0)*/, mWalkCamMode(false)
+CSceneMainGame::CSceneMainGame():mSky(0), mRandomTexSRV(0), mFlareTexSRV(0), mRainTexSRV(0), mWalkCamMode(false)
 {
 }
 
 CSceneMainGame::~CSceneMainGame()
 {
-	/*ReleaseCOM(mRandomTexSRV);
+	ReleaseCOM(mRandomTexSRV);
 	ReleaseCOM(mFlareTexSRV);
-	ReleaseCOM(mRainTexSRV);*/
+	ReleaseCOM(mRainTexSRV);
 	SafeDelete(mSky);
 	ReleaseCOM(mDepthStencilState);
 	ReleaseCOM(mDepthDisableState);
@@ -19,8 +19,7 @@ CSceneMainGame::~CSceneMainGame()
 
 
 bool CSceneMainGame::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
-	IDXGISwapChain* swapChain, ID3D11RenderTargetView* renderTargetView, 
-	D3D11_VIEWPORT* viewPort)
+	IDXGISwapChain* swapChain, ID3D11RenderTargetView* renderTargetView)
 {
 	mLastMousePos.x = 0;
 	mLastMousePos.y = 0;
@@ -61,49 +60,30 @@ bool CSceneMainGame::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 	mTerrain.Init(device, dc, tii);
 
-	//mRandomTexSRV = d3dHelper::CreateRandomTexture1DSRV(device);
+	mRandomTexSRV = d3dHelper::CreateRandomTexture1DSRV(device);
 
-// 	std::vector<std::wstring> flares;
-// 	flares.push_back(L"Textures\\flare0.dds");
-	//mFlareTexSRV = d3dHelper::CreateTexture2DArraySRV(device, dc, flares);
+ 	std::vector<std::wstring> flares;
+ 	flares.push_back(L"Textures\\flare0.dds");
+	mFlareTexSRV = d3dHelper::CreateTexture2DArraySRV(device, dc, flares);
 
-	//mFire.Init(device, Effects::FireFX, mFlareTexSRV, mRandomTexSRV, 500);
-	//mFire.SetEmitPos(XMFLOAT3(0.0f, 1.0f, 120.0f));
+	mFire.Init(device, Effects::FireFX, mFlareTexSRV, mRandomTexSRV, 500);
+	mFire.SetEmitPos(XMFLOAT3(0.0f, 1.0f, 120.0f));
 
-	//std::vector<std::wstring> raindrops;
-	//raindrops.push_back(L"Textures\\raindrop.dds");
-	//mRainTexSRV = d3dHelper::CreateTexture2DArraySRV(device, dc, raindrops);
+	std::vector<std::wstring> raindrops;
+	raindrops.push_back(L"Textures\\raindrop.dds");
+	mRainTexSRV = d3dHelper::CreateTexture2DArraySRV(device, dc, raindrops);
 
-	//mRain.Init(device, Effects::RainFX, mRainTexSRV, mRandomTexSRV, 10000);
+	mRain.Init(device, Effects::RainFX, mRainTexSRV, mRandomTexSRV, 10000);
 
 
 	Effects::BasicFX->SetDirLights(mDirLights);
 	Effects::BasicFX->SetFogColor(Colors::Silver);
 	Effects::BasicFX->SetFogStart(15.0f);
 	Effects::BasicFX->SetFogRange(175.0f);
-	///*
-	//2017 / 1 / 13 / 4:11
-	//작성자:박요한(dygks910910@daum.net)
-	//설명:미니맵을 그리기 위한 작업.
-	//*/
-	mMinimapViewport.TopLeftX = 700;
-	mMinimapViewport.TopLeftY = 500;
-	mMinimapViewport.Width = 100;
-	mMinimapViewport.Height = 100;
-	mMinimapViewport.MaxDepth = 1;
-	mMinimapViewport.MinDepth = 0;
+	
 
-	mMainGameViewport = viewPort;
-
-	//D3D11_VIEWPORT viewportArr[2];
-	//viewportArr[0] = *mMainGameViewport;
-	//viewportArr[1] = mMinimapViewport;
 	mCrawler.Init(device);
 
-	//ID3D11Texture2D* backBuffer;
-	//HR(swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer)));
-	//HR(device->CreateRenderTargetView(backBuffer, 0, &mMinimapRTV));
-	//ReleaseCOM(backBuffer);
 	D3D11_DEPTH_STENCIL_DESC depthDisabledStencilDesc;
 
 	// Clear the second depth stencil state before setting the parameters.
@@ -208,8 +188,8 @@ void CSceneMainGame::UpdateScene(const float & dt)
 	//
 
 
-// 	mFire.Update(dt, mTimer.TotalTime());
-// 	mRain.Update(dt, mTimer.TotalTime());
+ 	mFire.Update(dt, mTimer.TotalTime());
+ 	mRain.Update(dt, mTimer.TotalTime());
 
 	mCam.UpdateViewMatrix();
 }
@@ -219,7 +199,6 @@ void CSceneMainGame::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	ID3D11DepthStencilView* depthStencilView)
 {
 
-	dc->RSSetViewports(1, mMainGameViewport);
 	dc->OMSetRenderTargets(1, &renderTargetView, depthStencilView);
 	dc->ClearRenderTargetView(renderTargetView, reinterpret_cast<const float*>(&Colors::Silver));
 	
@@ -242,7 +221,6 @@ void CSceneMainGame::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	*/
 	dc->RSSetState(RenderStates::SolidRS);
 	mCrawler.Draw(dc,mCam);
-	/*mBuilding.Draw(dc, mMinimapCam);*/
 	
 
 
@@ -264,15 +242,15 @@ void CSceneMainGame::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	dc->IASetInputLayout(InputLayouts::Particle);
 	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 	//불 파티클.
-// 	mFire.SetEyePos(mCam.GetPosition());
-// 	mFire.Draw(dc, mCam);
+ 	mFire.SetEyePos(mCam.GetPosition());
+ 	mFire.Draw(dc, mCam);
 	dc->OMSetBlendState(0, blendFactor, 0xffffffff); // restore default
 	
 	
 	//비 파티클.
-// 	mRain.SetEyePos(mCam.GetPosition());
-// 	mRain.SetEmitPos(mCam.GetPosition());
-// 	mRain.Draw(dc, mCam);
+ 	mRain.SetEyePos(mCam.GetPosition());
+ 	mRain.SetEmitPos(mCam.GetPosition());
+ 	mRain.Draw(dc, mCam);
 
 	//zBuffer off
 	dc->IASetInputLayout(InputLayouts::Basic32);
@@ -325,11 +303,5 @@ void CSceneMainGame::OnMouseMove(WPARAM btnState, int x, int y)
 void CSceneMainGame::OnResize(const float& aspectRatio)
 {
 	mCam.SetLens(0.25f*MathHelper::Pi, aspectRatio, 1.0f, 3000.0f);
-	/*mMinimapCam.SetLens(0.25f*MathHelper::Pi, aspectRatio, 1.0f, 3000.0f);*/
 }
-
-void CSceneMainGame::DrawScene(const Camera & camera, bool drawCenterSphere)
-{
-}
-
 

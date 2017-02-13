@@ -13,6 +13,7 @@ CMiniMap::CMiniMap(const CMiniMap & other)
 
 CMiniMap::~CMiniMap()
 {
+
 }
 
 bool CMiniMap::Initialize(ID3D11Device * device, int screenWidth, int screenHeight, XMMATRIX viewMatrix, float terrainWidth, float terrainHeight)
@@ -121,7 +122,7 @@ bool CMiniMap::Render(ID3D11DeviceContext * deviceContext, const Camera & camera
 	Effects::BasicFX->SetWorldViewProj(WVP);
 	Effects::BasicFX->SetDiffuseMap(m_Border->GetTexture());
 	// Put the border bitmap vertex and index buffers on the graphics pipeline to prepare them for drawing.
-	result = m_Border->Render(deviceContext, (m_mapLocationX - 2), (m_mapLocationY - 2), camera);
+	result = m_Border->Render(deviceContext, (m_mapLocationX - 2), (m_mapLocationY - 2));
 	if (!result)
 	{
 		return false;
@@ -141,7 +142,7 @@ bool CMiniMap::Render(ID3D11DeviceContext * deviceContext, const Camera & camera
 	Effects::BasicFX->SetDiffuseMap(m_MiniMapBitmap->GetTexture());
 
 	// Put the mini-map bitmap vertex and index buffers on the graphics pipeline to prepare them for drawing.
-	result = m_MiniMapBitmap->Render(deviceContext, m_mapLocationX, m_mapLocationY, camera);
+	result = m_MiniMapBitmap->Render(deviceContext, m_mapLocationX, m_mapLocationY);
 	if (!result)
 	{
 		return false;
@@ -158,7 +159,7 @@ bool CMiniMap::Render(ID3D11DeviceContext * deviceContext, const Camera & camera
 	Effects::BasicFX->SetDiffuseMap(m_Point->GetTexture());
 
 	// Put the point bitmap vertex and index buffers on the graphics pipeline to prepare them for drawing.
-	result = m_Point->Render(deviceContext, m_pointLocationX, m_pointLocationY, camera);
+	result = m_Point->Render(deviceContext, m_pointLocationX, m_pointLocationY);
 	if (!result)
 	{
 		return false;

@@ -14,6 +14,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 #pragma comment( linker, "/entry:WinMainCRTStartup /subsystem:console" )
 #endif
 	
+// 	_CrtSetBreakAlloc(428602);
 	CMainGame mainGame(hInstance);
 
 	if (!mainGame.Init())

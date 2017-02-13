@@ -64,7 +64,7 @@ void CBitMap::Shutdown()
 }
 
 bool CBitMap::Render(ID3D11DeviceContext* deviceContext,
-	int positionX, int positionY, const Camera& camera)
+	int positionX, int positionY)
 {
 	bool result;
 
@@ -77,7 +77,7 @@ bool CBitMap::Render(ID3D11DeviceContext* deviceContext,
 	}
 
 	// Put the vertex and index buffers on the graphics pipeline to prepare them for drawing.
-	RenderBuffers(deviceContext, camera);
+	RenderBuffers(deviceContext);
 
 	return true;
 }
@@ -289,7 +289,7 @@ bool CBitMap::UpdateBuffers(ID3D11DeviceContext * deviceContext, int positionX, 
 	return true;
 }
 
-void CBitMap::RenderBuffers(ID3D11DeviceContext * deviceContext, const Camera & camera)
+void CBitMap::RenderBuffers(ID3D11DeviceContext* deviceContext)
 {
 	unsigned int stride;
 	unsigned int offset;

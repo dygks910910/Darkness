@@ -55,7 +55,7 @@
     <Filter Include="Source Files\01 Effects\ParticleSystem">
       <UniqueIdentifier>{0567adf7-8142-499e-8ae9-890af9cb7352}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\BitmapClass">
+    <Filter Include="Source Files\02 MiniMap">
       <UniqueIdentifier>{fadee7c4-acae-4ef8-b832-750764ae638e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -136,13 +136,13 @@
       <Filter>Source Files\99 Scene</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
-      <Filter>Source Files\BitmapClass</Filter>
+      <Filter>Source Files\02 MiniMap</Filter>
     </ClCompile>
     <ClCompile Include="BitMap.cpp">
-      <Filter>Source Files\BitmapClass</Filter>
+      <Filter>Source Files\02 MiniMap</Filter>
     </ClCompile>
     <ClCompile Include="MiniMap.cpp">
-      <Filter>Source Files\BitmapClass</Filter>
+      <Filter>Source Files\02 MiniMap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -233,13 +233,13 @@
       <Filter>Source Files\99 Scene</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">
-      <Filter>Source Files\BitmapClass</Filter>
+      <Filter>Source Files\02 MiniMap</Filter>
     </ClInclude>
     <ClInclude Include="BitMap.h">
-      <Filter>Source Files\BitmapClass</Filter>
+      <Filter>Source Files\02 MiniMap</Filter>
     </ClInclude>
     <ClInclude Include="MiniMap.h">
-      <Filter>Source Files\BitmapClass</Filter>
+      <Filter>Source Files\02 MiniMap</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

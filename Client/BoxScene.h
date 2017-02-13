@@ -30,7 +30,7 @@ public:
 	CBoxScene();
 	~CBoxScene();
 	virtual bool Init(ID3D11Device* device, ID3D11DeviceContext* dc,
-		IDXGISwapChain* swapChain, ID3D11RenderTargetView* renderTargetView,D3D11_VIEWPORT* viewPort);
+		IDXGISwapChain* swapChain, ID3D11RenderTargetView* renderTargetView);
 	virtual void UpdateScene(const float& dt);
 	virtual void Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 		IDXGISwapChain* swapChain, ID3D11RenderTargetView* renderTargetView,

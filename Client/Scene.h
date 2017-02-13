@@ -16,8 +16,7 @@ class CScene
 {
 public:
 	virtual bool Init(ID3D11Device* device, ID3D11DeviceContext* dc,
-		IDXGISwapChain* swapChain, ID3D11RenderTargetView* renderTargetView,
-		D3D11_VIEWPORT* viewPort) = 0;
+		IDXGISwapChain* swapChain, ID3D11RenderTargetView* renderTargetView) = 0;
 	virtual void UpdateScene(const float& dt) = 0;
 	virtual void Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 		IDXGISwapChain* swapChain, ID3D11RenderTargetView* renderTargetView,
