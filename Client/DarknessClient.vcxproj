@@ -241,6 +241,7 @@
     <ClInclude Include="SceneMainGame.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Sky.h" />
+    <ClInclude Include="StaticObject.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Vertex.h" />

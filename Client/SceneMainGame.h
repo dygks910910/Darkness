@@ -2,6 +2,7 @@
 #include "Scene.h"
 #include "GameTimer.h"
 #include "MiniMap.h"
+#include "xnacollision.h"
 /*
 2017 / 1 / 10 / 6:04
 작성자:박요한(dygks910910@daum.net)
@@ -23,13 +24,13 @@ class CSceneMainGame :
 	ID3D11ShaderResourceView* mRainTexSRV;
 	ID3D11Buffer* mInstancedBuffer;
 
-
 	ParticleSystem mFire;
 	ParticleSystem mRain;
 	//기본조명.
 	DirectionalLight mDirLights[3];
 	GameTimer mTimer;
 	Camera mCam;
+	XNA::Frustum mCamFrustum;
 	CBox mBox;
 	CBuilding mCrawler;
 	bool mWalkCamMode;
