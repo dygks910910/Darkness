@@ -58,6 +58,7 @@ public:
 	XMMATRIX View()const;
 	XMMATRIX Proj()const;
 	XMMATRIX ViewProj()const;
+	// 직교행렬을 얻어오기 위함.
 	XMMATRIX othMtx()const;
 	// Strafe/Walk the camera a distance d.
 	void Strafe(float d);

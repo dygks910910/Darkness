@@ -21,8 +21,7 @@ CSceneMainGame::~CSceneMainGame()
 bool CSceneMainGame::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	IDXGISwapChain* swapChain, ID3D11RenderTargetView* renderTargetView)
 {
-	mLastMousePos.x = 0;
-	mLastMousePos.y = 0;
+
 	mCam.SetPosition(0.0f, 2.0f, 100.0f);
 	mDirLights[0].Ambient = XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
 	mDirLights[0].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);

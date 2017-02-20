@@ -1,0 +1,22 @@
+StaticObjectCount: 4
+
+MainCamera : { Position: ( 0 1 -10 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 1 1 1 )}
+
+
+crawler : { Position: ( -3.212105 -9.230183E-18 -19.69 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 1 1 1 )}
+
+
+crawler : { Position: ( -3.212105 -9.230183E-18 0.4156905 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 1 1 1 )}
+
+
+Plane : { Position: ( 0 -1.78 -21.04 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 1 1 1 )}
+
+

@@ -34,6 +34,7 @@ public:
 	void PrintElement();
 	void Destroy();
 	void LoadFBX(const char* pFileName, std::vector<Vertex::Basic32>& vb, std::vector<UINT>& ib);
+	
 private:
 	FbxManager* mpManager;
 	FbxScene* mpScene;

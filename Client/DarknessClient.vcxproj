@@ -182,17 +182,20 @@
     <ClCompile Include="Common\TextureMgr.cpp" />
     <ClCompile Include="Common\Waves.cpp" />
     <ClCompile Include="Common\xnacollision.cpp" />
+    <ClCompile Include="DynamicObject.cpp" />
     <ClCompile Include="Effects.cpp" />
     <ClCompile Include="FbxLoader.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
+    <ClCompile Include="Plane.cpp" />
     <ClCompile Include="RenderStates.cpp" />
     <ClCompile Include="SceneMainGame.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Sky.cpp" />
     <ClCompile Include="Terrain.cpp" />
+    <ClCompile Include="TestScene.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
@@ -231,11 +234,13 @@
     <ClInclude Include="Common\TextureMgr.h" />
     <ClInclude Include="Common\Waves.h" />
     <ClInclude Include="Common\xnacollision.h" />
+    <ClInclude Include="DynamicObject.h" />
     <ClInclude Include="Effects.h" />
     <ClInclude Include="FbxLoader.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="MiniMap.h" />
     <ClInclude Include="ParticleSystem.h" />
+    <ClInclude Include="Plane.h" />
     <ClInclude Include="RenderStates.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneMainGame.h" />
@@ -243,6 +248,7 @@
     <ClInclude Include="Sky.h" />
     <ClInclude Include="StaticObject.h" />
     <ClInclude Include="Terrain.h" />
+    <ClInclude Include="TestScene.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Vertex.h" />
   </ItemGroup>

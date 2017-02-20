@@ -150,6 +150,15 @@
     <ClCompile Include="MiniMap.cpp">
       <Filter>Source Files\02 MiniMap</Filter>
     </ClCompile>
+    <ClCompile Include="DynamicObject.cpp">
+      <Filter>Source Files\00 Object\01 DynamicObjcet</Filter>
+    </ClCompile>
+    <ClCompile Include="TestScene.cpp">
+      <Filter>Source Files\99 Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Plane.cpp">
+      <Filter>Source Files\00 Object\00 StaticObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="FX\color.fx">
@@ -249,6 +258,15 @@
     </ClInclude>
     <ClInclude Include="StaticObject.h">
       <Filter>Source Files\00 Object\00 StaticObject</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicObject.h">
+      <Filter>Source Files\00 Object\01 DynamicObjcet</Filter>
+    </ClInclude>
+    <ClInclude Include="Plane.h">
+      <Filter>Source Files\00 Object\00 StaticObject</Filter>
+    </ClInclude>
+    <ClInclude Include="TestScene.h">
+      <Filter>Source Files\99 Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

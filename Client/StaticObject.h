@@ -13,6 +13,7 @@ protected:
 	XNA::AxisAlignedBox mColisionBox;
 public:
 	XNA::AxisAlignedBox GetColisionBox() { return mColisionBox; };
+	void SetWorld(const XMFLOAT4X4& world) { mObjWorld = world; };
 
 	virtual void Init(ID3D11Device* device) PURE;
 	virtual void Draw(ID3D11DeviceContext* md3dImmediateContext, Camera mCam)PURE;

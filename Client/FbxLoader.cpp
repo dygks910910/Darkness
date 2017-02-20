@@ -289,10 +289,7 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh, std::vector<Vertex::Basic32>&
 			tempFloat3.z = static_cast<FLOAT>(lCurrentVertex[2]);
 			vb[lIndex].Pos =  tempFloat3;
 
-			/*lVertices[lIndex * VERTEX_STRIDE] = static_cast<float>(lCurrentVertex[0]);
-			lVertices[lIndex * VERTEX_STRIDE + 2] = static_cast<float>(lCurrentVertex[1]);
-			lVertices[lIndex * VERTEX_STRIDE + 1] = static_cast<float>(lCurrentVertex[2]);
-			lVertices[lIndex * VERTEX_STRIDE + 3] = 1;*/
+			
 			std::cout << lCurrentVertex;
 			// Save the normal.
 			if (mHasNormal)
@@ -304,8 +301,8 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh, std::vector<Vertex::Basic32>&
 				}
 				lCurrentNormal = lNormalElement->GetDirectArray().GetAt(lNormalIndex);
 				lNormals[lIndex * NORMAL_STRIDE] = static_cast<float>(lCurrentNormal[0]);
-				lNormals[lIndex * NORMAL_STRIDE + 1] = static_cast<float>(lCurrentNormal[1]);
-				lNormals[lIndex * NORMAL_STRIDE + 2] = static_cast<float>(lCurrentNormal[2]);
+				lNormals[lIndex * NORMAL_STRIDE + 1] = static_cast<float>(lCurrentNormal[2]);
+				lNormals[lIndex * NORMAL_STRIDE + 2] = static_cast<float>(lCurrentNormal[1]);
 				tempFloat3.x = static_cast<float>(lCurrentNormal[0]);
 				tempFloat3.y = static_cast<float>(lCurrentNormal[1]);
 				tempFloat3.z = static_cast<float>(lCurrentNormal[2]);
@@ -321,8 +318,7 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh, std::vector<Vertex::Basic32>&
 					lUVIndex = lUVElement->GetIndexArray().GetAt(lIndex);
 				}
 				lCurrentUV = lUVElement->GetDirectArray().GetAt(lUVIndex);
-				/*lUVs[lIndex * UV_STRIDE] = static_cast<float>(lCurrentUV[0]);
-				lUVs[lIndex * UV_STRIDE + 1] = static_cast<float>(lCurrentUV[1]);*/
+			
 				tempfloat2.x = static_cast<float>(lCurrentUV[0]);
 				tempfloat2.y = static_cast<float>(lCurrentUV[1]);
 				vb[lIndex].Tex = tempfloat2;
@@ -361,27 +357,21 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh, std::vector<Vertex::Basic32>&
 				//lIndices[lIndexOffset + lVerticeIndex] = static_cast<unsigned int>(lVertexCount);
 
 				lCurrentVertex = lControlPoints[lControlPointIndex];
-				tempFloat3.x = static_cast<float>(lCurrentVertex[0]);
-				tempFloat3.y = static_cast<float>(lCurrentVertex[1]);
-				tempFloat3.z = static_cast<float>(lCurrentVertex[2]);
+				tempFloat3.x = static_cast<float>(lCurrentVertex[0] * -1.0f);
+				tempFloat3.y = static_cast<float>(lCurrentVertex[2] );
+				tempFloat3.z = static_cast<float>(lCurrentVertex[1]);
 
 				vb[lVertexCount].Pos = tempFloat3;
-				/*lVertices[lVertexCount * VERTEX_STRIDE] = static_cast<float>(lCurrentVertex[0]);
-				lVertices[lVertexCount * VERTEX_STRIDE + 1] = static_cast<float>(lCurrentVertex[1]);
-				lVertices[lVertexCount * VERTEX_STRIDE + 2] = static_cast<float>(lCurrentVertex[2]);
-				lVertices[lVertexCount * VERTEX_STRIDE + 3] = 1;
-				std::cout <<lCurrentVertex;*/
+			
 				if (mHasNormal)
 				{
 					pMesh->GetPolygonVertexNormal(lPolygonIndex, lVerticeIndex, lCurrentNormal);
 					tempFloat3.x = static_cast<float>(lCurrentNormal[0]);
 					tempFloat3.y = static_cast<float>(lCurrentNormal[1]);
-					tempFloat3.z = static_cast<float>(lCurrentNormal[2] * -1.0f);
+					tempFloat3.z = static_cast<float>(lCurrentNormal[2] );
 					vb[lVertexCount].Normal = tempFloat3;
 
-					/*lNormals[lVertexCount * NORMAL_STRIDE] = static_cast<float>(lCurrentNormal[0]);
-					lNormals[lVertexCount * NORMAL_STRIDE + 1] = static_cast<float>(lCurrentNormal[1]);
-					lNormals[lVertexCount * NORMAL_STRIDE + 2] = static_cast<float>(lCurrentNormal[2]);*/
+				
 
 				}
 				if (mHasUV)
@@ -398,10 +388,7 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh, std::vector<Vertex::Basic32>&
 					tempfloat2.y = 1.0f-static_cast<float>(lCurrentUV[1]);
 					
 					vb[lVertexCount].Tex = tempfloat2;
-					//std::cout <<"("<< tempfloat2.x << "," << tempfloat2.y<< ")"<<std::endl;
-					/*lUVs[lVertexCount * UV_STRIDE] = static_cast<float>(lCurrentUV[0]);
-					lUVs[lVertexCount * UV_STRIDE + 1] = static_cast<float>(lCurrentUV[1]);
-					std::cout << lCurrentUV;*/
+					
 
 				}
 			}
@@ -409,11 +396,6 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh, std::vector<Vertex::Basic32>&
 		}
 		mSubMeshes[lMaterialIndex]->TriangleCount += 1;
 	}
-	/*delete[] lVertices;
-	delete[] lNormals;
-	delete[] lUVs;
-	delete[] lIndices;*/
-	//std::cout << vb.size();
 }
 
 void CFbxLoader::PrintNode(FbxNode * pNode)
@@ -515,14 +497,17 @@ void CFbxLoader::Destroy()
 void CFbxLoader::LoadFBX(const char * pFileName,std::vector<Vertex::Basic32>& vb,std::vector<UINT>& ib)
 {
 	Init(pFileName);
+	
 	mRootNode = mpScene->GetRootNode();
 	if (mRootNode)
 	{
 		for (int i = 0; i < mRootNode->GetChildCount(); i++)
 			LoadElement(mRootNode->GetChild(i)->GetMesh(),vb,ib);
-	}
+		std::cout << vb.size() << std::endl;
 
+	}
 }
+
 
 std::ostream & operator<<(std::ostream & os, const FbxVector4 & v4)
 {

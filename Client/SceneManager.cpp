@@ -1,5 +1,5 @@
 #include "SceneManager.h"
-
+#include"TestScene.h"
 
 
 CSceneManager::CSceneManager()
@@ -22,8 +22,8 @@ bool CSceneManager::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	작성자:박요한(dygks910910@daum.net)
 	설명:메인씬 생성.
 	*/
-	mSceneKey = SceneName::MainScene;
-	mScenes.insert(make_pair(SceneName::MainScene, new CSceneMainGame));
+	mSceneKey = SceneName::test ;
+	mScenes.insert(make_pair(SceneName::test, new CTestScene));
 	mScenes[mSceneKey]->Init(device, dc,swapChain,
 		renderTargetView);
 
@@ -76,7 +76,8 @@ void CSceneManager::OnMouseMove(WPARAM btnState, int x, int y)
 }
 void CSceneManager::OnResize(const float & aspectRatio)
 {
-	//mScenes[mSceneKey]->OnResize(aspectRatio);
+	if(mSceneKey != "")
+		mScenes[mSceneKey]->OnResize(aspectRatio);
 }
 
 void CSceneManager::ChangeScene(std::string sceneName, const float & dt, ID3D11Device * device, ID3D11DeviceContext * dc)

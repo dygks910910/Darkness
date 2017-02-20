@@ -340,10 +340,27 @@ bool D3DApp::InitDirect3D()
 #if defined(DEBUG) || defined(_DEBUG)  
     createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
+	//IDXGIFactory* factory;
+	//int result;
+	//result = CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory);
+	//if (FAILED(result))
+	//{
+	//	return false;
+	//}
+	//DXGI_ADAPTER_DESC desc;
+	//std::vector<IDXGIAdapter*> vAdapters;
+	//IDXGIAdapter* pAdapter;
+
+
+	//for (UINT i = 0; (factory->EnumAdapters(i, &pAdapter) != DXGI_ERROR_NOT_FOUND); ++i)
+	//{
+	//	vAdapters.push_back(pAdapter);
+	//	pAdapter->GetDesc(&desc);
+	//}
 
 	D3D_FEATURE_LEVEL featureLevel;
 	HRESULT hr = D3D11CreateDevice(
-			0,                 // default adapter
+			0,                // default adapter
 			md3dDriverType,
 			0,                 // no software device
 			createDeviceFlags, 
@@ -352,6 +369,8 @@ bool D3DApp::InitDirect3D()
 			&md3dDevice,
 			&featureLevel,
 			&md3dImmediateContext);
+
+
 
 	if( FAILED(hr) )
 	{
