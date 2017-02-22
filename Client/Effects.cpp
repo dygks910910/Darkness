@@ -188,6 +188,7 @@ SkyEffect*     Effects::SkyFX     = 0;
 TerrainEffect* Effects::TerrainFX = 0;
 ParticleEffect* Effects::FireFX   = 0;
 ParticleEffect* Effects::RainFX   = 0;
+LineEffect* Effects::LineFX = 0;
 
 void Effects::InitAll(ID3D11Device* device)
 {
@@ -197,6 +198,7 @@ void Effects::InitAll(ID3D11Device* device)
 	FireFX = new ParticleEffect(device, L"FX/Fire.fxo");
 	RainFX = new ParticleEffect(device, L"FX/Rain.fxo");
 	InstancedBasicFX = new InstancedBasicEffect(device, L"FX/InstancedBasic.fxo");
+	LineFX = new LineEffect(device, L"FX/color.fxo");
 }
 
 void Effects::DestroyAll()
@@ -207,6 +209,7 @@ void Effects::DestroyAll()
 	SafeDelete(FireFX);
 	SafeDelete(RainFX);
 	SafeDelete(InstancedBasicFX);
+	SafeDelete(LineFX);
 }
 
 #pragma endregion
@@ -258,3 +261,15 @@ InstancedBasicEffect::~InstancedBasicEffect()
 {
 }
 InstancedBasicEffect* Effects::InstancedBasicFX = 0;
+#pragma region LineEffect
+LineEffect::LineEffect(ID3D11Device * device, const std::wstring & filename)
+	:Effect(device,filename)
+{
+	mTech = mFX->GetTechniqueByName("ColorTech");
+	WorldViewProj = mFX->GetVariableByName("gWorldViewProj")->AsMatrix();
+
+}
+LineEffect::~LineEffect()
+{
+}
+#pragma endregion

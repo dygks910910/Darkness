@@ -182,6 +182,7 @@
     <ClCompile Include="Common\TextureMgr.cpp" />
     <ClCompile Include="Common\Waves.cpp" />
     <ClCompile Include="Common\xnacollision.cpp" />
+    <ClCompile Include="Cordinate.cpp" />
     <ClCompile Include="DynamicObject.cpp" />
     <ClCompile Include="Effects.cpp" />
     <ClCompile Include="FbxLoader.cpp" />
@@ -234,6 +235,7 @@
     <ClInclude Include="Common\TextureMgr.h" />
     <ClInclude Include="Common\Waves.h" />
     <ClInclude Include="Common\xnacollision.h" />
+    <ClInclude Include="Cordinate.h" />
     <ClInclude Include="DynamicObject.h" />
     <ClInclude Include="Effects.h" />
     <ClInclude Include="FbxLoader.h" />
@@ -259,6 +261,9 @@
     <FxCompile Include="FX\Rain.fx" />
     <FxCompile Include="FX\Sky.fx" />
     <FxCompile Include="FX\Terrain.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Line.fx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

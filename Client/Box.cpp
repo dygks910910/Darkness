@@ -17,7 +17,7 @@ void CBox::Init(ID3D11Device * d3ddevice)
 	GeometryGenerator::MeshData box;
 
 	GeometryGenerator geoGen;
-	geoGen.CreateBox(10.0f, 10.0f, 10.0f, box);
+	geoGen.CreateBox(1.0f, 1.0f, 1.0f, box);
 
 	//
 	// Extract the vertex elements we are interested in and pack the
@@ -73,14 +73,16 @@ void CBox::Init(ID3D11Device * d3ddevice)
 	HR(D3DX11CreateShaderResourceViewFromFile(d3ddevice,
 		L"Textures/WireFence.dds", 0, 0, &mObjMapSRV, 0));
 
+
+
 	mObjMat.Ambient = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
 	mObjMat.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	mObjMat.Specular = XMFLOAT4(0.4f, 0.4f, 0.4f, 16.0f);
 	XMMATRIX boxScail = XMMatrixScaling(0.3f, 0.3f, 0.3f);
 	XMMATRIX boxOffset = XMMatrixTranslation(0.0f, 3.0f, 120.0f);
-	XMStoreFloat4x4(&mObjWorld, boxScail*boxOffset);
 	
-
+	
+	
 
 }
 

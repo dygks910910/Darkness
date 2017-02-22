@@ -7,9 +7,12 @@
 #include "Camera.h"
 #include "RenderStates.h"
 #include "FbxLoader.h"
+#include "xnacollision.h"
+#include "Cordinate.h"
 class CDynamicObject
 {
 protected:
+
 	ID3D11Device* md3dDevice;
 	ID3D11Buffer* mObjVB;
 	ID3D11Buffer* mObjIB;
@@ -17,6 +20,7 @@ protected:
 	XMFLOAT4X4 mObjWorld;
 	ID3D11ShaderResourceView* mObjMapSRV;
 	UINT indecesCount;
+	XNA::AxisAlignedBox mColisionBox;
 public:
 
 	virtual void SetWorld(const XMFLOAT4X4& worldmtx) { mObjWorld = worldmtx; };

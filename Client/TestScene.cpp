@@ -46,6 +46,10 @@ bool CTestScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	Effects::BasicFX->SetFogColor(Colors::Silver);
 	Effects::BasicFX->SetFogStart(15.0f);
 	Effects::BasicFX->SetFogRange(175.0f);
+	//월드좌표계 그려주기.
+	XMFLOAT4X4 temp4x4;
+	XMStoreFloat4x4(&temp4x4, XMMatrixIdentity());
+	mCordWorld.Init(device, temp4x4, temp4x4, 5000);
 
 	std::ifstream ifs;
 	ifs.open("MapData.txt");
@@ -65,9 +69,9 @@ bool CTestScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 		ifs >> cIgnore >> cIgnore >> scale.x	 >> scale.y >> scale.z >> cIgnore;
 
 
-		if (!strcmp(objectName, "Plane"))
+		if (!strcmp(objectName, "Cube"))
 		{
-			pTempStaticObject = new CPlane;
+			pTempStaticObject = new CBox;
 			pTempStaticObject->Init(device);
 			XMVECTOR S = XMLoadFloat3(&scale);
 			XMVECTOR P = XMLoadFloat3(&position);
@@ -111,8 +115,8 @@ bool CTestScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 
 	}
 	ifs.close();
-	
-
+	XMStoreFloat4x4(&temp4x4, XMMatrixIdentity());
+	mCordWorld.Init(device,temp4x4, temp4x4,5000);
 	return true;
 }
 
@@ -192,14 +196,15 @@ void CTestScene::Draw(ID3D11Device * device, ID3D11DeviceContext * dc,
 
 	if (GetAsyncKeyState('1') & 0x8000)
 		dc->RSSetState(RenderStates::WireframeRS);
-
+	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+	mCordWorld.Draw(dc, mCam);
 	dc->RSSetState(0);
 	mSky->Draw(dc, mCam);
 	//불 파티클.
 	dc->OMSetBlendState(0, blendFactor, 0xffffffff); // restore default
+	
 
 
-													 //비 파티클.
 	// restore default states.
 	dc->RSSetState(0);
 	dc->OMSetDepthStencilState(0, 0);

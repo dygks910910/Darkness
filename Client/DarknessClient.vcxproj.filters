@@ -108,9 +108,6 @@
     <ClCompile Include="Building.cpp">
       <Filter>Source Files\00 Object\01 DynamicObjcet\00 Building</Filter>
     </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Effects.cpp">
       <Filter>Source Files\01 Effects</Filter>
     </ClCompile>
@@ -158,6 +155,12 @@
     </ClCompile>
     <ClCompile Include="Plane.cpp">
       <Filter>Source Files\00 Object\00 StaticObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files\00 Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Cordinate.cpp">
+      <Filter>Source Files\00 Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -268,6 +271,9 @@
     <ClInclude Include="TestScene.h">
       <Filter>Source Files\99 Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Cordinate.h">
+      <Filter>Source Files\00 Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="FX\Basic.fx">
@@ -288,5 +294,10 @@
     <FxCompile Include="FX\Terrain.fx">
       <Filter>FX</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Line.fx">
+      <Filter>FX</Filter>
+    </Text>
   </ItemGroup>
 </Project>

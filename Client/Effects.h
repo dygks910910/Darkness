@@ -295,6 +295,19 @@ public:
 };
 #pragma endregion
 
+#pragma region LineEffect
+class LineEffect : public Effect
+{
+	ID3DX11EffectMatrixVariable* WorldViewProj;
+public:
+	ID3DX11EffectTechnique* mTech;
+	void SetWorldViewProj(CXMMATRIX M) { WorldViewProj->SetMatrix(reinterpret_cast<const float*>(&M)); }
+	LineEffect(ID3D11Device* device, const std::wstring& filename);
+	~LineEffect();
+
+};
+#pragma endregion
+
 #pragma region Effects
 class Effects
 {
@@ -308,7 +321,7 @@ public:
 	static ParticleEffect* FireFX;
 	static ParticleEffect* RainFX;
 	static InstancedBasicEffect* InstancedBasicFX;
-
+	static LineEffect* LineFX;
 };
 #pragma endregion
 #endif // EFFECTS_H

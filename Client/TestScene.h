@@ -8,10 +8,11 @@
 #include "Box.h"
 #include "Building.h"
 #include "Plane.h"
+#include "Cordinate.h"
 class CTestScene :
 	public CScene
 {
-
+	CCordinate mCordWorld;
 	Camera	 mCam;
 	DirectionalLight mDirLights[3];
 	GameTimer mTimer;

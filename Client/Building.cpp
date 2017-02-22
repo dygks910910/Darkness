@@ -64,6 +64,23 @@ void CBuilding::Init(ID3D11Device * d3ddevice)
 	XMMATRIX boxOffset = XMMatrixTranslation(0.0f, 8.0f, 120.0f);
 	XMMATRIX rotation = XMMatrixRotationRollPitchYaw(0, 45, 0);
 	XMStoreFloat4x4(&mObjWorld, rotation*boxOffset );
+
+	XMFLOAT3 vMinf3(+MathHelper::Infinity, +MathHelper::Infinity, +MathHelper::Infinity);
+	XMFLOAT3 vMaxf3(-MathHelper::Infinity, -MathHelper::Infinity, -MathHelper::Infinity);
+
+	XMVECTOR vMin = XMLoadFloat3(&vMinf3);
+	XMVECTOR vMax = XMLoadFloat3(&vMaxf3);
+	for (int i = 0; i < vb.size(); ++i)
+	{
+		vMin = XMVectorMin(vMin, XMLoadFloat3(&vb[i].Pos));
+		vMax = XMVectorMax(vMax, XMLoadFloat3(&vb[i].Pos));
+	}
+	XMStoreFloat3(&mColisionBox.Center, 0.5f*(vMin + vMax));
+	XMStoreFloat3(&mColisionBox.Extents, 0.5f*(vMax - vMin));
+	
+	
+
+
 	indecesCount = ib.size();
 	vb.clear();
 	ib.clear();
@@ -86,13 +103,11 @@ void CBuilding::Draw(ID3D11DeviceContext * md3dImmediateContext, const Camera& m
 		md3dImmediateContext->IASetVertexBuffers(0, 1, &mObjVB, &stride, &offset);
 		md3dImmediateContext->IASetIndexBuffer(mObjIB, DXGI_FORMAT_R32_UINT, 0);
 
-		// Set per object constants.
+			// Set per object constants.
 		XMMATRIX world = XMLoadFloat4x4(&mObjWorld);
 		//XMMATRIX worldInvTranspose = MathHelper::InverseTranspose(world);
-		XMMATRIX worldViewProj = world*mCam.View()*mCam.Proj();
+		XMMATRIX worldViewProj = world*mCam.ViewProj();
 
-		//Effects::BasicFX->SetWorld(world);
-		//Effects::BasicFX->SetWorldInvTranspose(worldInvTranspose);
 		Effects::BasicFX->SetWorldViewProj(worldViewProj);
 		//Effects::BasicFX->SetTexTransform(XMMatrixIdentity());
 		Effects::BasicFX->SetMaterial(mObjMat);
@@ -102,4 +117,5 @@ void CBuilding::Draw(ID3D11DeviceContext * md3dImmediateContext, const Camera& m
 		boxTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
 		md3dImmediateContext->DrawIndexed(indecesCount, 0, 0);
 	}
+
 }
