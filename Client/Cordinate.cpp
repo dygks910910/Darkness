@@ -2,39 +2,33 @@
 
 
 
-void CCordinate::Init(ID3D11Device* device, const XMFLOAT4X4& local,
+void CCordinate::Init(ID3D11Device* device,
 	const XMFLOAT4X4& world,
 	const float& lineLength)
 {
 	Vertex::Line vertex[6];
 	//-x축
-	vertex[0].Pos = XMFLOAT3(local._11*-lineLength,
-		local._12*- lineLength,
-		local._13*- lineLength);
+	vertex[0].Pos = XMFLOAT3(-lineLength,0,0);
 	vertex[0].color = XMFLOAT4(255, 0, 0, 0);
-	//*x축
-	vertex[1].Pos= XMFLOAT3(local._11 * lineLength, 
-		local._12 * lineLength,
-		local._13 * lineLength);
+	//+x축
+	vertex[1].Pos= XMFLOAT3(lineLength,0,0);
 
 	vertex[1].color = XMFLOAT4(255, 0, 0, 0);
 
-	//*-y축
-	vertex[2].Pos = XMFLOAT3(local._21 *- lineLength, 
-		local._22 *- lineLength, 
-		local._23 *- lineLength);
+	//-y축
+	vertex[2].Pos = XMFLOAT3(0, -lineLength,0);
 	vertex[2].color = XMFLOAT4(0, 255, 0, 0);
 
-	//*y축
-	vertex[3].Pos = XMFLOAT3(local._21 * lineLength, local._22 * lineLength, local._23 * lineLength);
+	//+y축
+	vertex[3].Pos = XMFLOAT3(0, lineLength,0);
 	vertex[3].color = XMFLOAT4(0, 255, 0, 0);
 
-	//*-z축
-	vertex[4].Pos= XMFLOAT3(local._31 *- lineLength, local._32 *- lineLength, local._33 *- lineLength);
+	//-z축
+	vertex[4].Pos= XMFLOAT3(0,0, -lineLength);
 	vertex[4].color = XMFLOAT4(0, 0, 255, 0);
 
-	//*z축
-	vertex[5].Pos= XMFLOAT3(local._31 * lineLength, local._32 * lineLength, local._33 * lineLength);
+	//+z축
+	vertex[5].Pos= XMFLOAT3(0,0, lineLength);
 	vertex[5].color = XMFLOAT4(0, 0, 255, 0);
 
 
@@ -84,22 +78,15 @@ void CCordinate::Draw(ID3D11DeviceContext * md3dImmediateContext, Camera mCam)
 
 		// Set per object constants.
 		XMMATRIX world = XMLoadFloat4x4(&mWorld);
-		XMMATRIX local = XMLoadFloat4x4(&mLocal);
 		XMMATRIX worldViewProj = world*mCam.View()*mCam.Proj();
 
 		Effects::LineFX->SetWorldViewProj(worldViewProj);
 
-		//md3dImmediateContext->OMSetBlendState(RenderStates::AlphaToCoverageBS, blendFactor, 0xffffffff);
 		lineTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
 		md3dImmediateContext->DrawIndexed(6, 0, 0);
 	}
 }
 
-void CCordinate::SetLocal(const XMFLOAT4X4 & localmtx)
-{
-	mLocal = localmtx;
-
-}
 
 CCordinate::CCordinate()
 {
@@ -108,4 +95,6 @@ CCordinate::CCordinate()
 
 CCordinate::~CCordinate()
 {
+	ReleaseCOM(mVB);
+	ReleaseCOM(mIB);
 }

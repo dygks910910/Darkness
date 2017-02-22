@@ -80,10 +80,6 @@ void CBox::Init(ID3D11Device * d3ddevice)
 	mObjMat.Specular = XMFLOAT4(0.4f, 0.4f, 0.4f, 16.0f);
 	XMMATRIX boxScail = XMMatrixScaling(0.3f, 0.3f, 0.3f);
 	XMMATRIX boxOffset = XMMatrixTranslation(0.0f, 3.0f, 120.0f);
-	
-	
-	
-
 }
 
 void CBox::Draw(ID3D11DeviceContext* md3dImmediateContext, Camera mCam)

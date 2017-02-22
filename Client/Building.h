@@ -11,3 +11,6 @@ public:
 	void Draw(ID3D11DeviceContext* md3dImmediateContext, const Camera& mCam);
 };
 
+#ifdef _DEBUG
+std::ostream& operator<<(std::ostream& os, const XMFLOAT3& float3);
+#endif

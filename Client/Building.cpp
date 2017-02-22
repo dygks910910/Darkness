@@ -1,6 +1,11 @@
 #include "Building.h"
 
 
+std::ostream& operator<<(std::ostream& os, const XMFLOAT3& float3)
+{
+	os << "(" << float3.x << "," << float3.y << "," << float3.z << ")" << std::endl;
+	return os;
+}
 
 CBuilding::CBuilding()
 {
@@ -77,6 +82,9 @@ void CBuilding::Init(ID3D11Device * d3ddevice)
 	}
 	XMStoreFloat3(&mColisionBox.Center, 0.5f*(vMin + vMax));
 	XMStoreFloat3(&mColisionBox.Extents, 0.5f*(vMax - vMin));
+
+
+	std::cout <<"colisionBox Center:"<< mColisionBox.Center << std::endl;
 	
 	
 

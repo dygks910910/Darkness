@@ -49,7 +49,7 @@ bool CTestScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	//월드좌표계 그려주기.
 	XMFLOAT4X4 temp4x4;
 	XMStoreFloat4x4(&temp4x4, XMMatrixIdentity());
-	mCordWorld.Init(device, temp4x4, temp4x4, 5000);
+	mCordWorld.Init(device, temp4x4, 5000);
 
 	std::ifstream ifs;
 	ifs.open("MapData.txt");
@@ -116,13 +116,13 @@ bool CTestScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	}
 	ifs.close();
 	XMStoreFloat4x4(&temp4x4, XMMatrixIdentity());
-	mCordWorld.Init(device,temp4x4, temp4x4,5000);
+	mCordWorld.Init(device,temp4x4, 5000);
 	return true;
 }
 
 void CTestScene::UpdateScene(const float & dt)
 {
-	mTimer.Tick();
+// 	mTimer.Tick();
 	//
 	// Control the camera.
 	//
@@ -142,7 +142,7 @@ void CTestScene::UpdateScene(const float & dt)
 	// Walk/fly mode
 	//
 
-	if (GetAsyncKeyState('R') & 0x8000)
+// 	if (GetAsyncKeyState('R') & 0x8000)
 	{
 		// 		mFire.Reset();
 		// 		mRain.Reset();
@@ -189,15 +189,24 @@ void CTestScene::Draw(ID3D11Device * device, ID3D11DeviceContext * dc,
 	설명:투명도가 없는곳에서 사용.
 	*/
 	dc->RSSetState(RenderStates::SolidRS);
-	
+
+
+
+	/*
+	2017 / 2 / 23 / 3:47
+	작성자:박요한(dygks910910@daum.net)
+	설명:라인그릴떄 사용.
+	*/
+	dc->IASetInputLayout(InputLayouts::Line);
+	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+	mCordWorld.Draw(dc, mCam);
 
 
 	float blendFactor[] = { 0.0f, 0.0f, 0.0f, 0.0f };
 
 	if (GetAsyncKeyState('1') & 0x8000)
 		dc->RSSetState(RenderStates::WireframeRS);
-	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
-	mCordWorld.Draw(dc, mCam);
+	
 	dc->RSSetState(0);
 	mSky->Draw(dc, mCam);
 	//불 파티클.
@@ -214,7 +223,7 @@ void CTestScene::Draw(ID3D11Device * device, ID3D11DeviceContext * dc,
 	HR(swapChain->Present(0, 0));
 }
 
-void CTestScene::OnMouseDown(WPARAM btnState, int x, int y, const HWND & mhMainWnd)
+void CTestScene::OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWnd)
 {
 	mLastMousePos.x = x;
 	mLastMousePos.y = y;
@@ -238,12 +247,11 @@ void CTestScene::OnMouseMove(WPARAM btnState, int x, int y)
 		mCam.Pitch(dy);
 		mCam.RotateY(dx);
 	}
-
 	mLastMousePos.x = x;
 	mLastMousePos.y = y;
 }
 
-void CTestScene::OnResize(const float & aspectRatio)
+void CTestScene::OnResize(const float& aspectRatio)
 {
 	mCam.SetLens(0.25f*MathHelper::Pi, aspectRatio, 0.3f, 3000.0f);
 }
