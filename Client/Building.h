@@ -3,6 +3,7 @@
 
 class CBuilding : public CDynamicObject
 {
+	CCordinate mCoord;
 public:
 	CBuilding();
 	~CBuilding();

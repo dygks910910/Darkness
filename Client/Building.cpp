@@ -83,7 +83,7 @@ void CBuilding::Init(ID3D11Device * d3ddevice)
 	XMStoreFloat3(&mColisionBox.Center, 0.5f*(vMin + vMax));
 	XMStoreFloat3(&mColisionBox.Extents, 0.5f*(vMax - vMin));
 
-
+	mCoord.Init(d3ddevice, mObjWorld, 5);
 	std::cout <<"colisionBox Center:"<< mColisionBox.Center << std::endl;
 	
 	
@@ -125,5 +125,14 @@ void CBuilding::Draw(ID3D11DeviceContext * md3dImmediateContext, const Camera& m
 		boxTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
 		md3dImmediateContext->DrawIndexed(indecesCount, 0, 0);
 	}
+
+	md3dImmediateContext->IASetInputLayout(InputLayouts::Line);
+	md3dImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+	XMMATRIX worldmtx = XMLoadFloat4x4(&mObjWorld);
+	worldmtx =  XMMatrixTranslation(mColisionBox.Center.x, mColisionBox.Center.y, mColisionBox.Center.z) * worldmtx;
+	mCoord.SetWorld(mObjWorld);
+	mCoord.Draw(md3dImmediateContext, mCam);
+	md3dImmediateContext->IASetInputLayout(InputLayouts::Basic32);
+	md3dImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 }

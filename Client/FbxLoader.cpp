@@ -129,7 +129,7 @@ void CFbxLoader::PrintVertexByNode(FbxNode* pNode)
 		std::cout <<"(" <<lVertices[lIndex * VERTEX_STRIDE] << "," << lVertices[lIndex * VERTEX_STRIDE + 1] << "," <<
 			lVertices[lIndex * VERTEX_STRIDE + 2] <<  ")" << std::endl;
 	}
-
+	
 
 	delete[] lVertices;
 }
@@ -137,6 +137,7 @@ void CFbxLoader::PrintVertexByNode(FbxNode* pNode)
 void CFbxLoader::LoadElement(const FbxMesh* pMesh, std::vector<Vertex::Basic32>& vb, std::vector<UINT>& ib)
 {
 	// pMesh가 NULL일 경우도 있기 때문에 NULL일 경우 return.
+	//std::cout << mRootNode->RotationPivot.Get() << std::endl;;
 	if (!pMesh)
 		return;
 	if (!pMesh->GetNode())

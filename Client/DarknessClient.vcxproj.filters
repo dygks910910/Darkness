@@ -295,9 +295,4 @@
       <Filter>FX</Filter>
     </FxCompile>
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="Line.fx">
-      <Filter>FX</Filter>
-    </Text>
-  </ItemGroup>
 </Project>

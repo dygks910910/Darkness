@@ -262,9 +262,6 @@
     <FxCompile Include="FX\Sky.fx" />
     <FxCompile Include="FX\Terrain.fx" />
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="Line.fx" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
