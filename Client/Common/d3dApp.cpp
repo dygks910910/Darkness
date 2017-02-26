@@ -25,7 +25,7 @@ MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 D3DApp::D3DApp(HINSTANCE hInstance)
 :	mhAppInst(hInstance),
 	mMainWndCaption(L"D3D11 Application"),
-	md3dDriverType(D3D_DRIVER_TYPE_HARDWARE),
+	md3dDriverType(D3D_DRIVER_TYPE_UNKNOWN),
 	mClientWidth(800),
 	mClientHeight(600),
 	mEnable4xMsaa(false),
@@ -340,27 +340,43 @@ bool D3DApp::InitDirect3D()
 #if defined(DEBUG) || defined(_DEBUG)  
     createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
-	//IDXGIFactory* factory;
-	//int result;
-	//result = CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory);
-	//if (FAILED(result))
-	//{
-	//	return false;
-	//}
-	//DXGI_ADAPTER_DESC desc;
-	//std::vector<IDXGIAdapter*> vAdapters;
-	//IDXGIAdapter* pAdapter;
 
+	IDXGIFactory* factory;
+	int result;
+	result = CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory);
+	if (FAILED(result))
+	{
+		return false;
+	}
+	DXGI_ADAPTER_DESC desc;
+	IDXGIAdapter* pAdapter = nullptr;
+	std::vector<IDXGIAdapter*> stdvAdapters;
+	int iHighLevelAdapterIndex = 0;
+	int iMax = 0;
 
-	//for (UINT i = 0; (factory->EnumAdapters(i, &pAdapter) != DXGI_ERROR_NOT_FOUND); ++i)
-	//{
-	//	vAdapters.push_back(pAdapter);
-	//	pAdapter->GetDesc(&desc);
-	//}
+	/*
+	2017 / 2 / 27 / 0:23
+	작성자:박요한(dygks910910@daum.net)
+	설명:지원되는 가장 좋은 어댑터를 설정한다.
+	createDevice(pAdapter가 NULL이 아니라면
+	md3dDriverType 는 Unknown 으로 설정해야 한다.)
+	*/
+	for (UINT i = 0; (factory->EnumAdapters(i, &pAdapter) != DXGI_ERROR_NOT_FOUND); ++i)
+	{
+		stdvAdapters.push_back(pAdapter);
+		pAdapter->GetDesc(&desc);
+		if (iMax < desc.DedicatedVideoMemory)
+		{
+			iHighLevelAdapterIndex = i;
+			iMax = desc.DedicatedVideoMemory;
+		}
+	}
+	stdvAdapters[iHighLevelAdapterIndex]->GetDesc(&desc);
 
+	std::wcout  << desc.Description << std::endl;
 	D3D_FEATURE_LEVEL featureLevel;
 	HRESULT hr = D3D11CreateDevice(
-			0,                // default adapter
+		stdvAdapters[iHighLevelAdapterIndex],                // default adapter
 			md3dDriverType,
 			0,                 // no software device
 			createDeviceFlags, 
@@ -369,9 +385,6 @@ bool D3DApp::InitDirect3D()
 			&md3dDevice,
 			&featureLevel,
 			&md3dImmediateContext);
-
-
-
 	if( FAILED(hr) )
 	{
 		MessageBox(0, L"D3D11CreateDevice Failed.", 0, 0);
