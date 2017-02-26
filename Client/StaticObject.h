@@ -17,7 +17,7 @@ public:
 	void SetWorld(const XMFLOAT4X4& world) { mObjWorld = world; };
 
 	virtual void Init(ID3D11Device* device) PURE;
-	virtual void Draw(ID3D11DeviceContext* md3dImmediateContext, Camera mCam)PURE;
+	virtual void Draw(ID3D11DeviceContext* dc, Camera mCam)PURE;
 	CStaticObject() : mObjVB(0),mObjIB(0),mObjMapSRV(0)
 	{
 		ZeroMemory(&mObjMat, sizeof(mObjMat));

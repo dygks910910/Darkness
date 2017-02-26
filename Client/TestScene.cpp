@@ -46,6 +46,7 @@ bool CTestScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	Effects::BasicFX->SetFogColor(Colors::Silver);
 	Effects::BasicFX->SetFogStart(15.0f);
 	Effects::BasicFX->SetFogRange(175.0f);
+
 	//월드좌표계 그려주기.
 	XMFLOAT4X4 temp4x4;
 	XMStoreFloat4x4(&temp4x4, XMMatrixIdentity());
@@ -166,15 +167,6 @@ void CTestScene::Draw(ID3D11Device * device, ID3D11DeviceContext * dc,
 	dc->ClearRenderTargetView(renderTargetView, reinterpret_cast<const float*>(&Colors::Silver));
 
 	dc->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-	//기본입력배치.
-	dc->IASetInputLayout(InputLayouts::Basic32);
-	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	/*
-	2017 / 1 / 10 / 7:00
-	작성자:박요한(dygks910910@daum.net)
-	설명:컬링이필요없는경우사용.ex)와이어펜스.
-	*/
-	dc->RSSetState(RenderStates::NoCullRS);
 	for (auto p : mvDynamicObject)
 	{
 		p->Draw(dc, mCam);
@@ -183,25 +175,8 @@ void CTestScene::Draw(ID3D11Device * device, ID3D11DeviceContext * dc,
 	{
 		p->Draw(dc, mCam);
 	}
-	/*
-	2017 / 1 / 10 / 7:00
-	작성자:박요한(dygks910910@daum.net)
-	설명:투명도가 없는곳에서 사용.
-	*/
-	dc->RSSetState(RenderStates::SolidRS);
 
-
-
-	/*
-	2017 / 2 / 23 / 3:47
-	작성자:박요한(dygks910910@daum.net)
-	설명:라인그릴떄 사용.
-	*/
-	dc->IASetInputLayout(InputLayouts::Line);
-	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 	mCordWorld.Draw(dc, mCam);
-
-
 	float blendFactor[] = { 0.0f, 0.0f, 0.0f, 0.0f };
 
 	if (GetAsyncKeyState('1') & 0x8000)

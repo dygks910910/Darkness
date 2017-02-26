@@ -82,8 +82,11 @@ void CBox::Init(ID3D11Device * d3ddevice)
 	XMMATRIX boxOffset = XMMatrixTranslation(0.0f, 3.0f, 120.0f);
 }
 
-void CBox::Draw(ID3D11DeviceContext* md3dImmediateContext, Camera mCam)
+void CBox::Draw(ID3D11DeviceContext* dc, Camera mCam)
 {
+	dc->IASetInputLayout(InputLayouts::Basic32);
+	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	dc->RSSetState(RenderStates::NoCullRS);
 	float blendFactor[] = {0.0f, 0.0f, 0.0f, 0.0f};
 	
 	D3DX11_TECHNIQUE_DESC techDesc;
@@ -95,8 +98,8 @@ void CBox::Draw(ID3D11DeviceContext* md3dImmediateContext, Camera mCam)
 	boxTech->GetDesc(&techDesc);
 	for (UINT p = 0; p < techDesc.Passes; ++p)
 	{
-		md3dImmediateContext->IASetVertexBuffers(0, 1, &mObjVB, &stride, &offset);
-		md3dImmediateContext->IASetIndexBuffer(mObjIB, DXGI_FORMAT_R32_UINT, 0);
+		dc->IASetVertexBuffers(0, 1, &mObjVB, &stride, &offset);
+		dc->IASetIndexBuffer(mObjIB, DXGI_FORMAT_R32_UINT, 0);
 
 		// Set per object constants.
 		XMMATRIX world = XMLoadFloat4x4(&mObjWorld);
@@ -111,7 +114,7 @@ void CBox::Draw(ID3D11DeviceContext* md3dImmediateContext, Camera mCam)
 		Effects::BasicFX->SetDiffuseMap(mObjMapSRV);
 
 		//md3dImmediateContext->OMSetBlendState(RenderStates::AlphaToCoverageBS, blendFactor, 0xffffffff);
-		boxTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
-		md3dImmediateContext->DrawIndexed(36, 0, 0);
+		boxTech->GetPassByIndex(p)->Apply(0, dc);
+		dc->DrawIndexed(36, 0, 0);
 	}
 }

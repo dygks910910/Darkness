@@ -64,6 +64,9 @@
     <Filter Include="Source Files\00 Object\01 DynamicObjcet\00 Building">
       <UniqueIdentifier>{5391424d-f5cc-4c9c-85eb-c581058908ae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\00 Object\02 Coordinate">
+      <UniqueIdentifier>{81901539-93ee-46f7-bec5-18ae1ce38a18}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Camera.cpp">
@@ -153,14 +156,11 @@
     <ClCompile Include="TestScene.cpp">
       <Filter>Source Files\99 Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Plane.cpp">
-      <Filter>Source Files\00 Object\00 StaticObject</Filter>
+    <ClCompile Include="Cordinate.cpp">
+      <Filter>Source Files\00 Object\02 Coordinate</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp">
-      <Filter>Source Files\00 Object</Filter>
-    </ClCompile>
-    <ClCompile Include="Cordinate.cpp">
-      <Filter>Source Files\00 Object</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -265,14 +265,11 @@
     <ClInclude Include="DynamicObject.h">
       <Filter>Source Files\00 Object\01 DynamicObjcet</Filter>
     </ClInclude>
-    <ClInclude Include="Plane.h">
-      <Filter>Source Files\00 Object\00 StaticObject</Filter>
-    </ClInclude>
     <ClInclude Include="TestScene.h">
       <Filter>Source Files\99 Scene</Filter>
     </ClInclude>
     <ClInclude Include="Cordinate.h">
-      <Filter>Source Files\00 Object</Filter>
+      <Filter>Source Files\00 Object\02 Coordinate</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -294,5 +291,8 @@
     <FxCompile Include="FX\Terrain.fx">
       <Filter>FX</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

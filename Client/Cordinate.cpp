@@ -62,9 +62,10 @@ void CCordinate::Init(ID3D11Device* device,
 
 }
 
-void CCordinate::Draw(ID3D11DeviceContext * md3dImmediateContext, Camera mCam)
+void CCordinate::Draw(ID3D11DeviceContext * dc, Camera mCam)
 {
-
+	dc->IASetInputLayout(InputLayouts::Line);
+	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 	D3DX11_TECHNIQUE_DESC techDesc;
 	ID3DX11EffectTechnique* lineTech;
 	lineTech = Effects::LineFX->mTech;
@@ -73,8 +74,8 @@ void CCordinate::Draw(ID3D11DeviceContext * md3dImmediateContext, Camera mCam)
 	lineTech->GetDesc(&techDesc);
 	for (UINT p = 0; p < techDesc.Passes; ++p)
 	{
-		md3dImmediateContext->IASetVertexBuffers(0, 1, &mVB, &stride, &offset);
-		md3dImmediateContext->IASetIndexBuffer(mIB, DXGI_FORMAT_R32_UINT, 0);
+		dc->IASetVertexBuffers(0, 1, &mVB, &stride, &offset);
+		dc->IASetIndexBuffer(mIB, DXGI_FORMAT_R32_UINT, 0);
 
 		// Set per object constants.
 		XMMATRIX world = XMLoadFloat4x4(&mWorld);
@@ -82,8 +83,8 @@ void CCordinate::Draw(ID3D11DeviceContext * md3dImmediateContext, Camera mCam)
 
 		Effects::LineFX->SetWorldViewProj(worldViewProj);
 
-		lineTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
-		md3dImmediateContext->DrawIndexed(6, 0, 0);
+		lineTech->GetPassByIndex(p)->Apply(0, dc);
+		dc->DrawIndexed(6, 0, 0);
 	}
 }
 

@@ -95,10 +95,12 @@ void CBuilding::Init(ID3D11Device * d3ddevice)
 	loader.Destroy();
 }
 
-void CBuilding::Draw(ID3D11DeviceContext * md3dImmediateContext, const Camera& mCam)
+void CBuilding::Draw(ID3D11DeviceContext* dc, const Camera& mCam)
 {
 	float blendFactor[] = { 0.0f, 0.0f, 0.0f, 0.0f };
-
+	dc->IASetInputLayout(InputLayouts::Basic32);
+	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	dc->RSSetState(RenderStates::SolidRS);
 	D3DX11_TECHNIQUE_DESC techDesc;
 	ID3DX11EffectTechnique* boxTech;
 	boxTech = Effects::BasicFX->Light0TexTech;
@@ -108,8 +110,8 @@ void CBuilding::Draw(ID3D11DeviceContext * md3dImmediateContext, const Camera& m
 	boxTech->GetDesc(&techDesc);
 	for (UINT p = 0; p < techDesc.Passes; ++p)
 	{
-		md3dImmediateContext->IASetVertexBuffers(0, 1, &mObjVB, &stride, &offset);
-		md3dImmediateContext->IASetIndexBuffer(mObjIB, DXGI_FORMAT_R32_UINT, 0);
+		dc->IASetVertexBuffers(0, 1, &mObjVB, &stride, &offset);
+		dc->IASetIndexBuffer(mObjIB, DXGI_FORMAT_R32_UINT, 0);
 
 			// Set per object constants.
 		XMMATRIX world = XMLoadFloat4x4(&mObjWorld);
@@ -122,17 +124,17 @@ void CBuilding::Draw(ID3D11DeviceContext * md3dImmediateContext, const Camera& m
 		Effects::BasicFX->SetDiffuseMap(mObjMapSRV);
 
 		//md3dImmediateContext->OMSetBlendState(RenderStates::AlphaToCoverageBS, blendFactor, 0xffffffff);
-		boxTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
-		md3dImmediateContext->DrawIndexed(indecesCount, 0, 0);
+		boxTech->GetPassByIndex(p)->Apply(0, dc);
+		dc->DrawIndexed(indecesCount, 0, 0);
 	}
 
-	md3dImmediateContext->IASetInputLayout(InputLayouts::Line);
-	md3dImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+	dc->IASetInputLayout(InputLayouts::Line);
+	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 	XMMATRIX worldmtx = XMLoadFloat4x4(&mObjWorld);
 	worldmtx =  XMMatrixTranslation(mColisionBox.Center.x, mColisionBox.Center.y, mColisionBox.Center.z) * worldmtx;
 	mCoord.SetWorld(mObjWorld);
-	mCoord.Draw(md3dImmediateContext, mCam);
-	md3dImmediateContext->IASetInputLayout(InputLayouts::Basic32);
-	md3dImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	mCoord.Draw(dc, mCam);
+	dc->IASetInputLayout(InputLayouts::Basic32);
+	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 }

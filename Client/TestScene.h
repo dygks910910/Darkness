@@ -7,7 +7,6 @@
 #include "StaticObject.h"
 #include "Box.h"
 #include "Building.h"
-#include "Plane.h"
 #include "Cordinate.h"
 class CTestScene :
 	public CScene

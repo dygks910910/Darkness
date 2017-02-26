@@ -10,7 +10,7 @@ public:
 	CBox();
 	~CBox();
 	virtual void Init(ID3D11Device* d3ddevice);
-	virtual void Draw(ID3D11DeviceContext* md3dImmediateContext, Camera mCam);
+	virtual void Draw(ID3D11DeviceContext* dc, Camera mCam);
 
 };
 
