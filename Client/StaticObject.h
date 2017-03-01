@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include"xnacollision.h"
 #include "Cordinate.h"
+#include "RenderStates.h"
 class CStaticObject
 {
 protected:

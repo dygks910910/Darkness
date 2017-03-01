@@ -190,6 +190,7 @@
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
+    <ClCompile Include="Plane.cpp" />
     <ClCompile Include="RenderStates.cpp" />
     <ClCompile Include="SceneMainGame.cpp" />
     <ClCompile Include="SceneManager.cpp" />
@@ -241,6 +242,7 @@
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="MiniMap.h" />
     <ClInclude Include="ParticleSystem.h" />
+    <ClInclude Include="Plane.h" />
     <ClInclude Include="RenderStates.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneMainGame.h" />
@@ -262,6 +264,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

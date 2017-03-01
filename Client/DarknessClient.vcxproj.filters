@@ -55,9 +55,6 @@
     <Filter Include="Source Files\00 Object\00 StaticObject\00 Box">
       <UniqueIdentifier>{578660b4-2d1c-4319-96c3-3b2d00c61175}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\00 Object\00 Vertex">
-      <UniqueIdentifier>{7e0ece3b-4bbd-4fd4-a408-21858e329224}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\00 Object\01 DynamicObjcet">
       <UniqueIdentifier>{b6af5a3b-5a95-44cb-88b1-113106975362}</UniqueIdentifier>
     </Filter>
@@ -66,6 +63,12 @@
     </Filter>
     <Filter Include="Source Files\00 Object\02 Coordinate">
       <UniqueIdentifier>{81901539-93ee-46f7-bec5-18ae1ce38a18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\00 Vertex">
+      <UniqueIdentifier>{7e0ece3b-4bbd-4fd4-a408-21858e329224}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\00 Object\00 StaticObject\01 Plane">
+      <UniqueIdentifier>{f605fb36-51b2-45fd-8819-f2070e7e5a66}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -130,7 +133,7 @@
       <Filter>Source Files\01 Effects\RenderState</Filter>
     </ClCompile>
     <ClCompile Include="Vertex.cpp">
-      <Filter>Source Files\00 Object\00 Vertex</Filter>
+      <Filter>Source Files\00 Vertex</Filter>
     </ClCompile>
     <ClCompile Include="MainGame.cpp">
       <Filter>Source Files\MainGame</Filter>
@@ -161,6 +164,9 @@
     </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Plane.cpp">
+      <Filter>Source Files\00 Object\00 StaticObject\01 Plane</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -239,7 +245,7 @@
       <Filter>Source Files\01 Effects\RenderState</Filter>
     </ClInclude>
     <ClInclude Include="Vertex.h">
-      <Filter>Source Files\00 Object\00 Vertex</Filter>
+      <Filter>Source Files\00 Vertex</Filter>
     </ClInclude>
     <ClInclude Include="MainGame.h">
       <Filter>Source Files\MainGame</Filter>
@@ -271,6 +277,9 @@
     <ClInclude Include="Cordinate.h">
       <Filter>Source Files\00 Object\02 Coordinate</Filter>
     </ClInclude>
+    <ClInclude Include="Plane.h">
+      <Filter>Source Files\00 Object\00 StaticObject\01 Plane</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="FX\Basic.fx">
@@ -294,5 +303,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
 </Project>

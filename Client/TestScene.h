@@ -8,6 +8,7 @@
 #include "Box.h"
 #include "Building.h"
 #include "Cordinate.h"
+#include "Plane.h"
 class CTestScene :
 	public CScene
 {

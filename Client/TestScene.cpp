@@ -103,6 +103,20 @@ bool CTestScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 		{
 			mCam.SetPosition(position.x, position.y, position.z);
 		}
+		else if (!strcmp(objectName, "Plane"))
+		{
+			pTempStaticObject = new CPlane;
+			pTempStaticObject->Init(device);
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			pTempStaticObject->SetWorld(M);
+			mvStaticObject.push_back(pTempStaticObject);
+		}
 		
 		std::cout << objectName << std::endl;
 		std::cout << position.x << " " << position.y << " " << position.z << std::endl;
