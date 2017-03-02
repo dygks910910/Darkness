@@ -30,7 +30,7 @@ void CBuilding::Init(ID3D11Device * d3ddevice)
 	std::vector<Vertex::Basic32> vb;
 	std::vector<UINT> ib;
 
-	loader.LoadFBX("Darkness FBX\\crawler.fbx",vb,ib);
+	loader.LoadFBX("true_clownTri.FBX",vb,ib);
 	//
 	// Extract the vertex elements we are interested in and pack the
 	// vertices of all the meshes into one vertex buffer.
@@ -60,11 +60,12 @@ void CBuilding::Init(ID3D11Device * d3ddevice)
 	HR(md3dDevice->CreateBuffer(&ibd, &iinitData, &mObjIB));
 
 	HR(D3DX11CreateShaderResourceViewFromFile(md3dDevice,
-		L"Darkness fbx/crawler_diffuse 1.png", 0, 0, &mObjMapSRV, 0));
+		L"true_clown_diffuse1.png", 0, 0, &mObjMapSRV, 0));
 
-	mObjMat.Ambient = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
-	mObjMat.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	mObjMat.Ambient = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
+	mObjMat.Diffuse = XMFLOAT4(0.1f, 0.1f, 0.1f, 1.0f);
 	mObjMat.Specular = XMFLOAT4(0.4f, 0.4f, 0.4f, 16.0f);
+	mObjMat.Reflect = XMFLOAT4(1,1,1,1);
 
 	XMMATRIX boxOffset = XMMatrixTranslation(0.0f, 8.0f, 120.0f);
 	XMMATRIX rotation = XMMatrixRotationRollPitchYaw(0, 45, 0);
@@ -100,10 +101,10 @@ void CBuilding::Draw(ID3D11DeviceContext* dc, const Camera& mCam)
 	float blendFactor[] = { 0.0f, 0.0f, 0.0f, 0.0f };
 	dc->IASetInputLayout(InputLayouts::Basic32);
 	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	dc->RSSetState(RenderStates::SolidRS);
+	dc->RSSetState(RenderStates::NoCullRS);
 	D3DX11_TECHNIQUE_DESC techDesc;
 	ID3DX11EffectTechnique* boxTech;
-	boxTech = Effects::BasicFX->Light0TexTech;
+	boxTech = Effects::BasicFX->Light3TexTech;
 
 	UINT stride = sizeof(Vertex::Basic32);
 	UINT offset = 0;

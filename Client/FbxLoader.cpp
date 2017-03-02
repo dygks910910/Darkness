@@ -12,11 +12,7 @@ CFbxLoader::CFbxLoader() :
 
 CFbxLoader::~CFbxLoader()
 {
-	for (int i = 0; i < mSubMeshes.GetCount(); i++)
-	{
-		delete mSubMeshes[i];
-	}
-	mSubMeshes.Clear();
+	
 }
 void CFbxLoader::Init(const char * pFileName)
 {
@@ -153,53 +149,19 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh, std::vector<Vertex::Basic32>&
 		lMaterialMappingMode = pMesh->GetElementMaterial()->GetMappingMode();
 		if (lMaterialIndice && lMaterialMappingMode == FbxGeometryElement::eByPolygon)
 		{
-			FBX_ASSERT(lMaterialIndice->GetCount() == lPolygonCount);
 			if (lMaterialIndice->GetCount() == lPolygonCount)
 			{
 				// Count the faces of each material
-				for (int lPolygonIndex = 0; lPolygonIndex < lPolygonCount; ++lPolygonIndex)
-				{
-					const int lMaterialIndex = lMaterialIndice->GetAt(lPolygonIndex);
-					if (mSubMeshes.Size() < lMaterialIndex + 1)
-					{
-						mSubMeshes.Resize(lMaterialIndex + 1);
-					}
-					if (mSubMeshes[lMaterialIndex] == NULL)
-					{
-						mSubMeshes[lMaterialIndex] = new SubMesh;
-					}
-					mSubMeshes[lMaterialIndex]->TriangleCount += 1;
-				}
-
 				// Make sure we have no "holes" (NULL) in the mSubMeshes table. This can happen
 				// if, in the loop above, we resized the mSubMeshes by more than one slot.
-				for (int i = 0; i < mSubMeshes.Size(); i++)
-				{
-					if (mSubMeshes[i] == NULL)
-						mSubMeshes[i] = new SubMesh;
-				}
 
 				// Record the offset (how many vertex)
-				const int lMaterialCount = mSubMeshes.Size();
-				int lOffset = 0;
-				for (int lIndex = 0; lIndex < lMaterialCount; ++lIndex)
-				{
-					mSubMeshes[lIndex]->IndexOffset = lOffset;
-					lOffset += mSubMeshes[lIndex]->TriangleCount * 3;
-					// This will be used as counter in the following procedures, reset to zero
-					mSubMeshes[lIndex]->TriangleCount = 0;
-				}
-				FBX_ASSERT(lOffset == lPolygonCount * 3);
 			}
 		}
 	}
 
 	// All faces will use the same material.
-	if (mSubMeshes.Size() == 0)
-	{
-		mSubMeshes.Resize(1);
-		mSubMeshes[0] = new SubMesh();
-	}
+	
 
 	// Congregate all the data of a mesh to be cached in VBOs.
 	// If normal or UV is by polygon vertex, record all vertex attributes by polygon vertex.
@@ -238,9 +200,9 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh, std::vector<Vertex::Basic32>&
 	{
 		lPolygonVertexCount = lPolygonCount * TRIANGLE_VERTEX_COUNT;
 	}
-	vb.resize(lPolygonVertexCount);
+	vb.reserve(lPolygonVertexCount);
 	//float * lVertices = new float[lPolygonVertexCount * VERTEX_STRIDE];
-	ib.resize(lPolygonCount * TRIANGLE_VERTEX_COUNT);
+	ib.reserve(lPolygonCount * TRIANGLE_VERTEX_COUNT);
 	//unsigned int * lIndices = new unsigned int[lPolygonCount * TRIANGLE_VERTEX_COUNT];
 	float * lNormals = NULL;
 	if (mHasNormal)
@@ -256,76 +218,16 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh, std::vector<Vertex::Basic32>&
 		//lUVs = new float[lPolygonVertexCount * UV_STRIDE];
 		lUVName = lUVNames[0];
 	}
-	XMFLOAT3 tempFloat3;
+	XMFLOAT3 tempVertex;
+	XMFLOAT3 tempNormal;
+
 	XMFLOAT2 tempfloat2;
 	// Populate the array with vertex attribute, if by control point.
 	const FbxVector4 * lControlPoints = pMesh->GetControlPoints();
 	FbxVector4 lCurrentVertex;
 	FbxVector4 lCurrentNormal;
 	FbxVector2 lCurrentUV;
-	if (mAllByControlPoint)
-	{
-		const FbxGeometryElementNormal * lNormalElement = NULL;
-		const FbxGeometryElementUV * lUVElement = NULL;
-		if (mHasNormal)
-		{
-			lNormalElement = pMesh->GetElementNormal(0);
-		}
-		if (mHasUV)
-		{
-			lUVElement = pMesh->GetElementUV(0);
-		}
-		for (int lIndex = 0; lIndex < lPolygonVertexCount; ++lIndex)
-		{
-			// Save the vertex position.
-			/*
-			2017 / 1 / 7 / 7:30
-			작성자:박요한(dygks910910@daum.net)
-			설명:MAX좌표와 d3d좌표는 다르기 떄문에 y = z , z = y로 변환해줌.
-			*/
-			lCurrentVertex = lControlPoints[lIndex];
-			tempFloat3.x = static_cast<FLOAT>(lCurrentVertex[0]);
-			tempFloat3.y = static_cast<FLOAT>(lCurrentVertex[1]);
-			tempFloat3.z = static_cast<FLOAT>(lCurrentVertex[2]);
-			vb[lIndex].Pos =  tempFloat3;
 
-			
-			std::cout << lCurrentVertex;
-			// Save the normal.
-			if (mHasNormal)
-			{
-				int lNormalIndex = lIndex;
-				if (lNormalElement->GetReferenceMode() == FbxLayerElement::eIndexToDirect)
-				{
-					lNormalIndex = lNormalElement->GetIndexArray().GetAt(lIndex);
-				}
-				lCurrentNormal = lNormalElement->GetDirectArray().GetAt(lNormalIndex);
-				lNormals[lIndex * NORMAL_STRIDE] = static_cast<float>(lCurrentNormal[0]);
-				lNormals[lIndex * NORMAL_STRIDE + 1] = static_cast<float>(lCurrentNormal[2]);
-				lNormals[lIndex * NORMAL_STRIDE + 2] = static_cast<float>(lCurrentNormal[1]);
-				tempFloat3.x = static_cast<float>(lCurrentNormal[0]);
-				tempFloat3.y = static_cast<float>(lCurrentNormal[1]);
-				tempFloat3.z = static_cast<float>(lCurrentNormal[2]);
-				vb[lIndex].Normal = tempFloat3;
-			}
-
-			// Save the UV.
-			if (mHasUV)
-			{
-				int lUVIndex = lIndex;
-				if (lUVElement->GetReferenceMode() == FbxLayerElement::eIndexToDirect)
-				{
-					lUVIndex = lUVElement->GetIndexArray().GetAt(lIndex);
-				}
-				lCurrentUV = lUVElement->GetDirectArray().GetAt(lUVIndex);
-			
-				tempfloat2.x = static_cast<float>(lCurrentUV[0]);
-				tempfloat2.y = static_cast<float>(lCurrentUV[1]);
-				vb[lIndex].Tex = tempfloat2;
-			}
-		}
-
-	}
 
 	int lVertexCount = 0;
 	for (int lPolygonIndex = 0; lPolygonIndex < lPolygonCount; ++lPolygonIndex)
@@ -338,8 +240,7 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh, std::vector<Vertex::Basic32>&
 		}
 
 		// Where should I save the vertex attribute index, according to the material
-		const int lIndexOffset = mSubMeshes[lMaterialIndex]->IndexOffset +
-			mSubMeshes[lMaterialIndex]->TriangleCount * 3;
+	
 		for (int lVerticeIndex = 0; lVerticeIndex < TRIANGLE_VERTEX_COUNT; ++lVerticeIndex)
 		{
 			const int lControlPointIndex = pMesh->GetPolygonVertex(lPolygonIndex, lVerticeIndex);
@@ -357,22 +258,17 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh, std::vector<Vertex::Basic32>&
 				//lIndices[lIndexOffset + lVerticeIndex] = static_cast<unsigned int>(lVertexCount);
 
 				lCurrentVertex = lControlPoints[lControlPointIndex];
-				tempFloat3.x = static_cast<float>(lCurrentVertex[0] * -1.0f);
-				tempFloat3.y = static_cast<float>(lCurrentVertex[2] );
-				tempFloat3.z = static_cast<float>(lCurrentVertex[1]);
+				tempVertex.x = static_cast<float>(lCurrentVertex[0] * -1.0f);
+				tempVertex.y = static_cast<float>(lCurrentVertex[2] );
+				tempVertex.z = static_cast<float>(lCurrentVertex[1]);
 
-				vb[lVertexCount].Pos = tempFloat3;
 			
 				if (mHasNormal)
 				{
 					pMesh->GetPolygonVertexNormal(lPolygonIndex, lVerticeIndex, lCurrentNormal);
-					tempFloat3.x = static_cast<float>(lCurrentNormal[0]);
-					tempFloat3.y = static_cast<float>(lCurrentNormal[1]);
-					tempFloat3.z = static_cast<float>(lCurrentNormal[2] );
-					vb[lVertexCount].Normal = tempFloat3;
-
-				
-
+					tempNormal.x = static_cast<float>(lCurrentNormal[0]);
+					tempNormal.y = static_cast<float>(lCurrentNormal[1]);
+					tempNormal.z = static_cast<float>(lCurrentNormal[2] );
 				}
 				if (mHasUV)
 				{
@@ -387,14 +283,17 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh, std::vector<Vertex::Basic32>&
 					tempfloat2.x = static_cast<float>(lCurrentUV[0]);
 					tempfloat2.y = 1.0f-static_cast<float>(lCurrentUV[1]);
 					
-					vb[lVertexCount].Tex = tempfloat2;
 					
 
 				}
 			}
 			++lVertexCount;
+			Vertex::Basic32 temp4Insert;
+			temp4Insert.Pos = tempVertex;
+			temp4Insert.Normal = tempNormal;
+			temp4Insert.Tex = tempfloat2;
+			vb.push_back(temp4Insert);
 		}
-		mSubMeshes[lMaterialIndex]->TriangleCount += 1;
 	}
 }
 

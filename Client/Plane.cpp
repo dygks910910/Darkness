@@ -84,7 +84,7 @@ void CPlane::Draw(ID3D11DeviceContext * dc, Camera mCam)
 
 		//md3dImmediateContext->OMSetBlendState(RenderStates::AlphaToCoverageBS, blendFactor, 0xffffffff);
 		boxTech->GetPassByIndex(p)->Apply(0, dc);
-		dc->DrawIndexed(36, 0, 0);
+		dc->DrawIndexed(6, 0, 0);
 	}
 }
 

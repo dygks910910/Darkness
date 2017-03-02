@@ -30,7 +30,6 @@ public:
 	void Init(const char* pFileName);
 	void Print();
 	void PrintVertex();
-	int GetSubMeshCount() const { return mSubMeshes.GetCount(); }
 	void PrintElement();
 	void Destroy();
 	void LoadFBX(const char* pFileName, std::vector<Vertex::Basic32>& vb, std::vector<UINT>& ib);
@@ -47,14 +46,7 @@ private:
 	void PrintVertexByNode(FbxNode* pNode);
 	FbxString GetAttributeTypeName(FbxNodeAttribute::EType type);
 	void LoadElement(const FbxMesh* pMesh, std::vector<Vertex::Basic32>& vb, std::vector<UINT>& ib);
-	struct SubMesh
-	{
-		SubMesh() : IndexOffset(0), TriangleCount(0) {}
-
-		int IndexOffset;
-		int TriangleCount;
-	};
-	FbxArray<SubMesh*> mSubMeshes;
+	
 	bool mHasNormal;
 	bool mHasUV;
 	bool mAllByControlPoint; // Save data in VBO by control point or by polygon vertex.

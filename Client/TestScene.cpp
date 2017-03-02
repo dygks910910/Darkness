@@ -26,14 +26,14 @@ bool CTestScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 {
 	mLastMousePos.x = 0;
 	mLastMousePos.y = 0;
-	mDirLights[0].Ambient = XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
+	mDirLights[0].Ambient = XMFLOAT4(0.4f, 0.4f, 0.4f, 1.0f);
 	mDirLights[0].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	mDirLights[0].Specular = XMFLOAT4(0.8f, 0.8f, 0.7f, 1.0f);
 	mDirLights[0].Direction = XMFLOAT3(0.407f, -0.407f, 0.0f);
 
 	mDirLights[1].Ambient = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
 	mDirLights[1].Diffuse = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
-	mDirLights[1].Specular = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
+	mDirLights[1].Specular = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
 	mDirLights[1].Direction = XMFLOAT3(0.47735f, -0.47735f, 0.57735f);
 
 	mDirLights[2].Ambient = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
@@ -46,7 +46,6 @@ bool CTestScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	Effects::BasicFX->SetFogColor(Colors::Silver);
 	Effects::BasicFX->SetFogStart(15.0f);
 	Effects::BasicFX->SetFogRange(175.0f);
-
 	//월드좌표계 그려주기.
 	XMFLOAT4X4 temp4x4;
 	XMStoreFloat4x4(&temp4x4, XMMatrixIdentity());
