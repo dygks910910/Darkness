@@ -104,7 +104,7 @@ void CBuilding::Draw(ID3D11DeviceContext* dc, const Camera& mCam)
 	dc->RSSetState(RenderStates::NoCullRS);
 	D3DX11_TECHNIQUE_DESC techDesc;
 	ID3DX11EffectTechnique* boxTech;
-	boxTech = Effects::BasicFX->Light3TexTech;
+	boxTech = Effects::BasicFX->Light3ReflectTech;
 
 	UINT stride = sizeof(Vertex::Basic32);
 	UINT offset = 0;

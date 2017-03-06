@@ -70,6 +70,9 @@
     <Filter Include="Source Files\00 Object\00 StaticObject\01 Plane">
       <UniqueIdentifier>{f605fb36-51b2-45fd-8819-f2070e7e5a66}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\ModelMgr">
+      <UniqueIdentifier>{9822ad15-2897-4d32-b08b-d1b4d88b7ff7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Camera.cpp">
@@ -167,6 +170,12 @@
     </ClCompile>
     <ClCompile Include="Plane.cpp">
       <Filter>Source Files\00 Object\00 StaticObject\01 Plane</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Source Files\ModelMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelMgr.cpp">
+      <Filter>Source Files\ModelMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -279,6 +288,12 @@
     </ClInclude>
     <ClInclude Include="Plane.h">
       <Filter>Source Files\00 Object\00 StaticObject\01 Plane</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Source Files\ModelMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelMgr.h">
+      <Filter>Source Files\ModelMgr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
