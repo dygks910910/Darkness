@@ -9,9 +9,12 @@
 #include "Building.h"
 #include "Cordinate.h"
 #include "Plane.h"
+#include "ModelMgr.h"
+#include "Model.h"
 class CTestScene :
 	public CScene
 {
+	CModelMgr mModelMgr;
 	CCordinate mCordWorld;
 	Camera	 mCam;
 	DirectionalLight mDirLights[3];

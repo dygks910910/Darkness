@@ -2,21 +2,25 @@
 #include "Vertex.h"
 #include<map>
 #include<vector>
+
 class CModel
 {
-	static ID3D11Buffer* mModelBuff;
+	ID3D11Buffer* mVB;
+	ID3D11Buffer* mIB;
+
 	bool bHasAnim = false;
 	std::map<std::string, std::vector<Vertex::Basic32>*> mAnimData;
-	std::vector<UINT> mIndeces;
-	int mIndexOffset;
+	int mIndexCount;
 public:
-	const int& GetIndexOffset() { return mIndexOffset; }
-	std::vector<UINT>* GetIndex() { return &mIndeces; };
-	ID3D11Buffer* GetModelBuff() { return mModelBuff; }
+	ID3D11Buffer* GetIB() { return mIB; };
+	ID3D11Buffer* GetVB() { return mVB; }
+	const int& GetIndexCount() { return mIndexCount; }
 
 	const bool& HasAnim() { return bHasAnim; }
-	void SetIndexOffset(const int& offset) { mIndexOffset = offset; };
-	static void SetBuffer(ID3D11Buffer* buff) { mModelBuff = buff; }
+
+	void SetVB(ID3D11Buffer* buff) { mVB = buff; }
+	void SetIB(ID3D11Buffer* buff) { mIB = buff; }
+	void SetIndexCount(const int& numIndex) { mIndexCount = numIndex; }
 
 	CModel();
 	~CModel();

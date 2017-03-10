@@ -1,5 +1,6 @@
 #pragma once
 #include "DynamicObject.h"
+#include "Model.h"
 
 class CBuilding : public CDynamicObject
 {
@@ -8,7 +9,7 @@ public:
 	CBuilding();
 	~CBuilding();
 	void SetWorld(const XMFLOAT4X4& worldmtx);
-	void Init(ID3D11Device* d3ddevice);
+	void Init(ID3D11Device* d3ddevice, CModelMgr* modelMgr);
 	void Draw(ID3D11DeviceContext* dc, const Camera& mCam);
 };
 

@@ -26,15 +26,15 @@ bool CTestScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 {
 	mLastMousePos.x = 0;
 	mLastMousePos.y = 0;
-	mDirLights[0].Ambient = XMFLOAT4(0.4f, 0.4f, 0.4f, 1.0f);
-	mDirLights[0].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	mDirLights[0].Specular = XMFLOAT4(0.8f, 0.8f, 0.7f, 1.0f);
-	mDirLights[0].Direction = XMFLOAT3(0.407f, -0.407f, 0.0f);
+	mDirLights[0].Ambient = XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
+	mDirLights[0].Diffuse = XMFLOAT4(0.8f, 0.8f, 0.8f, 1.0f);
+	mDirLights[0].Specular = XMFLOAT4(0.6f, 0.6f, 0.6f, 16.0f);
+	mDirLights[0].Direction = XMFLOAT3(0.707f, -0.707f, 0.0f);
 
-	mDirLights[1].Ambient = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
-	mDirLights[1].Diffuse = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
-	mDirLights[1].Specular = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
-	mDirLights[1].Direction = XMFLOAT3(0.47735f, -0.47735f, 0.57735f);
+	mDirLights[1].Ambient = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
+	mDirLights[1].Diffuse = XMFLOAT4(1.4f, 1.4f, 1.4f, 1.0f);
+	mDirLights[1].Specular = XMFLOAT4(0.3f, 0.3f, 0.3f, 16.0f);
+	mDirLights[1].Direction = XMFLOAT3(-0.707f, 0.0f, 0.707f);
 
 	mDirLights[2].Ambient = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
 	mDirLights[2].Diffuse = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
@@ -72,7 +72,7 @@ bool CTestScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 		if (!strcmp(objectName, "Cube"))
 		{
 			pTempStaticObject = new CBox;
-			pTempStaticObject->Init(device);
+			pTempStaticObject->Init(device, &mModelMgr);
 			XMVECTOR S = XMLoadFloat3(&scale);
 			XMVECTOR P = XMLoadFloat3(&position);
 			XMVECTOR Q = XMLoadFloat4(&rotation);
@@ -85,18 +85,22 @@ bool CTestScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 		}
 		else if (!strcmp(objectName, "crawler"))
 		{
-			pTempDynamicObject = new CBuilding;
-			pTempDynamicObject->Init(device);
-			XMVECTOR S = XMLoadFloat3(&scale);
-			XMVECTOR P = XMLoadFloat3(&position);
-			XMVECTOR Q = XMLoadFloat4(&rotation);
-			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+			for (int i = 0; i < 5; ++i)
+			{
+				pTempDynamicObject = new CBuilding;
+				pTempDynamicObject->Init(device, &mModelMgr);
+				XMVECTOR S = XMLoadFloat3(&scale);
+				position.x += i * 10;
+				XMVECTOR P = XMLoadFloat3(&position);
+				XMVECTOR Q = XMLoadFloat4(&rotation);
+				XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
 
-			XMFLOAT4X4 M;
-			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+				XMFLOAT4X4 M;
+				XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
 
-			pTempDynamicObject->SetWorld(M);
-			mvDynamicObject.push_back(pTempDynamicObject);
+				pTempDynamicObject->SetWorld(M);
+				mvDynamicObject.push_back(pTempDynamicObject);
+			}
 		}
 		else if (!strcmp(objectName, "MainCamera"))
 		{
@@ -105,7 +109,7 @@ bool CTestScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 		else if (!strcmp(objectName, "Plane"))
 		{
 			pTempStaticObject = new CPlane;
-			pTempStaticObject->Init(device);
+			pTempStaticObject->Init(device, &mModelMgr);
 			XMVECTOR S = XMLoadFloat3(&scale);
 			XMVECTOR P = XMLoadFloat3(&position);
 			XMVECTOR Q = XMLoadFloat4(&rotation);
@@ -131,6 +135,7 @@ bool CTestScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	ifs.close();
 	XMStoreFloat4x4(&temp4x4, XMMatrixIdentity());
 	mCordWorld.Init(device,temp4x4, 5000);
+	mModelMgr.PrintModelCount();
 	return true;
 }
 

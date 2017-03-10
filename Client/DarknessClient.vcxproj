@@ -169,7 +169,6 @@
   <ItemGroup>
     <ClCompile Include="BitMap.cpp" />
     <ClCompile Include="Box.cpp" />
-    <ClCompile Include="BoxScene.cpp" />
     <ClCompile Include="Building.cpp" />
     <ClCompile Include="Common\Camera.cpp" />
     <ClCompile Include="Common\d3dApp.cpp" />
@@ -194,7 +193,6 @@
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Plane.cpp" />
     <ClCompile Include="RenderStates.cpp" />
-    <ClCompile Include="SceneMainGame.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Sky.cpp" />
     <ClCompile Include="Terrain.cpp" />
@@ -222,7 +220,6 @@
   <ItemGroup>
     <ClInclude Include="BitMap.h" />
     <ClInclude Include="Box.h" />
-    <ClInclude Include="BoxScene.h" />
     <ClInclude Include="Building.h" />
     <ClInclude Include="Common\Camera.h" />
     <ClInclude Include="Common\d3dApp.h" />
@@ -249,7 +246,6 @@
     <ClInclude Include="Plane.h" />
     <ClInclude Include="RenderStates.h" />
     <ClInclude Include="Scene.h" />
-    <ClInclude Include="SceneMainGame.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Sky.h" />
     <ClInclude Include="StaticObject.h" />

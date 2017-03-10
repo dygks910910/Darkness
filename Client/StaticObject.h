@@ -4,11 +4,12 @@
 #include"xnacollision.h"
 #include "Cordinate.h"
 #include "RenderStates.h"
+#include "ModelMgr.h"
+
 class CStaticObject
 {
 protected:
-	ID3D11Buffer* mObjVB;
-	ID3D11Buffer* mObjIB;
+	CModel* mModel;
 	Material mObjMat;
 	XMFLOAT4X4 mObjWorld;
 	ID3D11ShaderResourceView* mObjMapSRV;
@@ -17,16 +18,14 @@ public:
 	XNA::AxisAlignedBox GetColisionBox() { return mColisionBox; };
 	void SetWorld(const XMFLOAT4X4& world) { mObjWorld = world; };
 
-	virtual void Init(ID3D11Device* device) PURE;
+	virtual void Init(ID3D11Device* device, CModelMgr* modelMgr) PURE;
 	virtual void Draw(ID3D11DeviceContext* dc, Camera mCam)PURE;
-	CStaticObject() : mObjVB(0),mObjIB(0),mObjMapSRV(0)
+	CStaticObject() : mModel(nullptr),mObjMapSRV(0)
 	{
 		ZeroMemory(&mObjMat, sizeof(mObjMat));
 	};
 	~CStaticObject() 
 	{
-		ReleaseCOM(mObjVB);
-		ReleaseCOM(mObjIB);
 		ReleaseCOM(mObjMapSRV);
 	};
 };

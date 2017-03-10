@@ -123,9 +123,6 @@
     <ClCompile Include="ParticleSystem.cpp">
       <Filter>Source Files\01 Effects\ParticleSystem</Filter>
     </ClCompile>
-    <ClCompile Include="SceneMainGame.cpp">
-      <Filter>Source Files\99 Scene</Filter>
-    </ClCompile>
     <ClCompile Include="Sky.cpp">
       <Filter>Source Files\Sky</Filter>
     </ClCompile>
@@ -140,9 +137,6 @@
     </ClCompile>
     <ClCompile Include="MainGame.cpp">
       <Filter>Source Files\MainGame</Filter>
-    </ClCompile>
-    <ClCompile Include="BoxScene.cpp">
-      <Filter>Source Files\99 Scene</Filter>
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
       <Filter>Source Files\99 Scene</Filter>
@@ -241,9 +235,6 @@
     <ClInclude Include="ParticleSystem.h">
       <Filter>Source Files\01 Effects\ParticleSystem</Filter>
     </ClInclude>
-    <ClInclude Include="SceneMainGame.h">
-      <Filter>Source Files\99 Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Sky.h">
       <Filter>Source Files\Sky</Filter>
     </ClInclude>
@@ -258,9 +249,6 @@
     </ClInclude>
     <ClInclude Include="MainGame.h">
       <Filter>Source Files\MainGame</Filter>
-    </ClInclude>
-    <ClInclude Include="BoxScene.h">
-      <Filter>Source Files\99 Scene</Filter>
     </ClInclude>
     <ClInclude Include="SceneManager.h">
       <Filter>Source Files\99 Scene</Filter>
