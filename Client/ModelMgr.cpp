@@ -14,7 +14,7 @@ CModel* CModelMgr::CreateModelFBX(const char* fileName, std::vector<Vertex::Basi
 	}
 	else
 	{
-		loader.LoadFBX("true_clownTri.FBX", vb, ib);
+		loader.LoadFBX(fileName, vb, ib);
 		model = new CModel;
 		std::cout << "¸ðµ¨»ý¼º" << std::endl;
 		/*
@@ -26,8 +26,9 @@ CModel* CModelMgr::CreateModelFBX(const char* fileName, std::vector<Vertex::Basi
 		»ðÀÔ.
 		*/
 		mData.insert(make_pair(tempFilename, model));
-		loader.Destroy();
 	}
+	loader.Destroy();
+
 	return model;
 }
 
@@ -79,4 +80,5 @@ CModelMgr::~CModelMgr()
 	{
 		delete p->second;
 	}
+	mData.clear();
 }

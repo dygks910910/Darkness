@@ -24,6 +24,7 @@ CTestScene::~CTestScene()
 bool CTestScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc, 
 	IDXGISwapChain * swapChain, ID3D11RenderTargetView * renderTargetView)
 {
+	mTextureMgr.Init(device);
 	mLastMousePos.x = 0;
 	mLastMousePos.y = 0;
 	mDirLights[0].Ambient = XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
@@ -62,6 +63,8 @@ bool CTestScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	char cIgnore[100];
 	int StaticObjCount;
 	ifs >> cIgnore >> StaticObjCount;
+	CFBXObject* temppFBXObject;
+
 	for (int i = 0; i < StaticObjCount; ++i)
 	{
 		ifs >> objectName >> cIgnore>>  cIgnore >> cIgnore >> cIgnore >> position.x >> position.y>> position.z	>> cIgnore;
@@ -72,7 +75,7 @@ bool CTestScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 		if (!strcmp(objectName, "Cube"))
 		{
 			pTempStaticObject = new CBox;
-			pTempStaticObject->Init(device, &mModelMgr);
+			pTempStaticObject->Init(device, &mModelMgr, &mTextureMgr);
 			XMVECTOR S = XMLoadFloat3(&scale);
 			XMVECTOR P = XMLoadFloat3(&position);
 			XMVECTOR Q = XMLoadFloat4(&rotation);
@@ -85,22 +88,34 @@ bool CTestScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 		}
 		else if (!strcmp(objectName, "crawler"))
 		{
-			for (int i = 0; i < 5; ++i)
-			{
-				pTempDynamicObject = new CBuilding;
-				pTempDynamicObject->Init(device, &mModelMgr);
-				XMVECTOR S = XMLoadFloat3(&scale);
-				position.x += i * 10;
-				XMVECTOR P = XMLoadFloat3(&position);
-				XMVECTOR Q = XMLoadFloat4(&rotation);
-				XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+			/*pTempDynamicObject = new CCrown;
+			pTempDynamicObject->Init(device, &mModelMgr);
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
 
-				XMFLOAT4X4 M;
-				XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
 
-				pTempDynamicObject->SetWorld(M);
-				mvDynamicObject.push_back(pTempDynamicObject);
-			}
+			pTempDynamicObject->SetWorld(M);
+			mvDynamicObject.push_back(pTempDynamicObject);*/
+			temppFBXObject = new CFBXObject;
+			temppFBXObject->SetFilename("true_clownTri.FBX");
+			temppFBXObject->SetDiffuseFileName(L"true_clown_diffuse1.png");
+
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			temppFBXObject->Init(device, &mModelMgr, &mTextureMgr);
+			temppFBXObject->SetWorld(M);
+
+			mvStaticObject.push_back(temppFBXObject);
+
 		}
 		else if (!strcmp(objectName, "MainCamera"))
 		{
@@ -109,7 +124,7 @@ bool CTestScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 		else if (!strcmp(objectName, "Plane"))
 		{
 			pTempStaticObject = new CPlane;
-			pTempStaticObject->Init(device, &mModelMgr);
+			pTempStaticObject->Init(device, &mModelMgr, &mTextureMgr);
 			XMVECTOR S = XMLoadFloat3(&scale);
 			XMVECTOR P = XMLoadFloat3(&position);
 			XMVECTOR Q = XMLoadFloat4(&rotation);
@@ -119,6 +134,45 @@ bool CTestScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
 			pTempStaticObject->SetWorld(M);
 			mvStaticObject.push_back(pTempStaticObject);
+		}
+		else if (!strcmp(objectName, "Baker_house"))
+		{
+			temppFBXObject = new CFBXObject;
+			temppFBXObject->SetFilename("Baker_houseYup.FBX");
+			temppFBXObject->SetDiffuseFileName(L"Baker_house.png");
+
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			temppFBXObject->Init(device, &mModelMgr, &mTextureMgr);
+			temppFBXObject->SetWorld(M);
+
+			mvStaticObject.push_back(temppFBXObject);
+
+		}
+		else if (!strcmp(objectName, "House"))
+		{
+			temppFBXObject = new CFBXObject;
+			temppFBXObject->SetFilename("House.FBX");
+			temppFBXObject->SetDiffuseFileName(L"House.jpg");
+
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			temppFBXObject->Init(device, &mModelMgr, &mTextureMgr);
+			temppFBXObject->SetWorld(M);
+
+			mvStaticObject.push_back(temppFBXObject);
+
+
 		}
 		
 		std::cout << objectName << std::endl;
@@ -130,7 +184,6 @@ bool CTestScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 		ZeroMemory(&position, sizeof(position));
 		ZeroMemory(&rotation	, sizeof(rotation));
 		ZeroMemory(&scale, sizeof(scale));
-
 	}
 	ifs.close();
 	XMStoreFloat4x4(&temp4x4, XMMatrixIdentity());
@@ -247,4 +300,5 @@ void CTestScene::OnMouseMove(WPARAM btnState, int x, int y)
 void CTestScene::OnResize(const float& aspectRatio)
 {
 	mCam.SetLens(0.25f*MathHelper::Pi, aspectRatio, 0.3f, 3000.0f);
+	XNA::ComputeFrustumFromProjection(&mCamFrustum, &mCam.Proj());
 }

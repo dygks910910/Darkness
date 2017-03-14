@@ -3,6 +3,7 @@
 #include "GameTimer.h"
 #include "MiniMap.h"
 #include "xnacollision.h"
+#include "Crown.h"
 /*
 2017 / 1 / 10 / 6:04
 작성자:박요한(dygks910910@daum.net)
@@ -32,7 +33,7 @@ class CSceneMainGame :
 	Camera mCam;
 	XNA::Frustum mCamFrustum;
 	CBox mBox;
-	CBuilding mCrawler;
+	CCrown mCrawler;
 	bool mWalkCamMode;
 
 	POINT mLastMousePos;

@@ -14,7 +14,7 @@
 #include "Terrain.h"
 #include "ParticleSystem.h"
 #include "Box.h"
-#include "Building.h"
+#include "Crown.h"
 #include "SceneMainGame.h"
 #include "BoxScene.h"
 #include "SceneManager.h"

@@ -6,14 +6,17 @@
 #include "GeometryGenerator.h"
 #include "StaticObject.h"
 #include "Box.h"
-#include "Building.h"
+#include "Crown.h"
 #include "Cordinate.h"
 #include "Plane.h"
 #include "ModelMgr.h"
 #include "Model.h"
+#include "TextureMgr.h"
+#include "FBXObject.h"
 class CTestScene :
 	public CScene
 {
+	TextureMgr mTextureMgr;
 	CModelMgr mModelMgr;
 	CCordinate mCordWorld;
 	Camera	 mCam;
@@ -24,6 +27,8 @@ class CTestScene :
 	Sky* mSky;
 	std::vector<CDynamicObject*> mvDynamicObject;
 	std::vector<CStaticObject*> mvStaticObject;
+	// for Frustum culling
+	XNA::Frustum mCamFrustum;
 public:
 	CTestScene();
 	virtual ~CTestScene();

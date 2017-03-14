@@ -6,7 +6,7 @@ class CPlane :
 {
 	const int& PLANE_SIZE = 10;
 public:
-	virtual void Init(ID3D11Device* device, CModelMgr* modelMgr) ;
+	virtual void Init(ID3D11Device* device, CModelMgr* modelMgr, TextureMgr* textureMgr) ;
 	virtual void Draw(ID3D11DeviceContext* dc, Camera mCam);
 	CPlane();
 	~CPlane();

@@ -169,7 +169,7 @@
   <ItemGroup>
     <ClCompile Include="BitMap.cpp" />
     <ClCompile Include="Box.cpp" />
-    <ClCompile Include="Building.cpp" />
+    <ClCompile Include="Crown.cpp" />
     <ClCompile Include="Common\Camera.cpp" />
     <ClCompile Include="Common\d3dApp.cpp" />
     <ClCompile Include="Common\d3dUtil.cpp" />
@@ -185,6 +185,7 @@
     <ClCompile Include="DynamicObject.cpp" />
     <ClCompile Include="Effects.cpp" />
     <ClCompile Include="FbxLoader.cpp" />
+    <ClCompile Include="FBXObject.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="MiniMap.cpp" />
@@ -220,7 +221,7 @@
   <ItemGroup>
     <ClInclude Include="BitMap.h" />
     <ClInclude Include="Box.h" />
-    <ClInclude Include="Building.h" />
+    <ClInclude Include="Crown.h" />
     <ClInclude Include="Common\Camera.h" />
     <ClInclude Include="Common\d3dApp.h" />
     <ClInclude Include="Common\d3dUtil.h" />
@@ -238,6 +239,7 @@
     <ClInclude Include="DynamicObject.h" />
     <ClInclude Include="Effects.h" />
     <ClInclude Include="FbxLoader.h" />
+    <ClInclude Include="FBXObject.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="MiniMap.h" />
     <ClInclude Include="Model.h" />

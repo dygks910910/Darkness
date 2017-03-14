@@ -4,7 +4,7 @@
 #include "Sky.h"
 #include "ParticleSystem.h"
 #include "Box.h"
-#include "Building.h"
+#include "Crown.h"
 #include "Terrain.h"
 
 /*

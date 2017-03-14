@@ -58,9 +58,6 @@
     <Filter Include="Source Files\00 Object\01 DynamicObjcet">
       <UniqueIdentifier>{b6af5a3b-5a95-44cb-88b1-113106975362}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\00 Object\01 DynamicObjcet\00 Building">
-      <UniqueIdentifier>{5391424d-f5cc-4c9c-85eb-c581058908ae}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\00 Object\02 Coordinate">
       <UniqueIdentifier>{81901539-93ee-46f7-bec5-18ae1ce38a18}</UniqueIdentifier>
     </Filter>
@@ -72,6 +69,9 @@
     </Filter>
     <Filter Include="Source Files\ModelMgr">
       <UniqueIdentifier>{9822ad15-2897-4d32-b08b-d1b4d88b7ff7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\00 Object\01 DynamicObjcet\00 Crown">
+      <UniqueIdentifier>{5391424d-f5cc-4c9c-85eb-c581058908ae}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -113,9 +113,6 @@
     </ClCompile>
     <ClCompile Include="Box.cpp">
       <Filter>Source Files\00 Object\00 StaticObject\00 Box</Filter>
-    </ClCompile>
-    <ClCompile Include="Building.cpp">
-      <Filter>Source Files\00 Object\01 DynamicObjcet\00 Building</Filter>
     </ClCompile>
     <ClCompile Include="Effects.cpp">
       <Filter>Source Files\01 Effects</Filter>
@@ -171,6 +168,12 @@
     <ClCompile Include="ModelMgr.cpp">
       <Filter>Source Files\ModelMgr</Filter>
     </ClCompile>
+    <ClCompile Include="Crown.cpp">
+      <Filter>Source Files\00 Object\01 DynamicObjcet\00 Crown</Filter>
+    </ClCompile>
+    <ClCompile Include="FBXObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="FX\color.fx">
@@ -222,9 +225,6 @@
     </ClInclude>
     <ClInclude Include="Box.h">
       <Filter>Source Files\00 Object\00 StaticObject\00 Box</Filter>
-    </ClInclude>
-    <ClInclude Include="Building.h">
-      <Filter>Source Files\00 Object\01 DynamicObjcet\00 Building</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Source Files\99 Scene</Filter>
@@ -282,6 +282,12 @@
     </ClInclude>
     <ClInclude Include="ModelMgr.h">
       <Filter>Source Files\ModelMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Crown.h">
+      <Filter>Source Files\00 Object\01 DynamicObjcet\00 Crown</Filter>
+    </ClInclude>
+    <ClInclude Include="FBXObject.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

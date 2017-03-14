@@ -12,7 +12,7 @@ CBox::~CBox()
 
 }
 
-void CBox::Init(ID3D11Device* device, CModelMgr* modelMgr)
+void CBox::Init(ID3D11Device* device, CModelMgr* modelMgr, TextureMgr* textureMgr)
 {
 	ID3D11Buffer* tempVB;
 	ID3D11Buffer* tempIB;
