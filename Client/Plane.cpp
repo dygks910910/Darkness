@@ -6,6 +6,10 @@ void CPlane::Init(ID3D11Device* device, CModelMgr* modelMgr, TextureMgr* texture
 {
 	ID3D11Buffer* tempVB;
 	ID3D11Buffer* tempIB;
+	GeometryGenerator geogen;
+	GeometryGenerator::MeshData gridMesh;
+	
+	geogen.CreateGrid(PLANE_SIZE, PLANE_SIZE, 10, 10,gridMesh);
 	if (modelMgr->CheckHasModel("Plane"))
 	{
 		mModel = modelMgr->GetModel("Plane");
@@ -13,50 +17,58 @@ void CPlane::Init(ID3D11Device* device, CModelMgr* modelMgr, TextureMgr* texture
 	else
 	{
 		mModel = new CModel;
-		Vertex::Basic32 verteces[4];
 
-		verteces[0].Pos = XMFLOAT3(+PLANE_SIZE / 2, 0, -PLANE_SIZE / 2);
-		verteces[0].Normal = XMFLOAT3(0, 1, 0);
-		verteces[0].Tex = XMFLOAT2(0, 1);
+		//verteces[0].Pos = XMFLOAT3(+PLANE_SIZE / 2, 0, -PLANE_SIZE / 2);
+		//verteces[0].Normal = XMFLOAT3(0, 1, 0);
+		//verteces[0].Tex = XMFLOAT2(0, 1);
 
-		verteces[1].Pos = XMFLOAT3(-PLANE_SIZE / 2, 0, -PLANE_SIZE / 2);
-		verteces[1].Normal = XMFLOAT3(0, 1, 0);
-		verteces[1].Tex = XMFLOAT2(0, -1);
+		//verteces[1].Pos = XMFLOAT3(-PLANE_SIZE / 2, 0, -PLANE_SIZE / 2);
+		//verteces[1].Normal = XMFLOAT3(0, 1, 0);
+		//verteces[1].Tex = XMFLOAT2(0, -1);
 
-		verteces[2].Pos = XMFLOAT3(+PLANE_SIZE / 2, 0, +PLANE_SIZE / 2);
-		verteces[2].Normal = XMFLOAT3(0, 1, 0);
-		verteces[2].Tex = XMFLOAT2(1, 0);
+		//verteces[2].Pos = XMFLOAT3(+PLANE_SIZE / 2, 0, +PLANE_SIZE / 2);
+		//verteces[2].Normal = XMFLOAT3(0, 1, 0);
+		//verteces[2].Tex = XMFLOAT2(1, 0);
 
-		verteces[3].Pos = XMFLOAT3(-PLANE_SIZE / 2, 0, +PLANE_SIZE / 2);
-		verteces[3].Normal = XMFLOAT3(0, 1, 0);
-		verteces[3].Tex = XMFLOAT2(-1, 0);
+		//verteces[3].Pos = XMFLOAT3(-PLANE_SIZE / 2, 0, +PLANE_SIZE / 2);
+		//verteces[3].Normal = XMFLOAT3(0, 1, 0);
+		//verteces[3].Tex = XMFLOAT2(-1, 0);
+		std::vector<Vertex::Basic32> vVertex{gridMesh.Vertices.size()};
+		for (int i = 0; i < gridMesh.Vertices.size(); ++i)
+		{
+
+			vVertex[i].Pos = gridMesh.Vertices[i].Position;
+			vVertex[i].Normal = gridMesh.Vertices[i].Normal;
+			vVertex[i].Tex = gridMesh.Vertices[i].TexC;
+		}
+		
 
 		D3D11_BUFFER_DESC vbd;
 		vbd.Usage = D3D11_USAGE_IMMUTABLE;
-		vbd.ByteWidth = sizeof(Vertex::Basic32) * 4;
+		vbd.ByteWidth = sizeof(Vertex::Basic32) * gridMesh.Vertices.size();
 		vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		vbd.CPUAccessFlags = 0;
 		vbd.MiscFlags = 0;
 		D3D11_SUBRESOURCE_DATA vinitData;
-		vinitData.pSysMem = verteces;
+		vinitData.pSysMem = &vVertex[0];
 		HR(device->CreateBuffer(&vbd, &vinitData, &tempVB));
 
 
-		UINT indices[6] = { 0,1,2,2,1,3 };
+// 		UINT indices[6] = { 0,1,2,2,1,3 };
 		D3D11_BUFFER_DESC ibd;
 		ibd.Usage = D3D11_USAGE_IMMUTABLE;
-		ibd.ByteWidth = sizeof(UINT) * 6;
+		ibd.ByteWidth = sizeof(UINT) * gridMesh.Indices.size();
 		ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 		ibd.CPUAccessFlags = 0;
 		ibd.MiscFlags = 0;
 		D3D11_SUBRESOURCE_DATA iinitData;
-		iinitData.pSysMem = indices;
+		iinitData.pSysMem =&gridMesh.Indices[0];
 		HR(device->CreateBuffer(&ibd, &iinitData, &tempIB	));
 		
 		
 		mModel->SetVB(tempVB);
 		mModel->SetIB(tempIB);
-		mModel->SetIndexCount(6);
+		mModel->SetIndexCount(gridMesh.Indices.size());
 		modelMgr->InsertModel("Plane", mModel);
 	}
 	

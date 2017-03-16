@@ -172,7 +172,7 @@
       <Filter>Source Files\00 Object\01 DynamicObjcet\00 Crown</Filter>
     </ClCompile>
     <ClCompile Include="FBXObject.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\00 Object\00 StaticObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -287,7 +287,7 @@
       <Filter>Source Files\00 Object\01 DynamicObjcet\00 Crown</Filter>
     </ClInclude>
     <ClInclude Include="FBXObject.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\00 Object\00 StaticObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -86,20 +86,8 @@ bool CTestScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 			pTempStaticObject->SetWorld(M);
 			mvStaticObject.push_back(pTempStaticObject);
 		}
-		else if (!strcmp(objectName, "crawler"))
+		else if (!strcmp(objectName, "Clown"))
 		{
-			/*pTempDynamicObject = new CCrown;
-			pTempDynamicObject->Init(device, &mModelMgr);
-			XMVECTOR S = XMLoadFloat3(&scale);
-			XMVECTOR P = XMLoadFloat3(&position);
-			XMVECTOR Q = XMLoadFloat4(&rotation);
-			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-
-			XMFLOAT4X4 M;
-			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
-
-			pTempDynamicObject->SetWorld(M);
-			mvDynamicObject.push_back(pTempDynamicObject);*/
 			temppFBXObject = new CFBXObject;
 			temppFBXObject->SetFilename("true_clownTri.FBX");
 			temppFBXObject->SetDiffuseFileName(L"true_clown_diffuse1.png");
@@ -171,8 +159,114 @@ bool CTestScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 			temppFBXObject->SetWorld(M);
 
 			mvStaticObject.push_back(temppFBXObject);
+		}
+		else if (!strcmp(objectName , "house_1"))
+		{
+			temppFBXObject = new CFBXObject;
+			temppFBXObject->SetFilename("house 1.fbx");
+			temppFBXObject->SetDiffuseFileName(L"house diffuse.dds");
 
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
 
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			temppFBXObject->Init(device, &mModelMgr, &mTextureMgr);
+			temppFBXObject->SetWorld(M);
+
+			mvStaticObject.push_back(temppFBXObject);
+		}
+		else if (!strcmp(objectName, "house_2"))
+		{
+			temppFBXObject = new CFBXObject;
+			temppFBXObject->SetFilename("house 2.fbx");
+			temppFBXObject->SetDiffuseFileName(L"house diffuse.dds");
+
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			temppFBXObject->Init(device, &mModelMgr, &mTextureMgr);
+			temppFBXObject->SetWorld(M);
+
+			mvStaticObject.push_back(temppFBXObject);
+		}
+		else if (!strcmp(objectName, "house_3"))
+		{
+			temppFBXObject = new CFBXObject;
+			temppFBXObject->SetFilename("house 3.fbx");
+			temppFBXObject->SetDiffuseFileName(L"house diffuse.dds");
+
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			temppFBXObject->Init(device, &mModelMgr, &mTextureMgr);
+			temppFBXObject->SetWorld(M);
+
+			mvStaticObject.push_back(temppFBXObject);
+		}
+		else if (!strcmp(objectName, "house_4"))
+		{
+			temppFBXObject = new CFBXObject;
+			temppFBXObject->SetFilename("house 4.fbx");
+			temppFBXObject->SetDiffuseFileName(L"house diffuse.dds");
+
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			temppFBXObject->Init(device, &mModelMgr, &mTextureMgr);
+			temppFBXObject->SetWorld(M);
+
+			mvStaticObject.push_back(temppFBXObject);
+		}
+		else if (!strcmp(objectName, "house_5"))
+		{
+			temppFBXObject = new CFBXObject;
+			temppFBXObject->SetFilename("house 5.fbx");
+			temppFBXObject->SetDiffuseFileName(L"house diffuse.dds");
+
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			temppFBXObject->Init(device, &mModelMgr, &mTextureMgr);
+			temppFBXObject->SetWorld(M);
+
+			mvStaticObject.push_back(temppFBXObject);
+		}
+		else if (!strcmp(objectName, "house_6"))
+		{
+			temppFBXObject = new CFBXObject;
+			temppFBXObject->SetFilename("house 6.fbx");
+			temppFBXObject->SetDiffuseFileName(L"house diffuse.dds");
+
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			temppFBXObject->Init(device, &mModelMgr, &mTextureMgr);
+			temppFBXObject->SetWorld(M);
+
+			mvStaticObject.push_back(temppFBXObject);
 		}
 		
 		std::cout << objectName << std::endl;

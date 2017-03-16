@@ -1,5 +1,6 @@
 #pragma once
 #include "StaticObject.h"
+#include "GeometryGenerator.h"
 
 class CPlane :
 	public CStaticObject
@@ -11,4 +12,3 @@ public:
 	CPlane();
 	~CPlane();
 };
-

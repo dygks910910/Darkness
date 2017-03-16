@@ -1,23 +1,58 @@
-StaticObjectCount: 7
+StaticObjectCount: 14
 
 MainCamera : { Position: ( 22.24 7 -10.48 )
 Rotation : ( 0 -0.6979001 0 0.7161952 )
 Scale: ( 1 1 1 )}
 
 
-House : { Position: ( -13 -2.865014E-17 -11.39 )
-Rotation : ( -0.4999171 0.5000829 0.4999171 0.5000829 )
+house_2 : { Position: ( 2.6 0 -39.4 )
+Rotation : ( -0.5 -0.5 -0.5 0.5 )
 Scale: ( 1 1 1 )}
 
 
-crawler : { Position: ( 0 0 -2.94 )
-Rotation : ( 0 0.7071068 0 0.7071068 )
+Clown : { Position: ( 3.348564 -8.128869E-21 -18.78 )
+Rotation : ( -0.7071068 0 0 0.7071068 )
 Scale: ( 0.36 0.36 0.36 )}
 
 
-crawler : { Position: ( 0 0.15 -18.64 )
-Rotation : ( 0 0 0 1 )
+Clown : { Position: ( 3.348564 -8.128869E-21 0.003660917 )
+Rotation : ( -0.7071068 0 0 0.7071068 )
 Scale: ( 0.36 0.36 0.36 )}
+
+
+house_4 : { Position: ( -6.29 0 34.8 )
+Rotation : ( -0.5 0.5 0.5 0.5 )
+Scale: ( 1 1 1 )}
+
+
+house_3 : { Position: ( -41.6 0 -2.7 )
+Rotation : ( -0.7071068 0 0 0.7071068 )
+Scale: ( 1 1 1 )}
+
+
+house_6 : { Position: ( 33.9 0 -29.7 )
+Rotation : ( -0.5 -0.5 -0.5 0.5 )
+Scale: ( 1 1 1 )}
+
+
+house_1 : { Position: ( 6.61 0 35.71 )
+Rotation : ( -0.5 -0.5 -0.5 0.5 )
+Scale: ( 1 1 1 )}
+
+
+house_5 : { Position: ( 27.8 0 37.59 )
+Rotation : ( -0.5 0.5 0.5 0.5 )
+Scale: ( 1 1 1 )}
+
+
+House : { Position: ( -25.7 0.2000008 -32.5 )
+Rotation : ( -0.5 0.5 0.5 0.5 )
+Scale: ( 1 1 1 )}
+
+
+Baker_house : { Position: ( -25.7 -0.4427698 35.1 )
+Rotation : ( -0.7071068 0 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
 
 
 Cube : { Position: ( 5.81 0.5 -18.32 )
@@ -25,7 +60,7 @@ Rotation : ( 0 0 0 1 )
 Scale: ( 1 1 1 )}
 
 
-Cube : { Position: ( 5.11 0.45 0 )
+Cube : { Position: ( 6.05 0.45 -0.83 )
 Rotation : ( 0 0 0 1 )
 Scale: ( 1 1 1 )}
 

@@ -259,8 +259,8 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh, std::vector<Vertex::Basic32>&
 
 				lCurrentVertex = lControlPoints[lControlPointIndex];
 				tempVertex.x = static_cast<float>(lCurrentVertex[0] * -1.0f);
-				tempVertex.y = static_cast<float>(lCurrentVertex[2] );
-				tempVertex.z = static_cast<float>(lCurrentVertex[1]);
+				tempVertex.y = static_cast<float>(lCurrentVertex[1] );
+				tempVertex.z = static_cast<float>(lCurrentVertex[2]);
 
 			
 				if (mHasNormal)
