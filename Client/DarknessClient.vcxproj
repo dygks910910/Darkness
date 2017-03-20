@@ -195,7 +195,10 @@
     <ClCompile Include="Plane.cpp" />
     <ClCompile Include="RenderStates.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="ShadowMap.cpp" />
     <ClCompile Include="Sky.cpp" />
+    <ClCompile Include="Ssao.cpp" />
+    <ClCompile Include="StaticObject.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="TestScene.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -249,7 +252,9 @@
     <ClInclude Include="RenderStates.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="ShadowMap.h" />
     <ClInclude Include="Sky.h" />
+    <ClInclude Include="Ssao.h" />
     <ClInclude Include="StaticObject.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="TestScene.h" />
@@ -258,10 +263,15 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="FX\Basic.fx" />
+    <FxCompile Include="FX\BuildShadowMap.fx" />
     <FxCompile Include="FX\Fire.fx" />
     <FxCompile Include="FX\LightHelper.fx" />
+    <FxCompile Include="FX\NormalMap.fx" />
     <FxCompile Include="FX\Rain.fx" />
     <FxCompile Include="FX\Sky.fx" />
+    <FxCompile Include="FX\Ssao.fx" />
+    <FxCompile Include="FX\SsaoBlur.fx" />
+    <FxCompile Include="FX\SsaoNormalDepth.fx" />
     <FxCompile Include="FX\Terrain.fx" />
   </ItemGroup>
   <ItemGroup>

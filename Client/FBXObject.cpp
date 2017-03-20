@@ -20,6 +20,7 @@ void CFBXObject::Init(ID3D11Device* device, CModelMgr* modelMgr, TextureMgr* tex
 	if (modelMgr->CheckHasModel(mFilename.c_str()))
 	{
 		mModel = modelMgr->CreateModelFBX(mFilename.c_str(), vb, ib);
+		
 	}
 	else {
 		//
@@ -52,7 +53,7 @@ void CFBXObject::Init(ID3D11Device* device, CModelMgr* modelMgr, TextureMgr* tex
 		mModel->SetIB(tempIB);
 		mModel->SetIndexCount(ib.size());
 	}
-
+	
 	mObjMapSRV =  textureMgr->CreateTexture(mDiffuseMapName);
 	
 	mObjMat.Ambient = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
@@ -95,7 +96,11 @@ void CFBXObject::Draw(ID3D11DeviceContext * dc, Camera mCam)
 	D3DX11_TECHNIQUE_DESC techDesc;
 	ID3DX11EffectTechnique* boxTech;
 	boxTech = Effects::BasicFX->Light2TexTech;
-
+	XMMATRIX toTexSpace(
+		0.5f, 0.0f, 0.0f, 0.0f,
+		0.0f, -0.5f, 0.0f, 0.0f,
+		0.0f, 0.0f, 1.0f, 0.0f,
+		0.5f, 0.5f, 0.0f, 1.0f);
 	UINT stride = sizeof(Vertex::Basic32);
 	UINT offset = 0;
 	boxTech->GetDesc(&techDesc);
@@ -108,13 +113,12 @@ void CFBXObject::Draw(ID3D11DeviceContext * dc, Camera mCam)
 		XMMATRIX world = XMLoadFloat4x4(&mObjWorld);
 		XMMATRIX worldInvTranspose = MathHelper::InverseTranspose(world);
 		XMMATRIX worldViewProj = world*mCam.ViewProj();
-
-		Effects::BasicFX->SetWorldViewProj(worldViewProj);
-		Effects::BasicFX->SetWorldInvTranspose(worldInvTranspose);
-		Effects::BasicFX->SetTexTransform(XMMatrixIdentity());
-		Effects::BasicFX->SetMaterial(mObjMat);
-		Effects::BasicFX->SetDiffuseMap(mObjMapSRV);
-
+		
+			Effects::BasicFX->SetWorldViewProj(worldViewProj);
+			Effects::BasicFX->SetWorldInvTranspose(worldInvTranspose);
+			Effects::BasicFX->SetTexTransform(XMMatrixIdentity());
+			Effects::BasicFX->SetMaterial(mObjMat);
+			Effects::BasicFX->SetDiffuseMap(mObjMapSRV);
 		boxTech->GetPassByIndex(p)->Apply(0, dc);
 		dc->DrawIndexed(mModel->GetIndexCount(), 0, 0);
 	}
@@ -126,6 +130,43 @@ void CFBXObject::Draw(ID3D11DeviceContext * dc, Camera mCam)
 	mCoord.Draw(dc, mCam);
 	dc->IASetInputLayout(InputLayouts::Basic32);
 	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+}
+
+void CFBXObject::DrawToShadowMap(ID3D11DeviceContext * dc, Camera mCam)
+{
+	ID3D11Buffer* ib = mModel->GetIB();
+	ID3D11Buffer* vb = mModel->GetVB();
+	UINT stride = sizeof(Vertex::Basic32);
+	UINT offset = 0;
+	ID3DX11EffectTechnique* smapTech = Effects::BuildShadowMapFX->BuildShadowMapTech;
+	ID3DX11EffectTechnique* animatedSmapTech = Effects::BuildShadowMapFX->BuildShadowMapSkinnedTech;
+	dc->IASetInputLayout(InputLayouts::Basic32);
+	dc->IASetVertexBuffers(0, 1, &vb, &stride, &offset);
+	dc->IASetIndexBuffer(ib, DXGI_FORMAT_R32_UINT, 0);
+
+
+	D3DX11_TECHNIQUE_DESC techDesc;
+	smapTech->GetDesc(&techDesc);
+	
+	for (UINT p = 0; p < techDesc.Passes; ++p)
+	{
+		dc->IASetVertexBuffers(0, 1, &vb, &stride, &offset);
+		dc->IASetIndexBuffer(ib, DXGI_FORMAT_R32_UINT, 0);
+
+		// Set per object constants.
+		XMMATRIX world = XMLoadFloat4x4(&mObjWorld);
+		XMMATRIX worldInvTranspose = MathHelper::InverseTranspose(world);
+		XMMATRIX worldViewProj = world*mCam.ViewProj();
+
+		Effects::BuildShadowMapFX->SetWorldViewProj(worldViewProj);
+		Effects::BuildShadowMapFX->SetWorldInvTranspose(worldInvTranspose);
+		Effects::BuildShadowMapFX->SetWorld(world);
+		Effects::BuildShadowMapFX->SetTexTransform(XMMatrixIdentity());
+
+		smapTech->GetPassByIndex(p)->Apply(0, dc);
+		dc->DrawIndexed(mModel->GetIndexCount(), 0, 0);
+	}
+
 }
 
 CFBXObject::CFBXObject()

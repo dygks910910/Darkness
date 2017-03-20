@@ -13,6 +13,10 @@ protected:
 	Material mObjMat;
 	XMFLOAT4X4 mObjWorld;
 	ID3D11ShaderResourceView* mObjMapSRV;
+
+	bool bHasNormalMap = false;
+	ID3D11ShaderResourceView* mObjNormalMapSRV;
+
 	XNA::AxisAlignedBox mColisionBox;
 public:
 	XNA::AxisAlignedBox GetColisionBox() { return mColisionBox; };
@@ -20,6 +24,8 @@ public:
 
 	virtual void Init(ID3D11Device* device, CModelMgr* modelMgr, TextureMgr* textureMgr) PURE;
 	virtual void Draw(ID3D11DeviceContext* dc, Camera mCam)PURE;
+	virtual void DrawToShadowMap(ID3D11DeviceContext* dc, Camera mCam);
+	virtual void DrawToSsaoNormalDepthMap(ID3D11DeviceContext* dc, Camera mCam);
 	CStaticObject() : mModel(nullptr),mObjMapSRV(0)
 	{
 		ZeroMemory(&mObjMat, sizeof(mObjMat));

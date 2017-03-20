@@ -3,8 +3,8 @@
 
 
 CFbxLoader::CFbxLoader() :
-	mpManager(nullptr), mpScene(nullptr), mpImporter(nullptr),mRootNode(0),
-	mlFileMajor(0), mlFileMinor(0), mlFileRevision(0), mHasNormal(false), 
+	mpManager(nullptr), mpScene(nullptr), mpImporter(nullptr), mRootNode(0),
+	mlFileMajor(0), mlFileMinor(0), mlFileRevision(0), mHasNormal(false),
 	mHasUV(false), mAllByControlPoint(true)
 {
 }
@@ -12,7 +12,7 @@ CFbxLoader::CFbxLoader() :
 
 CFbxLoader::~CFbxLoader()
 {
-	
+
 }
 void CFbxLoader::Init(const char * pFileName)
 {
@@ -69,8 +69,8 @@ void CFbxLoader::Init(const char * pFileName)
 	}
 	mpImporter->GetFileVersion(mlFileMajor, mlFileMinor, mlFileRevision);
 	std::cout << strWinMsg << std::endl;
-	std::cout << "파일버전:"<<mlFileMajor << "." << mlFileMinor << "." << mlFileRevision << std::endl;
-	mRootNode =  mpScene->GetRootNode();
+	std::cout << "파일버전:" << mlFileMajor << "." << mlFileMinor << "." << mlFileRevision << std::endl;
+	mRootNode = mpScene->GetRootNode();
 	mpImporter->Import(mpScene);
 }
 
@@ -81,7 +81,7 @@ void CFbxLoader::Print()
 	// not contain any attributes.
 	mRootNode = mpScene->GetRootNode();
 	std::cout << mRootNode->GetChildCount() << std::endl;
-	if (mRootNode) 
+	if (mRootNode)
 	{
 		for (int i = 0; i < mRootNode->GetChildCount(); i++)
 			PrintNode(mRootNode->GetChild(i));
@@ -122,10 +122,10 @@ void CFbxLoader::PrintVertexByNode(FbxNode* pNode)
 		lVertices[lIndex * VERTEX_STRIDE] = static_cast<float>(lcurrentVertex[0]);
 		lVertices[lIndex * VERTEX_STRIDE + 1] = static_cast<float>(lcurrentVertex[1]);
 		lVertices[lIndex * VERTEX_STRIDE + 2] = static_cast<float>(lcurrentVertex[2]);
-		std::cout <<"(" <<lVertices[lIndex * VERTEX_STRIDE] << "," << lVertices[lIndex * VERTEX_STRIDE + 1] << "," <<
-			lVertices[lIndex * VERTEX_STRIDE + 2] <<  ")" << std::endl;
+		std::cout << "(" << lVertices[lIndex * VERTEX_STRIDE] << "," << lVertices[lIndex * VERTEX_STRIDE + 1] << "," <<
+			lVertices[lIndex * VERTEX_STRIDE + 2] << ")" << std::endl;
 	}
-	
+
 
 	delete[] lVertices;
 }
@@ -140,28 +140,65 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh, std::vector<Vertex::Basic32>&
 
 	const int lPolygonCount = pMesh->GetPolygonCount();
 
+
+
 	// Count the polygon count of each material
 	FbxLayerElementArrayTemplate<int>* lMaterialIndice = NULL;
 	FbxGeometryElement::EMappingMode lMaterialMappingMode = FbxGeometryElement::eNone;
-	if (pMesh->GetElementMaterial())
-	{
-		lMaterialIndice = &pMesh->GetElementMaterial()->GetIndexArray();
-		lMaterialMappingMode = pMesh->GetElementMaterial()->GetMappingMode();
-		if (lMaterialIndice && lMaterialMappingMode == FbxGeometryElement::eByPolygon)
-		{
-			if (lMaterialIndice->GetCount() == lPolygonCount)
-			{
-				// Count the faces of each material
-				// Make sure we have no "holes" (NULL) in the mSubMeshes table. This can happen
-				// if, in the loop above, we resized the mSubMeshes by more than one slot.
-
-				// Record the offset (how many vertex)
-			}
-		}
-	}
+// 	if (pMesh->GetElementMaterial())
+// 	{
+// 		lMaterialIndice = &pMesh->GetElementMaterial()->GetIndexArray();
+// 		lMaterialMappingMode = pMesh->GetElementMaterial()->GetMappingMode();
+// 		if (lMaterialIndice && lMaterialMappingMode == FbxGeometryElement::eByPolygon)
+// 		{
+// 			FBX_ASSERT(lMaterialIndice->GetCount() == lPolygonCount);
+// 			if (lMaterialIndice->GetCount() == lPolygonCount)
+// 			{
+// 				// Count the faces of each material
+// 				for (int lPolygonIndex = 0; lPolygonIndex < lPolygonCount; ++lPolygonIndex)
+// 				{
+// 					const int lMaterialIndex = lMaterialIndice->GetAt(lPolygonIndex);
+// 					if (mSubMeshes.Size() < lMaterialIndex + 1)
+// 					{
+// 						mSubMeshes.Resize(lMaterialIndex + 1);
+// 					}
+// 					if (mSubMeshes[lMaterialIndex] == NULL)
+// 					{
+// 						mSubMeshes[lMaterialIndex] = new SubMesh;
+// 					}
+// 					mSubMeshes[lMaterialIndex]->TriangleCount += 1;
+// 				}
+// 
+// 				// Make sure we have no "holes" (NULL) in the mSubMeshes table. This can happen
+// 				// if, in the loop above, we resized the mSubMeshes by more than one slot.
+// 				for (int i = 0; i < mSubMeshes.Size(); i++)
+// 				{
+// 					if (mSubMeshes[i] == NULL)
+// 						mSubMeshes[i] = new SubMesh;
+// 				}
+// 
+// 				// Record the offset (how many vertex)
+// 				const int lMaterialCount = mSubMeshes.Size();
+// 				int lOffset = 0;
+// 				for (int lIndex = 0; lIndex < lMaterialCount; ++lIndex)
+// 				{
+// 					mSubMeshes[lIndex]->IndexOffset = lOffset;
+// 					lOffset += mSubMeshes[lIndex]->TriangleCount * 3;
+// 					// This will be used as counter in the following procedures, reset to zero
+// 					mSubMeshes[lIndex]->TriangleCount = 0;
+// 				}
+// 				FBX_ASSERT(lOffset == lPolygonCount * 3);
+// 			}
+// 		}
+// 	}
 
 	// All faces will use the same material.
-	
+// 	if (mSubMeshes.Size() == 0)
+// 	{
+// 		mSubMeshes.Resize(1);
+// 		mSubMeshes[0] = new SubMesh();
+// 	}
+
 
 	// Congregate all the data of a mesh to be cached in VBOs.
 	// If normal or UV is by polygon vertex, record all vertex attributes by polygon vertex.
@@ -212,12 +249,18 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh, std::vector<Vertex::Basic32>&
 	float * lUVs = NULL;
 	FbxStringList lUVNames;
 	pMesh->GetUVSetNames(lUVNames);
+
 	const char * lUVName = NULL;
 	if (mHasUV && lUVNames.GetCount())
 	{
 		//lUVs = new float[lPolygonVertexCount * UV_STRIDE];
 		lUVName = lUVNames[0];
+		std::cout << "텍스처들:";
+		std::cout << lUVName << std::endl;
 	}
+
+
+
 	XMFLOAT3 tempVertex;
 	XMFLOAT3 tempNormal;
 
@@ -240,7 +283,7 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh, std::vector<Vertex::Basic32>&
 		}
 
 		// Where should I save the vertex attribute index, according to the material
-	
+
 		for (int lVerticeIndex = 0; lVerticeIndex < TRIANGLE_VERTEX_COUNT; ++lVerticeIndex)
 		{
 			const int lControlPointIndex = pMesh->GetPolygonVertex(lPolygonIndex, lVerticeIndex);
@@ -259,16 +302,16 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh, std::vector<Vertex::Basic32>&
 
 				lCurrentVertex = lControlPoints[lControlPointIndex];
 				tempVertex.x = static_cast<float>(lCurrentVertex[0] * -1.0f);
-				tempVertex.y = static_cast<float>(lCurrentVertex[1] );
+				tempVertex.y = static_cast<float>(lCurrentVertex[1]);
 				tempVertex.z = static_cast<float>(lCurrentVertex[2]);
 
-			
+
 				if (mHasNormal)
 				{
 					pMesh->GetPolygonVertexNormal(lPolygonIndex, lVerticeIndex, lCurrentNormal);
 					tempNormal.x = static_cast<float>(lCurrentNormal[0]);
 					tempNormal.y = static_cast<float>(lCurrentNormal[1]);
-					tempNormal.z = static_cast<float>(lCurrentNormal[2] );
+					tempNormal.z = static_cast<float>(lCurrentNormal[2]);
 				}
 				if (mHasUV)
 				{
@@ -281,18 +324,67 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh, std::vector<Vertex::Basic32>&
 					uv의 y를 뒤집어 줘야함.
 					*/
 					tempfloat2.x = static_cast<float>(lCurrentUV[0]);
-					tempfloat2.y = 1.0f-static_cast<float>(lCurrentUV[1]);
-					
-					
+					tempfloat2.y = 1.0f - static_cast<float>(lCurrentUV[1]);
+
+
 
 				}
 			}
 			++lVertexCount;
+
 			Vertex::Basic32 temp4Insert;
 			temp4Insert.Pos = tempVertex;
 			temp4Insert.Normal = tempNormal;
 			temp4Insert.Tex = tempfloat2;
 			vb.push_back(temp4Insert);
+		}
+		//mSubMeshes[lMaterialIndex]->TriangleCount += 1;
+	}
+	GetUVName();
+}
+
+void CFbxLoader::GetUVName()
+{
+	int mcount = mRootNode->GetSrcObjectCount<FbxSurfaceMaterial>();
+	for (int index = 0; index < mcount; index++)
+	{
+		FbxSurfaceMaterial *material = (FbxSurfaceMaterial*)mRootNode->GetSrcObject<FbxSurfaceMaterial>(index);
+		if (material)
+		{
+			// This only gets the material of type sDiffuse, you probably need to traverse all Standard Material Property by its name to get all possible textures.
+			FbxProperty prop = material->FindProperty(FbxSurfaceMaterial::sDiffuse);
+
+			// Check if it's layeredtextures
+			int layered_texture_count = prop.GetSrcObjectCount<FbxLayeredTexture>();
+			if (layered_texture_count > 0)
+			{
+				for (int j = 0; j < layered_texture_count; j++)
+				{
+					FbxLayeredTexture* layered_texture = FbxCast<FbxLayeredTexture>(prop.GetSrcObject<FbxLayeredTexture>(j));
+					int lcount = layered_texture->GetSrcObjectCount<FbxTexture>();
+					for (int k = 0; k < lcount; k++)
+					{
+						FbxTexture* texture = FbxCast<FbxTexture>(layered_texture->GetSrcObject<FbxTexture>(k));
+						// Then, you can get all the properties of the texture, include its name
+						const char* texture_name = texture->GetName();
+						std::cout << texture_name << std::endl;
+
+					}
+				}
+			}
+			else
+			{
+				// Directly get textures
+				int texture_count = prop.GetSrcObjectCount<FbxTexture>();
+				for (int j = 0; j < texture_count; j++)
+				{
+					const FbxTexture* texture = FbxCast<FbxTexture>(prop.GetSrcObject<FbxTexture>(j));
+					// Then, you can get all the properties of the texture, include its name
+					const char* texture_name = texture->GetName();
+					std::cout << texture_name << std::endl;
+
+				}
+			}
 		}
 	}
 }
@@ -374,7 +466,7 @@ void CFbxLoader::PrintElement()
 	{
 		for (int i = 0; i < mRootNode->GetChildCount(); i++)
 			LoadElement(mRootNode->GetChild(i)->GetMesh());*/
-	//}
+			//}
 }
 
 void CFbxLoader::Destroy()
@@ -390,18 +482,19 @@ void CFbxLoader::Destroy()
 		mpScene->Destroy();
 	if (mpManager)
 		mpManager->Destroy();
+	mSubMeshes.Clear();
 	
 }
 
-void CFbxLoader::LoadFBX(const char * pFileName,std::vector<Vertex::Basic32>& vb,std::vector<UINT>& ib)
+void CFbxLoader::LoadFBX(const char * pFileName, std::vector<Vertex::Basic32>& vb, std::vector<UINT>& ib)
 {
 	Init(pFileName);
-	
+
 	mRootNode = mpScene->GetRootNode();
 	if (mRootNode)
 	{
 		for (int i = 0; i < mRootNode->GetChildCount(); i++)
-			LoadElement(mRootNode->GetChild(i)->GetMesh(),vb,ib);
+			LoadElement(mRootNode->GetChild(i)->GetMesh(), vb, ib);
 		std::cout << vb.size() << std::endl;
 
 	}

@@ -10,6 +10,7 @@ public:
 	//모델을 삽입하고 해당 모델을 CModel타입으로 리턴받는다.
 	CModel* CreateModelFBX(const char* fileName, std::vector<Vertex::Basic32>& vb, std::vector<UINT>& ib);
 	const bool& CheckHasModel(const char* modelName);
+	//모델이 FBX가 아니라면 직접 삽입.
 	void InsertModel(const char* modelName, CModel* model);
 
 	CModel* GetModel(const char* modelName);

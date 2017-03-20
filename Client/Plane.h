@@ -9,6 +9,7 @@ class CPlane :
 public:
 	virtual void Init(ID3D11Device* device, CModelMgr* modelMgr, TextureMgr* textureMgr) ;
 	virtual void Draw(ID3D11DeviceContext* dc, Camera mCam);
+
 	CPlane();
 	~CPlane();
 };

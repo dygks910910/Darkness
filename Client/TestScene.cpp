@@ -19,11 +19,19 @@ CTestScene::~CTestScene()
 		p = mvStaticObject.erase(p);
 	}
 	SafeDelete(mSky);
+// 	SafeDelete(mSsao);
+// 	SafeDelete(mSmap);
 }
 
-bool CTestScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc, 
-	IDXGISwapChain * swapChain, ID3D11RenderTargetView * renderTargetView)
+bool CTestScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc, 
+	IDXGISwapChain* swapChain, ID3D11RenderTargetView* renderTargetView,
+	const D3D11_VIEWPORT& viewPort)
 {
+// 	mSmap = new ShadowMap(device, 800,600);
+
+	mSceneBounds.Center = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	mSceneBounds.Radius = sqrtf(10.0f*10.0f + 15.0f*15.0f);
+
 	mTextureMgr.Init(device);
 	mLastMousePos.x = 0;
 	mLastMousePos.y = 0;
@@ -51,12 +59,14 @@ bool CTestScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	XMFLOAT4X4 temp4x4;
 	XMStoreFloat4x4(&temp4x4, XMMatrixIdentity());
 	mCordWorld.Init(device, temp4x4, 5000);
-
+	/*mSsao = new Ssao(device, dc, 800, 600, mCam.GetFovY(), mCam.GetFarZ());*/
+	mScreenViewport = viewPort;
 	std::ifstream ifs;
 	ifs.open("MapData.txt");
 	XMFLOAT3 scale;
 	XMFLOAT4 rotation;
 	XMFLOAT3 position;
+
 	CDynamicObject* pTempDynamicObject;
 	CStaticObject* pTempStaticObject;
 	char objectName[50];
@@ -328,10 +338,43 @@ void CTestScene::Draw(ID3D11Device * device, ID3D11DeviceContext * dc,
 	IDXGISwapChain * swapChain, ID3D11RenderTargetView * renderTargetView,
 	ID3D11DepthStencilView * depthStencilView)
 {
-	dc->OMSetRenderTargets(1, &renderTargetView, depthStencilView);
-	dc->ClearRenderTargetView(renderTargetView, reinterpret_cast<const float*>(&Colors::Silver));
+
+// 	mSmap->BindDsvAndSetNullRenderTarget(dc);
+// 	DrawSceneToShadowMap(device, dc, swapChain, renderTargetView, depthStencilView);
+// 	dc->RSSetState(0);
 
 	dc->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+// 	mSsao->SetNormalDepthRenderTarget(depthStencilView);
+// 	DrawSceneToSsaoNormalDepthMap(device,dc,swapChain,
+// 		renderTargetView,depthStencilView);
+
+	//
+	// Now compute the ambient occlusion.
+	//
+
+// 	mSsao->ComputeSsao(mCam);
+// 	mSsao->BlurAmbientMap(2);
+
+	ID3D11RenderTargetView* renderTargets[1] = { renderTargetView };
+	dc->OMSetRenderTargets(1, renderTargets, depthStencilView);
+	dc->RSSetViewports(1, &mScreenViewport);
+	dc->ClearRenderTargetView(renderTargetView, reinterpret_cast<const float*>(&Colors::Silver));
+
+
+	/*dc->OMSetDepthStencilState(RenderStates::EqualsDSS, 0);*/
+
+	// Set per frame constants.
+	Effects::BasicFX->SetDirLights(mDirLights);
+	Effects::BasicFX->SetEyePosW(mCam.GetPosition());
+	Effects::BasicFX->SetCubeMap(mSky->CubeMapSRV());
+// 	Effects::BasicFX->SetShadowMap(mSmap->DepthMapSRV());
+// 	Effects::BasicFX->SetSsaoMap(mSsao->AmbientSRV());
+
+// 	Effects::NormalMapFX->SetDirLights(mDirLights);
+// 	Effects::NormalMapFX->SetEyePosW(mCam.GetPosition());
+// 	Effects::NormalMapFX->SetCubeMap(mSky->CubeMapSRV());
+// 	Effects::NormalMapFX->SetShadowMap(mSmap->DepthMapSRV());
+// 	Effects::NormalMapFX->SetSsaoMap(mSsao->AmbientSRV());
 	for (auto p : mvDynamicObject)
 	{
 		p->Draw(dc, mCam);
@@ -395,4 +438,86 @@ void CTestScene::OnResize(const float& aspectRatio)
 {
 	mCam.SetLens(0.25f*MathHelper::Pi, aspectRatio, 0.3f, 3000.0f);
 	XNA::ComputeFrustumFromProjection(&mCamFrustum, &mCam.Proj());
+// 	if (mSsao)
+// 	{
+// 		mSsao->OnSize(800, 600, mCam.GetFovY(), mCam.GetFarZ());
+// 	}
+}
+
+void CTestScene::DrawSceneToShadowMap(ID3D11Device * device, ID3D11DeviceContext * dc, IDXGISwapChain * swapChain, ID3D11RenderTargetView * renderTargetView, ID3D11DepthStencilView * depthStencilView)
+{
+	XMMATRIX view = XMLoadFloat4x4(&mLightView);
+	XMMATRIX proj = XMLoadFloat4x4(&mLightProj);
+	XMMATRIX viewProj = XMMatrixMultiply(view, proj);
+
+	Effects::BuildShadowMapFX->SetEyePosW(mCam.GetPosition());
+	Effects::BuildShadowMapFX->SetViewProj(viewProj);
+
+	// These properties could be set per object if needed.
+	Effects::BuildShadowMapFX->SetHeightScale(0.07f);
+	Effects::BuildShadowMapFX->SetMaxTessDistance(1.0f);
+	Effects::BuildShadowMapFX->SetMinTessDistance(25.0f);
+	Effects::BuildShadowMapFX->SetMinTessFactor(1.0f);
+	Effects::BuildShadowMapFX->SetMaxTessFactor(5.0f);
+
+	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	for (auto p : mvStaticObject)
+	{
+		p->DrawToShadowMap(dc, mCam);
+	}
+
+	
+
+
+
+	dc->RSSetState(0);
+}
+
+void CTestScene::BuildShadowTransform()
+{
+	// Only the first "main" light casts a shadow.
+	XMVECTOR lightDir = XMLoadFloat3(&mDirLights[0].Direction);
+	XMVECTOR lightPos = -2.0f*mSceneBounds.Radius*lightDir;
+	XMVECTOR targetPos = XMLoadFloat3(&mSceneBounds.Center);
+	XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+
+	XMMATRIX V = XMMatrixLookAtLH(lightPos, targetPos, up);
+
+	// Transform bounding sphere to light space.
+	XMFLOAT3 sphereCenterLS;
+	XMStoreFloat3(&sphereCenterLS, XMVector3TransformCoord(targetPos, V));
+
+	// Ortho frustum in light space encloses scene.
+	float l = sphereCenterLS.x - mSceneBounds.Radius;
+	float b = sphereCenterLS.y - mSceneBounds.Radius;
+	float n = sphereCenterLS.z - mSceneBounds.Radius;
+	float r = sphereCenterLS.x + mSceneBounds.Radius;
+	float t = sphereCenterLS.y + mSceneBounds.Radius;
+	float f = sphereCenterLS.z + mSceneBounds.Radius;
+	XMMATRIX P = XMMatrixOrthographicOffCenterLH(l, r, b, t, n, f);
+
+	// Transform NDC space [-1,+1]^2 to texture space [0,1]^2
+	XMMATRIX T(
+		0.5f, 0.0f, 0.0f, 0.0f,
+		0.0f, -0.5f, 0.0f, 0.0f,
+		0.0f, 0.0f, 1.0f, 0.0f,
+		0.5f, 0.5f, 0.0f, 1.0f);
+
+	XMMATRIX S = V*P*T;
+
+	XMStoreFloat4x4(&mLightView, V);
+	XMStoreFloat4x4(&mLightProj, P);
+	XMStoreFloat4x4(&mShadowTransform, S);
+}
+
+void CTestScene::DrawSceneToSsaoNormalDepthMap(ID3D11Device* device, ID3D11DeviceContext* dc,
+	IDXGISwapChain* swapChain, ID3D11RenderTargetView* renderTargetView,
+	ID3D11DepthStencilView* depthStencilView)
+{
+	for (auto p : mvStaticObject)
+	{
+		p->DrawToSsaoNormalDepthMap(dc, mCam);
+	}
+	
 }

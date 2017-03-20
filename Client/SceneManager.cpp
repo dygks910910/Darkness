@@ -25,7 +25,7 @@ bool CSceneManager::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	mSceneKey = SceneName::test ;
 	mScenes.insert(make_pair(SceneName::test, new CTestScene));
 	mScenes[mSceneKey]->Init(device, dc,swapChain,
-		renderTargetView);
+		renderTargetView, *viewport);
 
 	/*
 	2017 / 1 / 12 / 20:07

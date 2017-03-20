@@ -114,7 +114,7 @@ void CPlane::Draw(ID3D11DeviceContext * dc, Camera mCam)
 		//Effects::BasicFX->SetWorld(world);
 		//Effects::BasicFX->SetWorldInvTranspose(worldInvTranspose);
 		Effects::BasicFX->SetWorldViewProj(worldViewProj);
-		Effects::BasicFX->SetTexTransform(XMMatrixIdentity());
+		Effects::BasicFX->SetTexTransform(XMMatrixScaling(6, 6, 6));
 		Effects::BasicFX->SetMaterial(mObjMat);
 		Effects::BasicFX->SetDiffuseMap(mObjMapSRV);
 
@@ -123,6 +123,7 @@ void CPlane::Draw(ID3D11DeviceContext * dc, Camera mCam)
 		dc->DrawIndexed(mModel->GetIndexCount(), 0, 0);
 	}
 }
+
 
 CPlane::CPlane()
 {

@@ -41,6 +41,7 @@ private:
 	FbxNode* mRootNode;
 	int mlFileMajor, mlFileMinor, mlFileRevision;
 private:
+	void GetUVName();
 	void PrintNode(FbxNode* pNode);
 	void PrintAttribute(FbxNodeAttribute* pAttribute);
 	void PrintVertexByNode(FbxNode* pNode);
@@ -50,6 +51,15 @@ private:
 	bool mHasNormal;
 	bool mHasUV;
 	bool mAllByControlPoint; // Save data in VBO by control point or by polygon vertex.
+
+	struct SubMesh
+	{
+		SubMesh() : IndexOffset(0), TriangleCount(0) {}
+
+		int IndexOffset;
+		int TriangleCount;
+	};
+	FbxArray<SubMesh*> mSubMeshes;
 };
 
 std::ostream& operator<<(std::ostream& os, const FbxVector4& v4);

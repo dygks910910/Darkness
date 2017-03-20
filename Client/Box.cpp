@@ -138,3 +138,4 @@ void CBox::Draw(ID3D11DeviceContext* dc, Camera mCam)
 		dc->DrawIndexed(mModel->GetIndexCount(), 0, 0);
 	}
 }
+
