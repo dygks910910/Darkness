@@ -1,48 +1,1343 @@
-StaticObjectCount: 14
+StaticObjectCount: 273
 
 MainCamera : { Position: ( 22.24 7 -10.48 )
 Rotation : ( 0 -0.6979001 0 0.7161952 )
 Scale: ( 1 1 1 )}
 
 
+fence1 : { Position: ( -49.4 0.075 -1 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.4 0.075 -2.545001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.4 0.075 -4.085001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.4 0.075 -5.685001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.4 0.075 -7.275002 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.4 0.075 -15.155 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.4 0.075 -13.56501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.4 0.075 -11.965 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.4 0.075 -10.425 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.4 0.075 -8.875002 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.4 0.075 -16.745 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.4 0.075 -18.295 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.4 0.075 -19.83501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.4 0.075 -21.435 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.4 0.075 -23.02501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 -46.66501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 -45.07501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 -43.47501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 -41.93501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 -40.38501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 -32.51501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 -34.06501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 -35.60501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 -37.20501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 -38.79501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 -30.91501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 -29.32501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 -27.72501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 -26.18501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 -24.64501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 22.47501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 20.93501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 19.39501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 17.795 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 16.205 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 8.325003 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 9.915002 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 11.515 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 13.055 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 14.605 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 6.735002 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 5.185002 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 3.645001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 2.045001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 0.4550002 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 23.93501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 25.52501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 27.12501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 28.66501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 30.21501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 38.08501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 36.53501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 34.99501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 33.39501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 31.80501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 39.68501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 41.27501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 42.87501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 44.41501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 45.95501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 47.42501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 48.92501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 49.16502 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 -48.16501 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.397 0.075 -49.18502 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.28501 0.075 -49.897 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 48.26501 0.075 -49.897 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.06501 0.075 -49.89701 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -48.82501 0.075 -49.89701 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -47.32501 0.075 -49.89701 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -45.855 0.075 -49.89701 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -44.31501 0.075 -49.89701 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -42.77501 0.075 -49.89701 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -41.17501 0.075 -49.89701 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -39.58501 0.075 -49.89701 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -31.70501 0.075 -49.89701 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -33.29501 0.075 -49.89701 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -34.89501 0.075 -49.89701 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -36.43501 0.075 -49.89701 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -37.985 0.075 -49.89701 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -30.11501 0.075 -49.89701 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -28.565 0.075 -49.89701 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -27.02501 0.075 -49.89701 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -25.425 0.075 -49.89701 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -23.835 0.075 -49.89701 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -0.355 0.075 -49.897 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -1.945001 0.075 -49.897 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -3.545001 0.075 -49.897 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -5.085001 0.075 -49.897 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -6.635001 0.075 -49.897 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -14.505 0.075 -49.897 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -12.955 0.075 -49.897 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -11.415 0.075 -49.897 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -9.815001 0.075 -49.897 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -8.225001 0.075 -49.897 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -16.105 0.075 -49.897 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -17.695 0.075 -49.897 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -19.295 0.075 -49.897 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -20.835 0.075 -49.897 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -22.375 0.075 -49.897 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 24.745 0.075 -49.897 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 26.285 0.075 -49.897 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 27.825 0.075 -49.897 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 29.425 0.075 -49.897 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 31.01501 0.075 -49.897 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 38.89501 0.075 -49.897 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 37.30501 0.075 -49.897 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 35.705 0.075 -49.897 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 34.165 0.075 -49.897 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 32.615 0.075 -49.897 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 40.485 0.075 -49.897 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 42.035 0.075 -49.897 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 43.575 0.075 -49.897 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 45.175 0.075 -49.897 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 46.765 0.075 -49.897 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 23.125 0.075 -49.9 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 21.535 0.075 -49.9 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 19.93501 0.075 -49.9 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 18.395 0.075 -49.9 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 16.845 0.075 -49.9 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 8.975001 0.075 -49.9 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 10.525 0.075 -49.9 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 12.065 0.075 -49.9 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 13.665 0.075 -49.9 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 15.255 0.075 -49.9 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 7.375001 0.075 -49.9 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 5.785001 0.075 -49.9 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 4.185001 0.075 -49.9 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 2.645 0.075 -49.9 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 1.1 0.075 -49.9 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 1.1 0.075 49.9 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 2.645 0.075 49.9 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 4.185001 0.075 49.9 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 5.785001 0.075 49.9 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 7.375001 0.075 49.9 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 15.255 0.075 49.9 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 13.665 0.075 49.9 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 12.065 0.075 49.9 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 10.525 0.075 49.9 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 8.975001 0.075 49.9 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 16.845 0.075 49.9 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 18.395 0.075 49.9 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 19.93501 0.075 49.9 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 21.535 0.075 49.9 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 23.125 0.075 49.9 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 46.765 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 45.175 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 43.575 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 42.035 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 40.485 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 32.615 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 34.165 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 35.705 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 37.30501 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 38.89501 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 31.01501 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 29.425 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 27.825 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 26.285 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 24.745 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -22.375 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -20.835 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -19.295 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -17.695 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -16.105 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -8.225001 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -9.815001 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -11.415 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -12.955 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -14.505 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -6.635001 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -5.085001 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -3.545001 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -1.945001 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -0.355 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -23.835 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -25.425 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -27.02501 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -28.565 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -30.11501 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -37.985 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -36.43501 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -34.89501 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -33.29501 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -31.70501 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -39.58501 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -41.17501 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -42.77501 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -44.31501 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -45.855 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -47.32501 0.075 49.90299 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -48.82501 0.075 49.90299 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( -49.06501 0.075 49.90299 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 48.26501 0.075 49.903 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.28501 0.075 49.90301 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 -49.22002 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 -48.20001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 49.13002 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 48.89001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 47.39001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 45.92001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 44.38001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 42.84001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 41.24001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 39.65001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 31.77001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 33.36001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 34.96001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 36.50001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 38.05001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 30.18001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 28.63001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 27.09001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 25.49001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 23.90001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 0.4200002 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 2.010001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 3.610002 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 5.150002 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 6.700002 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 14.57 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 13.02 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 11.48 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 9.880002 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 8.290003 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 16.17 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 17.76 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 19.36001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 20.90001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 22.44001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 -24.68001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 -26.22001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 -27.76001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 -29.36001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 -30.95001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 -38.83001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 -37.24001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 -35.64001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 -34.10001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 -32.55001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 -40.42001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 -41.97001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 -43.51001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 -45.11001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.8 0.075 -46.70001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.797 0.075 -23.06001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.797 0.075 -21.47 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.797 0.075 -19.87001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.797 0.075 -18.33 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.797 0.075 -16.78 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.797 0.075 -8.910003 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.797 0.075 -10.46 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.797 0.075 -12 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.797 0.075 -13.60001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.797 0.075 -15.19 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.797 0.075 -7.310002 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.797 0.075 -5.720001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.797 0.075 -4.120001 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.797 0.075 -2.58 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+fence1 : { Position: ( 49.797 0.075 -1.035 )
+Rotation : ( 0 0.7071068 0 0.7071068 )
+Scale: ( 0.01 0.01 0.01 )}
+
+
+house_4 : { Position: ( -6.6 -1.543926E-17 38 )
+Rotation : ( -0.5 0.5 0.5 0.5 )
+Scale: ( 1 0.7500979 1 )}
+
+
 house_2 : { Position: ( 2.6 0 -39.4 )
 Rotation : ( -0.5 -0.5 -0.5 0.5 )
-Scale: ( 1 1 1 )}
+Scale: ( 1 0.6873733 1 )}
 
 
-Clown : { Position: ( 3.348564 -8.128869E-21 -18.78 )
+Clown : { Position: ( 13.38 -8.128869E-21 0.003660917 )
 Rotation : ( -0.7071068 0 0 0.7071068 )
 Scale: ( 0.36 0.36 0.36 )}
-
-
-Clown : { Position: ( 3.348564 -8.128869E-21 0.003660917 )
-Rotation : ( -0.7071068 0 0 0.7071068 )
-Scale: ( 0.36 0.36 0.36 )}
-
-
-house_4 : { Position: ( -6.29 0 34.8 )
-Rotation : ( -0.5 0.5 0.5 0.5 )
-Scale: ( 1 1 1 )}
 
 
 house_3 : { Position: ( -41.6 0 -2.7 )
 Rotation : ( -0.7071068 0 0 0.7071068 )
-Scale: ( 1 1 1 )}
+Scale: ( 1 0.7747867 1 )}
 
 
 house_6 : { Position: ( 33.9 0 -29.7 )
 Rotation : ( -0.5 -0.5 -0.5 0.5 )
-Scale: ( 1 1 1 )}
+Scale: ( 1 0.7750348 1 )}
 
 
-house_1 : { Position: ( 6.61 0 35.71 )
+house_1 : { Position: ( 10.47 0 35.71 )
 Rotation : ( -0.5 -0.5 -0.5 0.5 )
 Scale: ( 1 1 1 )}
 
 
 house_5 : { Position: ( 27.8 0 37.59 )
 Rotation : ( -0.5 0.5 0.5 0.5 )
-Scale: ( 1 1 1 )}
+Scale: ( 1 0.7156647 1 )}
 
 
 House : { Position: ( -25.7 0.2000008 -32.5 )

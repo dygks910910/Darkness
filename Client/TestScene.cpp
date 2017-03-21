@@ -170,6 +170,24 @@ bool CTestScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 			mvStaticObject.push_back(temppFBXObject);
 		}
+		else if (!strcmp(objectName, "fence1"))
+		{
+			temppFBXObject = new CFBXObject;
+			temppFBXObject->SetFilename("fence1.FBX");
+			temppFBXObject->SetDiffuseFileName(L"diff_fence_gate.dds");
+
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			temppFBXObject->Init(device, &mModelMgr, &mTextureMgr);
+			temppFBXObject->SetWorld(M);
+
+			mvStaticObject.push_back(temppFBXObject);
+		}
 		else if (!strcmp(objectName , "house_1"))
 		{
 			temppFBXObject = new CFBXObject;
@@ -303,16 +321,16 @@ void CTestScene::UpdateScene(const float & dt)
 	// Control the camera.
 	//
 	if (GetAsyncKeyState('W') & 0x8000)
-		mCam.Walk(10.0f*dt);
+		mCam.Walk(20.0f*dt);
 
 	if (GetAsyncKeyState('S') & 0x8000)
-		mCam.Walk(-10.0f*dt);
+		mCam.Walk(-20.0f*dt);
 
 	if (GetAsyncKeyState('A') & 0x8000)
-		mCam.Strafe(-10.0f*dt);
+		mCam.Strafe(-20.0f*dt);
 
 	if (GetAsyncKeyState('D') & 0x8000)
-		mCam.Strafe(10.0f*dt);
+		mCam.Strafe(20.0f*dt);
 
 	//
 	// Walk/fly mode
@@ -466,10 +484,6 @@ void CTestScene::DrawSceneToShadowMap(ID3D11Device * device, ID3D11DeviceContext
 	{
 		p->DrawToShadowMap(dc, mCam);
 	}
-
-	
-
-
 
 	dc->RSSetState(0);
 }

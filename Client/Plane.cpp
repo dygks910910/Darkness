@@ -9,7 +9,7 @@ void CPlane::Init(ID3D11Device* device, CModelMgr* modelMgr, TextureMgr* texture
 	GeometryGenerator geogen;
 	GeometryGenerator::MeshData gridMesh;
 	
-	geogen.CreateGrid(PLANE_SIZE, PLANE_SIZE, 10, 10,gridMesh);
+	geogen.CreateGrid(PLANE_SIZE, PLANE_SIZE, 11, 11,gridMesh);
 	if (modelMgr->CheckHasModel("Plane"))
 	{
 		mModel = modelMgr->GetModel("Plane");
