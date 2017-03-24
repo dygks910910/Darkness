@@ -4,6 +4,10 @@
 #include<string>
 #include<vector>
 #include "Vertex.h"
+#include <math.h>
+#include<unordered_map>
+#include "LightHelper.h"
+#include "GeometryGenerator.h"
 /*
 2017 / 1 / 7 / 5:33
 작성자:박요한(dygks910910@daum.net)
@@ -32,7 +36,7 @@ public:
 	void PrintVertex();
 	void PrintElement();
 	void Destroy();
-	void LoadFBX(const char* pFileName, std::vector<Vertex::Basic32>& vb, std::vector<UINT>& ib);
+	void LoadFBX(const char* pFileName,GeometryGenerator::MeshData& meshData);
 	
 private:
 	FbxManager* mpManager;
@@ -40,14 +44,19 @@ private:
 	FbxImporter* mpImporter;
 	FbxNode* mRootNode;
 	int mlFileMajor, mlFileMinor, mlFileRevision;
+	std::unordered_map<unsigned int, Material*> mMaterialLookUp;
 private:
 	void GetUVName();
 	void PrintNode(FbxNode* pNode);
 	void PrintAttribute(FbxNodeAttribute* pAttribute);
 	void PrintVertexByNode(FbxNode* pNode);
 	FbxString GetAttributeTypeName(FbxNodeAttribute::EType type);
-	void LoadElement(const FbxMesh* pMesh, std::vector<Vertex::Basic32>& vb, std::vector<UINT>& ib);
-	
+	void LoadElement(const FbxMesh* pMesh,GeometryGenerator::MeshData& meshData);
+	float Length(const XMVECTOR& c1);
+	void ProcessMaterials(FbxNode* inNode, Material& material);
+	void ProcessMaterialAttribute(FbxSurfaceMaterial* inMaterial, unsigned int inMaterialIndex, Material& material);
+
+
 	bool mHasNormal;
 	bool mHasUV;
 	bool mAllByControlPoint; // Save data in VBO by control point or by polygon vertex.
@@ -59,7 +68,7 @@ private:
 		int IndexOffset;
 		int TriangleCount;
 	};
-	FbxArray<SubMesh*> mSubMeshes;
+	//FbxArray<SubMesh*> mSubMeshes;
 };
 
 std::ostream& operator<<(std::ostream& os, const FbxVector4& v4);

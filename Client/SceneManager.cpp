@@ -14,7 +14,8 @@ CSceneManager::~CSceneManager()
 }
 bool CSceneManager::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	IDXGISwapChain* swapChain, ID3D11RenderTargetView* renderTargetView,
-	D3D11_VIEWPORT* viewport)
+	D3D11_VIEWPORT* viewport, ID3D11DepthStencilView* dsv, 
+	const int& clientWidth, const int& clientHeight)
 {
 	
 	/*
@@ -25,7 +26,7 @@ bool CSceneManager::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	mSceneKey = SceneName::test ;
 	mScenes.insert(make_pair(SceneName::test, new CTestScene));
 	mScenes[mSceneKey]->Init(device, dc,swapChain,
-		renderTargetView, *viewport);
+		*viewport, clientWidth, clientHeight);
 
 	/*
 	2017 / 1 / 12 / 20:07
@@ -57,10 +58,9 @@ void CSceneManager::UpdateScene(const float & dt)
 }
 void CSceneManager::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	IDXGISwapChain* swapChain, ID3D11RenderTargetView* renderTargetView,
-	ID3D11DepthStencilView* depthStencilView)
+	ID3D11DepthStencilView* depthStencilView, D3D11_VIEWPORT* viewport)
 {
-	mScenes[mSceneKey]->Draw(device,dc,
-		swapChain,renderTargetView,depthStencilView);
+	mScenes[mSceneKey]->Draw(renderTargetView, depthStencilView, viewport);
 }
 void CSceneManager::OnMouseDown(WPARAM btnState, int x, int y, const HWND & mhMainWnd)
 {

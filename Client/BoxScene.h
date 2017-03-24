@@ -20,7 +20,6 @@ class CBoxScene:
 	GameTimer mTimer;
 	Camera mCam;
 	//testCube
-	CBox mBox;
 	//testBuilding
 	//CBuilding mBuilding;
 

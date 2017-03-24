@@ -25,11 +25,11 @@ public:
 
 	bool Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 		IDXGISwapChain* swapChain,ID3D11RenderTargetView* renderTargetView,
-		D3D11_VIEWPORT* viewport);
+		D3D11_VIEWPORT* viewport, ID3D11DepthStencilView* dsv, const int& clientWidth, const int& clientHeight);
 	void UpdateScene(const float& dt);
 	void Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 		IDXGISwapChain* swapChain, ID3D11RenderTargetView* renderTargetView,
-		ID3D11DepthStencilView* depthStencilView);
+		ID3D11DepthStencilView* depthStencilView, D3D11_VIEWPORT* viewport);
 	void OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWnd);
 	void OnMouseUp(WPARAM btnState, int x, int y);
 	void OnMouseMove(WPARAM btnState, int x, int y);

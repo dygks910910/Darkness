@@ -9,12 +9,9 @@
 #include "FbxLoader.h"
 #include "xnacollision.h"
 #include "Cordinate.h"
-#include "Model.h"
-#include "ModelMgr.h"
 class CDynamicObject
 {
 protected:
-	CModel* mModel;
 	ID3D11Device* md3dDevice;
 	Material mObjMat;
 	XMFLOAT4X4 mObjWorld;
@@ -24,7 +21,7 @@ protected:
 public:
 
 	virtual void SetWorld(const XMFLOAT4X4& worldmtx) { mObjWorld = worldmtx; };
-	virtual void Init(ID3D11Device* d3ddevice, CModelMgr* modelMgr)PURE;
+	virtual void Init(ID3D11Device* d3ddevice)PURE;
 	virtual void Draw(ID3D11DeviceContext* dc, const Camera& mCam)PURE;
 	CDynamicObject();
 	~CDynamicObject();

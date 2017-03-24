@@ -1,7 +1,7 @@
 #pragma once
-#include "StaticObject.h"
 #include "Vertex.h"
 #include "Effects.h"
+#include "Camera.h"
 class CCordinate
 {
 	ID3D11Buffer* mVB;
