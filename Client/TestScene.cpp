@@ -19,7 +19,6 @@ CTestScene::~CTestScene()
 	// 		p = mvStaticObject.erase(p);
 	// 	}
 	SafeDelete(mSky);
-	// 	SafeDelete(mSsao);
 	SafeDelete(mSmap);
 	ReleaseCOM(mStaticNormalMappingObjectVB);
 	ReleaseCOM(mStaticNormalMappingObjectIB);
@@ -31,7 +30,7 @@ bool CTestScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	IDXGISwapChain* swapChain,
 	const D3D11_VIEWPORT& viewPort, const int& clientWidth, const int& clientHeight)
 {
-	mSmap = new ShadowMap(device, 800, 600);
+	mSmap = new ShadowMap(device, clientWidth ,clientHeight);
 	mDevice = device;
 	mDc = dc;
 	mSwapChain = swapChain;
@@ -39,10 +38,13 @@ bool CTestScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	//mDSV = dsv;
 	mClientHeight = clientHeight;
 	mClientWidth = clientWidth;
+
 	//////////////////////////////////////////////////////////////////////////
 	//월드세팅
 
+	
 
+	mLightRotationAngle = 0;
 	XMMATRIX I = XMMatrixIdentity();
 	XMStoreFloat4x4(&mGridWorld, I);
 	XMStoreFloat4x4(&mHouseWorld, I);
@@ -72,39 +74,50 @@ bool CTestScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	mBoxMat.Specular = XMFLOAT4(0.8f, 0.8f, 0.8f, 16.0f);
 	mBoxMat.Reflect = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
 
-// 	mStoneTexSRV = mTexMgr.CreateTexture(L"Textures/floor.dds");
-// 	mBrickTexSRV = mTexMgr.CreateTexture(L"Textures/bricks.dds");
-// 	mStoneNormalTexSRV = mTexMgr.CreateTexture(L"Textures/floor_nmap.dds");
-// 	mBrickNormalTexSRV = mTexMgr.CreateTexture(L"Textures/bricks_nmap.dds");
-// 
-// 	mClownNormalTexSRV = mTexMgr.CreateTexture(L"true_clown_normals.png");
-// 	mClownTexSRV = mTexMgr.CreateTexture(L"true_clown_diffuse1.png");
+	// 	mStoneTexSRV = mTexMgr.CreateTexture(L"Textures/floor.dds");
+	// 	mBrickTexSRV = mTexMgr.CreateTexture(L"Textures/bricks.dds");
+	// 	mStoneNormalTexSRV = mTexMgr.CreateTexture(L"Textures/floor_nmap.dds");
+	// 	mBrickNormalTexSRV = mTexMgr.CreateTexture(L"Textures/bricks_nmap.dds");
+	// 
+	// 	mClownNormalTexSRV = mTexMgr.CreateTexture(L"true_clown_normals.png");
+	// 	mClownTexSRV = mTexMgr.CreateTexture(L"true_clown_diffuse1.png");
 
-	//버퍼 빌드
+		//버퍼 빌드
 	BuildShapeGeometryBuffers();
+	BuildScreenQuadGeometryBuffers();
+
 	//////////////////////////////////////////////////////////////////////////
-	mSceneBounds.Center = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	mSceneBounds.Radius = sqrtf(10.0f*10.0f + 15.0f*15.0f);
+	
 
 	//mTextureMgr.Init(device);
 	mLastMousePos.x = 0;
 	mLastMousePos.y = 0;
-	mDirLights[0].Ambient = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
-	mDirLights[0].Diffuse = XMFLOAT4(0.8f, 0.8f, 0.8f, 1.0f);
-	mDirLights[0].Specular = XMFLOAT4(0.6f, 0.6f, 0.6f, 16.0f);
-	mDirLights[0].Direction = XMFLOAT3(0.707f, -0.707f, 0.0f);
 
-	mDirLights[1].Ambient = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
-	mDirLights[1].Diffuse = XMFLOAT4(1.4f, 1.4f, 1.4f, 1.0f);
-	mDirLights[1].Specular = XMFLOAT4(0.3f, 0.3f, 0.3f, 16.0f);
-	mDirLights[1].Direction = XMFLOAT3(-0.707f, 0.0f, 0.707f);
+	mDirLights[0].Ambient = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
+	mDirLights[0].Diffuse = XMFLOAT4(0.7f, 0.7f, 0.6f, 1.0f);
+	mDirLights[0].Specular = XMFLOAT4(0.8f, 0.8f, 0.7f, 1.0f);
+	mDirLights[0].Direction = XMFLOAT3(-0.57735f, -0.57735f, 0.57735f);
+
+	// Shadow acne gets worse as we increase the slope of the polygon (from the
+	// perspective of the light).
+	//mDirLights[0].Direction = XMFLOAT3(5.0f/sqrtf(50.0f), -5.0f/sqrtf(50.0f), 0.0f);
+	//mDirLights[0].Direction = XMFLOAT3(10.0f/sqrtf(125.0f), -5.0f/sqrtf(125.0f), 0.0f);
+	//mDirLights[0].Direction = XMFLOAT3(10.0f/sqrtf(116.0f), -4.0f/sqrtf(116.0f), 0.0f);
+	//mDirLights[0].Direction = XMFLOAT3(10.0f/sqrtf(109.0f), -3.0f/sqrtf(109.0f), 0.0f);
+
+	mDirLights[1].Ambient = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
+	mDirLights[1].Diffuse = XMFLOAT4(0.40f, 0.40f, 0.40f, 1.0f);
+	mDirLights[1].Specular = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
+	mDirLights[1].Direction = XMFLOAT3(0.707f, -0.707f, 0.0f);
 
 	mDirLights[2].Ambient = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
 	mDirLights[2].Diffuse = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
 	mDirLights[2].Specular = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
-	mDirLights[2].Direction = XMFLOAT3(-0.47735f, -0.47735f, -0.57735f);
-
-
+	mDirLights[2].Direction = XMFLOAT3(0.0f, 0.0, -1.0f);
+	
+	mOriginalLightDir[0] = mDirLights[0].Direction;
+	mOriginalLightDir[1] = mDirLights[1].Direction;
+	mOriginalLightDir[2] = mDirLights[2].Direction;
 
 
 	mSky = new Sky(device, L"Textures/desertcube1024.dds", 5000.0f);
@@ -118,27 +131,25 @@ bool CTestScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	XMFLOAT4X4 temp4x4;
 	XMStoreFloat4x4(&temp4x4, XMMatrixIdentity());
 	mCordWorld.Init(device, temp4x4, 5000);
-
 	return true;
 }
 
 void CTestScene::UpdateScene(const float & dt)
 {
-	// 	mTimer.Tick();
 		//
 		// Control the camera.
 		//
 	if (GetAsyncKeyState('W') & 0x8000)
-		mCam.Walk(20.0f*dt);
+		mCam.Walk(200.0f*dt);
 
 	if (GetAsyncKeyState('S') & 0x8000)
-		mCam.Walk(-20.0f*dt);
+		mCam.Walk(-200.0f*dt);
 
 	if (GetAsyncKeyState('A') & 0x8000)
-		mCam.Strafe(-20.0f*dt);
+		mCam.Strafe(-200.0f*dt);
 
 	if (GetAsyncKeyState('D') & 0x8000)
-		mCam.Strafe(20.0f*dt);
+		mCam.Strafe(200.0f*dt);
 
 	//
 	// Walk/fly mode
@@ -156,6 +167,7 @@ void CTestScene::UpdateScene(const float & dt)
 	//
 	// Reset particle systems.
 	//
+
 	BuildShadowTransform();
 	mCam.UpdateViewMatrix();
 }
@@ -164,22 +176,22 @@ void CTestScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 {
 
 	mSmap->BindDsvAndSetNullRenderTarget(mDc);
+
 	DrawSceneToShadowMap();
+
 	mDc->RSSetState(0);
 
-	
-	mDc->RSSetState(0);
 
+	//
+	// Restore the back and depth buffer to the OM stage.
+	//
 	ID3D11RenderTargetView* renderTargets[1] = { rtv };
-
-	//std::cout << mRenderTargetView << std::endl;
-
 	mDc->OMSetRenderTargets(1, renderTargets, dsv);
 	mDc->RSSetViewports(1, viewPort);
 
+
 	mDc->ClearRenderTargetView(rtv, reinterpret_cast<const float*>(&Colors::Silver));
 	mDc->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-
 
 	XMMATRIX view = mCam.View();
 	XMMATRIX proj = mCam.Proj();
@@ -198,25 +210,16 @@ void CTestScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 	Effects::NormalMapFX->SetCubeMap(mSky->CubeMapSRV());
 	Effects::NormalMapFX->SetShadowMap(mSmap->DepthMapSRV());
 
-	// Figure out which technique to use for different geometry.
+
 	ID3DX11EffectTechnique* activeTech = Effects::NormalMapFX->Light3TexTech;
 	ID3DX11EffectTechnique* activeSphereTech = Effects::BasicFX->Light3ReflectTech;
-	ID3DX11EffectTechnique* activeSkullTech = Effects::BasicFX->Light3TexTech;
-	// 	ID3DX11EffectTechnique* activeSkinnedTech = Effects::NormalMapFX->Light3TexSkinnedTech;
+	ID3DX11EffectTechnique* activeSkullTech = Effects::BasicFX->Light3TexReflectTech;
 
-	mDc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
+	// Figure out which technique to use for different geometry.
 
 	XMMATRIX world;
 	XMMATRIX worldInvTranspose;
 	XMMATRIX worldViewProj;
-
-	// Transform NDC space [-1,+1]^2 to texture space [0,1]^2
-	XMMATRIX toTexSpace(
-		0.5f, 0.0f, 0.0f, 0.0f,
-		0.0f, -0.5f, 0.0f, 0.0f,
-		0.0f, 0.0f, 1.0f, 0.0f,
-		0.5f, 0.5f, 0.0f, 1.0f);
 
 	XMMATRIX shadowTransform = XMLoadFloat4x4(&mShadowTransform);
 
@@ -233,13 +236,23 @@ void CTestScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 
 	if (GetAsyncKeyState('1') & 0x8000)
 		mDc->RSSetState(RenderStates::WireframeRS);
-
 	D3DX11_TECHNIQUE_DESC techDesc;
-	activeTech->GetDesc(&techDesc);
+
 	for (auto p : mStaticNormalModels)
 	{
-		p.Draw(mDc, activeTech, shadowTransform, mCam);
+		p.Draw(mDc, activeTech, XMLoadFloat4x4(&mShadowTransform), mCam);
 	}
+
+	// FX sets tessellation stages, but it does not disable them.  So do that here
+	// to turn off tessellation.
+	mDc->HSSetShader(0, 0, 0);
+	mDc->DSSetShader(0, 0, 0);
+
+	mDc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	//
+	// Draw the spheres with cubemap reflection.
+	//
 
 
 	stride = sizeof(Vertex::Basic32);
@@ -250,27 +263,26 @@ void CTestScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 	mDc->IASetIndexBuffer(mStaticBasicObjectIB, DXGI_FORMAT_R32_UINT, 0);
 	for (auto p : mStaticBasicModels)
 	{
-		p.Draw(mDc, activeSkullTech, shadowTransform, mCam);
+		p.Draw(mDc, activeSkullTech, XMLoadFloat4x4(&mShadowTransform), mCam);
 	}
 
 
+	// Debug view depth buffer.
+	//	if( GetAsyncKeyState('Z') & 0x8000 )
+	{
+		//DrawSceneQuard();
+	}
 	mCordWorld.Draw(mDc, mCam);
-	//float blendFactor[] = { 0.0f, 0.0f, 0.0f, 0.0f };
+	//mSky->Draw(mDc, mCam);
 
-	
-
-	mDc->RSSetState(0);
-	mSky->Draw(mDc, mCam);
-	//불 파티클.
-	mDc->OMSetBlendState(0, blendFactor, 0xffffffff); // restore default
-
-
-
-	// restore default states.
+	// restore default states, as the SkyFX changes them in the effect file.
 	mDc->RSSetState(0);
 	mDc->OMSetDepthStencilState(0, 0);
-	mDc->OMSetBlendState(0, blendFactor, 0xffffffff);
 
+	// Unbind shadow map as a shader input because we are going to render to it next frame.
+	// The shadow might might be at any slot, so clear all slots.
+	ID3D11ShaderResourceView* nullSRV[16] = { 0 };
+	mDc->PSSetShaderResources(0, 16, nullSRV);
 
 	HR(mSwapChain->Present(0, 0));
 }
@@ -350,34 +362,49 @@ void CTestScene::DrawSceneToShadowMap()
 
 	D3DX11_TECHNIQUE_DESC techDesc;
 	smapTech->GetDesc(&techDesc);
-	//for (UINT p = 0; p < techDesc.Passes; ++p)
-	//{
-	//	// Draw the grid.
-	//	world = XMLoadFloat4x4(&mGridWorld);
-	//	worldInvTranspose = MathHelper::InverseTranspose(world);
-	//	worldViewProj = world*view*proj;
+	for (auto p : mStaticNormalModels)
+	{
+		p.DrawToShadowMap(mDc, smapTech, mLightView, mLightProj);
+	}
 
-	//	Effects::BuildShadowMapFX->SetWorld(world);
-	//	Effects::BuildShadowMapFX->SetWorldInvTranspose(worldInvTranspose);
-	//	Effects::BuildShadowMapFX->SetWorldViewProj(worldViewProj);
-	//	Effects::BuildShadowMapFX->SetTexTransform(XMMatrixScaling(8.0f, 10.0f, 1.0f));
+	stride = sizeof(Vertex::Basic32);
+	offset = 0;
 
-	//	smapTech->GetPassByIndex(p)->Apply(0, mDc);
-	//	mDc->DrawIndexed(mGridIndexCount, mGridIndexOffset, mGridVertexOffset);
-
-	//	// Draw the box.
-	//	world = XMLoadFloat4x4(&mBoxWorld);
-	//	worldInvTranspose = MathHelper::InverseTranspose(world);
-	//	worldViewProj = world*view*proj;
-
-	//	Effects::BuildShadowMapFX->SetWorld(world);
-	//	Effects::BuildShadowMapFX->SetWorldInvTranspose(worldInvTranspose);
-	//	Effects::BuildShadowMapFX->SetWorldViewProj(worldViewProj);
-	//	Effects::BuildShadowMapFX->SetTexTransform(XMMatrixScaling(2.0f, 1.0f, 1.0f));
-
-	//	smapTech->GetPassByIndex(p)->Apply(0, mDc);
-	//	mDc->DrawIndexed(mBoxIndexCount, mBoxIndexOffset, mBoxVertexOffset);
-	//}
+	mDc->IASetInputLayout(InputLayouts::Basic32);
+	mDc->IASetVertexBuffers(0, 1, &mStaticBasicObjectVB, &stride, &offset);
+	mDc->IASetIndexBuffer(mStaticBasicObjectIB, DXGI_FORMAT_R32_UINT, 0);
+	for (auto p : mStaticBasicModels)
+	{
+		p.DrawToShadowMap(mDc, smapTech, mLightView, mLightProj);
+	}
+	// 	for (UINT p = 0; p < techDesc.Passes; ++p)
+	// 	{
+	// 		// Draw the grid.
+	// 		world = XMLoadFloat4x4(&mGridWorld);
+	// 		worldInvTranspose = MathHelper::InverseTranspose(world);
+	// 		worldViewProj = world*view*proj;
+	// 
+	// 		Effects::BuildShadowMapFX->SetWorld(world);
+	// 		Effects::BuildShadowMapFX->SetWorldInvTranspose(worldInvTranspose);
+	// 		Effects::BuildShadowMapFX->SetWorldViewProj(worldViewProj);
+	// 		Effects::BuildShadowMapFX->SetTexTransform(XMMatrixScaling(8.0f, 10.0f, 1.0f));
+	// 
+	// 		smapTech->GetPassByIndex(p)->Apply(0, mDc);
+	// 		mDc->DrawIndexed(mGridIndexCount, mGridIndexOffset, mGridVertexOffset);
+	// 
+	// 		// Draw the box.
+	// 		world = XMLoadFloat4x4(&mBoxWorld);
+	// 		worldInvTranspose = MathHelper::InverseTranspose(world);
+	// 		worldViewProj = world*view*proj;
+	// 
+	// 		Effects::BuildShadowMapFX->SetWorld(world);
+	// 		Effects::BuildShadowMapFX->SetWorldInvTranspose(worldInvTranspose);
+	// 		Effects::BuildShadowMapFX->SetWorldViewProj(worldViewProj);
+	// 		Effects::BuildShadowMapFX->SetTexTransform(XMMatrixScaling(2.0f, 1.0f, 1.0f));
+	// 
+	// 		smapTech->GetPassByIndex(p)->Apply(0, mDc);
+	// 		mDc->DrawIndexed(mBoxIndexCount, mBoxIndexOffset, mBoxVertexOffset);
+	// 	}
 }
 void CTestScene::BuildShadowTransform()
 {
@@ -429,8 +456,9 @@ void CTestScene::BuildShapeGeometryBuffers()
 
 	GeometryGenerator geoGen;
 	geoGen.CreateBox(1.0f, 1.0f, 1.0f, box);
-	geoGen.CreateGrid(15.0f, 15.0f, 11, 11, grid);
+	geoGen.CreateGrid(10.0f, 10.0f, 11, 11, grid);
 	CFbxLoader loader;
+	
 
 	loader.LoadFBX("true_clownTri.FBX", clown);
 	loader.Destroy();
@@ -440,13 +468,13 @@ void CTestScene::BuildShapeGeometryBuffers()
 	boxVertexOffset = 0;
 	gridVertexOffset = box.Vertices.size();
 	clownVertexOffset = gridVertexOffset + grid.Vertices.size();
-	
+
 
 
 	boxIndexCount = box.Indices.size();
 	gridIndexCount = grid.Indices.size();
 	clownIndexCount = clown.Indices.size();
-	
+
 
 
 
@@ -505,7 +533,7 @@ void CTestScene::BuildShapeGeometryBuffers()
 			1.0f);
 	}
 
-	
+
 
 	D3D11_BUFFER_DESC vbd;
 	vbd.Usage = D3D11_USAGE_IMMUTABLE;
@@ -520,8 +548,15 @@ void CTestScene::BuildShapeGeometryBuffers()
 	std::vector<UINT> indices;
 	indices.insert(indices.end(), box.Indices.begin(), box.Indices.end());
 	indices.insert(indices.end(), grid.Indices.begin(), grid.Indices.end());
-	indices.insert(indices.end(), clown.Indices.begin(), clown.Indices.end());
-	
+	//////////////////////////////////////////////////////////////////////////
+	/*
+	2017 / 3 / 26 / 1:55
+	작성자:박요한(dygks910910@daum.net)
+	설명:fbx로더에 문제가 있어서 와인딩오더를 반대로 해줌.fbx로더에서 인덱스를 잘못 뽑는거같다.
+	따라서 앞으로 FBX는 무조건 와인딩오더 반대로 하길바람.
+	*/
+	indices.insert(indices.end(), clown.Indices.rbegin(), clown.Indices.rend());
+
 
 	D3D11_BUFFER_DESC ibd;
 	ibd.Usage = D3D11_USAGE_IMMUTABLE;
@@ -608,6 +643,10 @@ void CTestScene::BuildShapeGeometryBuffers()
 		}
 		else if (!strcmp(objectName, "Plane"))
 		{
+			mSceneBounds.Center = XMFLOAT3(0.0f, 0.0f, 0.0f);
+			mSceneBounds.Radius = 110;
+			
+
 			XMVECTOR S = XMLoadFloat3(&scale);
 			XMVECTOR P = XMLoadFloat3(&position);
 			XMVECTOR Q = XMLoadFloat4(&rotation);
@@ -624,26 +663,10 @@ void CTestScene::BuildShapeGeometryBuffers()
 				mTexMgr.CreateTexture(L"Textures\\floor_nmap.dds"),
 				"grid"
 			));
-
-
 		}
 		else if (!strcmp(objectName, "fence1"))
 		{
-			// 			temppFBXObject = new CFBXObject;
-			// 			temppFBXObject->SetFilename("fence1.FBX");
-			// 			temppFBXObject->SetDiffuseFileName(L"diff_fence_gate.dds");
-			// 
-			// 			XMVECTOR S = XMLoadFloat3(&scale);
-			// 			XMVECTOR P = XMLoadFloat3(&position);
-			// 			XMVECTOR Q = XMLoadFloat4(&rotation);
-			// 			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-			// 
-			// 			XMFLOAT4X4 M;
-			// 			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
-			// 			temppFBXObject->Init(device, &mModelMgr, &mTextureMgr);
-			// 			temppFBXObject->SetWorld(M);
-			// 
-			// 			mvStaticObject.push_back(temppFBXObject);
+			
 		}
 		else if (!strcmp(objectName, "house_1"))
 		{
@@ -774,404 +797,226 @@ void CTestScene::BuildShapeGeometryBuffers()
 }
 void CTestScene::BuildBasicGeometryBuffer()
 {
- 	GeometryGenerator::MeshData fence, house1, house2, house3, house4, house5, house6;
- 	CFbxLoader loader;
- 
- 	loader.LoadFBX("fence1.FBX", fence);
- 	loader.Destroy();
- 	loader.LoadFBX("house 1.fbx", house1);
- 	loader.Destroy();
- 	loader.LoadFBX("house 2.fbx", house2);
- 	loader.Destroy();
- 	loader.LoadFBX("house 3.fbx", house3);
- 	loader.Destroy();
- 	loader.LoadFBX("house 4.fbx", house4);
- 	loader.Destroy();
- 	loader.LoadFBX("house 5.fbx", house5);
- 	loader.Destroy();
- 	loader.LoadFBX("house 6.fbx", house6);
- 	loader.Destroy();
- 
- 	 house1VertexOffset = 0;
- 	 house2VertexOffset = house1.Vertices.size();
- 	 house3VertexOffset = house2VertexOffset + house2.Vertices.size();
- 	house4VertexOffset = house3VertexOffset + house3.Vertices.size();
- 	house5VertexOffset = house4VertexOffset + house4.Vertices.size();
- 	house6VertexOffset = house5VertexOffset + house5.Vertices.size();
- 	fenceVertexOffset = house6VertexOffset + house6.Vertices.size();
- 
- 	house1IndexCount = house1.Indices.size();
- 	house2IndexCount = house2.Indices.size();
- 	house3IndexCount = house3.Indices.size();
- 	house4IndexCount = house4.Indices.size();
- 	house5IndexCount = house5.Indices.size();
- 	house6IndexCount = house6.Indices.size();
- 	fenceIndexCount = fence.Indices.size();
- 
- 	house1IndexOffset = 0;
- 	house2IndexOffset = house1IndexCount;
- 	house3IndexOffset = house2IndexOffset + house2IndexCount;
- 	house4IndexOffset = house3IndexOffset + house3IndexCount;
- 	house5IndexOffset = house4IndexOffset + house4IndexCount;
- 	house6IndexOffset = house5IndexOffset + house5IndexCount;
- 	fenceIndexOffset = house6IndexOffset + house6IndexCount;
- 
- 	UINT totalVertexCount =
- 		house1.Vertices.size() +
- 		house2.Vertices.size() +
- 		house3.Vertices.size() + 
- 		house4.Vertices.size() + 
- 		house5.Vertices.size() + 
- 		house6.Vertices.size()  + 
- 		fence	.Vertices.size();
- 
- 	UINT totalIndexCount =
- 		house1IndexCount +
- 		house2IndexCount +
- 		house3IndexCount + 
- 		house4IndexCount +
- 		house5IndexCount + 
- 		house6IndexCount +
- 		fenceIndexCount;
- 
- 	std::vector<Vertex::Basic32> vertices(totalVertexCount);
- 
- 	UINT k = 0;
- 	for (size_t i = 0; i < house1.Vertices.size(); ++i, ++k)
- 	{
- 		vertices[k].Pos = house1.Vertices[i].Position;
- 		vertices[k].Normal = house1.Vertices[i].Normal;
- 		vertices[k].Tex = house1.Vertices[i].TexC;
- 	
- 	}
- 	for (size_t i = 0; i < house2.Vertices.size(); ++i, ++k)
- 	{
- 		vertices[k].Pos = house2.Vertices[i].Position;
- 		vertices[k].Normal = house2.Vertices[i].Normal;
- 		vertices[k].Tex = house2.Vertices[i].TexC;
- 
- 	}
- 	for (size_t i = 0; i < house3.Vertices.size(); ++i, ++k)
- 	{
- 		vertices[k].Pos = house3.Vertices[i].Position;
- 		vertices[k].Normal = house3.Vertices[i].Normal;
- 		vertices[k].Tex = house3.Vertices[i].TexC;
- 
- 	}
- 	for (size_t i = 0; i < house4.Vertices.size(); ++i, ++k)
- 	{
- 		vertices[k].Pos = house4.Vertices[i].Position;
- 		vertices[k].Normal = house4.Vertices[i].Normal;
- 		vertices[k].Tex = house4.Vertices[i].TexC;
- 
- 	}
- 	for (size_t i = 0; i < house5.Vertices.size(); ++i, ++k)
- 	{
- 		vertices[k].Pos = house5.Vertices[i].Position;
- 		vertices[k].Normal = house5.Vertices[i].Normal;
- 		vertices[k].Tex = house5.Vertices[i].TexC;
- 
- 	}
- 	for (size_t i = 0; i < house6.Vertices.size(); ++i, ++k)
- 	{
- 		vertices[k].Pos = house6.Vertices[i].Position;
- 		vertices[k].Normal = house6.Vertices[i].Normal;
- 		vertices[k].Tex = house6.Vertices[i].TexC;
- 
- 	}
- 	for (size_t i = 0; i < fence.Vertices.size(); ++i, ++k)
- 	{
- 		vertices[k].Pos = fence.Vertices[i].Position;
- 		vertices[k].Normal = fence.Vertices[i].Normal;
- 		vertices[k].Tex = fence.Vertices[i].TexC;
- 	}
- 
- 	D3D11_BUFFER_DESC vbd;
- 	vbd.Usage = D3D11_USAGE_IMMUTABLE;
- 	vbd.ByteWidth = sizeof(Vertex::Basic32) * totalVertexCount;
- 	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
- 	vbd.CPUAccessFlags = 0;
- 	vbd.MiscFlags = 0;
- 	D3D11_SUBRESOURCE_DATA vinitData;
- 	vinitData.pSysMem = &vertices[0];
- 	HR(mDevice->CreateBuffer(&vbd, &vinitData, &mStaticBasicObjectVB));
- 
- 	//
- 	// Pack the indices of all the meshes into one index buffer.
- 	//
- 	std::vector<UINT> indices;
- 	indices.insert(indices.end(), house1.Indices.begin(), house1.Indices.end());
- 	indices.insert(indices.end(), house2.Indices.begin(), house2.Indices.end());
- 	indices.insert(indices.end(), house3.Indices.begin(), house3.Indices.end());
- 	indices.insert(indices.end(), house4.Indices.begin(), house4.Indices.end());
- 	indices.insert(indices.end(), house5.Indices.begin(), house5.Indices.end());
- 	indices.insert(indices.end(), house6.Indices.begin(), house6.Indices.end());
- 	indices.insert(indices.end(), fence.Indices.begin(), fence.Indices.end());
- 
- 
- 
- 	D3D11_BUFFER_DESC ibd;
- 	ibd.Usage = D3D11_USAGE_IMMUTABLE;
- 	ibd.ByteWidth = sizeof(UINT) * totalIndexCount;
- 	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
- 	ibd.CPUAccessFlags = 0;
- 	ibd.MiscFlags = 0;
- 	D3D11_SUBRESOURCE_DATA iinitData;
- 	iinitData.pSysMem = &indices[0];
- 	HR(mDevice->CreateBuffer(&ibd, &iinitData, &mStaticBasicObjectIB));
+	GeometryGenerator::MeshData fence, house1, house2, house3, house4, house5, house6;
+	CFbxLoader loader;
+
+	loader.LoadFBX("fence1.FBX", fence);
+	loader.Destroy();
+	loader.LoadFBX("house 1.fbx", house1);
+	loader.Destroy();
+	loader.LoadFBX("house 2.fbx", house2);
+	loader.Destroy();
+	loader.LoadFBX("house 3.fbx", house3);
+	loader.Destroy();
+	loader.LoadFBX("house 4.fbx", house4);
+	loader.Destroy();
+	loader.LoadFBX("house 5.fbx", house5);
+	loader.Destroy();
+	loader.LoadFBX("house 6.fbx", house6);
+	loader.Destroy();
+
+	house1VertexOffset = 0;
+	house2VertexOffset = house1.Vertices.size();
+	house3VertexOffset = house2VertexOffset + house2.Vertices.size();
+	house4VertexOffset = house3VertexOffset + house3.Vertices.size();
+	house5VertexOffset = house4VertexOffset + house4.Vertices.size();
+	house6VertexOffset = house5VertexOffset + house5.Vertices.size();
+	fenceVertexOffset = house6VertexOffset + house6.Vertices.size();
+
+	house1IndexCount = house1.Indices.size();
+	house2IndexCount = house2.Indices.size();
+	house3IndexCount = house3.Indices.size();
+	house4IndexCount = house4.Indices.size();
+	house5IndexCount = house5.Indices.size();
+	house6IndexCount = house6.Indices.size();
+	fenceIndexCount = fence.Indices.size();
+
+	house1IndexOffset = 0;
+	house2IndexOffset = house1IndexCount;
+	house3IndexOffset = house2IndexOffset + house2IndexCount;
+	house4IndexOffset = house3IndexOffset + house3IndexCount;
+	house5IndexOffset = house4IndexOffset + house4IndexCount;
+	house6IndexOffset = house5IndexOffset + house5IndexCount;
+	fenceIndexOffset = house6IndexOffset + house6IndexCount;
+
+	UINT totalVertexCount =
+		house1.Vertices.size() +
+		house2.Vertices.size() +
+		house3.Vertices.size() +
+		house4.Vertices.size() +
+		house5.Vertices.size() +
+		house6.Vertices.size() +
+		fence.Vertices.size();
+
+	UINT totalIndexCount =
+		house1IndexCount +
+		house2IndexCount +
+		house3IndexCount +
+		house4IndexCount +
+		house5IndexCount +
+		house6IndexCount +
+		fenceIndexCount;
+
+	std::vector<Vertex::Basic32> vertices(totalVertexCount);
+
+	UINT k = 0;
+	for (size_t i = 0; i < house1.Vertices.size(); ++i, ++k)
+	{
+		vertices[k].Pos = house1.Vertices[i].Position;
+		vertices[k].Normal = house1.Vertices[i].Normal;
+		vertices[k].Tex = house1.Vertices[i].TexC;
+
+	}
+	for (size_t i = 0; i < house2.Vertices.size(); ++i, ++k)
+	{
+		vertices[k].Pos = house2.Vertices[i].Position;
+		vertices[k].Normal = house2.Vertices[i].Normal;
+		vertices[k].Tex = house2.Vertices[i].TexC;
+
+	}
+	for (size_t i = 0; i < house3.Vertices.size(); ++i, ++k)
+	{
+		vertices[k].Pos = house3.Vertices[i].Position;
+		vertices[k].Normal = house3.Vertices[i].Normal;
+		vertices[k].Tex = house3.Vertices[i].TexC;
+
+	}
+	for (size_t i = 0; i < house4.Vertices.size(); ++i, ++k)
+	{
+		vertices[k].Pos = house4.Vertices[i].Position;
+		vertices[k].Normal = house4.Vertices[i].Normal;
+		vertices[k].Tex = house4.Vertices[i].TexC;
+
+	}
+	for (size_t i = 0; i < house5.Vertices.size(); ++i, ++k)
+	{
+		vertices[k].Pos = house5.Vertices[i].Position;
+		vertices[k].Normal = house5.Vertices[i].Normal;
+		vertices[k].Tex = house5.Vertices[i].TexC;
+
+	}
+	for (size_t i = 0; i < house6.Vertices.size(); ++i, ++k)
+	{
+		vertices[k].Pos = house6.Vertices[i].Position;
+		vertices[k].Normal = house6.Vertices[i].Normal;
+		vertices[k].Tex = house6.Vertices[i].TexC;
+
+	}
+	for (size_t i = 0; i < fence.Vertices.size(); ++i, ++k)
+	{
+		vertices[k].Pos = fence.Vertices[i].Position;
+		vertices[k].Normal = fence.Vertices[i].Normal;
+		vertices[k].Tex = fence.Vertices[i].TexC;
+	}
+
+	D3D11_BUFFER_DESC vbd;
+	vbd.Usage = D3D11_USAGE_IMMUTABLE;
+	vbd.ByteWidth = sizeof(Vertex::Basic32) * totalVertexCount;
+	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	vbd.CPUAccessFlags = 0;
+	vbd.MiscFlags = 0;
+	D3D11_SUBRESOURCE_DATA vinitData;
+	vinitData.pSysMem = &vertices[0];
+	HR(mDevice->CreateBuffer(&vbd, &vinitData, &mStaticBasicObjectVB));
+
+	//
+	// Pack the indices of all the meshes into one index buffer.
+	//
+	std::vector<UINT> indices;
+	indices.insert(indices.end(), house1.Indices.rbegin(), house1.Indices.rend());
+	indices.insert(indices.end(), house2.Indices.rbegin(), house2.Indices.rend());
+	indices.insert(indices.end(), house3.Indices.rbegin(), house3.Indices.rend());
+	indices.insert(indices.end(), house4.Indices.rbegin(), house4.Indices.rend());
+	indices.insert(indices.end(), house5.Indices.rbegin(), house5.Indices.rend());
+	indices.insert(indices.end(), house6.Indices.rbegin(), house6.Indices.rend());
+	indices.insert(indices.end(), fence.Indices.rbegin(), fence.Indices.rend());
+
+
+
+	D3D11_BUFFER_DESC ibd;
+	ibd.Usage = D3D11_USAGE_IMMUTABLE;
+	ibd.ByteWidth = sizeof(UINT) * totalIndexCount;
+	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	ibd.CPUAccessFlags = 0;
+	ibd.MiscFlags = 0;
+	D3D11_SUBRESOURCE_DATA iinitData;
+	iinitData.pSysMem = &indices[0];
+	HR(mDevice->CreateBuffer(&ibd, &iinitData, &mStaticBasicObjectIB));
 
 
 }
-//
-//void CTestScene::ReadMapData(ID3D11Device* device)
-//{
-//	std::ifstream ifs;
-//	ifs.open("MapData.txt");
-//	XMFLOAT3 scale;
-//	XMFLOAT4 rotation;
-//	XMFLOAT3 position;
-//
-//	CDynamicObject* pTempDynamicObject;
-//	CStaticObject* pTempStaticObject;
-//	char objectName[50];
-//	char cIgnore[100];
-//	int StaticObjCount;
-//	ifs >> cIgnore >> StaticObjCount;
-//	CFBXObject* temppFBXObject;
-//
-//	for (int i = 0; i < StaticObjCount; ++i)
-//	{
-//		ifs >> objectName >> cIgnore >> cIgnore >> cIgnore >> cIgnore >> position.x >> position.y >> position.z >> cIgnore;
-//		ifs >> cIgnore >> cIgnore >> cIgnore >> rotation.x >> rotation.y >> rotation.z >> rotation.w >> cIgnore;
-//		ifs >> cIgnore >> cIgnore >> scale.x >> scale.y >> scale.z >> cIgnore;
-//
-//
-//		if (!strcmp(objectName, "Cube"))
-//		{
-//			pTempStaticObject = new CBox;
-//			pTempStaticObject->Init(device, &mModelMgr, &mTextureMgr);
-//			XMVECTOR S = XMLoadFloat3(&scale);
-//			XMVECTOR P = XMLoadFloat3(&position);
-//			XMVECTOR Q = XMLoadFloat4(&rotation);
-//			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-//
-//			XMFLOAT4X4 M;
-//			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
-//			pTempStaticObject->SetWorld(M);
-//			mvStaticObject.push_back(pTempStaticObject);
-//		}
-//		else if (!strcmp(objectName, "Clown"))
-//		{
-//			temppFBXObject = new CFBXObject;
-		//temppFBXObject->SetFilename("true_clownTri.FBX");
-//			temppFBXObject->SetDiffuseFileName(L"true_clown_diffuse1.png");
-//
-//			XMVECTOR S = XMLoadFloat3(&scale);
-//			XMVECTOR P = XMLoadFloat3(&position);
-//			XMVECTOR Q = XMLoadFloat4(&rotation);
-//			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-//
-//			XMFLOAT4X4 M;
-//			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
-//			temppFBXObject->Init(device, &mModelMgr, &mTextureMgr);
-//			temppFBXObject->SetWorld(M);
-//
-//			mvStaticObject.push_back(temppFBXObject);
-//
-//		}
-//		else if (!strcmp(objectName, "MainCamera"))
-//		{
-//			mCam.SetPosition(position.x, position.y, position.z);
-//		}
-//		else if (!strcmp(objectName, "Plane"))
-//		{
-//			pTempStaticObject = new CPlane;
-//			pTempStaticObject->Init(device, &mModelMgr, &mTextureMgr);
-//			XMVECTOR S = XMLoadFloat3(&scale);
-//			XMVECTOR P = XMLoadFloat3(&position);
-//			XMVECTOR Q = XMLoadFloat4(&rotation);
-//			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-//
-//			XMFLOAT4X4 M;
-//			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
-//			pTempStaticObject->SetWorld(M);
-//			mvStaticObject.push_back(pTempStaticObject);
-//		}
-//		else if (!strcmp(objectName, "Baker_house"))
-//		{
-//			temppFBXObject = new CFBXObject;
-//			temppFBXObject->SetFilename("Baker_houseYup.FBX");
-//			temppFBXObject->SetDiffuseFileName(L"Baker_house.png");
-//
-//			XMVECTOR S = XMLoadFloat3(&scale);
-//			XMVECTOR P = XMLoadFloat3(&position);
-//			XMVECTOR Q = XMLoadFloat4(&rotation);
-//			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-//
-//			XMFLOAT4X4 M;
-//			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
-//			temppFBXObject->Init(device, &mModelMgr, &mTextureMgr);
-//			temppFBXObject->SetWorld(M);
-//
-//			mvStaticObject.push_back(temppFBXObject);
-//
-//		}
-//		else if (!strcmp(objectName, "House"))
-//		{
-//			temppFBXObject = new CFBXObject;
-//			temppFBXObject->SetFilename("House.FBX");
-//			temppFBXObject->SetDiffuseFileName(L"House.jpg");
-//
-//			XMVECTOR S = XMLoadFloat3(&scale);
-//			XMVECTOR P = XMLoadFloat3(&position);
-//			XMVECTOR Q = XMLoadFloat4(&rotation);
-//			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-//
-//			XMFLOAT4X4 M;
-//			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
-//			temppFBXObject->Init(device, &mModelMgr, &mTextureMgr);
-//			temppFBXObject->SetWorld(M);
-//
-//			mvStaticObject.push_back(temppFBXObject);
-//		}
-//		else if (!strcmp(objectName, "fence1"))
-//		{
-//			temppFBXObject = new CFBXObject;
-//			temppFBXObject->SetFilename("fence1.FBX");
-//			temppFBXObject->SetDiffuseFileName(L"diff_fence_gate.dds");
-//
-//			XMVECTOR S = XMLoadFloat3(&scale);
-//			XMVECTOR P = XMLoadFloat3(&position);
-//			XMVECTOR Q = XMLoadFloat4(&rotation);
-//			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-//
-//			XMFLOAT4X4 M;
-//			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
-//			temppFBXObject->Init(device, &mModelMgr, &mTextureMgr);
-//			temppFBXObject->SetWorld(M);
-//
-//			mvStaticObject.push_back(temppFBXObject);
-//		}
-//		else if (!strcmp(objectName, "house_1"))
-//		{
-//			temppFBXObject = new CFBXObject;
-//			temppFBXObject->SetFilename("house 1.fbx");
-//			temppFBXObject->SetDiffuseFileName(L"house diffuse.dds");
-//
-//			XMVECTOR S = XMLoadFloat3(&scale);
-//			XMVECTOR P = XMLoadFloat3(&position);
-//			XMVECTOR Q = XMLoadFloat4(&rotation);
-//			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-//
-//			XMFLOAT4X4 M;
-//			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
-//			temppFBXObject->Init(device, &mModelMgr, &mTextureMgr);
-//			temppFBXObject->SetWorld(M);
-//
-//			mvStaticObject.push_back(temppFBXObject);
-//		}
-//		else if (!strcmp(objectName, "house_2"))
-//		{
-//			temppFBXObject = new CFBXObject;
-//			temppFBXObject->SetFilename("house 2.fbx");
-//			temppFBXObject->SetDiffuseFileName(L"house diffuse.dds");
-//
-//			XMVECTOR S = XMLoadFloat3(&scale);
-//			XMVECTOR P = XMLoadFloat3(&position);
-//			XMVECTOR Q = XMLoadFloat4(&rotation);
-//			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-//
-//			XMFLOAT4X4 M;
-//			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
-//			temppFBXObject->Init(device, &mModelMgr, &mTextureMgr);
-//			temppFBXObject->SetWorld(M);
-//
-//			mvStaticObject.push_back(temppFBXObject);
-//		}
-//		else if (!strcmp(objectName, "house_3"))
-//		{
-//			temppFBXObject = new CFBXObject;
-//			temppFBXObject->SetFilename("house 3.fbx");
-//			temppFBXObject->SetDiffuseFileName(L"house diffuse.dds");
-//
-//			XMVECTOR S = XMLoadFloat3(&scale);
-//			XMVECTOR P = XMLoadFloat3(&position);
-//			XMVECTOR Q = XMLoadFloat4(&rotation);
-//			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-//
-//			XMFLOAT4X4 M;
-//			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
-//			temppFBXObject->Init(device, &mModelMgr, &mTextureMgr);
-//			temppFBXObject->SetWorld(M);
-//
-//			mvStaticObject.push_back(temppFBXObject);
-//		}
-//		else if (!strcmp(objectName, "house_4"))
-//		{
-//			temppFBXObject = new CFBXObject;
-//			temppFBXObject->SetFilename("house 4.fbx");
-//			temppFBXObject->SetDiffuseFileName(L"house diffuse.dds");
-//
-//			XMVECTOR S = XMLoadFloat3(&scale);
-//			XMVECTOR P = XMLoadFloat3(&position);
-//			XMVECTOR Q = XMLoadFloat4(&rotation);
-//			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-//
-//			XMFLOAT4X4 M;
-//			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
-//			temppFBXObject->Init(device, &mModelMgr, &mTextureMgr);
-//			temppFBXObject->SetWorld(M);
-//
-//			mvStaticObject.push_back(temppFBXObject);
-//		}
-//		else if (!strcmp(objectName, "house_5"))
-//		{
-//			temppFBXObject = new CFBXObject;
-//			temppFBXObject->SetFilename("house 5.fbx");
-//			temppFBXObject->SetDiffuseFileName(L"house diffuse.dds");
-//
-//			XMVECTOR S = XMLoadFloat3(&scale);
-//			XMVECTOR P = XMLoadFloat3(&position);
-//			XMVECTOR Q = XMLoadFloat4(&rotation);
-//			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-//
-//			XMFLOAT4X4 M;
-//			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
-//			temppFBXObject->Init(device, &mModelMgr, &mTextureMgr);
-//			temppFBXObject->SetWorld(M);
-//
-//			mvStaticObject.push_back(temppFBXObject);
-//		}
-//		else if (!strcmp(objectName, "house_6"))
-//		{
-//			temppFBXObject = new CFBXObject;
-//			temppFBXObject->SetFilename("house 6.fbx");
-//			temppFBXObject->SetDiffuseFileName(L"house diffuse.dds");
-//
-//			XMVECTOR S = XMLoadFloat3(&scale);
-//			XMVECTOR P = XMLoadFloat3(&position);
-//			XMVECTOR Q = XMLoadFloat4(&rotation);
-//			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-//
-//			XMFLOAT4X4 M;
-//			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
-//			temppFBXObject->Init(device, &mModelMgr, &mTextureMgr);
-//			temppFBXObject->SetWorld(M);
-//
-//			mvStaticObject.push_back(temppFBXObject);
-//		}
-//
-//		std::cout << objectName << std::endl;
-//		std::cout << position.x << " " << position.y << " " << position.z << std::endl;
-//		std::cout << rotation.x << " " << rotation.y << " " << rotation.z << " " << rotation.w << std::endl;
-//		std::cout << scale.x << " " << scale.y << " " << scale.z << std::endl << std::endl;
-//		ZeroMemory(&objectName, sizeof(objectName));
-//		ZeroMemory(&cIgnore, sizeof(cIgnore));
-//		ZeroMemory(&position, sizeof(position));
-//		ZeroMemory(&rotation, sizeof(rotation));
-//		ZeroMemory(&scale, sizeof(scale));
-//	}
-//	ifs.close();
-//}
+void CTestScene::DrawSceneQuard()
+{
+	UINT stride = sizeof(Vertex::Basic32);
+	UINT offset = 0;
 
+	mDc->IASetInputLayout(InputLayouts::Basic32);
+	mDc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	mDc->IASetVertexBuffers(0, 1, &mScreenQuadVB, &stride, &offset);
+	mDc->IASetIndexBuffer(mScreenQuadIB, DXGI_FORMAT_R32_UINT, 0);
 
+	// Scale and shift quad to lower-right corner.
+	XMMATRIX world(
+		0.5f, 0.0f, 0.0f, 0.0f,
+		0.0f, 0.5f, 0.0f, 0.0f,
+		0.0f, 0.0f, 1.0f, 0.0f,
+		0.5f, -0.5f, 0.0f, 1.0f);
+
+	ID3DX11EffectTechnique* tech = Effects::DebugTexFX->ViewRedTech;
+	D3DX11_TECHNIQUE_DESC techDesc;
+
+	tech->GetDesc(&techDesc);
+	for (UINT p = 0; p < techDesc.Passes; ++p)
+	{
+		Effects::DebugTexFX->SetWorldViewProj(world);
+		Effects::DebugTexFX->SetTexture(mSmap->DepthMapSRV());
+
+		tech->GetPassByIndex(p)->Apply(0, mDc);
+		mDc->DrawIndexed(6, 0, 0);
+	}
+}
+void CTestScene::BuildScreenQuadGeometryBuffers()
+{
+	GeometryGenerator::MeshData quad;
+
+	GeometryGenerator geoGen;
+	geoGen.CreateFullscreenQuad(quad);
+
+	//
+	// Extract the vertex elements we are interested in and pack the
+	// vertices of all the meshes into one vertex buffer.
+	//
+
+	std::vector<Vertex::Basic32> vertices(quad.Vertices.size());
+
+	for (UINT i = 0; i < quad.Vertices.size(); ++i)
+	{
+		vertices[i].Pos = quad.Vertices[i].Position;
+		vertices[i].Normal = quad.Vertices[i].Normal;
+		vertices[i].Tex = quad.Vertices[i].TexC;
+	}
+
+	D3D11_BUFFER_DESC vbd;
+	vbd.Usage = D3D11_USAGE_IMMUTABLE;
+	vbd.ByteWidth = sizeof(Vertex::Basic32) * quad.Vertices.size();
+	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	vbd.CPUAccessFlags = 0;
+	vbd.MiscFlags = 0;
+	D3D11_SUBRESOURCE_DATA vinitData;
+	vinitData.pSysMem = &vertices[0];
+	HR(mDevice->CreateBuffer(&vbd, &vinitData, &mScreenQuadVB));
+
+	//
+	// Pack the indices of all the meshes into one index buffer.
+	//
+
+	D3D11_BUFFER_DESC ibd;
+	ibd.Usage = D3D11_USAGE_IMMUTABLE;
+	ibd.ByteWidth = sizeof(UINT) * quad.Indices.size();
+	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	ibd.CPUAccessFlags = 0;
+	ibd.MiscFlags = 0;
+	D3D11_SUBRESOURCE_DATA iinitData;
+	iinitData.pSysMem = &quad.Indices[0];
+	HR(mDevice->CreateBuffer(&ibd, &iinitData, &mScreenQuadIB));
+}

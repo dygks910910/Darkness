@@ -29,6 +29,7 @@ public:
 	);
 	~CStaticBasicModel();
 	virtual void Draw(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMMATRIX& shadowTransform, const Camera& cam);
+	void DrawToShadowMap(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMFLOAT4X4& lightView, const XMFLOAT4X4& lightProj);
 public:
 };
 
@@ -58,6 +59,9 @@ public:
 		);
 	~CStaticNomalModel();
 	virtual void Draw(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMMATRIX& shadowTransform, const Camera& cam);
+	void DrawToShadowMap(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMFLOAT4X4& lightView, const XMFLOAT4X4& lightProj);
+
+
 public:
 };
 

@@ -304,8 +304,8 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh,GeometryGenerator::MeshData& m
 				//lIndices[lIndexOffset + lVerticeIndex] = static_cast<unsigned int>(lVertexCount);
 
 				lCurrentVertex = lControlPoints[lControlPointIndex];
-				tempVertex.x = static_cast<float>(lCurrentVertex[0]);
-				tempVertex.y = static_cast<float>(lCurrentVertex[1]);
+				tempVertex.x = static_cast<float>(lCurrentVertex[0] *-1.0f );
+				tempVertex.y = static_cast<float>(lCurrentVertex[1] );
 				tempVertex.z = static_cast<float>(lCurrentVertex[2]);
 
 

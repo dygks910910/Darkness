@@ -252,6 +252,7 @@
   <ItemGroup>
     <FxCompile Include="FX\Basic.fx" />
     <FxCompile Include="FX\BuildShadowMap.fx" />
+    <FxCompile Include="FX\DebugTexture.fx" />
     <FxCompile Include="FX\Fire.fx" />
     <FxCompile Include="FX\LightHelper.fx" />
     <FxCompile Include="FX\NormalMap.fx" />

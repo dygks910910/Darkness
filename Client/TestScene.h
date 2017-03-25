@@ -115,6 +115,8 @@ class CTestScene :
 	CCordinate mCordWorld;
 	Camera	 mCam;
 	DirectionalLight mDirLights[3];
+	XMFLOAT3 mOriginalLightDir[3];
+
 	GameTimer mTimer;
 	//D3D11_VIEWPORT mScreenViewport;
 	//Terrain mTerrain;
@@ -128,12 +130,16 @@ class CTestScene :
 	XNA::Frustum mCamFrustum;
 	BoundingSphere mSceneBounds;
 
+	float mLightRotationAngle;
 
 	XMFLOAT4X4 mLightView;
 	XMFLOAT4X4 mLightProj;
 	XMFLOAT4X4 mShadowTransform;
 	//Ssao* mSsao;
 	ShadowMap* mSmap;
+
+	ID3D11Buffer* mScreenQuadVB;
+	ID3D11Buffer* mScreenQuadIB;
 public:
 	CTestScene();
 	virtual ~CTestScene();
@@ -150,5 +156,7 @@ public:
 	void BuildShadowTransform();
 	void BuildShapeGeometryBuffers();
 	void BuildBasicGeometryBuffer();
+	void DrawSceneQuard();
+	void BuildScreenQuadGeometryBuffers();
 	//void ReadMapData(ID3D11Device* device);
 };

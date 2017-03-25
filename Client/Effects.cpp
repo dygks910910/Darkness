@@ -111,6 +111,26 @@ BasicEffect::~BasicEffect()
 }
 #pragma endregion
 
+#pragma region DebugTexEffect
+DebugTexEffect::DebugTexEffect(ID3D11Device* device, const std::wstring& filename)
+	: Effect(device, filename)
+{
+	ViewArgbTech = mFX->GetTechniqueByName("ViewArgbTech");
+	ViewRedTech = mFX->GetTechniqueByName("ViewRedTech");
+	ViewGreenTech = mFX->GetTechniqueByName("ViewGreenTech");
+	ViewBlueTech = mFX->GetTechniqueByName("ViewBlueTech");
+	ViewAlphaTech = mFX->GetTechniqueByName("ViewAlphaTech");
+
+	WorldViewProj = mFX->GetVariableByName("gWorldViewProj")->AsMatrix();
+	Texture = mFX->GetVariableByName("gTexture")->AsShaderResource();
+}
+
+DebugTexEffect::~DebugTexEffect()
+{
+
+}
+
+#pragma endregion
 #pragma region SkyEffect
 SkyEffect::SkyEffect(ID3D11Device* device, const std::wstring& filename)
 	: Effect(device, filename)
@@ -198,6 +218,7 @@ SsaoNormalDepthEffect* Effects::SsaoNormalDepthFX = 0;
 SsaoEffect*            Effects::SsaoFX = 0;
 SsaoBlurEffect*        Effects::SsaoBlurFX = 0;
 NormalMapEffect* Effects::NormalMapFX = 0;
+DebugTexEffect*        Effects::DebugTexFX = 0;
 
 void Effects::InitAll(ID3D11Device* device)
 {
@@ -215,6 +236,7 @@ void Effects::InitAll(ID3D11Device* device)
 	RainFX = new ParticleEffect(device, L"FX/Rain.fxo");
 	InstancedBasicFX = new InstancedBasicEffect(device, L"FX/InstancedBasic.fxo");
 	LineFX = new LineEffect(device, L"FX/color.fxo");
+	DebugTexFX = new DebugTexEffect(device, L"FX/DebugTexture.fxo");
 }
 
 void Effects::DestroyAll()
@@ -231,6 +253,7 @@ void Effects::DestroyAll()
 	SafeDelete(RainFX);
 	SafeDelete(InstancedBasicFX);
 	SafeDelete(LineFX);
+	SafeDelete(DebugTexFX);
 }
 
 #pragma endregion
