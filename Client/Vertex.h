@@ -58,6 +58,7 @@ public:
 	static const D3D11_INPUT_ELEMENT_DESC Particle[5];
 	static const D3D11_INPUT_ELEMENT_DESC Line[2];
 	static const D3D11_INPUT_ELEMENT_DESC PosNormalTexTan[4];
+	static const D3D11_INPUT_ELEMENT_DESC InstancedBasic32[7];
 
 };
 
@@ -73,6 +74,8 @@ public:
 	static ID3D11InputLayout* Terrain;
 	static ID3D11InputLayout* Particle;
 	static ID3D11InputLayout* PosNormalTexTan;
+	static ID3D11InputLayout* InstancedBasic32;
+
 };
 
 #endif // VERTEX_H

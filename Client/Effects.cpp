@@ -214,20 +214,20 @@ ParticleEffect* Effects::FireFX   = 0;
 ParticleEffect* Effects::RainFX   = 0;
 LineEffect* Effects::LineFX = 0;
 BuildShadowMapEffect*  Effects::BuildShadowMapFX = 0;
-SsaoNormalDepthEffect* Effects::SsaoNormalDepthFX = 0;
-SsaoEffect*            Effects::SsaoFX = 0;
-SsaoBlurEffect*        Effects::SsaoBlurFX = 0;
+// SsaoNormalDepthEffect* Effects::SsaoNormalDepthFX = 0;
+// SsaoEffect*            Effects::SsaoFX = 0;
+// SsaoBlurEffect*        Effects::SsaoBlurFX = 0;
 NormalMapEffect* Effects::NormalMapFX = 0;
 DebugTexEffect*        Effects::DebugTexFX = 0;
+InstancedBasicEffect* Effects::InstancedBasicFX = 0;
+
 
 void Effects::InitAll(ID3D11Device* device)
 {
-	SsaoNormalDepthFX = new SsaoNormalDepthEffect(device, L"FX/SsaoNormalDepth.fxo");
-	SsaoFX = new SsaoEffect(device, L"FX/Ssao.fxo");
-	SsaoBlurFX = new SsaoBlurEffect(device, L"FX/SsaoBlur.fxo");
-
+// 	SsaoNormalDepthFX = new SsaoNormalDepthEffect(device, L"FX/SsaoNormalDepth.fxo");
+// 	SsaoFX = new SsaoEffect(device, L"FX/Ssao.fxo");
+// 	SsaoBlurFX = new SsaoBlurEffect(device, L"FX/SsaoBlur.fxo");
 	NormalMapFX = new NormalMapEffect(device, L"FX/NormalMap.fxo");
-
 	BuildShadowMapFX = new BuildShadowMapEffect(device, L"FX/BuildShadowMap.fxo");
 	BasicFX = new BasicEffect(device, L"FX/Basic.fxo");
 	SkyFX   = new SkyEffect(device, L"FX/Sky.fxo");
@@ -237,14 +237,15 @@ void Effects::InitAll(ID3D11Device* device)
 	InstancedBasicFX = new InstancedBasicEffect(device, L"FX/InstancedBasic.fxo");
 	LineFX = new LineEffect(device, L"FX/color.fxo");
 	DebugTexFX = new DebugTexEffect(device, L"FX/DebugTexture.fxo");
+
 }
 
 void Effects::DestroyAll()
 {
 	SafeDelete(NormalMapFX);
-	SafeDelete(SsaoBlurFX);
-	SafeDelete(SsaoFX);
-	SafeDelete(SsaoNormalDepthFX);
+// 	SafeDelete(SsaoBlurFX);
+// 	SafeDelete(SsaoFX);
+// 	SafeDelete(SsaoNormalDepthFX);
 	SafeDelete(BuildShadowMapFX);
 	SafeDelete(BasicFX);
 	SafeDelete(SkyFX);
@@ -304,7 +305,6 @@ InstancedBasicEffect::InstancedBasicEffect(ID3D11Device * device, const std::wst
 InstancedBasicEffect::~InstancedBasicEffect()
 {
 }
-InstancedBasicEffect* Effects::InstancedBasicFX = 0;
 #pragma region LineEffect
 LineEffect::LineEffect(ID3D11Device * device, const std::wstring & filename)
 	:Effect(device,filename)
@@ -350,43 +350,43 @@ BuildShadowMapEffect::~BuildShadowMapEffect()
 {
 }
 
-SsaoBlurEffect::SsaoBlurEffect(ID3D11Device * device, const std::wstring & filename)
-	: Effect(device, filename)
-{
-	HorzBlurTech = mFX->GetTechniqueByName("HorzBlur");
-	VertBlurTech = mFX->GetTechniqueByName("VertBlur");
+// SsaoBlurEffect::SsaoBlurEffect(ID3D11Device * device, const std::wstring & filename)
+// 	: Effect(device, filename)
+// {
+// 	HorzBlurTech = mFX->GetTechniqueByName("HorzBlur");
+// 	VertBlurTech = mFX->GetTechniqueByName("VertBlur");
+// 
+// 	TexelWidth = mFX->GetVariableByName("gTexelWidth")->AsScalar();
+// 	TexelHeight = mFX->GetVariableByName("gTexelHeight")->AsScalar();
+// 
+// 	NormalDepthMap = mFX->GetVariableByName("gNormalDepthMap")->AsShaderResource();
+// 	InputImage = mFX->GetVariableByName("gInputImage")->AsShaderResource();
+// }
 
-	TexelWidth = mFX->GetVariableByName("gTexelWidth")->AsScalar();
-	TexelHeight = mFX->GetVariableByName("gTexelHeight")->AsScalar();
-
-	NormalDepthMap = mFX->GetVariableByName("gNormalDepthMap")->AsShaderResource();
-	InputImage = mFX->GetVariableByName("gInputImage")->AsShaderResource();
-}
-
-SsaoBlurEffect::~SsaoBlurEffect()
-{
-}
-
-SsaoNormalDepthEffect::SsaoNormalDepthEffect(ID3D11Device * device, const std::wstring & filename)
-	:Effect(device,filename)
-{
-	NormalDepthTech = mFX->GetTechniqueByName("NormalDepth");
-	NormalDepthAlphaClipTech = mFX->GetTechniqueByName("NormalDepthAlphaClip");
-
-	NormalDepthSkinnedTech = mFX->GetTechniqueByName("NormalDepthSkinned");
-	NormalDepthAlphaClipSkinnedTech = mFX->GetTechniqueByName("NormalDepthAlphaClipSkinned");
-
-	WorldView = mFX->GetVariableByName("gWorldView")->AsMatrix();
-	WorldInvTransposeView = mFX->GetVariableByName("gWorldInvTransposeView")->AsMatrix();
-	BoneTransforms = mFX->GetVariableByName("gBoneTransforms")->AsMatrix();
-	WorldViewProj = mFX->GetVariableByName("gWorldViewProj")->AsMatrix();
-	TexTransform = mFX->GetVariableByName("gTexTransform")->AsMatrix();
-	DiffuseMap = mFX->GetVariableByName("gDiffuseMap")->AsShaderResource();
-}
-
-SsaoNormalDepthEffect::~SsaoNormalDepthEffect()
-{
-}
+// SsaoBlurEffect::~SsaoBlurEffect()
+// {
+// }
+// 
+// SsaoNormalDepthEffect::SsaoNormalDepthEffect(ID3D11Device * device, const std::wstring & filename)
+// 	:Effect(device,filename)
+// {
+// 	NormalDepthTech = mFX->GetTechniqueByName("NormalDepth");
+// 	NormalDepthAlphaClipTech = mFX->GetTechniqueByName("NormalDepthAlphaClip");
+// 
+// 	NormalDepthSkinnedTech = mFX->GetTechniqueByName("NormalDepthSkinned");
+// 	NormalDepthAlphaClipSkinnedTech = mFX->GetTechniqueByName("NormalDepthAlphaClipSkinned");
+// 
+// 	WorldView = mFX->GetVariableByName("gWorldView")->AsMatrix();
+// 	WorldInvTransposeView = mFX->GetVariableByName("gWorldInvTransposeView")->AsMatrix();
+// 	BoneTransforms = mFX->GetVariableByName("gBoneTransforms")->AsMatrix();
+// 	WorldViewProj = mFX->GetVariableByName("gWorldViewProj")->AsMatrix();
+// 	TexTransform = mFX->GetVariableByName("gTexTransform")->AsMatrix();
+// 	DiffuseMap = mFX->GetVariableByName("gDiffuseMap")->AsShaderResource();
+// }
+// 
+// SsaoNormalDepthEffect::~SsaoNormalDepthEffect()
+// {
+// }
 
 NormalMapEffect::NormalMapEffect(ID3D11Device * device, const std::wstring & filename)
 	:Effect(device,filename)
@@ -527,23 +527,23 @@ NormalMapEffect::~NormalMapEffect()
 {
 }
 
-SsaoEffect::SsaoEffect(ID3D11Device * device, const std::wstring & filename)
-	:Effect(device,filename)
-{
-	SsaoTech = mFX->GetTechniqueByName("Ssao");
-
-	ViewToTexSpace = mFX->GetVariableByName("gViewToTexSpace")->AsMatrix();
-	OffsetVectors = mFX->GetVariableByName("gOffsetVectors")->AsVector();
-	FrustumCorners = mFX->GetVariableByName("gFrustumCorners")->AsVector();
-	OcclusionRadius = mFX->GetVariableByName("gOcclusionRadius")->AsScalar();
-	OcclusionFadeStart = mFX->GetVariableByName("gOcclusionFadeStart")->AsScalar();
-	OcclusionFadeEnd = mFX->GetVariableByName("gOcclusionFadeEnd")->AsScalar();
-	SurfaceEpsilon = mFX->GetVariableByName("gSurfaceEpsilon")->AsScalar();
-
-	NormalDepthMap = mFX->GetVariableByName("gNormalDepthMap")->AsShaderResource();
-	RandomVecMap = mFX->GetVariableByName("gRandomVecMap")->AsShaderResource();
-}
-
-SsaoEffect::~SsaoEffect()
-{
-}
+// SsaoEffect::SsaoEffect(ID3D11Device * device, const std::wstring & filename)
+// 	:Effect(device,filename)
+// {
+// 	SsaoTech = mFX->GetTechniqueByName("Ssao");
+// 
+// 	ViewToTexSpace = mFX->GetVariableByName("gViewToTexSpace")->AsMatrix();
+// 	OffsetVectors = mFX->GetVariableByName("gOffsetVectors")->AsVector();
+// 	FrustumCorners = mFX->GetVariableByName("gFrustumCorners")->AsVector();
+// 	OcclusionRadius = mFX->GetVariableByName("gOcclusionRadius")->AsScalar();
+// 	OcclusionFadeStart = mFX->GetVariableByName("gOcclusionFadeStart")->AsScalar();
+// 	OcclusionFadeEnd = mFX->GetVariableByName("gOcclusionFadeEnd")->AsScalar();
+// 	SurfaceEpsilon = mFX->GetVariableByName("gSurfaceEpsilon")->AsScalar();
+// 
+// 	NormalDepthMap = mFX->GetVariableByName("gNormalDepthMap")->AsShaderResource();
+// 	RandomVecMap = mFX->GetVariableByName("gRandomVecMap")->AsShaderResource();
+// }
+// 
+// SsaoEffect::~SsaoEffect()
+// {
+// }

@@ -191,7 +191,6 @@
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="ShadowMap.cpp" />
     <ClCompile Include="Sky.cpp" />
-    <ClCompile Include="Ssao.cpp" />
     <ClCompile Include="StaticNormalModel.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="TestScene.cpp" />
@@ -242,7 +241,6 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="ShadowMap.h" />
     <ClInclude Include="Sky.h" />
-    <ClInclude Include="Ssao.h" />
     <ClInclude Include="StaticNormalModel.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="TestScene.h" />
@@ -254,6 +252,7 @@
     <FxCompile Include="FX\BuildShadowMap.fx" />
     <FxCompile Include="FX\DebugTexture.fx" />
     <FxCompile Include="FX\Fire.fx" />
+    <FxCompile Include="FX\InstancedBasic.fx" />
     <FxCompile Include="FX\LightHelper.fx" />
     <FxCompile Include="FX\NormalMap.fx" />
     <FxCompile Include="FX\Rain.fx" />

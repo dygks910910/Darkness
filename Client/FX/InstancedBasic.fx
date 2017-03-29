@@ -43,7 +43,7 @@ struct VertexIn
 	float3 NormalL  : NORMAL;
 	float2 Tex      : TEXCOORD;
 	row_major float4x4 World  : WORLD;
-	float4 Color    : COLOR;
+	//float4 Color    : COLOR;
 	uint InstanceId : SV_InstanceID;
 };
 
@@ -53,7 +53,7 @@ struct VertexOut
     float3 PosW    : POSITION;
     float3 NormalW : NORMAL;
 	float2 Tex     : TEXCOORD;
-	float4 Color   : COLOR;
+	//float4 Color   : COLOR;
 };
 
 VertexOut VS(VertexIn vin)
@@ -69,7 +69,7 @@ VertexOut VS(VertexIn vin)
 	
 	// Output vertex attributes for interpolation across triangle.
 	vout.Tex   = mul(float4(vin.Tex, 0.0f, 1.0f), gTexTransform).xy;
-	vout.Color = vin.Color;
+	//vout.Color = vin.Color;
 
 	return vout;
 }
@@ -124,8 +124,8 @@ float4 PS(VertexOut pin, uniform int gLightCount, uniform bool gUseTexure, unifo
 			ComputeDirectionalLight(gMaterial, gDirLights[i], pin.NormalW, toEye, 
 				A, D, S);
 
-			ambient += A*pin.Color;
-			diffuse += D*pin.Color;
+			ambient += A;
+			diffuse += D;
 			spec    += S;
 		}
 

@@ -1,18 +1,173 @@
-StaticObjectCount: 11
+StaticObjectCount: 42
 
 MainCamera : { Position: ( 22.24 7 -10.48 )
 Rotation : ( 0 -0.6979001 0 0.7161952 )
 Scale: ( 1 1 1 )}
 
 
-Clown : { Position: ( 8.3 0 0 )
-Rotation : ( -0.7071068 0 0 0.7071068 )
-Scale: ( 0.36 0.36 0.36 )}
+fence1 : { Position: ( 12 5.87 49.4 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.1000001 0.1 0.1000001 )}
+
+
+fence1 : { Position: ( -51.10001 5.87 49.40001 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.1000001 0.1 0.1000001 )}
+
+
+fence1 : { Position: ( -35.3 5.87 49.40001 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.1000001 0.1 0.1000001 )}
+
+
+fence1 : { Position: ( 43.4 5.87 49.4 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.1000001 0.1 0.1000001 )}
+
+
+fence1  : { Position: ( 27.7 5.87 49.4 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.1000001 0.1 0.1000001 )}
+
+
+fence1 : { Position: ( -19.6 5.87 49.40001 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.1000001 0.1 0.1000001 )}
+
+
+fence1 : { Position: ( -3.800002 5.87 49.4 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.1000001 0.1 0.1000001 )}
+
+
+fence1 : { Position: ( 12 5.87 49.4 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.1000001 0.1 0.1000001 )}
+
+
+fence1 : { Position: ( 12 5.87 -50.4 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.1000001 0.1 0.1000001 )}
+
+
+fence1 : { Position: ( -3.800002 5.87 -50.4 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.1000001 0.1 0.1000001 )}
+
+
+fence1 : { Position: ( -19.6 5.87 -50.4 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.1000001 0.1 0.1000001 )}
+
+
+fence1 : { Position: ( 27.7 5.87 -50.4 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.1000001 0.1 0.1000001 )}
+
+
+fence1  : { Position: ( 43.4 5.87 -50.40001 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.1000001 0.1 0.1000001 )}
+
+
+fence1 : { Position: ( -35.3 5.87 -50.4 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.1000001 0.1 0.1000001 )}
+
+
+fence1 : { Position: ( -51.10001 5.87 -50.39999 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.1000001 0.1 0.1000001 )}
+
+
+fence1 : { Position: ( 12 5.87 -50.4 )
+Rotation : ( 0 0 0 1 )
+Scale: ( 0.1000001 0.1 0.1000001 )}
+
+
+fence1 : { Position: ( -49.3 5.87 14.2 )
+Rotation : ( 0 -0.7071068 0 0.7071068 )
+Scale: ( 0.1000001 0.1 0.1000001 )}
+
+
+fence1 : { Position: ( 48.9 5.87 14.2 )
+Rotation : ( 0 -0.7071068 0 0.7071068 )
+Scale: ( 0.1 0.1 0.1 )}
+
+
+fence1 : { Position: ( 48.9 5.87 -1.6 )
+Rotation : ( 0 -0.7071068 0 0.7071068 )
+Scale: ( 0.1 0.1 0.1 )}
+
+
+fence1 : { Position: ( 48.9 5.87 -17.4 )
+Rotation : ( 0 -0.7071068 0 0.7071068 )
+Scale: ( 0.1 0.1 0.1 )}
+
+
+fence1 : { Position: ( 48.9 5.87 29.9 )
+Rotation : ( 0 -0.7071068 0 0.7071068 )
+Scale: ( 0.1 0.1 0.1 )}
+
+
+fence1 : { Position: ( 48.9 5.87 45.6 )
+Rotation : ( 0 -0.7071068 0 0.7071068 )
+Scale: ( 0.1 0.1 0.1 )}
+
+
+fence1 : { Position: ( 48.9 5.87 -33.1 )
+Rotation : ( 0 -0.7071068 0 0.7071068 )
+Scale: ( 0.1 0.1 0.1 )}
+
+
+fence1 : { Position: ( 48.9 5.87 -48.9 )
+Rotation : ( 0 -0.7071068 0 0.7071068 )
+Scale: ( 0.1 0.1 0.1 )}
+
+
+fence1  : { Position: ( -49.3 5.87 -48.90002 )
+Rotation : ( 0 -0.7071068 0 0.7071068 )
+Scale: ( 0.1000001 0.1 0.1000001 )}
+
+
+fence1  : { Position: ( -49.3 5.87 -33.10001 )
+Rotation : ( 0 -0.7071068 0 0.7071068 )
+Scale: ( 0.1000001 0.1 0.1000001 )}
+
+
+fence1  : { Position: ( -49.3 5.87 45.60001 )
+Rotation : ( 0 -0.7071068 0 0.7071068 )
+Scale: ( 0.1000001 0.1 0.1000001 )}
+
+
+fence1  : { Position: ( -49.3 5.87 29.9 )
+Rotation : ( 0 -0.7071068 0 0.7071068 )
+Scale: ( 0.1000001 0.1 0.1000001 )}
+
+
+fence1 : { Position: ( -49.3 5.87 -17.40001 )
+Rotation : ( 0 -0.7071068 0 0.7071068 )
+Scale: ( 0.1000001 0.1 0.1000001 )}
+
+
+fence1 : { Position: ( -49.3 5.87 -1.600004 )
+Rotation : ( 0 -0.7071068 0 0.7071068 )
+Scale: ( 0.1000001 0.1 0.1000001 )}
+
+
+fence1 : { Position: ( -49.3 5.87 14.2 )
+Rotation : ( 0 -0.7071068 0 0.7071068 )
+Scale: ( 0.1000001 0.1 0.1000001 )}
 
 
 house_6 : { Position: ( 33.9 0 -29.7 )
 Rotation : ( -0.5 -0.5 -0.5 0.5 )
 Scale: ( 1 0.7750348 1 )}
+
+
+Clown : { Position: ( 8.3 0 0 )
+Rotation : ( -0.7071068 0 0 0.7071068 )
+Scale: ( 0.36 0.36 0.36 )}
 
 
 house_5 : { Position: ( 27.8 0 37.59 )

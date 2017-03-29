@@ -7,7 +7,6 @@
 #include "Cordinate.h"
 #include "TextureMgr.h"
 #include "ShadowMap.h"
-#include "Ssao.h"
 #include "FbxLoader.h"
 #include "RenderStates.h"
 #include "xnacollision.h"
@@ -40,9 +39,13 @@ class CTestScene :
 // 	CModelMgr mModelMgr;
 	ID3D11Buffer* mStaticNormalMappingObjectVB;
 	ID3D11Buffer* mStaticNormalMappingObjectIB;
-
 	ID3D11Buffer* mStaticBasicObjectVB;
 	ID3D11Buffer* mStaticBasicObjectIB;
+
+	ID3D11Buffer* mInstanceBuffer;
+	std::vector<XMFLOAT4X4> mInstancedModelWorld;
+	//fenceSRV
+	ID3D11ShaderResourceView* mFenceSRV;
 
 	std::vector<CStaticNomalModel> mStaticNormalModels;
 	std::vector<CStaticBasicModel> mStaticBasicModels;
@@ -68,30 +71,7 @@ class CTestScene :
 	int house4IndexOffset, house4VertexOffset, house4IndexCount;
 	int house5IndexOffset, house5VertexOffset, house5IndexCount;
 	int house6IndexOffset, house6VertexOffset, house6IndexCount;
-	//////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////
-//	//Draw¼¼ÆÃ
-//	int mGridVertexOffset;
-//	int mGridIndexOffset;
-//
-//	int mBoxVertexOffset;
-//	int mBoxIndexOffset;
-//	int mBoxIndexCount;
-//	int mGidIndexCount;
-//
-//	int mClownIndexOffset;
-//	int mClownVertexOffset;
-//	int mClownIndexCount;
-//	int mGridIndexCount;
-//
-//	int mFenceIndexOffset, mFenceVertexOffset, mFenceIndexCount;
-//	int mHouse1IndexOffset, mHouse1VertexOffset, mHouse1IndexCount;
-//	int mHouse2IndexOffset, mHouse2VertexOffset, mHouse2IndexCount;
-//	int mHouse3IndexOffset, mHouse3VertexOffset, mHouse3IndexCount;
-//	int mHouse4IndexOffset, mHouse4VertexOffset, mHouse4IndexCount;
-//	int mHouse5IndexOffset, mHouse5VertexOffset, mHouse5IndexCount;
-//	int mHouse6IndexOffset, mHouse6VertexOffset, mHouse6IndexCount;
-//	//////////////////////////////////////////////////////////////////////////
+
 	Material mGridMat;
 	Material mBoxMat;
 	Material mClownMat;
@@ -103,13 +83,6 @@ class CTestScene :
 
 	//ID3D11Buffer* mInstanceBuffer;
 
-// 	ID3D11ShaderResourceView* mStoneTexSRV;
-// 	ID3D11ShaderResourceView* mBrickTexSRV;
-// 	ID3D11ShaderResourceView* mStoneNormalTexSRV;
-// 	ID3D11ShaderResourceView* mBrickNormalTexSRV;
-// 
-// 	ID3D11ShaderResourceView* mClownTexSRV;
-// 	ID3D11ShaderResourceView* mClownNormalTexSRV;
 
 	//////////////////////////////////////////////////////////////////////////
 	CCordinate mCordWorld;
@@ -117,7 +90,7 @@ class CTestScene :
 	DirectionalLight mDirLights[3];
 	XMFLOAT3 mOriginalLightDir[3];
 
-	GameTimer mTimer;
+	//GameTimer mTimer;
 	//D3D11_VIEWPORT mScreenViewport;
 	//Terrain mTerrain;
 	POINT mLastMousePos;
@@ -127,7 +100,7 @@ class CTestScene :
 // 	std::vector<CStaticObject*> mvStaticObject;
 
 	// for Frustum culling
-	XNA::Frustum mCamFrustum;
+	//XNA::Frustum mCamFrustum;
 	BoundingSphere mSceneBounds;
 
 	float mLightRotationAngle;
@@ -156,7 +129,5 @@ public:
 	void BuildShadowTransform();
 	void BuildShapeGeometryBuffers();
 	void BuildBasicGeometryBuffer();
-	void DrawSceneQuard();
-	void BuildScreenQuadGeometryBuffers();
 	//void ReadMapData(ID3D11Device* device);
 };

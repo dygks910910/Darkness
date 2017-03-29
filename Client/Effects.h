@@ -287,35 +287,35 @@ public:
 };
 #pragma endregion
 
-#pragma region SsaoNormalDepthEffect
-class SsaoNormalDepthEffect : public Effect
-{
-public:
-	SsaoNormalDepthEffect(ID3D11Device* device, const std::wstring& filename);
-	~SsaoNormalDepthEffect();
-
-	void SetWorldView(CXMMATRIX M) { WorldView->SetMatrix(reinterpret_cast<const float*>(&M)); }
-	void SetWorldInvTransposeView(CXMMATRIX M) { WorldInvTransposeView->SetMatrix(reinterpret_cast<const float*>(&M)); }
-	void SetBoneTransforms(const XMFLOAT4X4* M, int cnt) { BoneTransforms->SetMatrixArray(reinterpret_cast<const float*>(M), 0, cnt); }
-	void SetWorldViewProj(CXMMATRIX M) { WorldViewProj->SetMatrix(reinterpret_cast<const float*>(&M)); }
-	void SetTexTransform(CXMMATRIX M) { TexTransform->SetMatrix(reinterpret_cast<const float*>(&M)); }
-	void SetDiffuseMap(ID3D11ShaderResourceView* tex) { DiffuseMap->SetResource(tex); }
-
-	ID3DX11EffectTechnique* NormalDepthTech;
-	ID3DX11EffectTechnique* NormalDepthAlphaClipTech;
-
-	ID3DX11EffectTechnique* NormalDepthSkinnedTech;
-	ID3DX11EffectTechnique* NormalDepthAlphaClipSkinnedTech;
-
-	ID3DX11EffectMatrixVariable* WorldView;
-	ID3DX11EffectMatrixVariable* WorldInvTransposeView;
-	ID3DX11EffectMatrixVariable* BoneTransforms;
-	ID3DX11EffectMatrixVariable* WorldViewProj;
-	ID3DX11EffectMatrixVariable* TexTransform;
-
-	ID3DX11EffectShaderResourceVariable* DiffuseMap;
-};
-#pragma endregion
+// #pragma region SsaoNormalDepthEffect
+// class SsaoNormalDepthEffect : public Effect
+// {
+// public:
+// 	SsaoNormalDepthEffect(ID3D11Device* device, const std::wstring& filename);
+// 	~SsaoNormalDepthEffect();
+// 
+// 	void SetWorldView(CXMMATRIX M) { WorldView->SetMatrix(reinterpret_cast<const float*>(&M)); }
+// 	void SetWorldInvTransposeView(CXMMATRIX M) { WorldInvTransposeView->SetMatrix(reinterpret_cast<const float*>(&M)); }
+// 	void SetBoneTransforms(const XMFLOAT4X4* M, int cnt) { BoneTransforms->SetMatrixArray(reinterpret_cast<const float*>(M), 0, cnt); }
+// 	void SetWorldViewProj(CXMMATRIX M) { WorldViewProj->SetMatrix(reinterpret_cast<const float*>(&M)); }
+// 	void SetTexTransform(CXMMATRIX M) { TexTransform->SetMatrix(reinterpret_cast<const float*>(&M)); }
+// 	void SetDiffuseMap(ID3D11ShaderResourceView* tex) { DiffuseMap->SetResource(tex); }
+// 
+// 	ID3DX11EffectTechnique* NormalDepthTech;
+// 	ID3DX11EffectTechnique* NormalDepthAlphaClipTech;
+// 
+// 	ID3DX11EffectTechnique* NormalDepthSkinnedTech;
+// 	ID3DX11EffectTechnique* NormalDepthAlphaClipSkinnedTech;
+// 
+// 	ID3DX11EffectMatrixVariable* WorldView;
+// 	ID3DX11EffectMatrixVariable* WorldInvTransposeView;
+// 	ID3DX11EffectMatrixVariable* BoneTransforms;
+// 	ID3DX11EffectMatrixVariable* WorldViewProj;
+// 	ID3DX11EffectMatrixVariable* TexTransform;
+// 
+// 	ID3DX11EffectShaderResourceVariable* DiffuseMap;
+// };
+// #pragma endregion
 
 #pragma region DebugTexEffect
 class DebugTexEffect : public Effect
@@ -337,62 +337,62 @@ public:
 	ID3DX11EffectShaderResourceVariable* Texture;
 };
 #pragma endregion
-#pragma region SsaoEffect
-class SsaoEffect : public Effect
-{
-public:
-	SsaoEffect(ID3D11Device* device, const std::wstring& filename);
-	~SsaoEffect();
+// #pragma region SsaoEffect
+// class SsaoEffect : public Effect
+// {
+// public:
+// 	SsaoEffect(ID3D11Device* device, const std::wstring& filename);
+// 	~SsaoEffect();
+// 
+// 	void SetViewToTexSpace(CXMMATRIX M) { ViewToTexSpace->SetMatrix(reinterpret_cast<const float*>(&M)); }
+// 	void SetOffsetVectors(const XMFLOAT4 v[14]) { OffsetVectors->SetFloatVectorArray(reinterpret_cast<const float*>(v), 0, 14); }
+// 	void SetFrustumCorners(const XMFLOAT4 v[4]) { FrustumCorners->SetFloatVectorArray(reinterpret_cast<const float*>(v), 0, 4); }
+// 	void SetOcclusionRadius(float f) { OcclusionRadius->SetFloat(f); }
+// 	void SetOcclusionFadeStart(float f) { OcclusionFadeStart->SetFloat(f); }
+// 	void SetOcclusionFadeEnd(float f) { OcclusionFadeEnd->SetFloat(f); }
+// 	void SetSurfaceEpsilon(float f) { SurfaceEpsilon->SetFloat(f); }
+// 
+// 	void SetNormalDepthMap(ID3D11ShaderResourceView* srv) { NormalDepthMap->SetResource(srv); }
+// 	void SetRandomVecMap(ID3D11ShaderResourceView* srv) { RandomVecMap->SetResource(srv); }
+// 
+// 	ID3DX11EffectTechnique* SsaoTech;
+// 
+// 	ID3DX11EffectMatrixVariable* ViewToTexSpace;
+// 	ID3DX11EffectVectorVariable* OffsetVectors;
+// 	ID3DX11EffectVectorVariable* FrustumCorners;
+// 	ID3DX11EffectScalarVariable* OcclusionRadius;
+// 	ID3DX11EffectScalarVariable* OcclusionFadeStart;
+// 	ID3DX11EffectScalarVariable* OcclusionFadeEnd;
+// 	ID3DX11EffectScalarVariable* SurfaceEpsilon;
+// 
+// 	ID3DX11EffectShaderResourceVariable* NormalDepthMap;
+// 	ID3DX11EffectShaderResourceVariable* RandomVecMap;
+// };
+// #pragma endregion
 
-	void SetViewToTexSpace(CXMMATRIX M) { ViewToTexSpace->SetMatrix(reinterpret_cast<const float*>(&M)); }
-	void SetOffsetVectors(const XMFLOAT4 v[14]) { OffsetVectors->SetFloatVectorArray(reinterpret_cast<const float*>(v), 0, 14); }
-	void SetFrustumCorners(const XMFLOAT4 v[4]) { FrustumCorners->SetFloatVectorArray(reinterpret_cast<const float*>(v), 0, 4); }
-	void SetOcclusionRadius(float f) { OcclusionRadius->SetFloat(f); }
-	void SetOcclusionFadeStart(float f) { OcclusionFadeStart->SetFloat(f); }
-	void SetOcclusionFadeEnd(float f) { OcclusionFadeEnd->SetFloat(f); }
-	void SetSurfaceEpsilon(float f) { SurfaceEpsilon->SetFloat(f); }
-
-	void SetNormalDepthMap(ID3D11ShaderResourceView* srv) { NormalDepthMap->SetResource(srv); }
-	void SetRandomVecMap(ID3D11ShaderResourceView* srv) { RandomVecMap->SetResource(srv); }
-
-	ID3DX11EffectTechnique* SsaoTech;
-
-	ID3DX11EffectMatrixVariable* ViewToTexSpace;
-	ID3DX11EffectVectorVariable* OffsetVectors;
-	ID3DX11EffectVectorVariable* FrustumCorners;
-	ID3DX11EffectScalarVariable* OcclusionRadius;
-	ID3DX11EffectScalarVariable* OcclusionFadeStart;
-	ID3DX11EffectScalarVariable* OcclusionFadeEnd;
-	ID3DX11EffectScalarVariable* SurfaceEpsilon;
-
-	ID3DX11EffectShaderResourceVariable* NormalDepthMap;
-	ID3DX11EffectShaderResourceVariable* RandomVecMap;
-};
-#pragma endregion
-
-#pragma region SsaoBlurEffect
-class SsaoBlurEffect : public Effect
-{
-public:
-	SsaoBlurEffect(ID3D11Device* device, const std::wstring& filename);
-	~SsaoBlurEffect();
-
-	void SetTexelWidth(float f) { TexelWidth->SetFloat(f); }
-	void SetTexelHeight(float f) { TexelHeight->SetFloat(f); }
-
-	void SetNormalDepthMap(ID3D11ShaderResourceView* srv) { NormalDepthMap->SetResource(srv); }
-	void SetInputImage(ID3D11ShaderResourceView* srv) { InputImage->SetResource(srv); }
-
-	ID3DX11EffectTechnique* HorzBlurTech;
-	ID3DX11EffectTechnique* VertBlurTech;
-
-	ID3DX11EffectScalarVariable* TexelWidth;
-	ID3DX11EffectScalarVariable* TexelHeight;
-
-	ID3DX11EffectShaderResourceVariable* NormalDepthMap;
-	ID3DX11EffectShaderResourceVariable* InputImage;
-};
-#pragma endregion
+// #pragma region SsaoBlurEffect
+// class SsaoBlurEffect : public Effect
+// {
+// public:
+// 	SsaoBlurEffect(ID3D11Device* device, const std::wstring& filename);
+// 	~SsaoBlurEffect();
+// 
+// 	void SetTexelWidth(float f) { TexelWidth->SetFloat(f); }
+// 	void SetTexelHeight(float f) { TexelHeight->SetFloat(f); }
+// 
+// 	void SetNormalDepthMap(ID3D11ShaderResourceView* srv) { NormalDepthMap->SetResource(srv); }
+// 	void SetInputImage(ID3D11ShaderResourceView* srv) { InputImage->SetResource(srv); }
+// 
+// 	ID3DX11EffectTechnique* HorzBlurTech;
+// 	ID3DX11EffectTechnique* VertBlurTech;
+// 
+// 	ID3DX11EffectScalarVariable* TexelWidth;
+// 	ID3DX11EffectScalarVariable* TexelHeight;
+// 
+// 	ID3DX11EffectShaderResourceVariable* NormalDepthMap;
+// 	ID3DX11EffectShaderResourceVariable* InputImage;
+// };
+// #pragma endregion
 
 
 #pragma region BuildShadowMapEffect
@@ -642,18 +642,15 @@ public:
 	static void DestroyAll();
 
 	static NormalMapEffect* NormalMapFX;
-	static SsaoNormalDepthEffect* SsaoNormalDepthFX;
-	static SsaoEffect* SsaoFX;
-	static SsaoBlurEffect* SsaoBlurFX;
 	static BuildShadowMapEffect* BuildShadowMapFX;
 	static BasicEffect* BasicFX;
 	static SkyEffect* SkyFX;
 	static TerrainEffect* TerrainFX;
 	static ParticleEffect* FireFX;
 	static ParticleEffect* RainFX;
-	static InstancedBasicEffect* InstancedBasicFX;
 	static LineEffect* LineFX;
 	static DebugTexEffect* DebugTexFX;
+	static InstancedBasicEffect* InstancedBasicFX;
 };
 #pragma endregion
 #endif // EFFECTS_H

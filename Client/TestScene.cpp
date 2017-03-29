@@ -24,6 +24,7 @@ CTestScene::~CTestScene()
 	ReleaseCOM(mStaticNormalMappingObjectIB);
 	ReleaseCOM(mStaticBasicObjectIB);
 	ReleaseCOM(mStaticBasicObjectVB);
+	ReleaseCOM(mInstanceBuffer);
 }
 
 bool CTestScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
@@ -74,17 +75,10 @@ bool CTestScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	mBoxMat.Specular = XMFLOAT4(0.8f, 0.8f, 0.8f, 16.0f);
 	mBoxMat.Reflect = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
 
-	// 	mStoneTexSRV = mTexMgr.CreateTexture(L"Textures/floor.dds");
-	// 	mBrickTexSRV = mTexMgr.CreateTexture(L"Textures/bricks.dds");
-	// 	mStoneNormalTexSRV = mTexMgr.CreateTexture(L"Textures/floor_nmap.dds");
-	// 	mBrickNormalTexSRV = mTexMgr.CreateTexture(L"Textures/bricks_nmap.dds");
-	// 
-	// 	mClownNormalTexSRV = mTexMgr.CreateTexture(L"true_clown_normals.png");
-	// 	mClownTexSRV = mTexMgr.CreateTexture(L"true_clown_diffuse1.png");
+	
 
 		//버퍼 빌드
 	BuildShapeGeometryBuffers();
-	BuildScreenQuadGeometryBuffers();
 
 	//////////////////////////////////////////////////////////////////////////
 	
@@ -93,7 +87,7 @@ bool CTestScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	mLastMousePos.x = 0;
 	mLastMousePos.y = 0;
 
-	mDirLights[0].Ambient = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
+	mDirLights[0].Ambient = XMFLOAT4(0.9f, 0.9f, 0.9f, 1.0f);
 	mDirLights[0].Diffuse = XMFLOAT4(0.7f, 0.7f, 0.6f, 1.0f);
 	mDirLights[0].Specular = XMFLOAT4(0.8f, 0.8f, 0.7f, 1.0f);
 	mDirLights[0].Direction = XMFLOAT3(-0.57735f, -0.57735f, 0.57735f);
@@ -140,16 +134,16 @@ void CTestScene::UpdateScene(const float & dt)
 		// Control the camera.
 		//
 	if (GetAsyncKeyState('W') & 0x8000)
-		mCam.Walk(200.0f*dt);
+		mCam.Walk(20.0f*dt);
 
 	if (GetAsyncKeyState('S') & 0x8000)
-		mCam.Walk(-200.0f*dt);
+		mCam.Walk(-20.0f*dt);
 
 	if (GetAsyncKeyState('A') & 0x8000)
-		mCam.Strafe(-200.0f*dt);
+		mCam.Strafe(-20.0f*dt);
 
 	if (GetAsyncKeyState('D') & 0x8000)
-		mCam.Strafe(200.0f*dt);
+		mCam.Strafe(20.0f*dt);
 
 	//
 	// Walk/fly mode
@@ -210,6 +204,8 @@ void CTestScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 	Effects::NormalMapFX->SetCubeMap(mSky->CubeMapSRV());
 	Effects::NormalMapFX->SetShadowMap(mSmap->DepthMapSRV());
 
+	Effects::InstancedBasicFX->SetDirLights(mDirLights);
+	Effects::InstancedBasicFX->SetEyePosW(mCam.GetPosition());
 
 	ID3DX11EffectTechnique* activeTech = Effects::NormalMapFX->Light3TexTech;
 	ID3DX11EffectTechnique* activeSphereTech = Effects::BasicFX->Light3ReflectTech;
@@ -257,6 +253,7 @@ void CTestScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 
 	stride = sizeof(Vertex::Basic32);
 	offset = 0;
+	
 
 	mDc->IASetInputLayout(InputLayouts::Basic32);
 	mDc->IASetVertexBuffers(0, 1, &mStaticBasicObjectVB, &stride, &offset);
@@ -266,7 +263,36 @@ void CTestScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 		p.Draw(mDc, activeSkullTech, XMLoadFloat4x4(&mShadowTransform), mCam);
 	}
 
+	//////////////////////////////////////////////////////////////////////////
+	//인스턴스버퍼 출력
+	mDc->IASetInputLayout(InputLayouts::InstancedBasic32);
 
+	UINT instanceStride[2] = { sizeof(Vertex::Basic32), sizeof(XMFLOAT4X4) };
+	UINT instanceOffset[2] = { 0,0 };
+	
+	ID3D11Buffer* vbs[2] = { mStaticBasicObjectVB,mInstanceBuffer };
+	Effects::InstancedBasicFX->Light3TexTech->GetDesc(&techDesc);
+	for (UINT p = 0; p < techDesc.Passes; ++p)
+	{
+		// Draw the skull.
+
+		mDc->IASetVertexBuffers(0, 2, vbs, instanceStride, instanceOffset);
+		mDc->IASetIndexBuffer(mStaticBasicObjectIB, DXGI_FORMAT_R32_UINT, 0);
+
+		XMMATRIX world = XMMatrixIdentity();
+		XMMATRIX worldInvTranspose = MathHelper::InverseTranspose(world);
+
+		Effects::InstancedBasicFX->SetDiffuseMap(mFenceSRV);
+		Effects::InstancedBasicFX->SetTexTransform(XMMatrixIdentity());
+		Effects::InstancedBasicFX->SetWorld(world);
+		Effects::InstancedBasicFX->SetWorldInvTranspose(worldInvTranspose);
+		Effects::InstancedBasicFX->SetViewProj(viewProj);
+		Effects::InstancedBasicFX->SetMaterial(mBoxMat);
+
+
+		Effects::InstancedBasicFX->Light3TexTech->GetPassByIndex(p)->Apply(0, mDc);
+		mDc->DrawIndexedInstanced(fenceIndexCount,mInstancedModelWorld.size(), fenceIndexOffset, fenceVertexOffset, 0);
+	}
 	// Debug view depth buffer.
 	//	if( GetAsyncKeyState('Z') & 0x8000 )
 	{
@@ -666,6 +692,15 @@ void CTestScene::BuildShapeGeometryBuffers()
 		}
 		else if (!strcmp(objectName, "fence1"))
 		{
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			mFenceSRV = mTexMgr.CreateTexture(L"diff_fence_gate.dds");
+			mInstancedModelWorld.push_back(M);
 			
 		}
 		else if (!strcmp(objectName, "house_1"))
@@ -791,6 +826,18 @@ void CTestScene::BuildShapeGeometryBuffers()
 		ZeroMemory(&rotation, sizeof(rotation));
 		ZeroMemory(&scale, sizeof(scale));
 	}
+
+
+	D3D11_BUFFER_DESC instancevbd;
+	instancevbd.Usage = D3D11_USAGE_IMMUTABLE;
+	instancevbd.ByteWidth = sizeof(XMFLOAT4X4) * mInstancedModelWorld.size();
+	instancevbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	instancevbd.CPUAccessFlags = 0;
+	instancevbd.MiscFlags = 0;
+	instancevbd.StructureByteStride = 0;
+	D3D11_SUBRESOURCE_DATA instancevinitData;
+	instancevinitData.pSysMem = &mInstancedModelWorld[0];
+	HR(mDevice->CreateBuffer(&instancevbd, &instancevinitData, &mInstanceBuffer));
 	ifs.close();
 
 
@@ -944,79 +991,5 @@ void CTestScene::BuildBasicGeometryBuffer()
 	HR(mDevice->CreateBuffer(&ibd, &iinitData, &mStaticBasicObjectIB));
 
 
-}
-void CTestScene::DrawSceneQuard()
-{
-	UINT stride = sizeof(Vertex::Basic32);
-	UINT offset = 0;
 
-	mDc->IASetInputLayout(InputLayouts::Basic32);
-	mDc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	mDc->IASetVertexBuffers(0, 1, &mScreenQuadVB, &stride, &offset);
-	mDc->IASetIndexBuffer(mScreenQuadIB, DXGI_FORMAT_R32_UINT, 0);
-
-	// Scale and shift quad to lower-right corner.
-	XMMATRIX world(
-		0.5f, 0.0f, 0.0f, 0.0f,
-		0.0f, 0.5f, 0.0f, 0.0f,
-		0.0f, 0.0f, 1.0f, 0.0f,
-		0.5f, -0.5f, 0.0f, 1.0f);
-
-	ID3DX11EffectTechnique* tech = Effects::DebugTexFX->ViewRedTech;
-	D3DX11_TECHNIQUE_DESC techDesc;
-
-	tech->GetDesc(&techDesc);
-	for (UINT p = 0; p < techDesc.Passes; ++p)
-	{
-		Effects::DebugTexFX->SetWorldViewProj(world);
-		Effects::DebugTexFX->SetTexture(mSmap->DepthMapSRV());
-
-		tech->GetPassByIndex(p)->Apply(0, mDc);
-		mDc->DrawIndexed(6, 0, 0);
-	}
-}
-void CTestScene::BuildScreenQuadGeometryBuffers()
-{
-	GeometryGenerator::MeshData quad;
-
-	GeometryGenerator geoGen;
-	geoGen.CreateFullscreenQuad(quad);
-
-	//
-	// Extract the vertex elements we are interested in and pack the
-	// vertices of all the meshes into one vertex buffer.
-	//
-
-	std::vector<Vertex::Basic32> vertices(quad.Vertices.size());
-
-	for (UINT i = 0; i < quad.Vertices.size(); ++i)
-	{
-		vertices[i].Pos = quad.Vertices[i].Position;
-		vertices[i].Normal = quad.Vertices[i].Normal;
-		vertices[i].Tex = quad.Vertices[i].TexC;
-	}
-
-	D3D11_BUFFER_DESC vbd;
-	vbd.Usage = D3D11_USAGE_IMMUTABLE;
-	vbd.ByteWidth = sizeof(Vertex::Basic32) * quad.Vertices.size();
-	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vbd.CPUAccessFlags = 0;
-	vbd.MiscFlags = 0;
-	D3D11_SUBRESOURCE_DATA vinitData;
-	vinitData.pSysMem = &vertices[0];
-	HR(mDevice->CreateBuffer(&vbd, &vinitData, &mScreenQuadVB));
-
-	//
-	// Pack the indices of all the meshes into one index buffer.
-	//
-
-	D3D11_BUFFER_DESC ibd;
-	ibd.Usage = D3D11_USAGE_IMMUTABLE;
-	ibd.ByteWidth = sizeof(UINT) * quad.Indices.size();
-	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	ibd.CPUAccessFlags = 0;
-	ibd.MiscFlags = 0;
-	D3D11_SUBRESOURCE_DATA iinitData;
-	iinitData.pSysMem = &quad.Indices[0];
-	HR(mDevice->CreateBuffer(&ibd, &iinitData, &mScreenQuadIB));
 }

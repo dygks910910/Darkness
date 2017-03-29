@@ -150,9 +150,6 @@
     <ClCompile Include="ShadowMap.cpp">
       <Filter>Source Files\ShadowMap</Filter>
     </ClCompile>
-    <ClCompile Include="Ssao.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="StaticNormalModel.cpp">
       <Filter>Source Files\StaticModel</Filter>
     </ClCompile>
@@ -253,9 +250,6 @@
     <ClInclude Include="ShadowMap.h">
       <Filter>Source Files\ShadowMap</Filter>
     </ClInclude>
-    <ClInclude Include="Ssao.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="StaticNormalModel.h">
       <Filter>Source Files\StaticModel</Filter>
     </ClInclude>
@@ -295,6 +289,9 @@
       <Filter>FX</Filter>
     </FxCompile>
     <FxCompile Include="FX\DebugTexture.fx">
+      <Filter>FX</Filter>
+    </FxCompile>
+    <FxCompile Include="FX\InstancedBasic.fx">
       <Filter>FX</Filter>
     </FxCompile>
   </ItemGroup>

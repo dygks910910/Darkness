@@ -92,8 +92,7 @@ fxgroup
                 // WORLD                    1   xyzw        4     NONE   float   xyz 
                 // WORLD                    2   xyzw        5     NONE   float   xyz 
                 // WORLD                    3   xyzw        6     NONE   float   xyz 
-                // COLOR                    0   xyzw        7     NONE   float   xyzw
-                // SV_InstanceID            0   x           8   INSTID    uint       
+                // SV_InstanceID            0   x           7   INSTID    uint       
                 //
                 //
                 // Output signature:
@@ -104,7 +103,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float   xyzw
                 //
                 vs_5_0
                 dcl_globalFlags refactoringAllowed | skipOptimization
@@ -116,12 +114,10 @@ fxgroup
                 dcl_input v4.xyz
                 dcl_input v5.xyz
                 dcl_input v6.xyz
-                dcl_input v7.xyzw
                 dcl_output_siv o0.xyzw, position
                 dcl_output o1.xyz
                 dcl_output o2.xyz
                 dcl_output o3.xy
-                dcl_output o4.xyzw
                 dcl_temps 5
                 //
                 // Initial variable locations:
@@ -132,9 +128,7 @@ fxgroup
                 //   v4.x <- vin.World._m10; v4.y <- vin.World._m11; v4.z <- vin.World._m12; v4.w <- vin.World._m13; 
                 //   v5.x <- vin.World._m20; v5.y <- vin.World._m21; v5.z <- vin.World._m22; v5.w <- vin.World._m23; 
                 //   v6.x <- vin.World._m30; v6.y <- vin.World._m31; v6.z <- vin.World._m32; v6.w <- vin.World._m33; 
-                //   v7.x <- vin.Color.x; v7.y <- vin.Color.y; v7.z <- vin.Color.z; v7.w <- vin.Color.w; 
-                //   v8.x <- vin.InstanceId; 
-                //   o4.x <- <VS return value>.Color.x; o4.y <- <VS return value>.Color.y; o4.z <- <VS return value>.Color.z; o4.w <- <VS return value>.Color.w; 
+                //   v7.x <- vin.InstanceId; 
                 //   o3.x <- <VS return value>.Tex.x; o3.y <- <VS return value>.Tex.y; 
                 //   o2.x <- <VS return value>.NormalW.x; o2.y <- <VS return value>.NormalW.y; o2.z <- <VS return value>.NormalW.z; 
                 //   o1.x <- <VS return value>.PosW.x; o1.y <- <VS return value>.PosW.y; o1.z <- <VS return value>.PosW.z; 
@@ -166,14 +160,14 @@ fxgroup
                 mov r3.zw, l(0,0,0,1.000000)
                 dp4 r4.x, r3.xyzw, cb0[12].xyzw  // r4.x <- vout.Tex.x
                 dp4 r4.y, r3.xyzw, cb0[13].xyzw  // r4.y <- vout.Tex.y
-                mov r3.xyzw, v7.xyzw  // r3.x <- vout.Color.x; r3.y <- vout.Color.y; r3.z <- vout.Color.z; r3.w <- vout.Color.w
+                
+                #line 74
                 mov o0.xyzw, r2.xyzw
-                mov o4.xyzw, r3.xyzw
                 mov o1.xyz, r0.xyzx
                 mov o2.xyz, r1.xyzx
                 mov o3.xy, r4.xyxx
                 ret 
-                // Approximately 28 instruction slots used
+                // Approximately 26 instruction slots used
                             
             };
             GeometryShader = NULL;
@@ -242,7 +236,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float       
-                // COLOR                    0   xyzw        4     NONE   float   xyz 
                 //
                 //
                 // Output signature:
@@ -257,7 +250,6 @@ fxgroup
                 dcl_constantbuffer cb1[19], immediateIndexed
                 dcl_input_ps linear v1.xyz
                 dcl_input_ps linear v2.xyz
-                dcl_input_ps linear v4.xyz
                 dcl_output o0.xyzw
                 dcl_temps 15
                 //
@@ -266,7 +258,6 @@ fxgroup
                 //   v1.x <- pin.PosW.x; v1.y <- pin.PosW.y; v1.z <- pin.PosW.z; 
                 //   v2.x <- pin.NormalW.x; v2.y <- pin.NormalW.y; v2.z <- pin.NormalW.z; 
                 //   v3.x <- pin.Tex.x; v3.y <- pin.Tex.y; 
-                //   v4.x <- pin.Color.x; v4.y <- pin.Color.y; v4.z <- pin.Color.z; v4.w <- pin.Color.w; 
                 //   o0.x <- <PS return value>.x; o0.y <- <PS return value>.y; o0.z <- <PS return value>.z; o0.w <- <PS return value>.w
                 //
                 #line 80 "D:\물방?책\DVD\Code\Chapter 15 Instancing and Frustum Culling\InstancingAndCulling\FX\InstancedBasic"
@@ -344,9 +335,7 @@ fxgroup
                 mov r1.xyz, r1.xyzx  // r1.x <- S.x; r1.y <- S.y; r1.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r0.xyz, r0.xyzx, v4.xyzx
                 add r0.xyz, r0.xyzx, r4.xyzx  // r0.x <- diffuse.x; r0.y <- diffuse.y; r0.z <- diffuse.z
                 add r1.xyz, r1.xyzx, r5.xyzx  // r1.x <- spec.x; r1.y <- spec.y; r1.z <- spec.z
                 
@@ -360,7 +349,7 @@ fxgroup
                 mov o0.xyz, r0.xyzx
                 mov o0.w, r0.w
                 ret 
-                // Approximately 60 instruction slots used
+                // Approximately 58 instruction slots used
                             
             };
         }
@@ -418,8 +407,7 @@ fxgroup
                 // WORLD                    1   xyzw        4     NONE   float   xyz 
                 // WORLD                    2   xyzw        5     NONE   float   xyz 
                 // WORLD                    3   xyzw        6     NONE   float   xyz 
-                // COLOR                    0   xyzw        7     NONE   float   xyzw
-                // SV_InstanceID            0   x           8   INSTID    uint       
+                // SV_InstanceID            0   x           7   INSTID    uint       
                 //
                 //
                 // Output signature:
@@ -430,7 +418,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float   xyzw
                 //
                 vs_5_0
                 dcl_globalFlags refactoringAllowed | skipOptimization
@@ -442,12 +429,10 @@ fxgroup
                 dcl_input v4.xyz
                 dcl_input v5.xyz
                 dcl_input v6.xyz
-                dcl_input v7.xyzw
                 dcl_output_siv o0.xyzw, position
                 dcl_output o1.xyz
                 dcl_output o2.xyz
                 dcl_output o3.xy
-                dcl_output o4.xyzw
                 dcl_temps 5
                 //
                 // Initial variable locations:
@@ -458,9 +443,7 @@ fxgroup
                 //   v4.x <- vin.World._m10; v4.y <- vin.World._m11; v4.z <- vin.World._m12; v4.w <- vin.World._m13; 
                 //   v5.x <- vin.World._m20; v5.y <- vin.World._m21; v5.z <- vin.World._m22; v5.w <- vin.World._m23; 
                 //   v6.x <- vin.World._m30; v6.y <- vin.World._m31; v6.z <- vin.World._m32; v6.w <- vin.World._m33; 
-                //   v7.x <- vin.Color.x; v7.y <- vin.Color.y; v7.z <- vin.Color.z; v7.w <- vin.Color.w; 
-                //   v8.x <- vin.InstanceId; 
-                //   o4.x <- <VS return value>.Color.x; o4.y <- <VS return value>.Color.y; o4.z <- <VS return value>.Color.z; o4.w <- <VS return value>.Color.w; 
+                //   v7.x <- vin.InstanceId; 
                 //   o3.x <- <VS return value>.Tex.x; o3.y <- <VS return value>.Tex.y; 
                 //   o2.x <- <VS return value>.NormalW.x; o2.y <- <VS return value>.NormalW.y; o2.z <- <VS return value>.NormalW.z; 
                 //   o1.x <- <VS return value>.PosW.x; o1.y <- <VS return value>.PosW.y; o1.z <- <VS return value>.PosW.z; 
@@ -492,14 +475,14 @@ fxgroup
                 mov r3.zw, l(0,0,0,1.000000)
                 dp4 r4.x, r3.xyzw, cb0[12].xyzw  // r4.x <- vout.Tex.x
                 dp4 r4.y, r3.xyzw, cb0[13].xyzw  // r4.y <- vout.Tex.y
-                mov r3.xyzw, v7.xyzw  // r3.x <- vout.Color.x; r3.y <- vout.Color.y; r3.z <- vout.Color.z; r3.w <- vout.Color.w
+                
+                #line 74
                 mov o0.xyzw, r2.xyzw
-                mov o4.xyzw, r3.xyzw
                 mov o1.xyz, r0.xyzx
                 mov o2.xyz, r1.xyzx
                 mov o3.xy, r4.xyxx
                 ret 
-                // Approximately 28 instruction slots used
+                // Approximately 26 instruction slots used
                             
             };
             GeometryShader = NULL;
@@ -568,7 +551,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float       
-                // COLOR                    0   xyzw        4     NONE   float   xyz 
                 //
                 //
                 // Output signature:
@@ -583,7 +565,6 @@ fxgroup
                 dcl_constantbuffer cb1[19], immediateIndexed
                 dcl_input_ps linear v1.xyz
                 dcl_input_ps linear v2.xyz
-                dcl_input_ps linear v4.xyz
                 dcl_output o0.xyzw
                 dcl_temps 15
                 //
@@ -592,7 +573,6 @@ fxgroup
                 //   v1.x <- pin.PosW.x; v1.y <- pin.PosW.y; v1.z <- pin.PosW.z; 
                 //   v2.x <- pin.NormalW.x; v2.y <- pin.NormalW.y; v2.z <- pin.NormalW.z; 
                 //   v3.x <- pin.Tex.x; v3.y <- pin.Tex.y; 
-                //   v4.x <- pin.Color.x; v4.y <- pin.Color.y; v4.z <- pin.Color.z; v4.w <- pin.Color.w; 
                 //   o0.x <- <PS return value>.x; o0.y <- <PS return value>.y; o0.z <- <PS return value>.z; o0.w <- <PS return value>.w
                 //
                 #line 80 "D:\물방?책\DVD\Code\Chapter 15 Instancing and Frustum Culling\InstancingAndCulling\FX\InstancedBasic"
@@ -670,10 +650,8 @@ fxgroup
                 mov r8.xyz, r8.xyzx  // r8.x <- S.x; r8.y <- S.y; r8.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r6.xyz, r7.xyzx, v4.xyzx
-                add r4.xyz, r4.xyzx, r6.xyzx
+                add r4.xyz, r4.xyzx, r7.xyzx
                 add r5.xyz, r5.xyzx, r8.xyzx
                 
                 #line 124
@@ -725,9 +703,7 @@ fxgroup
                 mov r1.xyz, r1.xyzx  // r1.x <- S.x; r1.y <- S.y; r1.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r0.xyz, r0.xyzx, v4.xyzx
                 add r0.xyz, r0.xyzx, r4.xyzx  // r0.x <- diffuse.x; r0.y <- diffuse.y; r0.z <- diffuse.z
                 add r1.xyz, r1.xyzx, r5.xyzx  // r1.x <- spec.x; r1.y <- spec.y; r1.z <- spec.z
                 
@@ -741,7 +717,7 @@ fxgroup
                 mov o0.xyz, r0.xyzx
                 mov o0.w, r0.w
                 ret 
-                // Approximately 99 instruction slots used
+                // Approximately 95 instruction slots used
                             
             };
         }
@@ -799,8 +775,7 @@ fxgroup
                 // WORLD                    1   xyzw        4     NONE   float   xyz 
                 // WORLD                    2   xyzw        5     NONE   float   xyz 
                 // WORLD                    3   xyzw        6     NONE   float   xyz 
-                // COLOR                    0   xyzw        7     NONE   float   xyzw
-                // SV_InstanceID            0   x           8   INSTID    uint       
+                // SV_InstanceID            0   x           7   INSTID    uint       
                 //
                 //
                 // Output signature:
@@ -811,7 +786,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float   xyzw
                 //
                 vs_5_0
                 dcl_globalFlags refactoringAllowed | skipOptimization
@@ -823,12 +797,10 @@ fxgroup
                 dcl_input v4.xyz
                 dcl_input v5.xyz
                 dcl_input v6.xyz
-                dcl_input v7.xyzw
                 dcl_output_siv o0.xyzw, position
                 dcl_output o1.xyz
                 dcl_output o2.xyz
                 dcl_output o3.xy
-                dcl_output o4.xyzw
                 dcl_temps 5
                 //
                 // Initial variable locations:
@@ -839,9 +811,7 @@ fxgroup
                 //   v4.x <- vin.World._m10; v4.y <- vin.World._m11; v4.z <- vin.World._m12; v4.w <- vin.World._m13; 
                 //   v5.x <- vin.World._m20; v5.y <- vin.World._m21; v5.z <- vin.World._m22; v5.w <- vin.World._m23; 
                 //   v6.x <- vin.World._m30; v6.y <- vin.World._m31; v6.z <- vin.World._m32; v6.w <- vin.World._m33; 
-                //   v7.x <- vin.Color.x; v7.y <- vin.Color.y; v7.z <- vin.Color.z; v7.w <- vin.Color.w; 
-                //   v8.x <- vin.InstanceId; 
-                //   o4.x <- <VS return value>.Color.x; o4.y <- <VS return value>.Color.y; o4.z <- <VS return value>.Color.z; o4.w <- <VS return value>.Color.w; 
+                //   v7.x <- vin.InstanceId; 
                 //   o3.x <- <VS return value>.Tex.x; o3.y <- <VS return value>.Tex.y; 
                 //   o2.x <- <VS return value>.NormalW.x; o2.y <- <VS return value>.NormalW.y; o2.z <- <VS return value>.NormalW.z; 
                 //   o1.x <- <VS return value>.PosW.x; o1.y <- <VS return value>.PosW.y; o1.z <- <VS return value>.PosW.z; 
@@ -873,14 +843,14 @@ fxgroup
                 mov r3.zw, l(0,0,0,1.000000)
                 dp4 r4.x, r3.xyzw, cb0[12].xyzw  // r4.x <- vout.Tex.x
                 dp4 r4.y, r3.xyzw, cb0[13].xyzw  // r4.y <- vout.Tex.y
-                mov r3.xyzw, v7.xyzw  // r3.x <- vout.Color.x; r3.y <- vout.Color.y; r3.z <- vout.Color.z; r3.w <- vout.Color.w
+                
+                #line 74
                 mov o0.xyzw, r2.xyzw
-                mov o4.xyzw, r3.xyzw
                 mov o1.xyz, r0.xyzx
                 mov o2.xyz, r1.xyzx
                 mov o3.xy, r4.xyxx
                 ret 
-                // Approximately 28 instruction slots used
+                // Approximately 26 instruction slots used
                             
             };
             GeometryShader = NULL;
@@ -949,7 +919,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float       
-                // COLOR                    0   xyzw        4     NONE   float   xyz 
                 //
                 //
                 // Output signature:
@@ -964,7 +933,6 @@ fxgroup
                 dcl_constantbuffer cb1[19], immediateIndexed
                 dcl_input_ps linear v1.xyz
                 dcl_input_ps linear v2.xyz
-                dcl_input_ps linear v4.xyz
                 dcl_output o0.xyzw
                 dcl_temps 15
                 //
@@ -973,7 +941,6 @@ fxgroup
                 //   v1.x <- pin.PosW.x; v1.y <- pin.PosW.y; v1.z <- pin.PosW.z; 
                 //   v2.x <- pin.NormalW.x; v2.y <- pin.NormalW.y; v2.z <- pin.NormalW.z; 
                 //   v3.x <- pin.Tex.x; v3.y <- pin.Tex.y; 
-                //   v4.x <- pin.Color.x; v4.y <- pin.Color.y; v4.z <- pin.Color.z; v4.w <- pin.Color.w; 
                 //   o0.x <- <PS return value>.x; o0.y <- <PS return value>.y; o0.z <- <PS return value>.z; o0.w <- <PS return value>.w
                 //
                 #line 80 "D:\물방?책\DVD\Code\Chapter 15 Instancing and Frustum Culling\InstancingAndCulling\FX\InstancedBasic"
@@ -1051,10 +1018,8 @@ fxgroup
                 mov r8.xyz, r8.xyzx  // r8.x <- S.x; r8.y <- S.y; r8.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r6.xyz, r7.xyzx, v4.xyzx
-                add r4.xyz, r4.xyzx, r6.xyzx
+                add r4.xyz, r4.xyzx, r7.xyzx
                 add r5.xyz, r5.xyzx, r8.xyzx
                 
                 #line 124
@@ -1106,10 +1071,8 @@ fxgroup
                 mov r8.xyz, r8.xyzx  // r8.x <- S.x; r8.y <- S.y; r8.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r6.xyz, r7.xyzx, v4.xyzx
-                add r4.xyz, r4.xyzx, r6.xyzx
+                add r4.xyz, r4.xyzx, r7.xyzx
                 add r5.xyz, r5.xyzx, r8.xyzx
                 
                 #line 124
@@ -1161,9 +1124,7 @@ fxgroup
                 mov r1.xyz, r1.xyzx  // r1.x <- S.x; r1.y <- S.y; r1.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r0.xyz, r0.xyzx, v4.xyzx
                 add r0.xyz, r0.xyzx, r4.xyzx  // r0.x <- diffuse.x; r0.y <- diffuse.y; r0.z <- diffuse.z
                 add r1.xyz, r1.xyzx, r5.xyzx  // r1.x <- spec.x; r1.y <- spec.y; r1.z <- spec.z
                 
@@ -1177,7 +1138,7 @@ fxgroup
                 mov o0.xyz, r0.xyzx
                 mov o0.w, r0.w
                 ret 
-                // Approximately 138 instruction slots used
+                // Approximately 132 instruction slots used
                             
             };
         }
@@ -1235,8 +1196,7 @@ fxgroup
                 // WORLD                    1   xyzw        4     NONE   float   xyz 
                 // WORLD                    2   xyzw        5     NONE   float   xyz 
                 // WORLD                    3   xyzw        6     NONE   float   xyz 
-                // COLOR                    0   xyzw        7     NONE   float   xyzw
-                // SV_InstanceID            0   x           8   INSTID    uint       
+                // SV_InstanceID            0   x           7   INSTID    uint       
                 //
                 //
                 // Output signature:
@@ -1247,7 +1207,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float   xyzw
                 //
                 vs_5_0
                 dcl_globalFlags refactoringAllowed | skipOptimization
@@ -1259,12 +1218,10 @@ fxgroup
                 dcl_input v4.xyz
                 dcl_input v5.xyz
                 dcl_input v6.xyz
-                dcl_input v7.xyzw
                 dcl_output_siv o0.xyzw, position
                 dcl_output o1.xyz
                 dcl_output o2.xyz
                 dcl_output o3.xy
-                dcl_output o4.xyzw
                 dcl_temps 5
                 //
                 // Initial variable locations:
@@ -1275,9 +1232,7 @@ fxgroup
                 //   v4.x <- vin.World._m10; v4.y <- vin.World._m11; v4.z <- vin.World._m12; v4.w <- vin.World._m13; 
                 //   v5.x <- vin.World._m20; v5.y <- vin.World._m21; v5.z <- vin.World._m22; v5.w <- vin.World._m23; 
                 //   v6.x <- vin.World._m30; v6.y <- vin.World._m31; v6.z <- vin.World._m32; v6.w <- vin.World._m33; 
-                //   v7.x <- vin.Color.x; v7.y <- vin.Color.y; v7.z <- vin.Color.z; v7.w <- vin.Color.w; 
-                //   v8.x <- vin.InstanceId; 
-                //   o4.x <- <VS return value>.Color.x; o4.y <- <VS return value>.Color.y; o4.z <- <VS return value>.Color.z; o4.w <- <VS return value>.Color.w; 
+                //   v7.x <- vin.InstanceId; 
                 //   o3.x <- <VS return value>.Tex.x; o3.y <- <VS return value>.Tex.y; 
                 //   o2.x <- <VS return value>.NormalW.x; o2.y <- <VS return value>.NormalW.y; o2.z <- <VS return value>.NormalW.z; 
                 //   o1.x <- <VS return value>.PosW.x; o1.y <- <VS return value>.PosW.y; o1.z <- <VS return value>.PosW.z; 
@@ -1309,14 +1264,14 @@ fxgroup
                 mov r3.zw, l(0,0,0,1.000000)
                 dp4 r4.x, r3.xyzw, cb0[12].xyzw  // r4.x <- vout.Tex.x
                 dp4 r4.y, r3.xyzw, cb0[13].xyzw  // r4.y <- vout.Tex.y
-                mov r3.xyzw, v7.xyzw  // r3.x <- vout.Color.x; r3.y <- vout.Color.y; r3.z <- vout.Color.z; r3.w <- vout.Color.w
+                
+                #line 74
                 mov o0.xyzw, r2.xyzw
-                mov o4.xyzw, r3.xyzw
                 mov o1.xyz, r0.xyzx
                 mov o2.xyz, r1.xyzx
                 mov o3.xy, r4.xyxx
                 ret 
-                // Approximately 28 instruction slots used
+                // Approximately 26 instruction slots used
                             
             };
             GeometryShader = NULL;
@@ -1366,7 +1321,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float       
                 // NORMAL                   0   xyz         2     NONE   float       
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float       
                 //
                 //
                 // Output signature:
@@ -1389,7 +1343,6 @@ fxgroup
                 //   v1.x <- pin.PosW.x; v1.y <- pin.PosW.y; v1.z <- pin.PosW.z; 
                 //   v2.x <- pin.NormalW.x; v2.y <- pin.NormalW.y; v2.z <- pin.NormalW.z; 
                 //   v3.x <- pin.Tex.x; v3.y <- pin.Tex.y; 
-                //   v4.x <- pin.Color.x; v4.y <- pin.Color.y; v4.z <- pin.Color.z; v4.w <- pin.Color.w; 
                 //   o0.x <- <PS return value>.x; o0.y <- <PS return value>.y; o0.z <- <PS return value>.z; o0.w <- <PS return value>.w
                 //
                 #line 96 "D:\물방?책\DVD\Code\Chapter 15 Instancing and Frustum Culling\InstancingAndCulling\FX\InstancedBasic"
@@ -1461,8 +1414,7 @@ fxgroup
                 // WORLD                    1   xyzw        4     NONE   float   xyz 
                 // WORLD                    2   xyzw        5     NONE   float   xyz 
                 // WORLD                    3   xyzw        6     NONE   float   xyz 
-                // COLOR                    0   xyzw        7     NONE   float   xyzw
-                // SV_InstanceID            0   x           8   INSTID    uint       
+                // SV_InstanceID            0   x           7   INSTID    uint       
                 //
                 //
                 // Output signature:
@@ -1473,7 +1425,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float   xyzw
                 //
                 vs_5_0
                 dcl_globalFlags refactoringAllowed | skipOptimization
@@ -1485,12 +1436,10 @@ fxgroup
                 dcl_input v4.xyz
                 dcl_input v5.xyz
                 dcl_input v6.xyz
-                dcl_input v7.xyzw
                 dcl_output_siv o0.xyzw, position
                 dcl_output o1.xyz
                 dcl_output o2.xyz
                 dcl_output o3.xy
-                dcl_output o4.xyzw
                 dcl_temps 5
                 //
                 // Initial variable locations:
@@ -1501,9 +1450,7 @@ fxgroup
                 //   v4.x <- vin.World._m10; v4.y <- vin.World._m11; v4.z <- vin.World._m12; v4.w <- vin.World._m13; 
                 //   v5.x <- vin.World._m20; v5.y <- vin.World._m21; v5.z <- vin.World._m22; v5.w <- vin.World._m23; 
                 //   v6.x <- vin.World._m30; v6.y <- vin.World._m31; v6.z <- vin.World._m32; v6.w <- vin.World._m33; 
-                //   v7.x <- vin.Color.x; v7.y <- vin.Color.y; v7.z <- vin.Color.z; v7.w <- vin.Color.w; 
-                //   v8.x <- vin.InstanceId; 
-                //   o4.x <- <VS return value>.Color.x; o4.y <- <VS return value>.Color.y; o4.z <- <VS return value>.Color.z; o4.w <- <VS return value>.Color.w; 
+                //   v7.x <- vin.InstanceId; 
                 //   o3.x <- <VS return value>.Tex.x; o3.y <- <VS return value>.Tex.y; 
                 //   o2.x <- <VS return value>.NormalW.x; o2.y <- <VS return value>.NormalW.y; o2.z <- <VS return value>.NormalW.z; 
                 //   o1.x <- <VS return value>.PosW.x; o1.y <- <VS return value>.PosW.y; o1.z <- <VS return value>.PosW.z; 
@@ -1535,14 +1482,14 @@ fxgroup
                 mov r3.zw, l(0,0,0,1.000000)
                 dp4 r4.x, r3.xyzw, cb0[12].xyzw  // r4.x <- vout.Tex.x
                 dp4 r4.y, r3.xyzw, cb0[13].xyzw  // r4.y <- vout.Tex.y
-                mov r3.xyzw, v7.xyzw  // r3.x <- vout.Color.x; r3.y <- vout.Color.y; r3.z <- vout.Color.z; r3.w <- vout.Color.w
+                
+                #line 74
                 mov o0.xyzw, r2.xyzw
-                mov o4.xyzw, r3.xyzw
                 mov o1.xyz, r0.xyzx
                 mov o2.xyz, r1.xyzx
                 mov o3.xy, r4.xyxx
                 ret 
-                // Approximately 28 instruction slots used
+                // Approximately 26 instruction slots used
                             
             };
             GeometryShader = NULL;
@@ -1613,7 +1560,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float   xyz 
                 //
                 //
                 // Output signature:
@@ -1631,7 +1577,6 @@ fxgroup
                 dcl_input_ps linear v1.xyz
                 dcl_input_ps linear v2.xyz
                 dcl_input_ps linear v3.xy
-                dcl_input_ps linear v4.xyz
                 dcl_output o0.xyzw
                 dcl_temps 15
                 //
@@ -1640,7 +1585,6 @@ fxgroup
                 //   v1.x <- pin.PosW.x; v1.y <- pin.PosW.y; v1.z <- pin.PosW.z; 
                 //   v2.x <- pin.NormalW.x; v2.y <- pin.NormalW.y; v2.z <- pin.NormalW.z; 
                 //   v3.x <- pin.Tex.x; v3.y <- pin.Tex.y; 
-                //   v4.x <- pin.Color.x; v4.y <- pin.Color.y; v4.z <- pin.Color.z; v4.w <- pin.Color.w; 
                 //   o0.x <- <PS return value>.x; o0.y <- <PS return value>.y; o0.z <- <PS return value>.z; o0.w <- <PS return value>.w
                 //
                 #line 80 "D:\물방?책\DVD\Code\Chapter 15 Instancing and Frustum Culling\InstancingAndCulling\FX\InstancedBasic"
@@ -1718,9 +1662,7 @@ fxgroup
                 mov r1.xyz, r1.xyzx  // r1.x <- S.x; r1.y <- S.y; r1.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r0.xyz, r0.xyzx, v4.xyzx
                 add r0.xyz, r0.xyzx, r4.xyzx  // r0.x <- diffuse.x; r0.y <- diffuse.y; r0.z <- diffuse.z
                 add r1.xyz, r1.xyzx, r5.xyzx  // r1.x <- spec.x; r1.y <- spec.y; r1.z <- spec.z
                 
@@ -1734,7 +1676,7 @@ fxgroup
                 mov o0.xyz, r0.xyzx
                 mov o0.w, r0.w
                 ret 
-                // Approximately 60 instruction slots used
+                // Approximately 58 instruction slots used
                             
             };
         }
@@ -1792,8 +1734,7 @@ fxgroup
                 // WORLD                    1   xyzw        4     NONE   float   xyz 
                 // WORLD                    2   xyzw        5     NONE   float   xyz 
                 // WORLD                    3   xyzw        6     NONE   float   xyz 
-                // COLOR                    0   xyzw        7     NONE   float   xyzw
-                // SV_InstanceID            0   x           8   INSTID    uint       
+                // SV_InstanceID            0   x           7   INSTID    uint       
                 //
                 //
                 // Output signature:
@@ -1804,7 +1745,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float   xyzw
                 //
                 vs_5_0
                 dcl_globalFlags refactoringAllowed | skipOptimization
@@ -1816,12 +1756,10 @@ fxgroup
                 dcl_input v4.xyz
                 dcl_input v5.xyz
                 dcl_input v6.xyz
-                dcl_input v7.xyzw
                 dcl_output_siv o0.xyzw, position
                 dcl_output o1.xyz
                 dcl_output o2.xyz
                 dcl_output o3.xy
-                dcl_output o4.xyzw
                 dcl_temps 5
                 //
                 // Initial variable locations:
@@ -1832,9 +1770,7 @@ fxgroup
                 //   v4.x <- vin.World._m10; v4.y <- vin.World._m11; v4.z <- vin.World._m12; v4.w <- vin.World._m13; 
                 //   v5.x <- vin.World._m20; v5.y <- vin.World._m21; v5.z <- vin.World._m22; v5.w <- vin.World._m23; 
                 //   v6.x <- vin.World._m30; v6.y <- vin.World._m31; v6.z <- vin.World._m32; v6.w <- vin.World._m33; 
-                //   v7.x <- vin.Color.x; v7.y <- vin.Color.y; v7.z <- vin.Color.z; v7.w <- vin.Color.w; 
-                //   v8.x <- vin.InstanceId; 
-                //   o4.x <- <VS return value>.Color.x; o4.y <- <VS return value>.Color.y; o4.z <- <VS return value>.Color.z; o4.w <- <VS return value>.Color.w; 
+                //   v7.x <- vin.InstanceId; 
                 //   o3.x <- <VS return value>.Tex.x; o3.y <- <VS return value>.Tex.y; 
                 //   o2.x <- <VS return value>.NormalW.x; o2.y <- <VS return value>.NormalW.y; o2.z <- <VS return value>.NormalW.z; 
                 //   o1.x <- <VS return value>.PosW.x; o1.y <- <VS return value>.PosW.y; o1.z <- <VS return value>.PosW.z; 
@@ -1866,14 +1802,14 @@ fxgroup
                 mov r3.zw, l(0,0,0,1.000000)
                 dp4 r4.x, r3.xyzw, cb0[12].xyzw  // r4.x <- vout.Tex.x
                 dp4 r4.y, r3.xyzw, cb0[13].xyzw  // r4.y <- vout.Tex.y
-                mov r3.xyzw, v7.xyzw  // r3.x <- vout.Color.x; r3.y <- vout.Color.y; r3.z <- vout.Color.z; r3.w <- vout.Color.w
+                
+                #line 74
                 mov o0.xyzw, r2.xyzw
-                mov o4.xyzw, r3.xyzw
                 mov o1.xyz, r0.xyzx
                 mov o2.xyz, r1.xyzx
                 mov o3.xy, r4.xyxx
                 ret 
-                // Approximately 28 instruction slots used
+                // Approximately 26 instruction slots used
                             
             };
             GeometryShader = NULL;
@@ -1944,7 +1880,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float   xyz 
                 //
                 //
                 // Output signature:
@@ -1962,7 +1897,6 @@ fxgroup
                 dcl_input_ps linear v1.xyz
                 dcl_input_ps linear v2.xyz
                 dcl_input_ps linear v3.xy
-                dcl_input_ps linear v4.xyz
                 dcl_output o0.xyzw
                 dcl_temps 15
                 //
@@ -1971,7 +1905,6 @@ fxgroup
                 //   v1.x <- pin.PosW.x; v1.y <- pin.PosW.y; v1.z <- pin.PosW.z; 
                 //   v2.x <- pin.NormalW.x; v2.y <- pin.NormalW.y; v2.z <- pin.NormalW.z; 
                 //   v3.x <- pin.Tex.x; v3.y <- pin.Tex.y; 
-                //   v4.x <- pin.Color.x; v4.y <- pin.Color.y; v4.z <- pin.Color.z; v4.w <- pin.Color.w; 
                 //   o0.x <- <PS return value>.x; o0.y <- <PS return value>.y; o0.z <- <PS return value>.z; o0.w <- <PS return value>.w
                 //
                 #line 80 "D:\물방?책\DVD\Code\Chapter 15 Instancing and Frustum Culling\InstancingAndCulling\FX\InstancedBasic"
@@ -2049,10 +1982,8 @@ fxgroup
                 mov r8.xyz, r8.xyzx  // r8.x <- S.x; r8.y <- S.y; r8.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r6.xyz, r7.xyzx, v4.xyzx
-                add r4.xyz, r4.xyzx, r6.xyzx
+                add r4.xyz, r4.xyzx, r7.xyzx
                 add r5.xyz, r5.xyzx, r8.xyzx
                 
                 #line 124
@@ -2104,9 +2035,7 @@ fxgroup
                 mov r1.xyz, r1.xyzx  // r1.x <- S.x; r1.y <- S.y; r1.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r0.xyz, r0.xyzx, v4.xyzx
                 add r0.xyz, r0.xyzx, r4.xyzx  // r0.x <- diffuse.x; r0.y <- diffuse.y; r0.z <- diffuse.z
                 add r1.xyz, r1.xyzx, r5.xyzx  // r1.x <- spec.x; r1.y <- spec.y; r1.z <- spec.z
                 
@@ -2120,7 +2049,7 @@ fxgroup
                 mov o0.xyz, r0.xyzx
                 mov o0.w, r0.w
                 ret 
-                // Approximately 99 instruction slots used
+                // Approximately 95 instruction slots used
                             
             };
         }
@@ -2178,8 +2107,7 @@ fxgroup
                 // WORLD                    1   xyzw        4     NONE   float   xyz 
                 // WORLD                    2   xyzw        5     NONE   float   xyz 
                 // WORLD                    3   xyzw        6     NONE   float   xyz 
-                // COLOR                    0   xyzw        7     NONE   float   xyzw
-                // SV_InstanceID            0   x           8   INSTID    uint       
+                // SV_InstanceID            0   x           7   INSTID    uint       
                 //
                 //
                 // Output signature:
@@ -2190,7 +2118,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float   xyzw
                 //
                 vs_5_0
                 dcl_globalFlags refactoringAllowed | skipOptimization
@@ -2202,12 +2129,10 @@ fxgroup
                 dcl_input v4.xyz
                 dcl_input v5.xyz
                 dcl_input v6.xyz
-                dcl_input v7.xyzw
                 dcl_output_siv o0.xyzw, position
                 dcl_output o1.xyz
                 dcl_output o2.xyz
                 dcl_output o3.xy
-                dcl_output o4.xyzw
                 dcl_temps 5
                 //
                 // Initial variable locations:
@@ -2218,9 +2143,7 @@ fxgroup
                 //   v4.x <- vin.World._m10; v4.y <- vin.World._m11; v4.z <- vin.World._m12; v4.w <- vin.World._m13; 
                 //   v5.x <- vin.World._m20; v5.y <- vin.World._m21; v5.z <- vin.World._m22; v5.w <- vin.World._m23; 
                 //   v6.x <- vin.World._m30; v6.y <- vin.World._m31; v6.z <- vin.World._m32; v6.w <- vin.World._m33; 
-                //   v7.x <- vin.Color.x; v7.y <- vin.Color.y; v7.z <- vin.Color.z; v7.w <- vin.Color.w; 
-                //   v8.x <- vin.InstanceId; 
-                //   o4.x <- <VS return value>.Color.x; o4.y <- <VS return value>.Color.y; o4.z <- <VS return value>.Color.z; o4.w <- <VS return value>.Color.w; 
+                //   v7.x <- vin.InstanceId; 
                 //   o3.x <- <VS return value>.Tex.x; o3.y <- <VS return value>.Tex.y; 
                 //   o2.x <- <VS return value>.NormalW.x; o2.y <- <VS return value>.NormalW.y; o2.z <- <VS return value>.NormalW.z; 
                 //   o1.x <- <VS return value>.PosW.x; o1.y <- <VS return value>.PosW.y; o1.z <- <VS return value>.PosW.z; 
@@ -2252,14 +2175,14 @@ fxgroup
                 mov r3.zw, l(0,0,0,1.000000)
                 dp4 r4.x, r3.xyzw, cb0[12].xyzw  // r4.x <- vout.Tex.x
                 dp4 r4.y, r3.xyzw, cb0[13].xyzw  // r4.y <- vout.Tex.y
-                mov r3.xyzw, v7.xyzw  // r3.x <- vout.Color.x; r3.y <- vout.Color.y; r3.z <- vout.Color.z; r3.w <- vout.Color.w
+                
+                #line 74
                 mov o0.xyzw, r2.xyzw
-                mov o4.xyzw, r3.xyzw
                 mov o1.xyz, r0.xyzx
                 mov o2.xyz, r1.xyzx
                 mov o3.xy, r4.xyxx
                 ret 
-                // Approximately 28 instruction slots used
+                // Approximately 26 instruction slots used
                             
             };
             GeometryShader = NULL;
@@ -2330,7 +2253,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float   xyz 
                 //
                 //
                 // Output signature:
@@ -2348,7 +2270,6 @@ fxgroup
                 dcl_input_ps linear v1.xyz
                 dcl_input_ps linear v2.xyz
                 dcl_input_ps linear v3.xy
-                dcl_input_ps linear v4.xyz
                 dcl_output o0.xyzw
                 dcl_temps 15
                 //
@@ -2357,7 +2278,6 @@ fxgroup
                 //   v1.x <- pin.PosW.x; v1.y <- pin.PosW.y; v1.z <- pin.PosW.z; 
                 //   v2.x <- pin.NormalW.x; v2.y <- pin.NormalW.y; v2.z <- pin.NormalW.z; 
                 //   v3.x <- pin.Tex.x; v3.y <- pin.Tex.y; 
-                //   v4.x <- pin.Color.x; v4.y <- pin.Color.y; v4.z <- pin.Color.z; v4.w <- pin.Color.w; 
                 //   o0.x <- <PS return value>.x; o0.y <- <PS return value>.y; o0.z <- <PS return value>.z; o0.w <- <PS return value>.w
                 //
                 #line 80 "D:\물방?책\DVD\Code\Chapter 15 Instancing and Frustum Culling\InstancingAndCulling\FX\InstancedBasic"
@@ -2435,10 +2355,8 @@ fxgroup
                 mov r8.xyz, r8.xyzx  // r8.x <- S.x; r8.y <- S.y; r8.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r6.xyz, r7.xyzx, v4.xyzx
-                add r4.xyz, r4.xyzx, r6.xyzx
+                add r4.xyz, r4.xyzx, r7.xyzx
                 add r5.xyz, r5.xyzx, r8.xyzx
                 
                 #line 124
@@ -2490,10 +2408,8 @@ fxgroup
                 mov r8.xyz, r8.xyzx  // r8.x <- S.x; r8.y <- S.y; r8.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r6.xyz, r7.xyzx, v4.xyzx
-                add r4.xyz, r4.xyzx, r6.xyzx
+                add r4.xyz, r4.xyzx, r7.xyzx
                 add r5.xyz, r5.xyzx, r8.xyzx
                 
                 #line 124
@@ -2545,9 +2461,7 @@ fxgroup
                 mov r1.xyz, r1.xyzx  // r1.x <- S.x; r1.y <- S.y; r1.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r0.xyz, r0.xyzx, v4.xyzx
                 add r0.xyz, r0.xyzx, r4.xyzx  // r0.x <- diffuse.x; r0.y <- diffuse.y; r0.z <- diffuse.z
                 add r1.xyz, r1.xyzx, r5.xyzx  // r1.x <- spec.x; r1.y <- spec.y; r1.z <- spec.z
                 
@@ -2561,7 +2475,7 @@ fxgroup
                 mov o0.xyz, r0.xyzx
                 mov o0.w, r0.w
                 ret 
-                // Approximately 138 instruction slots used
+                // Approximately 132 instruction slots used
                             
             };
         }
@@ -2619,8 +2533,7 @@ fxgroup
                 // WORLD                    1   xyzw        4     NONE   float   xyz 
                 // WORLD                    2   xyzw        5     NONE   float   xyz 
                 // WORLD                    3   xyzw        6     NONE   float   xyz 
-                // COLOR                    0   xyzw        7     NONE   float   xyzw
-                // SV_InstanceID            0   x           8   INSTID    uint       
+                // SV_InstanceID            0   x           7   INSTID    uint       
                 //
                 //
                 // Output signature:
@@ -2631,7 +2544,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float   xyzw
                 //
                 vs_5_0
                 dcl_globalFlags refactoringAllowed | skipOptimization
@@ -2643,12 +2555,10 @@ fxgroup
                 dcl_input v4.xyz
                 dcl_input v5.xyz
                 dcl_input v6.xyz
-                dcl_input v7.xyzw
                 dcl_output_siv o0.xyzw, position
                 dcl_output o1.xyz
                 dcl_output o2.xyz
                 dcl_output o3.xy
-                dcl_output o4.xyzw
                 dcl_temps 5
                 //
                 // Initial variable locations:
@@ -2659,9 +2569,7 @@ fxgroup
                 //   v4.x <- vin.World._m10; v4.y <- vin.World._m11; v4.z <- vin.World._m12; v4.w <- vin.World._m13; 
                 //   v5.x <- vin.World._m20; v5.y <- vin.World._m21; v5.z <- vin.World._m22; v5.w <- vin.World._m23; 
                 //   v6.x <- vin.World._m30; v6.y <- vin.World._m31; v6.z <- vin.World._m32; v6.w <- vin.World._m33; 
-                //   v7.x <- vin.Color.x; v7.y <- vin.Color.y; v7.z <- vin.Color.z; v7.w <- vin.Color.w; 
-                //   v8.x <- vin.InstanceId; 
-                //   o4.x <- <VS return value>.Color.x; o4.y <- <VS return value>.Color.y; o4.z <- <VS return value>.Color.z; o4.w <- <VS return value>.Color.w; 
+                //   v7.x <- vin.InstanceId; 
                 //   o3.x <- <VS return value>.Tex.x; o3.y <- <VS return value>.Tex.y; 
                 //   o2.x <- <VS return value>.NormalW.x; o2.y <- <VS return value>.NormalW.y; o2.z <- <VS return value>.NormalW.z; 
                 //   o1.x <- <VS return value>.PosW.x; o1.y <- <VS return value>.PosW.y; o1.z <- <VS return value>.PosW.z; 
@@ -2693,14 +2601,14 @@ fxgroup
                 mov r3.zw, l(0,0,0,1.000000)
                 dp4 r4.x, r3.xyzw, cb0[12].xyzw  // r4.x <- vout.Tex.x
                 dp4 r4.y, r3.xyzw, cb0[13].xyzw  // r4.y <- vout.Tex.y
-                mov r3.xyzw, v7.xyzw  // r3.x <- vout.Color.x; r3.y <- vout.Color.y; r3.z <- vout.Color.z; r3.w <- vout.Color.w
+                
+                #line 74
                 mov o0.xyzw, r2.xyzw
-                mov o4.xyzw, r3.xyzw
                 mov o1.xyz, r0.xyzx
                 mov o2.xyz, r1.xyzx
                 mov o3.xy, r4.xyxx
                 ret 
-                // Approximately 28 instruction slots used
+                // Approximately 26 instruction slots used
                             
             };
             GeometryShader = NULL;
@@ -2750,7 +2658,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float       
                 // NORMAL                   0   xyz         2     NONE   float       
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float       
                 //
                 //
                 // Output signature:
@@ -2773,7 +2680,6 @@ fxgroup
                 //   v1.x <- pin.PosW.x; v1.y <- pin.PosW.y; v1.z <- pin.PosW.z; 
                 //   v2.x <- pin.NormalW.x; v2.y <- pin.NormalW.y; v2.z <- pin.NormalW.z; 
                 //   v3.x <- pin.Tex.x; v3.y <- pin.Tex.y; 
-                //   v4.x <- pin.Color.x; v4.y <- pin.Color.y; v4.z <- pin.Color.z; v4.w <- pin.Color.w; 
                 //   o0.x <- <PS return value>.x; o0.y <- <PS return value>.y; o0.z <- <PS return value>.z; o0.w <- <PS return value>.w
                 //
                 #line 96 "D:\물방?책\DVD\Code\Chapter 15 Instancing and Frustum Culling\InstancingAndCulling\FX\InstancedBasic"
@@ -2852,8 +2758,7 @@ fxgroup
                 // WORLD                    1   xyzw        4     NONE   float   xyz 
                 // WORLD                    2   xyzw        5     NONE   float   xyz 
                 // WORLD                    3   xyzw        6     NONE   float   xyz 
-                // COLOR                    0   xyzw        7     NONE   float   xyzw
-                // SV_InstanceID            0   x           8   INSTID    uint       
+                // SV_InstanceID            0   x           7   INSTID    uint       
                 //
                 //
                 // Output signature:
@@ -2864,7 +2769,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float   xyzw
                 //
                 vs_5_0
                 dcl_globalFlags refactoringAllowed | skipOptimization
@@ -2876,12 +2780,10 @@ fxgroup
                 dcl_input v4.xyz
                 dcl_input v5.xyz
                 dcl_input v6.xyz
-                dcl_input v7.xyzw
                 dcl_output_siv o0.xyzw, position
                 dcl_output o1.xyz
                 dcl_output o2.xyz
                 dcl_output o3.xy
-                dcl_output o4.xyzw
                 dcl_temps 5
                 //
                 // Initial variable locations:
@@ -2892,9 +2794,7 @@ fxgroup
                 //   v4.x <- vin.World._m10; v4.y <- vin.World._m11; v4.z <- vin.World._m12; v4.w <- vin.World._m13; 
                 //   v5.x <- vin.World._m20; v5.y <- vin.World._m21; v5.z <- vin.World._m22; v5.w <- vin.World._m23; 
                 //   v6.x <- vin.World._m30; v6.y <- vin.World._m31; v6.z <- vin.World._m32; v6.w <- vin.World._m33; 
-                //   v7.x <- vin.Color.x; v7.y <- vin.Color.y; v7.z <- vin.Color.z; v7.w <- vin.Color.w; 
-                //   v8.x <- vin.InstanceId; 
-                //   o4.x <- <VS return value>.Color.x; o4.y <- <VS return value>.Color.y; o4.z <- <VS return value>.Color.z; o4.w <- <VS return value>.Color.w; 
+                //   v7.x <- vin.InstanceId; 
                 //   o3.x <- <VS return value>.Tex.x; o3.y <- <VS return value>.Tex.y; 
                 //   o2.x <- <VS return value>.NormalW.x; o2.y <- <VS return value>.NormalW.y; o2.z <- <VS return value>.NormalW.z; 
                 //   o1.x <- <VS return value>.PosW.x; o1.y <- <VS return value>.PosW.y; o1.z <- <VS return value>.PosW.z; 
@@ -2926,14 +2826,14 @@ fxgroup
                 mov r3.zw, l(0,0,0,1.000000)
                 dp4 r4.x, r3.xyzw, cb0[12].xyzw  // r4.x <- vout.Tex.x
                 dp4 r4.y, r3.xyzw, cb0[13].xyzw  // r4.y <- vout.Tex.y
-                mov r3.xyzw, v7.xyzw  // r3.x <- vout.Color.x; r3.y <- vout.Color.y; r3.z <- vout.Color.z; r3.w <- vout.Color.w
+                
+                #line 74
                 mov o0.xyzw, r2.xyzw
-                mov o4.xyzw, r3.xyzw
                 mov o1.xyz, r0.xyzx
                 mov o2.xyz, r1.xyzx
                 mov o3.xy, r4.xyxx
                 ret 
-                // Approximately 28 instruction slots used
+                // Approximately 26 instruction slots used
                             
             };
             GeometryShader = NULL;
@@ -3004,7 +2904,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float   xyz 
                 //
                 //
                 // Output signature:
@@ -3022,7 +2921,6 @@ fxgroup
                 dcl_input_ps linear v1.xyz
                 dcl_input_ps linear v2.xyz
                 dcl_input_ps linear v3.xy
-                dcl_input_ps linear v4.xyz
                 dcl_output o0.xyzw
                 dcl_temps 15
                 //
@@ -3031,7 +2929,6 @@ fxgroup
                 //   v1.x <- pin.PosW.x; v1.y <- pin.PosW.y; v1.z <- pin.PosW.z; 
                 //   v2.x <- pin.NormalW.x; v2.y <- pin.NormalW.y; v2.z <- pin.NormalW.z; 
                 //   v3.x <- pin.Tex.x; v3.y <- pin.Tex.y; 
-                //   v4.x <- pin.Color.x; v4.y <- pin.Color.y; v4.z <- pin.Color.z; v4.w <- pin.Color.w; 
                 //   o0.x <- <PS return value>.x; o0.y <- <PS return value>.y; o0.z <- <PS return value>.z; o0.w <- <PS return value>.w
                 //
                 #line 80 "D:\물방?책\DVD\Code\Chapter 15 Instancing and Frustum Culling\InstancingAndCulling\FX\InstancedBasic"
@@ -3116,9 +3013,7 @@ fxgroup
                 mov r1.xyz, r1.xyzx  // r1.x <- S.x; r1.y <- S.y; r1.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r0.xyz, r0.xyzx, v4.xyzx
                 add r0.xyz, r0.xyzx, r4.xyzx  // r0.x <- diffuse.x; r0.y <- diffuse.y; r0.z <- diffuse.z
                 add r1.xyz, r1.xyzx, r5.xyzx  // r1.x <- spec.x; r1.y <- spec.y; r1.z <- spec.z
                 
@@ -3132,7 +3027,7 @@ fxgroup
                 mov o0.xyz, r0.xyzx
                 mov o0.w, r0.w
                 ret 
-                // Approximately 65 instruction slots used
+                // Approximately 63 instruction slots used
                             
             };
         }
@@ -3190,8 +3085,7 @@ fxgroup
                 // WORLD                    1   xyzw        4     NONE   float   xyz 
                 // WORLD                    2   xyzw        5     NONE   float   xyz 
                 // WORLD                    3   xyzw        6     NONE   float   xyz 
-                // COLOR                    0   xyzw        7     NONE   float   xyzw
-                // SV_InstanceID            0   x           8   INSTID    uint       
+                // SV_InstanceID            0   x           7   INSTID    uint       
                 //
                 //
                 // Output signature:
@@ -3202,7 +3096,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float   xyzw
                 //
                 vs_5_0
                 dcl_globalFlags refactoringAllowed | skipOptimization
@@ -3214,12 +3107,10 @@ fxgroup
                 dcl_input v4.xyz
                 dcl_input v5.xyz
                 dcl_input v6.xyz
-                dcl_input v7.xyzw
                 dcl_output_siv o0.xyzw, position
                 dcl_output o1.xyz
                 dcl_output o2.xyz
                 dcl_output o3.xy
-                dcl_output o4.xyzw
                 dcl_temps 5
                 //
                 // Initial variable locations:
@@ -3230,9 +3121,7 @@ fxgroup
                 //   v4.x <- vin.World._m10; v4.y <- vin.World._m11; v4.z <- vin.World._m12; v4.w <- vin.World._m13; 
                 //   v5.x <- vin.World._m20; v5.y <- vin.World._m21; v5.z <- vin.World._m22; v5.w <- vin.World._m23; 
                 //   v6.x <- vin.World._m30; v6.y <- vin.World._m31; v6.z <- vin.World._m32; v6.w <- vin.World._m33; 
-                //   v7.x <- vin.Color.x; v7.y <- vin.Color.y; v7.z <- vin.Color.z; v7.w <- vin.Color.w; 
-                //   v8.x <- vin.InstanceId; 
-                //   o4.x <- <VS return value>.Color.x; o4.y <- <VS return value>.Color.y; o4.z <- <VS return value>.Color.z; o4.w <- <VS return value>.Color.w; 
+                //   v7.x <- vin.InstanceId; 
                 //   o3.x <- <VS return value>.Tex.x; o3.y <- <VS return value>.Tex.y; 
                 //   o2.x <- <VS return value>.NormalW.x; o2.y <- <VS return value>.NormalW.y; o2.z <- <VS return value>.NormalW.z; 
                 //   o1.x <- <VS return value>.PosW.x; o1.y <- <VS return value>.PosW.y; o1.z <- <VS return value>.PosW.z; 
@@ -3264,14 +3153,14 @@ fxgroup
                 mov r3.zw, l(0,0,0,1.000000)
                 dp4 r4.x, r3.xyzw, cb0[12].xyzw  // r4.x <- vout.Tex.x
                 dp4 r4.y, r3.xyzw, cb0[13].xyzw  // r4.y <- vout.Tex.y
-                mov r3.xyzw, v7.xyzw  // r3.x <- vout.Color.x; r3.y <- vout.Color.y; r3.z <- vout.Color.z; r3.w <- vout.Color.w
+                
+                #line 74
                 mov o0.xyzw, r2.xyzw
-                mov o4.xyzw, r3.xyzw
                 mov o1.xyz, r0.xyzx
                 mov o2.xyz, r1.xyzx
                 mov o3.xy, r4.xyxx
                 ret 
-                // Approximately 28 instruction slots used
+                // Approximately 26 instruction slots used
                             
             };
             GeometryShader = NULL;
@@ -3342,7 +3231,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float   xyz 
                 //
                 //
                 // Output signature:
@@ -3360,7 +3248,6 @@ fxgroup
                 dcl_input_ps linear v1.xyz
                 dcl_input_ps linear v2.xyz
                 dcl_input_ps linear v3.xy
-                dcl_input_ps linear v4.xyz
                 dcl_output o0.xyzw
                 dcl_temps 15
                 //
@@ -3369,7 +3256,6 @@ fxgroup
                 //   v1.x <- pin.PosW.x; v1.y <- pin.PosW.y; v1.z <- pin.PosW.z; 
                 //   v2.x <- pin.NormalW.x; v2.y <- pin.NormalW.y; v2.z <- pin.NormalW.z; 
                 //   v3.x <- pin.Tex.x; v3.y <- pin.Tex.y; 
-                //   v4.x <- pin.Color.x; v4.y <- pin.Color.y; v4.z <- pin.Color.z; v4.w <- pin.Color.w; 
                 //   o0.x <- <PS return value>.x; o0.y <- <PS return value>.y; o0.z <- <PS return value>.z; o0.w <- <PS return value>.w
                 //
                 #line 80 "D:\물방?책\DVD\Code\Chapter 15 Instancing and Frustum Culling\InstancingAndCulling\FX\InstancedBasic"
@@ -3454,10 +3340,8 @@ fxgroup
                 mov r8.xyz, r8.xyzx  // r8.x <- S.x; r8.y <- S.y; r8.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r6.xyz, r7.xyzx, v4.xyzx
-                add r4.xyz, r4.xyzx, r6.xyzx
+                add r4.xyz, r4.xyzx, r7.xyzx
                 add r5.xyz, r5.xyzx, r8.xyzx
                 
                 #line 124
@@ -3509,9 +3393,7 @@ fxgroup
                 mov r1.xyz, r1.xyzx  // r1.x <- S.x; r1.y <- S.y; r1.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r0.xyz, r0.xyzx, v4.xyzx
                 add r0.xyz, r0.xyzx, r4.xyzx  // r0.x <- diffuse.x; r0.y <- diffuse.y; r0.z <- diffuse.z
                 add r1.xyz, r1.xyzx, r5.xyzx  // r1.x <- spec.x; r1.y <- spec.y; r1.z <- spec.z
                 
@@ -3525,7 +3407,7 @@ fxgroup
                 mov o0.xyz, r0.xyzx
                 mov o0.w, r0.w
                 ret 
-                // Approximately 104 instruction slots used
+                // Approximately 100 instruction slots used
                             
             };
         }
@@ -3583,8 +3465,7 @@ fxgroup
                 // WORLD                    1   xyzw        4     NONE   float   xyz 
                 // WORLD                    2   xyzw        5     NONE   float   xyz 
                 // WORLD                    3   xyzw        6     NONE   float   xyz 
-                // COLOR                    0   xyzw        7     NONE   float   xyzw
-                // SV_InstanceID            0   x           8   INSTID    uint       
+                // SV_InstanceID            0   x           7   INSTID    uint       
                 //
                 //
                 // Output signature:
@@ -3595,7 +3476,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float   xyzw
                 //
                 vs_5_0
                 dcl_globalFlags refactoringAllowed | skipOptimization
@@ -3607,12 +3487,10 @@ fxgroup
                 dcl_input v4.xyz
                 dcl_input v5.xyz
                 dcl_input v6.xyz
-                dcl_input v7.xyzw
                 dcl_output_siv o0.xyzw, position
                 dcl_output o1.xyz
                 dcl_output o2.xyz
                 dcl_output o3.xy
-                dcl_output o4.xyzw
                 dcl_temps 5
                 //
                 // Initial variable locations:
@@ -3623,9 +3501,7 @@ fxgroup
                 //   v4.x <- vin.World._m10; v4.y <- vin.World._m11; v4.z <- vin.World._m12; v4.w <- vin.World._m13; 
                 //   v5.x <- vin.World._m20; v5.y <- vin.World._m21; v5.z <- vin.World._m22; v5.w <- vin.World._m23; 
                 //   v6.x <- vin.World._m30; v6.y <- vin.World._m31; v6.z <- vin.World._m32; v6.w <- vin.World._m33; 
-                //   v7.x <- vin.Color.x; v7.y <- vin.Color.y; v7.z <- vin.Color.z; v7.w <- vin.Color.w; 
-                //   v8.x <- vin.InstanceId; 
-                //   o4.x <- <VS return value>.Color.x; o4.y <- <VS return value>.Color.y; o4.z <- <VS return value>.Color.z; o4.w <- <VS return value>.Color.w; 
+                //   v7.x <- vin.InstanceId; 
                 //   o3.x <- <VS return value>.Tex.x; o3.y <- <VS return value>.Tex.y; 
                 //   o2.x <- <VS return value>.NormalW.x; o2.y <- <VS return value>.NormalW.y; o2.z <- <VS return value>.NormalW.z; 
                 //   o1.x <- <VS return value>.PosW.x; o1.y <- <VS return value>.PosW.y; o1.z <- <VS return value>.PosW.z; 
@@ -3657,14 +3533,14 @@ fxgroup
                 mov r3.zw, l(0,0,0,1.000000)
                 dp4 r4.x, r3.xyzw, cb0[12].xyzw  // r4.x <- vout.Tex.x
                 dp4 r4.y, r3.xyzw, cb0[13].xyzw  // r4.y <- vout.Tex.y
-                mov r3.xyzw, v7.xyzw  // r3.x <- vout.Color.x; r3.y <- vout.Color.y; r3.z <- vout.Color.z; r3.w <- vout.Color.w
+                
+                #line 74
                 mov o0.xyzw, r2.xyzw
-                mov o4.xyzw, r3.xyzw
                 mov o1.xyz, r0.xyzx
                 mov o2.xyz, r1.xyzx
                 mov o3.xy, r4.xyxx
                 ret 
-                // Approximately 28 instruction slots used
+                // Approximately 26 instruction slots used
                             
             };
             GeometryShader = NULL;
@@ -3735,7 +3611,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float   xyz 
                 //
                 //
                 // Output signature:
@@ -3753,7 +3628,6 @@ fxgroup
                 dcl_input_ps linear v1.xyz
                 dcl_input_ps linear v2.xyz
                 dcl_input_ps linear v3.xy
-                dcl_input_ps linear v4.xyz
                 dcl_output o0.xyzw
                 dcl_temps 15
                 //
@@ -3762,7 +3636,6 @@ fxgroup
                 //   v1.x <- pin.PosW.x; v1.y <- pin.PosW.y; v1.z <- pin.PosW.z; 
                 //   v2.x <- pin.NormalW.x; v2.y <- pin.NormalW.y; v2.z <- pin.NormalW.z; 
                 //   v3.x <- pin.Tex.x; v3.y <- pin.Tex.y; 
-                //   v4.x <- pin.Color.x; v4.y <- pin.Color.y; v4.z <- pin.Color.z; v4.w <- pin.Color.w; 
                 //   o0.x <- <PS return value>.x; o0.y <- <PS return value>.y; o0.z <- <PS return value>.z; o0.w <- <PS return value>.w
                 //
                 #line 80 "D:\물방?책\DVD\Code\Chapter 15 Instancing and Frustum Culling\InstancingAndCulling\FX\InstancedBasic"
@@ -3847,10 +3720,8 @@ fxgroup
                 mov r8.xyz, r8.xyzx  // r8.x <- S.x; r8.y <- S.y; r8.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r6.xyz, r7.xyzx, v4.xyzx
-                add r4.xyz, r4.xyzx, r6.xyzx
+                add r4.xyz, r4.xyzx, r7.xyzx
                 add r5.xyz, r5.xyzx, r8.xyzx
                 
                 #line 124
@@ -3902,10 +3773,8 @@ fxgroup
                 mov r8.xyz, r8.xyzx  // r8.x <- S.x; r8.y <- S.y; r8.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r6.xyz, r7.xyzx, v4.xyzx
-                add r4.xyz, r4.xyzx, r6.xyzx
+                add r4.xyz, r4.xyzx, r7.xyzx
                 add r5.xyz, r5.xyzx, r8.xyzx
                 
                 #line 124
@@ -3957,9 +3826,7 @@ fxgroup
                 mov r1.xyz, r1.xyzx  // r1.x <- S.x; r1.y <- S.y; r1.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r0.xyz, r0.xyzx, v4.xyzx
                 add r0.xyz, r0.xyzx, r4.xyzx  // r0.x <- diffuse.x; r0.y <- diffuse.y; r0.z <- diffuse.z
                 add r1.xyz, r1.xyzx, r5.xyzx  // r1.x <- spec.x; r1.y <- spec.y; r1.z <- spec.z
                 
@@ -3973,7 +3840,7 @@ fxgroup
                 mov o0.xyz, r0.xyzx
                 mov o0.w, r0.w
                 ret 
-                // Approximately 143 instruction slots used
+                // Approximately 137 instruction slots used
                             
             };
         }
@@ -4031,8 +3898,7 @@ fxgroup
                 // WORLD                    1   xyzw        4     NONE   float   xyz 
                 // WORLD                    2   xyzw        5     NONE   float   xyz 
                 // WORLD                    3   xyzw        6     NONE   float   xyz 
-                // COLOR                    0   xyzw        7     NONE   float   xyzw
-                // SV_InstanceID            0   x           8   INSTID    uint       
+                // SV_InstanceID            0   x           7   INSTID    uint       
                 //
                 //
                 // Output signature:
@@ -4043,7 +3909,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float   xyzw
                 //
                 vs_5_0
                 dcl_globalFlags refactoringAllowed | skipOptimization
@@ -4055,12 +3920,10 @@ fxgroup
                 dcl_input v4.xyz
                 dcl_input v5.xyz
                 dcl_input v6.xyz
-                dcl_input v7.xyzw
                 dcl_output_siv o0.xyzw, position
                 dcl_output o1.xyz
                 dcl_output o2.xyz
                 dcl_output o3.xy
-                dcl_output o4.xyzw
                 dcl_temps 5
                 //
                 // Initial variable locations:
@@ -4071,9 +3934,7 @@ fxgroup
                 //   v4.x <- vin.World._m10; v4.y <- vin.World._m11; v4.z <- vin.World._m12; v4.w <- vin.World._m13; 
                 //   v5.x <- vin.World._m20; v5.y <- vin.World._m21; v5.z <- vin.World._m22; v5.w <- vin.World._m23; 
                 //   v6.x <- vin.World._m30; v6.y <- vin.World._m31; v6.z <- vin.World._m32; v6.w <- vin.World._m33; 
-                //   v7.x <- vin.Color.x; v7.y <- vin.Color.y; v7.z <- vin.Color.z; v7.w <- vin.Color.w; 
-                //   v8.x <- vin.InstanceId; 
-                //   o4.x <- <VS return value>.Color.x; o4.y <- <VS return value>.Color.y; o4.z <- <VS return value>.Color.z; o4.w <- <VS return value>.Color.w; 
+                //   v7.x <- vin.InstanceId; 
                 //   o3.x <- <VS return value>.Tex.x; o3.y <- <VS return value>.Tex.y; 
                 //   o2.x <- <VS return value>.NormalW.x; o2.y <- <VS return value>.NormalW.y; o2.z <- <VS return value>.NormalW.z; 
                 //   o1.x <- <VS return value>.PosW.x; o1.y <- <VS return value>.PosW.y; o1.z <- <VS return value>.PosW.z; 
@@ -4105,14 +3966,14 @@ fxgroup
                 mov r3.zw, l(0,0,0,1.000000)
                 dp4 r4.x, r3.xyzw, cb0[12].xyzw  // r4.x <- vout.Tex.x
                 dp4 r4.y, r3.xyzw, cb0[13].xyzw  // r4.y <- vout.Tex.y
-                mov r3.xyzw, v7.xyzw  // r3.x <- vout.Color.x; r3.y <- vout.Color.y; r3.z <- vout.Color.z; r3.w <- vout.Color.w
+                
+                #line 74
                 mov o0.xyzw, r2.xyzw
-                mov o4.xyzw, r3.xyzw
                 mov o1.xyz, r0.xyzx
                 mov o2.xyz, r1.xyzx
                 mov o3.xy, r4.xyxx
                 ret 
-                // Approximately 28 instruction slots used
+                // Approximately 26 instruction slots used
                             
             };
             GeometryShader = NULL;
@@ -4181,7 +4042,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float       
-                // COLOR                    0   xyzw        4     NONE   float   xyz 
                 //
                 //
                 // Output signature:
@@ -4196,7 +4056,6 @@ fxgroup
                 dcl_constantbuffer cb1[19], immediateIndexed
                 dcl_input_ps linear v1.xyz
                 dcl_input_ps linear v2.xyz
-                dcl_input_ps linear v4.xyz
                 dcl_output o0.xyzw
                 dcl_temps 15
                 //
@@ -4205,7 +4064,6 @@ fxgroup
                 //   v1.x <- pin.PosW.x; v1.y <- pin.PosW.y; v1.z <- pin.PosW.z; 
                 //   v2.x <- pin.NormalW.x; v2.y <- pin.NormalW.y; v2.z <- pin.NormalW.z; 
                 //   v3.x <- pin.Tex.x; v3.y <- pin.Tex.y; 
-                //   v4.x <- pin.Color.x; v4.y <- pin.Color.y; v4.z <- pin.Color.z; v4.w <- pin.Color.w; 
                 //   o0.x <- <PS return value>.x; o0.y <- <PS return value>.y; o0.z <- <PS return value>.z; o0.w <- <PS return value>.w
                 //
                 #line 80 "D:\물방?책\DVD\Code\Chapter 15 Instancing and Frustum Culling\InstancingAndCulling\FX\InstancedBasic"
@@ -4283,9 +4141,7 @@ fxgroup
                 mov r0.xyz, r0.xyzx  // r0.x <- S.x; r0.y <- S.y; r0.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r1.xyz, r1.xyzx, v4.xyzx
                 add r1.xyz, r1.xyzx, r4.xyzx  // r1.x <- diffuse.x; r1.y <- diffuse.y; r1.z <- diffuse.z
                 add r0.xyz, r0.xyzx, r5.xyzx  // r0.x <- spec.x; r0.y <- spec.y; r0.z <- spec.z
                 
@@ -4312,7 +4168,7 @@ fxgroup
                 mov o0.xyz, r0.xyzx
                 mov o0.w, r0.w
                 ret 
-                // Approximately 69 instruction slots used
+                // Approximately 67 instruction slots used
                             
             };
         }
@@ -4370,8 +4226,7 @@ fxgroup
                 // WORLD                    1   xyzw        4     NONE   float   xyz 
                 // WORLD                    2   xyzw        5     NONE   float   xyz 
                 // WORLD                    3   xyzw        6     NONE   float   xyz 
-                // COLOR                    0   xyzw        7     NONE   float   xyzw
-                // SV_InstanceID            0   x           8   INSTID    uint       
+                // SV_InstanceID            0   x           7   INSTID    uint       
                 //
                 //
                 // Output signature:
@@ -4382,7 +4237,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float   xyzw
                 //
                 vs_5_0
                 dcl_globalFlags refactoringAllowed | skipOptimization
@@ -4394,12 +4248,10 @@ fxgroup
                 dcl_input v4.xyz
                 dcl_input v5.xyz
                 dcl_input v6.xyz
-                dcl_input v7.xyzw
                 dcl_output_siv o0.xyzw, position
                 dcl_output o1.xyz
                 dcl_output o2.xyz
                 dcl_output o3.xy
-                dcl_output o4.xyzw
                 dcl_temps 5
                 //
                 // Initial variable locations:
@@ -4410,9 +4262,7 @@ fxgroup
                 //   v4.x <- vin.World._m10; v4.y <- vin.World._m11; v4.z <- vin.World._m12; v4.w <- vin.World._m13; 
                 //   v5.x <- vin.World._m20; v5.y <- vin.World._m21; v5.z <- vin.World._m22; v5.w <- vin.World._m23; 
                 //   v6.x <- vin.World._m30; v6.y <- vin.World._m31; v6.z <- vin.World._m32; v6.w <- vin.World._m33; 
-                //   v7.x <- vin.Color.x; v7.y <- vin.Color.y; v7.z <- vin.Color.z; v7.w <- vin.Color.w; 
-                //   v8.x <- vin.InstanceId; 
-                //   o4.x <- <VS return value>.Color.x; o4.y <- <VS return value>.Color.y; o4.z <- <VS return value>.Color.z; o4.w <- <VS return value>.Color.w; 
+                //   v7.x <- vin.InstanceId; 
                 //   o3.x <- <VS return value>.Tex.x; o3.y <- <VS return value>.Tex.y; 
                 //   o2.x <- <VS return value>.NormalW.x; o2.y <- <VS return value>.NormalW.y; o2.z <- <VS return value>.NormalW.z; 
                 //   o1.x <- <VS return value>.PosW.x; o1.y <- <VS return value>.PosW.y; o1.z <- <VS return value>.PosW.z; 
@@ -4444,14 +4294,14 @@ fxgroup
                 mov r3.zw, l(0,0,0,1.000000)
                 dp4 r4.x, r3.xyzw, cb0[12].xyzw  // r4.x <- vout.Tex.x
                 dp4 r4.y, r3.xyzw, cb0[13].xyzw  // r4.y <- vout.Tex.y
-                mov r3.xyzw, v7.xyzw  // r3.x <- vout.Color.x; r3.y <- vout.Color.y; r3.z <- vout.Color.z; r3.w <- vout.Color.w
+                
+                #line 74
                 mov o0.xyzw, r2.xyzw
-                mov o4.xyzw, r3.xyzw
                 mov o1.xyz, r0.xyzx
                 mov o2.xyz, r1.xyzx
                 mov o3.xy, r4.xyxx
                 ret 
-                // Approximately 28 instruction slots used
+                // Approximately 26 instruction slots used
                             
             };
             GeometryShader = NULL;
@@ -4520,7 +4370,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float       
-                // COLOR                    0   xyzw        4     NONE   float   xyz 
                 //
                 //
                 // Output signature:
@@ -4535,7 +4384,6 @@ fxgroup
                 dcl_constantbuffer cb1[19], immediateIndexed
                 dcl_input_ps linear v1.xyz
                 dcl_input_ps linear v2.xyz
-                dcl_input_ps linear v4.xyz
                 dcl_output o0.xyzw
                 dcl_temps 15
                 //
@@ -4544,7 +4392,6 @@ fxgroup
                 //   v1.x <- pin.PosW.x; v1.y <- pin.PosW.y; v1.z <- pin.PosW.z; 
                 //   v2.x <- pin.NormalW.x; v2.y <- pin.NormalW.y; v2.z <- pin.NormalW.z; 
                 //   v3.x <- pin.Tex.x; v3.y <- pin.Tex.y; 
-                //   v4.x <- pin.Color.x; v4.y <- pin.Color.y; v4.z <- pin.Color.z; v4.w <- pin.Color.w; 
                 //   o0.x <- <PS return value>.x; o0.y <- <PS return value>.y; o0.z <- <PS return value>.z; o0.w <- <PS return value>.w
                 //
                 #line 80 "D:\물방?책\DVD\Code\Chapter 15 Instancing and Frustum Culling\InstancingAndCulling\FX\InstancedBasic"
@@ -4622,10 +4469,8 @@ fxgroup
                 mov r8.xyz, r8.xyzx  // r8.x <- S.x; r8.y <- S.y; r8.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r6.xyz, r7.xyzx, v4.xyzx
-                add r4.xyz, r4.xyzx, r6.xyzx
+                add r4.xyz, r4.xyzx, r7.xyzx
                 add r5.xyz, r5.xyzx, r8.xyzx
                 
                 #line 124
@@ -4677,9 +4522,7 @@ fxgroup
                 mov r0.xyz, r0.xyzx  // r0.x <- S.x; r0.y <- S.y; r0.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r1.xyz, r1.xyzx, v4.xyzx
                 add r1.xyz, r1.xyzx, r4.xyzx  // r1.x <- diffuse.x; r1.y <- diffuse.y; r1.z <- diffuse.z
                 add r0.xyz, r0.xyzx, r5.xyzx  // r0.x <- spec.x; r0.y <- spec.y; r0.z <- spec.z
                 
@@ -4706,7 +4549,7 @@ fxgroup
                 mov o0.xyz, r0.xyzx
                 mov o0.w, r0.w
                 ret 
-                // Approximately 108 instruction slots used
+                // Approximately 104 instruction slots used
                             
             };
         }
@@ -4764,8 +4607,7 @@ fxgroup
                 // WORLD                    1   xyzw        4     NONE   float   xyz 
                 // WORLD                    2   xyzw        5     NONE   float   xyz 
                 // WORLD                    3   xyzw        6     NONE   float   xyz 
-                // COLOR                    0   xyzw        7     NONE   float   xyzw
-                // SV_InstanceID            0   x           8   INSTID    uint       
+                // SV_InstanceID            0   x           7   INSTID    uint       
                 //
                 //
                 // Output signature:
@@ -4776,7 +4618,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float   xyzw
                 //
                 vs_5_0
                 dcl_globalFlags refactoringAllowed | skipOptimization
@@ -4788,12 +4629,10 @@ fxgroup
                 dcl_input v4.xyz
                 dcl_input v5.xyz
                 dcl_input v6.xyz
-                dcl_input v7.xyzw
                 dcl_output_siv o0.xyzw, position
                 dcl_output o1.xyz
                 dcl_output o2.xyz
                 dcl_output o3.xy
-                dcl_output o4.xyzw
                 dcl_temps 5
                 //
                 // Initial variable locations:
@@ -4804,9 +4643,7 @@ fxgroup
                 //   v4.x <- vin.World._m10; v4.y <- vin.World._m11; v4.z <- vin.World._m12; v4.w <- vin.World._m13; 
                 //   v5.x <- vin.World._m20; v5.y <- vin.World._m21; v5.z <- vin.World._m22; v5.w <- vin.World._m23; 
                 //   v6.x <- vin.World._m30; v6.y <- vin.World._m31; v6.z <- vin.World._m32; v6.w <- vin.World._m33; 
-                //   v7.x <- vin.Color.x; v7.y <- vin.Color.y; v7.z <- vin.Color.z; v7.w <- vin.Color.w; 
-                //   v8.x <- vin.InstanceId; 
-                //   o4.x <- <VS return value>.Color.x; o4.y <- <VS return value>.Color.y; o4.z <- <VS return value>.Color.z; o4.w <- <VS return value>.Color.w; 
+                //   v7.x <- vin.InstanceId; 
                 //   o3.x <- <VS return value>.Tex.x; o3.y <- <VS return value>.Tex.y; 
                 //   o2.x <- <VS return value>.NormalW.x; o2.y <- <VS return value>.NormalW.y; o2.z <- <VS return value>.NormalW.z; 
                 //   o1.x <- <VS return value>.PosW.x; o1.y <- <VS return value>.PosW.y; o1.z <- <VS return value>.PosW.z; 
@@ -4838,14 +4675,14 @@ fxgroup
                 mov r3.zw, l(0,0,0,1.000000)
                 dp4 r4.x, r3.xyzw, cb0[12].xyzw  // r4.x <- vout.Tex.x
                 dp4 r4.y, r3.xyzw, cb0[13].xyzw  // r4.y <- vout.Tex.y
-                mov r3.xyzw, v7.xyzw  // r3.x <- vout.Color.x; r3.y <- vout.Color.y; r3.z <- vout.Color.z; r3.w <- vout.Color.w
+                
+                #line 74
                 mov o0.xyzw, r2.xyzw
-                mov o4.xyzw, r3.xyzw
                 mov o1.xyz, r0.xyzx
                 mov o2.xyz, r1.xyzx
                 mov o3.xy, r4.xyxx
                 ret 
-                // Approximately 28 instruction slots used
+                // Approximately 26 instruction slots used
                             
             };
             GeometryShader = NULL;
@@ -4914,7 +4751,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float       
-                // COLOR                    0   xyzw        4     NONE   float   xyz 
                 //
                 //
                 // Output signature:
@@ -4929,7 +4765,6 @@ fxgroup
                 dcl_constantbuffer cb1[19], immediateIndexed
                 dcl_input_ps linear v1.xyz
                 dcl_input_ps linear v2.xyz
-                dcl_input_ps linear v4.xyz
                 dcl_output o0.xyzw
                 dcl_temps 15
                 //
@@ -4938,7 +4773,6 @@ fxgroup
                 //   v1.x <- pin.PosW.x; v1.y <- pin.PosW.y; v1.z <- pin.PosW.z; 
                 //   v2.x <- pin.NormalW.x; v2.y <- pin.NormalW.y; v2.z <- pin.NormalW.z; 
                 //   v3.x <- pin.Tex.x; v3.y <- pin.Tex.y; 
-                //   v4.x <- pin.Color.x; v4.y <- pin.Color.y; v4.z <- pin.Color.z; v4.w <- pin.Color.w; 
                 //   o0.x <- <PS return value>.x; o0.y <- <PS return value>.y; o0.z <- <PS return value>.z; o0.w <- <PS return value>.w
                 //
                 #line 80 "D:\물방?책\DVD\Code\Chapter 15 Instancing and Frustum Culling\InstancingAndCulling\FX\InstancedBasic"
@@ -5016,10 +4850,8 @@ fxgroup
                 mov r8.xyz, r8.xyzx  // r8.x <- S.x; r8.y <- S.y; r8.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r6.xyz, r7.xyzx, v4.xyzx
-                add r4.xyz, r4.xyzx, r6.xyzx
+                add r4.xyz, r4.xyzx, r7.xyzx
                 add r5.xyz, r5.xyzx, r8.xyzx
                 
                 #line 124
@@ -5071,10 +4903,8 @@ fxgroup
                 mov r8.xyz, r8.xyzx  // r8.x <- S.x; r8.y <- S.y; r8.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r6.xyz, r7.xyzx, v4.xyzx
-                add r4.xyz, r4.xyzx, r6.xyzx
+                add r4.xyz, r4.xyzx, r7.xyzx
                 add r5.xyz, r5.xyzx, r8.xyzx
                 
                 #line 124
@@ -5126,9 +4956,7 @@ fxgroup
                 mov r0.xyz, r0.xyzx  // r0.x <- S.x; r0.y <- S.y; r0.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r1.xyz, r1.xyzx, v4.xyzx
                 add r1.xyz, r1.xyzx, r4.xyzx  // r1.x <- diffuse.x; r1.y <- diffuse.y; r1.z <- diffuse.z
                 add r0.xyz, r0.xyzx, r5.xyzx  // r0.x <- spec.x; r0.y <- spec.y; r0.z <- spec.z
                 
@@ -5155,7 +4983,7 @@ fxgroup
                 mov o0.xyz, r0.xyzx
                 mov o0.w, r0.w
                 ret 
-                // Approximately 147 instruction slots used
+                // Approximately 141 instruction slots used
                             
             };
         }
@@ -5213,8 +5041,7 @@ fxgroup
                 // WORLD                    1   xyzw        4     NONE   float   xyz 
                 // WORLD                    2   xyzw        5     NONE   float   xyz 
                 // WORLD                    3   xyzw        6     NONE   float   xyz 
-                // COLOR                    0   xyzw        7     NONE   float   xyzw
-                // SV_InstanceID            0   x           8   INSTID    uint       
+                // SV_InstanceID            0   x           7   INSTID    uint       
                 //
                 //
                 // Output signature:
@@ -5225,7 +5052,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float   xyzw
                 //
                 vs_5_0
                 dcl_globalFlags refactoringAllowed | skipOptimization
@@ -5237,12 +5063,10 @@ fxgroup
                 dcl_input v4.xyz
                 dcl_input v5.xyz
                 dcl_input v6.xyz
-                dcl_input v7.xyzw
                 dcl_output_siv o0.xyzw, position
                 dcl_output o1.xyz
                 dcl_output o2.xyz
                 dcl_output o3.xy
-                dcl_output o4.xyzw
                 dcl_temps 5
                 //
                 // Initial variable locations:
@@ -5253,9 +5077,7 @@ fxgroup
                 //   v4.x <- vin.World._m10; v4.y <- vin.World._m11; v4.z <- vin.World._m12; v4.w <- vin.World._m13; 
                 //   v5.x <- vin.World._m20; v5.y <- vin.World._m21; v5.z <- vin.World._m22; v5.w <- vin.World._m23; 
                 //   v6.x <- vin.World._m30; v6.y <- vin.World._m31; v6.z <- vin.World._m32; v6.w <- vin.World._m33; 
-                //   v7.x <- vin.Color.x; v7.y <- vin.Color.y; v7.z <- vin.Color.z; v7.w <- vin.Color.w; 
-                //   v8.x <- vin.InstanceId; 
-                //   o4.x <- <VS return value>.Color.x; o4.y <- <VS return value>.Color.y; o4.z <- <VS return value>.Color.z; o4.w <- <VS return value>.Color.w; 
+                //   v7.x <- vin.InstanceId; 
                 //   o3.x <- <VS return value>.Tex.x; o3.y <- <VS return value>.Tex.y; 
                 //   o2.x <- <VS return value>.NormalW.x; o2.y <- <VS return value>.NormalW.y; o2.z <- <VS return value>.NormalW.z; 
                 //   o1.x <- <VS return value>.PosW.x; o1.y <- <VS return value>.PosW.y; o1.z <- <VS return value>.PosW.z; 
@@ -5287,14 +5109,14 @@ fxgroup
                 mov r3.zw, l(0,0,0,1.000000)
                 dp4 r4.x, r3.xyzw, cb0[12].xyzw  // r4.x <- vout.Tex.x
                 dp4 r4.y, r3.xyzw, cb0[13].xyzw  // r4.y <- vout.Tex.y
-                mov r3.xyzw, v7.xyzw  // r3.x <- vout.Color.x; r3.y <- vout.Color.y; r3.z <- vout.Color.z; r3.w <- vout.Color.w
+                
+                #line 74
                 mov o0.xyzw, r2.xyzw
-                mov o4.xyzw, r3.xyzw
                 mov o1.xyz, r0.xyzx
                 mov o2.xyz, r1.xyzx
                 mov o3.xy, r4.xyxx
                 ret 
-                // Approximately 28 instruction slots used
+                // Approximately 26 instruction slots used
                             
             };
             GeometryShader = NULL;
@@ -5365,7 +5187,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float       
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float       
                 //
                 //
                 // Output signature:
@@ -5390,7 +5211,6 @@ fxgroup
                 //   v1.x <- pin.PosW.x; v1.y <- pin.PosW.y; v1.z <- pin.PosW.z; 
                 //   v2.x <- pin.NormalW.x; v2.y <- pin.NormalW.y; v2.z <- pin.NormalW.z; 
                 //   v3.x <- pin.Tex.x; v3.y <- pin.Tex.y; 
-                //   v4.x <- pin.Color.x; v4.y <- pin.Color.y; v4.z <- pin.Color.z; v4.w <- pin.Color.w; 
                 //   o0.x <- <PS return value>.x; o0.y <- <PS return value>.y; o0.z <- <PS return value>.z; o0.w <- <PS return value>.w
                 //
                 #line 83 "D:\물방?책\DVD\Code\Chapter 15 Instancing and Frustum Culling\InstancingAndCulling\FX\InstancedBasic"
@@ -5483,8 +5303,7 @@ fxgroup
                 // WORLD                    1   xyzw        4     NONE   float   xyz 
                 // WORLD                    2   xyzw        5     NONE   float   xyz 
                 // WORLD                    3   xyzw        6     NONE   float   xyz 
-                // COLOR                    0   xyzw        7     NONE   float   xyzw
-                // SV_InstanceID            0   x           8   INSTID    uint       
+                // SV_InstanceID            0   x           7   INSTID    uint       
                 //
                 //
                 // Output signature:
@@ -5495,7 +5314,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float   xyzw
                 //
                 vs_5_0
                 dcl_globalFlags refactoringAllowed | skipOptimization
@@ -5507,12 +5325,10 @@ fxgroup
                 dcl_input v4.xyz
                 dcl_input v5.xyz
                 dcl_input v6.xyz
-                dcl_input v7.xyzw
                 dcl_output_siv o0.xyzw, position
                 dcl_output o1.xyz
                 dcl_output o2.xyz
                 dcl_output o3.xy
-                dcl_output o4.xyzw
                 dcl_temps 5
                 //
                 // Initial variable locations:
@@ -5523,9 +5339,7 @@ fxgroup
                 //   v4.x <- vin.World._m10; v4.y <- vin.World._m11; v4.z <- vin.World._m12; v4.w <- vin.World._m13; 
                 //   v5.x <- vin.World._m20; v5.y <- vin.World._m21; v5.z <- vin.World._m22; v5.w <- vin.World._m23; 
                 //   v6.x <- vin.World._m30; v6.y <- vin.World._m31; v6.z <- vin.World._m32; v6.w <- vin.World._m33; 
-                //   v7.x <- vin.Color.x; v7.y <- vin.Color.y; v7.z <- vin.Color.z; v7.w <- vin.Color.w; 
-                //   v8.x <- vin.InstanceId; 
-                //   o4.x <- <VS return value>.Color.x; o4.y <- <VS return value>.Color.y; o4.z <- <VS return value>.Color.z; o4.w <- <VS return value>.Color.w; 
+                //   v7.x <- vin.InstanceId; 
                 //   o3.x <- <VS return value>.Tex.x; o3.y <- <VS return value>.Tex.y; 
                 //   o2.x <- <VS return value>.NormalW.x; o2.y <- <VS return value>.NormalW.y; o2.z <- <VS return value>.NormalW.z; 
                 //   o1.x <- <VS return value>.PosW.x; o1.y <- <VS return value>.PosW.y; o1.z <- <VS return value>.PosW.z; 
@@ -5557,14 +5371,14 @@ fxgroup
                 mov r3.zw, l(0,0,0,1.000000)
                 dp4 r4.x, r3.xyzw, cb0[12].xyzw  // r4.x <- vout.Tex.x
                 dp4 r4.y, r3.xyzw, cb0[13].xyzw  // r4.y <- vout.Tex.y
-                mov r3.xyzw, v7.xyzw  // r3.x <- vout.Color.x; r3.y <- vout.Color.y; r3.z <- vout.Color.z; r3.w <- vout.Color.w
+                
+                #line 74
                 mov o0.xyzw, r2.xyzw
-                mov o4.xyzw, r3.xyzw
                 mov o1.xyz, r0.xyzx
                 mov o2.xyz, r1.xyzx
                 mov o3.xy, r4.xyxx
                 ret 
-                // Approximately 28 instruction slots used
+                // Approximately 26 instruction slots used
                             
             };
             GeometryShader = NULL;
@@ -5635,7 +5449,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float   xyz 
                 //
                 //
                 // Output signature:
@@ -5653,7 +5466,6 @@ fxgroup
                 dcl_input_ps linear v1.xyz
                 dcl_input_ps linear v2.xyz
                 dcl_input_ps linear v3.xy
-                dcl_input_ps linear v4.xyz
                 dcl_output o0.xyzw
                 dcl_temps 15
                 //
@@ -5662,7 +5474,6 @@ fxgroup
                 //   v1.x <- pin.PosW.x; v1.y <- pin.PosW.y; v1.z <- pin.PosW.z; 
                 //   v2.x <- pin.NormalW.x; v2.y <- pin.NormalW.y; v2.z <- pin.NormalW.z; 
                 //   v3.x <- pin.Tex.x; v3.y <- pin.Tex.y; 
-                //   v4.x <- pin.Color.x; v4.y <- pin.Color.y; v4.z <- pin.Color.z; v4.w <- pin.Color.w; 
                 //   o0.x <- <PS return value>.x; o0.y <- <PS return value>.y; o0.z <- <PS return value>.z; o0.w <- <PS return value>.w
                 //
                 #line 80 "D:\물방?책\DVD\Code\Chapter 15 Instancing and Frustum Culling\InstancingAndCulling\FX\InstancedBasic"
@@ -5740,9 +5551,7 @@ fxgroup
                 mov r0.xyz, r0.xyzx  // r0.x <- S.x; r0.y <- S.y; r0.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r1.xyz, r1.xyzx, v4.xyzx
                 add r1.xyz, r1.xyzx, r4.xyzx  // r1.x <- diffuse.x; r1.y <- diffuse.y; r1.z <- diffuse.z
                 add r0.xyz, r0.xyzx, r5.xyzx  // r0.x <- spec.x; r0.y <- spec.y; r0.z <- spec.z
                 
@@ -5769,7 +5578,7 @@ fxgroup
                 mov o0.xyz, r0.xyzx
                 mov o0.w, r0.w
                 ret 
-                // Approximately 69 instruction slots used
+                // Approximately 67 instruction slots used
                             
             };
         }
@@ -5827,8 +5636,7 @@ fxgroup
                 // WORLD                    1   xyzw        4     NONE   float   xyz 
                 // WORLD                    2   xyzw        5     NONE   float   xyz 
                 // WORLD                    3   xyzw        6     NONE   float   xyz 
-                // COLOR                    0   xyzw        7     NONE   float   xyzw
-                // SV_InstanceID            0   x           8   INSTID    uint       
+                // SV_InstanceID            0   x           7   INSTID    uint       
                 //
                 //
                 // Output signature:
@@ -5839,7 +5647,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float   xyzw
                 //
                 vs_5_0
                 dcl_globalFlags refactoringAllowed | skipOptimization
@@ -5851,12 +5658,10 @@ fxgroup
                 dcl_input v4.xyz
                 dcl_input v5.xyz
                 dcl_input v6.xyz
-                dcl_input v7.xyzw
                 dcl_output_siv o0.xyzw, position
                 dcl_output o1.xyz
                 dcl_output o2.xyz
                 dcl_output o3.xy
-                dcl_output o4.xyzw
                 dcl_temps 5
                 //
                 // Initial variable locations:
@@ -5867,9 +5672,7 @@ fxgroup
                 //   v4.x <- vin.World._m10; v4.y <- vin.World._m11; v4.z <- vin.World._m12; v4.w <- vin.World._m13; 
                 //   v5.x <- vin.World._m20; v5.y <- vin.World._m21; v5.z <- vin.World._m22; v5.w <- vin.World._m23; 
                 //   v6.x <- vin.World._m30; v6.y <- vin.World._m31; v6.z <- vin.World._m32; v6.w <- vin.World._m33; 
-                //   v7.x <- vin.Color.x; v7.y <- vin.Color.y; v7.z <- vin.Color.z; v7.w <- vin.Color.w; 
-                //   v8.x <- vin.InstanceId; 
-                //   o4.x <- <VS return value>.Color.x; o4.y <- <VS return value>.Color.y; o4.z <- <VS return value>.Color.z; o4.w <- <VS return value>.Color.w; 
+                //   v7.x <- vin.InstanceId; 
                 //   o3.x <- <VS return value>.Tex.x; o3.y <- <VS return value>.Tex.y; 
                 //   o2.x <- <VS return value>.NormalW.x; o2.y <- <VS return value>.NormalW.y; o2.z <- <VS return value>.NormalW.z; 
                 //   o1.x <- <VS return value>.PosW.x; o1.y <- <VS return value>.PosW.y; o1.z <- <VS return value>.PosW.z; 
@@ -5901,14 +5704,14 @@ fxgroup
                 mov r3.zw, l(0,0,0,1.000000)
                 dp4 r4.x, r3.xyzw, cb0[12].xyzw  // r4.x <- vout.Tex.x
                 dp4 r4.y, r3.xyzw, cb0[13].xyzw  // r4.y <- vout.Tex.y
-                mov r3.xyzw, v7.xyzw  // r3.x <- vout.Color.x; r3.y <- vout.Color.y; r3.z <- vout.Color.z; r3.w <- vout.Color.w
+                
+                #line 74
                 mov o0.xyzw, r2.xyzw
-                mov o4.xyzw, r3.xyzw
                 mov o1.xyz, r0.xyzx
                 mov o2.xyz, r1.xyzx
                 mov o3.xy, r4.xyxx
                 ret 
-                // Approximately 28 instruction slots used
+                // Approximately 26 instruction slots used
                             
             };
             GeometryShader = NULL;
@@ -5979,7 +5782,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float   xyz 
                 //
                 //
                 // Output signature:
@@ -5997,7 +5799,6 @@ fxgroup
                 dcl_input_ps linear v1.xyz
                 dcl_input_ps linear v2.xyz
                 dcl_input_ps linear v3.xy
-                dcl_input_ps linear v4.xyz
                 dcl_output o0.xyzw
                 dcl_temps 15
                 //
@@ -6006,7 +5807,6 @@ fxgroup
                 //   v1.x <- pin.PosW.x; v1.y <- pin.PosW.y; v1.z <- pin.PosW.z; 
                 //   v2.x <- pin.NormalW.x; v2.y <- pin.NormalW.y; v2.z <- pin.NormalW.z; 
                 //   v3.x <- pin.Tex.x; v3.y <- pin.Tex.y; 
-                //   v4.x <- pin.Color.x; v4.y <- pin.Color.y; v4.z <- pin.Color.z; v4.w <- pin.Color.w; 
                 //   o0.x <- <PS return value>.x; o0.y <- <PS return value>.y; o0.z <- <PS return value>.z; o0.w <- <PS return value>.w
                 //
                 #line 80 "D:\물방?책\DVD\Code\Chapter 15 Instancing and Frustum Culling\InstancingAndCulling\FX\InstancedBasic"
@@ -6084,10 +5884,8 @@ fxgroup
                 mov r8.xyz, r8.xyzx  // r8.x <- S.x; r8.y <- S.y; r8.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r6.xyz, r7.xyzx, v4.xyzx
-                add r4.xyz, r4.xyzx, r6.xyzx
+                add r4.xyz, r4.xyzx, r7.xyzx
                 add r5.xyz, r5.xyzx, r8.xyzx
                 
                 #line 124
@@ -6139,9 +5937,7 @@ fxgroup
                 mov r0.xyz, r0.xyzx  // r0.x <- S.x; r0.y <- S.y; r0.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r1.xyz, r1.xyzx, v4.xyzx
                 add r1.xyz, r1.xyzx, r4.xyzx  // r1.x <- diffuse.x; r1.y <- diffuse.y; r1.z <- diffuse.z
                 add r0.xyz, r0.xyzx, r5.xyzx  // r0.x <- spec.x; r0.y <- spec.y; r0.z <- spec.z
                 
@@ -6168,7 +5964,7 @@ fxgroup
                 mov o0.xyz, r0.xyzx
                 mov o0.w, r0.w
                 ret 
-                // Approximately 108 instruction slots used
+                // Approximately 104 instruction slots used
                             
             };
         }
@@ -6226,8 +6022,7 @@ fxgroup
                 // WORLD                    1   xyzw        4     NONE   float   xyz 
                 // WORLD                    2   xyzw        5     NONE   float   xyz 
                 // WORLD                    3   xyzw        6     NONE   float   xyz 
-                // COLOR                    0   xyzw        7     NONE   float   xyzw
-                // SV_InstanceID            0   x           8   INSTID    uint       
+                // SV_InstanceID            0   x           7   INSTID    uint       
                 //
                 //
                 // Output signature:
@@ -6238,7 +6033,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float   xyzw
                 //
                 vs_5_0
                 dcl_globalFlags refactoringAllowed | skipOptimization
@@ -6250,12 +6044,10 @@ fxgroup
                 dcl_input v4.xyz
                 dcl_input v5.xyz
                 dcl_input v6.xyz
-                dcl_input v7.xyzw
                 dcl_output_siv o0.xyzw, position
                 dcl_output o1.xyz
                 dcl_output o2.xyz
                 dcl_output o3.xy
-                dcl_output o4.xyzw
                 dcl_temps 5
                 //
                 // Initial variable locations:
@@ -6266,9 +6058,7 @@ fxgroup
                 //   v4.x <- vin.World._m10; v4.y <- vin.World._m11; v4.z <- vin.World._m12; v4.w <- vin.World._m13; 
                 //   v5.x <- vin.World._m20; v5.y <- vin.World._m21; v5.z <- vin.World._m22; v5.w <- vin.World._m23; 
                 //   v6.x <- vin.World._m30; v6.y <- vin.World._m31; v6.z <- vin.World._m32; v6.w <- vin.World._m33; 
-                //   v7.x <- vin.Color.x; v7.y <- vin.Color.y; v7.z <- vin.Color.z; v7.w <- vin.Color.w; 
-                //   v8.x <- vin.InstanceId; 
-                //   o4.x <- <VS return value>.Color.x; o4.y <- <VS return value>.Color.y; o4.z <- <VS return value>.Color.z; o4.w <- <VS return value>.Color.w; 
+                //   v7.x <- vin.InstanceId; 
                 //   o3.x <- <VS return value>.Tex.x; o3.y <- <VS return value>.Tex.y; 
                 //   o2.x <- <VS return value>.NormalW.x; o2.y <- <VS return value>.NormalW.y; o2.z <- <VS return value>.NormalW.z; 
                 //   o1.x <- <VS return value>.PosW.x; o1.y <- <VS return value>.PosW.y; o1.z <- <VS return value>.PosW.z; 
@@ -6300,14 +6090,14 @@ fxgroup
                 mov r3.zw, l(0,0,0,1.000000)
                 dp4 r4.x, r3.xyzw, cb0[12].xyzw  // r4.x <- vout.Tex.x
                 dp4 r4.y, r3.xyzw, cb0[13].xyzw  // r4.y <- vout.Tex.y
-                mov r3.xyzw, v7.xyzw  // r3.x <- vout.Color.x; r3.y <- vout.Color.y; r3.z <- vout.Color.z; r3.w <- vout.Color.w
+                
+                #line 74
                 mov o0.xyzw, r2.xyzw
-                mov o4.xyzw, r3.xyzw
                 mov o1.xyz, r0.xyzx
                 mov o2.xyz, r1.xyzx
                 mov o3.xy, r4.xyxx
                 ret 
-                // Approximately 28 instruction slots used
+                // Approximately 26 instruction slots used
                             
             };
             GeometryShader = NULL;
@@ -6378,7 +6168,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float   xyz 
                 //
                 //
                 // Output signature:
@@ -6396,7 +6185,6 @@ fxgroup
                 dcl_input_ps linear v1.xyz
                 dcl_input_ps linear v2.xyz
                 dcl_input_ps linear v3.xy
-                dcl_input_ps linear v4.xyz
                 dcl_output o0.xyzw
                 dcl_temps 15
                 //
@@ -6405,7 +6193,6 @@ fxgroup
                 //   v1.x <- pin.PosW.x; v1.y <- pin.PosW.y; v1.z <- pin.PosW.z; 
                 //   v2.x <- pin.NormalW.x; v2.y <- pin.NormalW.y; v2.z <- pin.NormalW.z; 
                 //   v3.x <- pin.Tex.x; v3.y <- pin.Tex.y; 
-                //   v4.x <- pin.Color.x; v4.y <- pin.Color.y; v4.z <- pin.Color.z; v4.w <- pin.Color.w; 
                 //   o0.x <- <PS return value>.x; o0.y <- <PS return value>.y; o0.z <- <PS return value>.z; o0.w <- <PS return value>.w
                 //
                 #line 80 "D:\물방?책\DVD\Code\Chapter 15 Instancing and Frustum Culling\InstancingAndCulling\FX\InstancedBasic"
@@ -6483,10 +6270,8 @@ fxgroup
                 mov r8.xyz, r8.xyzx  // r8.x <- S.x; r8.y <- S.y; r8.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r6.xyz, r7.xyzx, v4.xyzx
-                add r4.xyz, r4.xyzx, r6.xyzx
+                add r4.xyz, r4.xyzx, r7.xyzx
                 add r5.xyz, r5.xyzx, r8.xyzx
                 
                 #line 124
@@ -6538,10 +6323,8 @@ fxgroup
                 mov r8.xyz, r8.xyzx  // r8.x <- S.x; r8.y <- S.y; r8.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r6.xyz, r7.xyzx, v4.xyzx
-                add r4.xyz, r4.xyzx, r6.xyzx
+                add r4.xyz, r4.xyzx, r7.xyzx
                 add r5.xyz, r5.xyzx, r8.xyzx
                 
                 #line 124
@@ -6593,9 +6376,7 @@ fxgroup
                 mov r0.xyz, r0.xyzx  // r0.x <- S.x; r0.y <- S.y; r0.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r1.xyz, r1.xyzx, v4.xyzx
                 add r1.xyz, r1.xyzx, r4.xyzx  // r1.x <- diffuse.x; r1.y <- diffuse.y; r1.z <- diffuse.z
                 add r0.xyz, r0.xyzx, r5.xyzx  // r0.x <- spec.x; r0.y <- spec.y; r0.z <- spec.z
                 
@@ -6622,7 +6403,7 @@ fxgroup
                 mov o0.xyz, r0.xyzx
                 mov o0.w, r0.w
                 ret 
-                // Approximately 147 instruction slots used
+                // Approximately 141 instruction slots used
                             
             };
         }
@@ -6680,8 +6461,7 @@ fxgroup
                 // WORLD                    1   xyzw        4     NONE   float   xyz 
                 // WORLD                    2   xyzw        5     NONE   float   xyz 
                 // WORLD                    3   xyzw        6     NONE   float   xyz 
-                // COLOR                    0   xyzw        7     NONE   float   xyzw
-                // SV_InstanceID            0   x           8   INSTID    uint       
+                // SV_InstanceID            0   x           7   INSTID    uint       
                 //
                 //
                 // Output signature:
@@ -6692,7 +6472,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float   xyzw
                 //
                 vs_5_0
                 dcl_globalFlags refactoringAllowed | skipOptimization
@@ -6704,12 +6483,10 @@ fxgroup
                 dcl_input v4.xyz
                 dcl_input v5.xyz
                 dcl_input v6.xyz
-                dcl_input v7.xyzw
                 dcl_output_siv o0.xyzw, position
                 dcl_output o1.xyz
                 dcl_output o2.xyz
                 dcl_output o3.xy
-                dcl_output o4.xyzw
                 dcl_temps 5
                 //
                 // Initial variable locations:
@@ -6720,9 +6497,7 @@ fxgroup
                 //   v4.x <- vin.World._m10; v4.y <- vin.World._m11; v4.z <- vin.World._m12; v4.w <- vin.World._m13; 
                 //   v5.x <- vin.World._m20; v5.y <- vin.World._m21; v5.z <- vin.World._m22; v5.w <- vin.World._m23; 
                 //   v6.x <- vin.World._m30; v6.y <- vin.World._m31; v6.z <- vin.World._m32; v6.w <- vin.World._m33; 
-                //   v7.x <- vin.Color.x; v7.y <- vin.Color.y; v7.z <- vin.Color.z; v7.w <- vin.Color.w; 
-                //   v8.x <- vin.InstanceId; 
-                //   o4.x <- <VS return value>.Color.x; o4.y <- <VS return value>.Color.y; o4.z <- <VS return value>.Color.z; o4.w <- <VS return value>.Color.w; 
+                //   v7.x <- vin.InstanceId; 
                 //   o3.x <- <VS return value>.Tex.x; o3.y <- <VS return value>.Tex.y; 
                 //   o2.x <- <VS return value>.NormalW.x; o2.y <- <VS return value>.NormalW.y; o2.z <- <VS return value>.NormalW.z; 
                 //   o1.x <- <VS return value>.PosW.x; o1.y <- <VS return value>.PosW.y; o1.z <- <VS return value>.PosW.z; 
@@ -6754,14 +6529,14 @@ fxgroup
                 mov r3.zw, l(0,0,0,1.000000)
                 dp4 r4.x, r3.xyzw, cb0[12].xyzw  // r4.x <- vout.Tex.x
                 dp4 r4.y, r3.xyzw, cb0[13].xyzw  // r4.y <- vout.Tex.y
-                mov r3.xyzw, v7.xyzw  // r3.x <- vout.Color.x; r3.y <- vout.Color.y; r3.z <- vout.Color.z; r3.w <- vout.Color.w
+                
+                #line 74
                 mov o0.xyzw, r2.xyzw
-                mov o4.xyzw, r3.xyzw
                 mov o1.xyz, r0.xyzx
                 mov o2.xyz, r1.xyzx
                 mov o3.xy, r4.xyxx
                 ret 
-                // Approximately 28 instruction slots used
+                // Approximately 26 instruction slots used
                             
             };
             GeometryShader = NULL;
@@ -6832,7 +6607,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float       
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float       
                 //
                 //
                 // Output signature:
@@ -6857,7 +6631,6 @@ fxgroup
                 //   v1.x <- pin.PosW.x; v1.y <- pin.PosW.y; v1.z <- pin.PosW.z; 
                 //   v2.x <- pin.NormalW.x; v2.y <- pin.NormalW.y; v2.z <- pin.NormalW.z; 
                 //   v3.x <- pin.Tex.x; v3.y <- pin.Tex.y; 
-                //   v4.x <- pin.Color.x; v4.y <- pin.Color.y; v4.z <- pin.Color.z; v4.w <- pin.Color.w; 
                 //   o0.x <- <PS return value>.x; o0.y <- <PS return value>.y; o0.z <- <PS return value>.z; o0.w <- <PS return value>.w
                 //
                 #line 83 "D:\물방?책\DVD\Code\Chapter 15 Instancing and Frustum Culling\InstancingAndCulling\FX\InstancedBasic"
@@ -6957,8 +6730,7 @@ fxgroup
                 // WORLD                    1   xyzw        4     NONE   float   xyz 
                 // WORLD                    2   xyzw        5     NONE   float   xyz 
                 // WORLD                    3   xyzw        6     NONE   float   xyz 
-                // COLOR                    0   xyzw        7     NONE   float   xyzw
-                // SV_InstanceID            0   x           8   INSTID    uint       
+                // SV_InstanceID            0   x           7   INSTID    uint       
                 //
                 //
                 // Output signature:
@@ -6969,7 +6741,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float   xyzw
                 //
                 vs_5_0
                 dcl_globalFlags refactoringAllowed | skipOptimization
@@ -6981,12 +6752,10 @@ fxgroup
                 dcl_input v4.xyz
                 dcl_input v5.xyz
                 dcl_input v6.xyz
-                dcl_input v7.xyzw
                 dcl_output_siv o0.xyzw, position
                 dcl_output o1.xyz
                 dcl_output o2.xyz
                 dcl_output o3.xy
-                dcl_output o4.xyzw
                 dcl_temps 5
                 //
                 // Initial variable locations:
@@ -6997,9 +6766,7 @@ fxgroup
                 //   v4.x <- vin.World._m10; v4.y <- vin.World._m11; v4.z <- vin.World._m12; v4.w <- vin.World._m13; 
                 //   v5.x <- vin.World._m20; v5.y <- vin.World._m21; v5.z <- vin.World._m22; v5.w <- vin.World._m23; 
                 //   v6.x <- vin.World._m30; v6.y <- vin.World._m31; v6.z <- vin.World._m32; v6.w <- vin.World._m33; 
-                //   v7.x <- vin.Color.x; v7.y <- vin.Color.y; v7.z <- vin.Color.z; v7.w <- vin.Color.w; 
-                //   v8.x <- vin.InstanceId; 
-                //   o4.x <- <VS return value>.Color.x; o4.y <- <VS return value>.Color.y; o4.z <- <VS return value>.Color.z; o4.w <- <VS return value>.Color.w; 
+                //   v7.x <- vin.InstanceId; 
                 //   o3.x <- <VS return value>.Tex.x; o3.y <- <VS return value>.Tex.y; 
                 //   o2.x <- <VS return value>.NormalW.x; o2.y <- <VS return value>.NormalW.y; o2.z <- <VS return value>.NormalW.z; 
                 //   o1.x <- <VS return value>.PosW.x; o1.y <- <VS return value>.PosW.y; o1.z <- <VS return value>.PosW.z; 
@@ -7031,14 +6798,14 @@ fxgroup
                 mov r3.zw, l(0,0,0,1.000000)
                 dp4 r4.x, r3.xyzw, cb0[12].xyzw  // r4.x <- vout.Tex.x
                 dp4 r4.y, r3.xyzw, cb0[13].xyzw  // r4.y <- vout.Tex.y
-                mov r3.xyzw, v7.xyzw  // r3.x <- vout.Color.x; r3.y <- vout.Color.y; r3.z <- vout.Color.z; r3.w <- vout.Color.w
+                
+                #line 74
                 mov o0.xyzw, r2.xyzw
-                mov o4.xyzw, r3.xyzw
                 mov o1.xyz, r0.xyzx
                 mov o2.xyz, r1.xyzx
                 mov o3.xy, r4.xyxx
                 ret 
-                // Approximately 28 instruction slots used
+                // Approximately 26 instruction slots used
                             
             };
             GeometryShader = NULL;
@@ -7109,7 +6876,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float   xyz 
                 //
                 //
                 // Output signature:
@@ -7127,7 +6893,6 @@ fxgroup
                 dcl_input_ps linear v1.xyz
                 dcl_input_ps linear v2.xyz
                 dcl_input_ps linear v3.xy
-                dcl_input_ps linear v4.xyz
                 dcl_output o0.xyzw
                 dcl_temps 15
                 //
@@ -7136,7 +6901,6 @@ fxgroup
                 //   v1.x <- pin.PosW.x; v1.y <- pin.PosW.y; v1.z <- pin.PosW.z; 
                 //   v2.x <- pin.NormalW.x; v2.y <- pin.NormalW.y; v2.z <- pin.NormalW.z; 
                 //   v3.x <- pin.Tex.x; v3.y <- pin.Tex.y; 
-                //   v4.x <- pin.Color.x; v4.y <- pin.Color.y; v4.z <- pin.Color.z; v4.w <- pin.Color.w; 
                 //   o0.x <- <PS return value>.x; o0.y <- <PS return value>.y; o0.z <- <PS return value>.z; o0.w <- <PS return value>.w
                 //
                 #line 80 "D:\물방?책\DVD\Code\Chapter 15 Instancing and Frustum Culling\InstancingAndCulling\FX\InstancedBasic"
@@ -7221,9 +6985,7 @@ fxgroup
                 mov r0.xyz, r0.xyzx  // r0.x <- S.x; r0.y <- S.y; r0.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r1.xyz, r1.xyzx, v4.xyzx
                 add r1.xyz, r1.xyzx, r4.xyzx  // r1.x <- diffuse.x; r1.y <- diffuse.y; r1.z <- diffuse.z
                 add r0.xyz, r0.xyzx, r5.xyzx  // r0.x <- spec.x; r0.y <- spec.y; r0.z <- spec.z
                 
@@ -7250,7 +7012,7 @@ fxgroup
                 mov o0.xyz, r0.xyzx
                 mov o0.w, r0.w
                 ret 
-                // Approximately 74 instruction slots used
+                // Approximately 72 instruction slots used
                             
             };
         }
@@ -7308,8 +7070,7 @@ fxgroup
                 // WORLD                    1   xyzw        4     NONE   float   xyz 
                 // WORLD                    2   xyzw        5     NONE   float   xyz 
                 // WORLD                    3   xyzw        6     NONE   float   xyz 
-                // COLOR                    0   xyzw        7     NONE   float   xyzw
-                // SV_InstanceID            0   x           8   INSTID    uint       
+                // SV_InstanceID            0   x           7   INSTID    uint       
                 //
                 //
                 // Output signature:
@@ -7320,7 +7081,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float   xyzw
                 //
                 vs_5_0
                 dcl_globalFlags refactoringAllowed | skipOptimization
@@ -7332,12 +7092,10 @@ fxgroup
                 dcl_input v4.xyz
                 dcl_input v5.xyz
                 dcl_input v6.xyz
-                dcl_input v7.xyzw
                 dcl_output_siv o0.xyzw, position
                 dcl_output o1.xyz
                 dcl_output o2.xyz
                 dcl_output o3.xy
-                dcl_output o4.xyzw
                 dcl_temps 5
                 //
                 // Initial variable locations:
@@ -7348,9 +7106,7 @@ fxgroup
                 //   v4.x <- vin.World._m10; v4.y <- vin.World._m11; v4.z <- vin.World._m12; v4.w <- vin.World._m13; 
                 //   v5.x <- vin.World._m20; v5.y <- vin.World._m21; v5.z <- vin.World._m22; v5.w <- vin.World._m23; 
                 //   v6.x <- vin.World._m30; v6.y <- vin.World._m31; v6.z <- vin.World._m32; v6.w <- vin.World._m33; 
-                //   v7.x <- vin.Color.x; v7.y <- vin.Color.y; v7.z <- vin.Color.z; v7.w <- vin.Color.w; 
-                //   v8.x <- vin.InstanceId; 
-                //   o4.x <- <VS return value>.Color.x; o4.y <- <VS return value>.Color.y; o4.z <- <VS return value>.Color.z; o4.w <- <VS return value>.Color.w; 
+                //   v7.x <- vin.InstanceId; 
                 //   o3.x <- <VS return value>.Tex.x; o3.y <- <VS return value>.Tex.y; 
                 //   o2.x <- <VS return value>.NormalW.x; o2.y <- <VS return value>.NormalW.y; o2.z <- <VS return value>.NormalW.z; 
                 //   o1.x <- <VS return value>.PosW.x; o1.y <- <VS return value>.PosW.y; o1.z <- <VS return value>.PosW.z; 
@@ -7382,14 +7138,14 @@ fxgroup
                 mov r3.zw, l(0,0,0,1.000000)
                 dp4 r4.x, r3.xyzw, cb0[12].xyzw  // r4.x <- vout.Tex.x
                 dp4 r4.y, r3.xyzw, cb0[13].xyzw  // r4.y <- vout.Tex.y
-                mov r3.xyzw, v7.xyzw  // r3.x <- vout.Color.x; r3.y <- vout.Color.y; r3.z <- vout.Color.z; r3.w <- vout.Color.w
+                
+                #line 74
                 mov o0.xyzw, r2.xyzw
-                mov o4.xyzw, r3.xyzw
                 mov o1.xyz, r0.xyzx
                 mov o2.xyz, r1.xyzx
                 mov o3.xy, r4.xyxx
                 ret 
-                // Approximately 28 instruction slots used
+                // Approximately 26 instruction slots used
                             
             };
             GeometryShader = NULL;
@@ -7460,7 +7216,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float   xyz 
                 //
                 //
                 // Output signature:
@@ -7478,7 +7233,6 @@ fxgroup
                 dcl_input_ps linear v1.xyz
                 dcl_input_ps linear v2.xyz
                 dcl_input_ps linear v3.xy
-                dcl_input_ps linear v4.xyz
                 dcl_output o0.xyzw
                 dcl_temps 15
                 //
@@ -7487,7 +7241,6 @@ fxgroup
                 //   v1.x <- pin.PosW.x; v1.y <- pin.PosW.y; v1.z <- pin.PosW.z; 
                 //   v2.x <- pin.NormalW.x; v2.y <- pin.NormalW.y; v2.z <- pin.NormalW.z; 
                 //   v3.x <- pin.Tex.x; v3.y <- pin.Tex.y; 
-                //   v4.x <- pin.Color.x; v4.y <- pin.Color.y; v4.z <- pin.Color.z; v4.w <- pin.Color.w; 
                 //   o0.x <- <PS return value>.x; o0.y <- <PS return value>.y; o0.z <- <PS return value>.z; o0.w <- <PS return value>.w
                 //
                 #line 80 "D:\물방?책\DVD\Code\Chapter 15 Instancing and Frustum Culling\InstancingAndCulling\FX\InstancedBasic"
@@ -7572,10 +7325,8 @@ fxgroup
                 mov r8.xyz, r8.xyzx  // r8.x <- S.x; r8.y <- S.y; r8.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r6.xyz, r7.xyzx, v4.xyzx
-                add r4.xyz, r4.xyzx, r6.xyzx
+                add r4.xyz, r4.xyzx, r7.xyzx
                 add r5.xyz, r5.xyzx, r8.xyzx
                 
                 #line 124
@@ -7627,9 +7378,7 @@ fxgroup
                 mov r0.xyz, r0.xyzx  // r0.x <- S.x; r0.y <- S.y; r0.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r1.xyz, r1.xyzx, v4.xyzx
                 add r1.xyz, r1.xyzx, r4.xyzx  // r1.x <- diffuse.x; r1.y <- diffuse.y; r1.z <- diffuse.z
                 add r0.xyz, r0.xyzx, r5.xyzx  // r0.x <- spec.x; r0.y <- spec.y; r0.z <- spec.z
                 
@@ -7656,7 +7405,7 @@ fxgroup
                 mov o0.xyz, r0.xyzx
                 mov o0.w, r0.w
                 ret 
-                // Approximately 113 instruction slots used
+                // Approximately 109 instruction slots used
                             
             };
         }
@@ -7714,8 +7463,7 @@ fxgroup
                 // WORLD                    1   xyzw        4     NONE   float   xyz 
                 // WORLD                    2   xyzw        5     NONE   float   xyz 
                 // WORLD                    3   xyzw        6     NONE   float   xyz 
-                // COLOR                    0   xyzw        7     NONE   float   xyzw
-                // SV_InstanceID            0   x           8   INSTID    uint       
+                // SV_InstanceID            0   x           7   INSTID    uint       
                 //
                 //
                 // Output signature:
@@ -7726,7 +7474,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float   xyzw
                 //
                 vs_5_0
                 dcl_globalFlags refactoringAllowed | skipOptimization
@@ -7738,12 +7485,10 @@ fxgroup
                 dcl_input v4.xyz
                 dcl_input v5.xyz
                 dcl_input v6.xyz
-                dcl_input v7.xyzw
                 dcl_output_siv o0.xyzw, position
                 dcl_output o1.xyz
                 dcl_output o2.xyz
                 dcl_output o3.xy
-                dcl_output o4.xyzw
                 dcl_temps 5
                 //
                 // Initial variable locations:
@@ -7754,9 +7499,7 @@ fxgroup
                 //   v4.x <- vin.World._m10; v4.y <- vin.World._m11; v4.z <- vin.World._m12; v4.w <- vin.World._m13; 
                 //   v5.x <- vin.World._m20; v5.y <- vin.World._m21; v5.z <- vin.World._m22; v5.w <- vin.World._m23; 
                 //   v6.x <- vin.World._m30; v6.y <- vin.World._m31; v6.z <- vin.World._m32; v6.w <- vin.World._m33; 
-                //   v7.x <- vin.Color.x; v7.y <- vin.Color.y; v7.z <- vin.Color.z; v7.w <- vin.Color.w; 
-                //   v8.x <- vin.InstanceId; 
-                //   o4.x <- <VS return value>.Color.x; o4.y <- <VS return value>.Color.y; o4.z <- <VS return value>.Color.z; o4.w <- <VS return value>.Color.w; 
+                //   v7.x <- vin.InstanceId; 
                 //   o3.x <- <VS return value>.Tex.x; o3.y <- <VS return value>.Tex.y; 
                 //   o2.x <- <VS return value>.NormalW.x; o2.y <- <VS return value>.NormalW.y; o2.z <- <VS return value>.NormalW.z; 
                 //   o1.x <- <VS return value>.PosW.x; o1.y <- <VS return value>.PosW.y; o1.z <- <VS return value>.PosW.z; 
@@ -7788,14 +7531,14 @@ fxgroup
                 mov r3.zw, l(0,0,0,1.000000)
                 dp4 r4.x, r3.xyzw, cb0[12].xyzw  // r4.x <- vout.Tex.x
                 dp4 r4.y, r3.xyzw, cb0[13].xyzw  // r4.y <- vout.Tex.y
-                mov r3.xyzw, v7.xyzw  // r3.x <- vout.Color.x; r3.y <- vout.Color.y; r3.z <- vout.Color.z; r3.w <- vout.Color.w
+                
+                #line 74
                 mov o0.xyzw, r2.xyzw
-                mov o4.xyzw, r3.xyzw
                 mov o1.xyz, r0.xyzx
                 mov o2.xyz, r1.xyzx
                 mov o3.xy, r4.xyxx
                 ret 
-                // Approximately 28 instruction slots used
+                // Approximately 26 instruction slots used
                             
             };
             GeometryShader = NULL;
@@ -7866,7 +7609,6 @@ fxgroup
                 // POSITION                 0   xyz         1     NONE   float   xyz 
                 // NORMAL                   0   xyz         2     NONE   float   xyz 
                 // TEXCOORD                 0   xy          3     NONE   float   xy  
-                // COLOR                    0   xyzw        4     NONE   float   xyz 
                 //
                 //
                 // Output signature:
@@ -7884,7 +7626,6 @@ fxgroup
                 dcl_input_ps linear v1.xyz
                 dcl_input_ps linear v2.xyz
                 dcl_input_ps linear v3.xy
-                dcl_input_ps linear v4.xyz
                 dcl_output o0.xyzw
                 dcl_temps 15
                 //
@@ -7893,7 +7634,6 @@ fxgroup
                 //   v1.x <- pin.PosW.x; v1.y <- pin.PosW.y; v1.z <- pin.PosW.z; 
                 //   v2.x <- pin.NormalW.x; v2.y <- pin.NormalW.y; v2.z <- pin.NormalW.z; 
                 //   v3.x <- pin.Tex.x; v3.y <- pin.Tex.y; 
-                //   v4.x <- pin.Color.x; v4.y <- pin.Color.y; v4.z <- pin.Color.z; v4.w <- pin.Color.w; 
                 //   o0.x <- <PS return value>.x; o0.y <- <PS return value>.y; o0.z <- <PS return value>.z; o0.w <- <PS return value>.w
                 //
                 #line 80 "D:\물방?책\DVD\Code\Chapter 15 Instancing and Frustum Culling\InstancingAndCulling\FX\InstancedBasic"
@@ -7978,10 +7718,8 @@ fxgroup
                 mov r8.xyz, r8.xyzx  // r8.x <- S.x; r8.y <- S.y; r8.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r6.xyz, r7.xyzx, v4.xyzx
-                add r4.xyz, r4.xyzx, r6.xyzx
+                add r4.xyz, r4.xyzx, r7.xyzx
                 add r5.xyz, r5.xyzx, r8.xyzx
                 
                 #line 124
@@ -8033,10 +7771,8 @@ fxgroup
                 mov r8.xyz, r8.xyzx  // r8.x <- S.x; r8.y <- S.y; r8.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r6.xyz, r7.xyzx, v4.xyzx
-                add r4.xyz, r4.xyzx, r6.xyzx
+                add r4.xyz, r4.xyzx, r7.xyzx
                 add r5.xyz, r5.xyzx, r8.xyzx
                 
                 #line 124
@@ -8088,9 +7824,7 @@ fxgroup
                 mov r0.xyz, r0.xyzx  // r0.x <- S.x; r0.y <- S.y; r0.z <- S.z
                 
                 #line 127
-                mul r6.xyz, r6.xyzx, v4.xyzx
                 add r3.xyz, r3.xyzx, r6.xyzx
-                mul r1.xyz, r1.xyzx, v4.xyzx
                 add r1.xyz, r1.xyzx, r4.xyzx  // r1.x <- diffuse.x; r1.y <- diffuse.y; r1.z <- diffuse.z
                 add r0.xyz, r0.xyzx, r5.xyzx  // r0.x <- spec.x; r0.y <- spec.y; r0.z <- spec.z
                 
@@ -8117,7 +7851,7 @@ fxgroup
                 mov o0.xyz, r0.xyzx
                 mov o0.w, r0.w
                 ret 
-                // Approximately 152 instruction slots used
+                // Approximately 146 instruction slots used
                             
             };
         }
