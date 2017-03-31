@@ -301,6 +301,8 @@ InstancedBasicEffect::InstancedBasicEffect(ID3D11Device * device, const std::wst
 	DirLights = mFX->GetVariableByName("gDirLights");
 	Mat = mFX->GetVariableByName("gMaterial");
 	DiffuseMap = mFX->GetVariableByName("gDiffuseMap")->AsShaderResource();
+
+
 }
 InstancedBasicEffect::~InstancedBasicEffect()
 {

@@ -10,7 +10,8 @@
 #include "FbxLoader.h"
 #include "RenderStates.h"
 #include "xnacollision.h"
-#include "StaticNormalModel.h"
+#include "Model.h"
+#include "ModelManager.h"
 struct BoundingSphere
 {
 	BoundingSphere() : Center(0.0f, 0.0f, 0.0f), Radius(0.0f) {}
@@ -36,50 +37,44 @@ class CTestScene :
 
 //////////////////////////////////////////////////////////////////////////
  	TextureMgr mTexMgr;
+	CModelManager mModelMgr;
 // 	CModelMgr mModelMgr;
-	ID3D11Buffer* mStaticNormalMappingObjectVB;
-	ID3D11Buffer* mStaticNormalMappingObjectIB;
-	ID3D11Buffer* mStaticBasicObjectVB;
-	ID3D11Buffer* mStaticBasicObjectIB;
+// 	ID3D11Buffer* mStaticNormalMappingObjectVB;
+// 	ID3D11Buffer* mStaticNormalMappingObjectIB;
+// 	ID3D11Buffer* mStaticBasicObjectVB;
+// 	ID3D11Buffer* mStaticBasicObjectIB;
+// 
+// 	ID3D11Buffer* mInstanceBuffer;
+// 	std::vector<XMFLOAT4X4> mInstancedModelWorld;
+// 	//fenceSRV
+// 	ID3D11ShaderResourceView* mFenceSRV;
+// 
+// 	std::vector<CStaticNomalModel> mStaticNormalModels;
+// 	std::vector<CStaticBasicModel> mStaticBasicModels;
 
-	ID3D11Buffer* mInstanceBuffer;
-	std::vector<XMFLOAT4X4> mInstancedModelWorld;
-	//fenceSRV
-	ID3D11ShaderResourceView* mFenceSRV;
-
-	std::vector<CStaticNomalModel> mStaticNormalModels;
-	std::vector<CStaticBasicModel> mStaticBasicModels;
 	//////////////////////////////////////////////////////////////////////////
 	//Draw¼¼ÆÃ
-	int gridVertexOffset;
-	int gridIndexOffset;
+// 	int gridVertexOffset;
+// 	int gridIndexOffset;
+// 	int gidIndexCount;
+// 
+// 	int boxVertexOffset;
+// 	int boxIndexOffset;
+// 	int boxIndexCount;
+// 
+// 	int clownIndexOffset;
+// 	int clownVertexOffset;
+// 	int clownIndexCount;
+// 	int gridIndexCount;
+// 
+// 	int fenceIndexOffset, fenceVertexOffset, fenceIndexCount;
+// 	int house1IndexOffset, house1VertexOffset, house1IndexCount;
+// 	int house2IndexOffset, house2VertexOffset, house2IndexCount;
+// 	int house3IndexOffset, house3VertexOffset, house3IndexCount;
+// 	int house4IndexOffset, house4VertexOffset, house4IndexCount;
+// 	int house5IndexOffset, house5VertexOffset, house5IndexCount;
+// 	int house6IndexOffset, house6VertexOffset, house6IndexCount;
 
-	int boxVertexOffset;
-	int boxIndexOffset;
-	int boxIndexCount;
-	int gidIndexCount;
-
-	int clownIndexOffset;
-	int clownVertexOffset;
-	int clownIndexCount;
-	int gridIndexCount;
-
-	int fenceIndexOffset, fenceVertexOffset, fenceIndexCount;
-	int house1IndexOffset, house1VertexOffset, house1IndexCount;
-	int house2IndexOffset, house2VertexOffset, house2IndexCount;
-	int house3IndexOffset, house3VertexOffset, house3IndexCount;
-	int house4IndexOffset, house4VertexOffset, house4IndexCount;
-	int house5IndexOffset, house5VertexOffset, house5IndexCount;
-	int house6IndexOffset, house6VertexOffset, house6IndexCount;
-
-	Material mGridMat;
-	Material mBoxMat;
-	Material mClownMat;
-
-	XMFLOAT4X4 mBoxWorld;
-	XMFLOAT4X4 mGridWorld;
-	XMFLOAT4X4 mClownWorld;
-	XMFLOAT4X4 mHouseWorld;
 
 	//ID3D11Buffer* mInstanceBuffer;
 
@@ -127,7 +122,5 @@ public:
 
 	void DrawSceneToShadowMap();
 	void BuildShadowTransform();
-	void BuildShapeGeometryBuffers();
-	void BuildBasicGeometryBuffer();
-	//void ReadMapData(ID3D11Device* device);
+	
 };

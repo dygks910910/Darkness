@@ -186,12 +186,13 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="MiniMap.cpp" />
+    <ClCompile Include="ModelManager.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="RenderStates.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="ShadowMap.cpp" />
     <ClCompile Include="Sky.cpp" />
-    <ClCompile Include="StaticNormalModel.cpp" />
+    <ClCompile Include="Model.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="TestScene.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -235,13 +236,14 @@
     <ClInclude Include="FbxLoader.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="MiniMap.h" />
+    <ClInclude Include="ModelManager.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="RenderStates.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="ShadowMap.h" />
     <ClInclude Include="Sky.h" />
-    <ClInclude Include="StaticNormalModel.h" />
+    <ClInclude Include="Model.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="TestScene.h" />
     <ClInclude Include="Texture.h" />
@@ -261,10 +263,6 @@
     <FxCompile Include="FX\SsaoBlur.fx" />
     <FxCompile Include="FX\SsaoNormalDepth.fx" />
     <FxCompile Include="FX\Terrain.fx" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
-    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

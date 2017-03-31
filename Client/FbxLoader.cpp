@@ -630,6 +630,7 @@ void CFbxLoader::LoadFBX(const char* pFileName, GeometryGenerator::MeshData& mes
 		std::cout << mesh.Vertices.size() << std::endl;
 
 	}
+	Destroy();
 	//ProcessMaterials(mRootNode, material);
 }
 

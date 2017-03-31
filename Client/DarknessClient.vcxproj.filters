@@ -61,7 +61,7 @@
     <Filter Include="Source Files\ShadowMap">
       <UniqueIdentifier>{ef84a664-9d3a-446e-a4ba-0b4e48b349b3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\StaticModel">
+    <Filter Include="Source Files\Model">
       <UniqueIdentifier>{0ac9d828-468b-4aab-9b0b-c6eab64cd3dc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -150,8 +150,11 @@
     <ClCompile Include="ShadowMap.cpp">
       <Filter>Source Files\ShadowMap</Filter>
     </ClCompile>
-    <ClCompile Include="StaticNormalModel.cpp">
-      <Filter>Source Files\StaticModel</Filter>
+    <ClCompile Include="Model.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelManager.cpp">
+      <Filter>Source Files\Model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -250,8 +253,11 @@
     <ClInclude Include="ShadowMap.h">
       <Filter>Source Files\ShadowMap</Filter>
     </ClInclude>
-    <ClInclude Include="StaticNormalModel.h">
-      <Filter>Source Files\StaticModel</Filter>
+    <ClInclude Include="Model.h">
+      <Filter>Source Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelManager.h">
+      <Filter>Source Files\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -294,9 +300,5 @@
     <FxCompile Include="FX\InstancedBasic.fx">
       <Filter>FX</Filter>
     </FxCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
-    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
 </Project>
