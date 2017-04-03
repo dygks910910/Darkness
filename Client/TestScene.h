@@ -12,6 +12,7 @@
 #include "xnacollision.h"
 #include "Model.h"
 #include "ModelManager.h"
+#include "ParticleSystem.h"
 struct BoundingSphere
 {
 	BoundingSphere() : Center(0.0f, 0.0f, 0.0f), Radius(0.0f) {}
@@ -38,64 +39,23 @@ class CTestScene :
 //////////////////////////////////////////////////////////////////////////
  	TextureMgr mTexMgr;
 	CModelManager mModelMgr;
-// 	CModelMgr mModelMgr;
-// 	ID3D11Buffer* mStaticNormalMappingObjectVB;
-// 	ID3D11Buffer* mStaticNormalMappingObjectIB;
-// 	ID3D11Buffer* mStaticBasicObjectVB;
-// 	ID3D11Buffer* mStaticBasicObjectIB;
-// 
-// 	ID3D11Buffer* mInstanceBuffer;
-// 	std::vector<XMFLOAT4X4> mInstancedModelWorld;
-// 	//fenceSRV
-// 	ID3D11ShaderResourceView* mFenceSRV;
-// 
-// 	std::vector<CStaticNomalModel> mStaticNormalModels;
-// 	std::vector<CStaticBasicModel> mStaticBasicModels;
-
-	//////////////////////////////////////////////////////////////////////////
-	//Draw¼¼ÆÃ
-// 	int gridVertexOffset;
-// 	int gridIndexOffset;
-// 	int gidIndexCount;
-// 
-// 	int boxVertexOffset;
-// 	int boxIndexOffset;
-// 	int boxIndexCount;
-// 
-// 	int clownIndexOffset;
-// 	int clownVertexOffset;
-// 	int clownIndexCount;
-// 	int gridIndexCount;
-// 
-// 	int fenceIndexOffset, fenceVertexOffset, fenceIndexCount;
-// 	int house1IndexOffset, house1VertexOffset, house1IndexCount;
-// 	int house2IndexOffset, house2VertexOffset, house2IndexCount;
-// 	int house3IndexOffset, house3VertexOffset, house3IndexCount;
-// 	int house4IndexOffset, house4VertexOffset, house4IndexCount;
-// 	int house5IndexOffset, house5VertexOffset, house5IndexCount;
-// 	int house6IndexOffset, house6VertexOffset, house6IndexCount;
-
-
-	//ID3D11Buffer* mInstanceBuffer;
-
-
+	GameTimer mTimer;
+	//RainParticle
+	ID3D11ShaderResourceView* mRainTexSRV;
+	ID3D11ShaderResourceView* mRandomTexSRV;
+	ParticleSystem mRain;
 	//////////////////////////////////////////////////////////////////////////
 	CCordinate mCordWorld;
 	Camera	 mCam;
 	DirectionalLight mDirLights[3];
 	XMFLOAT3 mOriginalLightDir[3];
 
-	//GameTimer mTimer;
-	//D3D11_VIEWPORT mScreenViewport;
+	
 	//Terrain mTerrain;
 	POINT mLastMousePos;
 	Sky* mSky;
 
-// 	std::vector<CDynamicObject*> mvDynamicObject;
-// 	std::vector<CStaticObject*> mvStaticObject;
 
-	// for Frustum culling
-	//XNA::Frustum mCamFrustum;
 	BoundingSphere mSceneBounds;
 
 	float mLightRotationAngle;
@@ -103,7 +63,6 @@ class CTestScene :
 	XMFLOAT4X4 mLightView;
 	XMFLOAT4X4 mLightProj;
 	XMFLOAT4X4 mShadowTransform;
-	//Ssao* mSsao;
 	ShadowMap* mSmap;
 
 	ID3D11Buffer* mScreenQuadVB;

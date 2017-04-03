@@ -20,6 +20,7 @@ CTestScene::~CTestScene()
 	// 	}
 	SafeDelete(mSky);
 	SafeDelete(mSmap);
+	ReleaseCOM(mRainTexSRV);
 }
 
 bool CTestScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
@@ -30,10 +31,10 @@ bool CTestScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	mDevice = device;
 	mDc = dc;
 	mSwapChain = swapChain;
-	//mRenderTargetView = renderTargetView;
-	//mDSV = dsv;
 	mClientHeight = clientHeight;
 	mClientWidth = clientWidth;
+
+	
 
 	//////////////////////////////////////////////////////////////////////////
 	//월드세팅
@@ -48,7 +49,6 @@ bool CTestScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	//재질,텍스처불러오기.
 	mTexMgr.Init(mDevice);
 	mModelMgr.Init(mTexMgr, mCam, device);
-	
 	
 
 		//버퍼 빌드
@@ -94,16 +94,27 @@ bool CTestScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	Effects::BasicFX->SetFogColor(Colors::Silver);
 	Effects::BasicFX->SetFogStart(15.0f);
 	Effects::BasicFX->SetFogRange(175.0f);
-
+	
 	//월드좌표계 그려주기.
 	XMFLOAT4X4 temp4x4;
 	XMStoreFloat4x4(&temp4x4, XMMatrixIdentity());
 	mCordWorld.Init(device, temp4x4, 5000);
+
+
+	mRandomTexSRV = d3dHelper::CreateRandomTexture1DSRV(mDevice);
+	std::vector<std::wstring> raindrops;
+	raindrops.push_back(L"Textures\\raindrop.dds");
+	mRainTexSRV = d3dHelper::CreateTexture2DArraySRV(mDevice, mDc, raindrops);
+	mRain.Init(mDevice, Effects::RainFX, mRainTexSRV, mRandomTexSRV, 10000);
+
+	mTimer.Start();
+
 	return true;
 }
 
 void CTestScene::UpdateScene(const float & dt)
 {
+	mTimer.Tick();
 		//
 		// Control the camera.
 		//
@@ -135,8 +146,9 @@ void CTestScene::UpdateScene(const float & dt)
 	//
 	// Reset particle systems.
 	//
-
 	BuildShadowTransform();
+	mRain.Update(dt, mTimer.TotalTime());
+
 	mCam.UpdateViewMatrix();
 }
 
@@ -234,9 +246,19 @@ void CTestScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 		//DrawSceneQuard();
 	}
 	mCordWorld.Draw(mDc, mCam);
+
 	mSky->Draw(mDc, mCam);
 
+	mDc->OMSetBlendState(0, blendFactor, 0xffffffff); // restore default
+	mDc->IASetInputLayout(InputLayouts::Particle);
+	mDc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+	mRain.SetEyePos(mCam.GetPosition());
+	mRain.SetEmitPos(mCam.GetPosition());
+	mRain.Draw(mDc, mCam);
+
 	// restore default states, as the SkyFX changes them in the effect file.
+
+
 	mDc->RSSetState(0);
 	mDc->OMSetDepthStencilState(0, 0);
 
@@ -244,6 +266,7 @@ void CTestScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 	// The shadow might might be at any slot, so clear all slots.
 	ID3D11ShaderResourceView* nullSRV[16] = { 0 };
 	mDc->PSSetShaderResources(0, 16, nullSRV);
+	mDc->OMSetBlendState(0, blendFactor, 0xffffffff);
 
 	HR(mSwapChain->Present(0, 0));
 }

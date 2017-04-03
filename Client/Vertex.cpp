@@ -55,6 +55,16 @@ const D3D11_INPUT_ELEMENT_DESC InputLayoutDesc::InstancedBasic32[7] =
 	{ "WORLD", 3, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 48, D3D11_INPUT_PER_INSTANCE_DATA, 1 }
 };
 
+const D3D11_INPUT_ELEMENT_DESC InputLayoutDesc::PosNormalTexTanSkinned[6] =
+{
+	{ "POSITION",     0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	{ "NORMAL",       0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	{ "TEXCOORD",     0, DXGI_FORMAT_R32G32_FLOAT,    0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	{ "TANGENT",      0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 32, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	{ "WEIGHTS",      0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 48, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	{ "BONEINDICES",  0, DXGI_FORMAT_R8G8B8A8_UINT,   0, 60, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+};
+
 #pragma endregion
 
 #pragma region InputLayouts
@@ -66,6 +76,7 @@ ID3D11InputLayout* InputLayouts::Particle = 0;
 ID3D11InputLayout* InputLayouts::Line = 0;
 ID3D11InputLayout* InputLayouts::PosNormalTexTan = 0;
 ID3D11InputLayout* InputLayouts::InstancedBasic32 = 0;
+ID3D11InputLayout* InputLayouts::PosNormalTexTanSkinned = 0;
 
 void InputLayouts::InitAll(ID3D11Device* device)
 {
@@ -122,6 +133,9 @@ void InputLayouts::InitAll(ID3D11Device* device)
 	HR(device->CreateInputLayout(InputLayoutDesc::InstancedBasic32, 7, passDesc.pIAInputSignature,
 		passDesc.IAInputSignatureSize, &InstancedBasic32));
 
+	Effects::NormalMapFX->Light1SkinnedTech->GetPassByIndex(0)->GetDesc(&passDesc);
+	HR(device->CreateInputLayout(InputLayoutDesc::PosNormalTexTanSkinned, 6, passDesc.pIAInputSignature,
+		passDesc.IAInputSignatureSize, &PosNormalTexTanSkinned));
 }
 
 void InputLayouts::DestroyAll()
@@ -133,6 +147,7 @@ void InputLayouts::DestroyAll()
 	ReleaseCOM(Line);
 	ReleaseCOM(InstancedBasic32);
 	ReleaseCOM(PosNormalTexTan);
+	ReleaseCOM(PosNormalTexTanSkinned);
 }
 
 #pragma endregion
