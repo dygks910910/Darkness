@@ -4,6 +4,8 @@
 #include "BoxScene.h"
 #include<map>
 #include<string.h>
+#include "LogoScene.h"
+#include "MainScene.h"
 class CSceneManager
 {
 private:
@@ -42,5 +44,5 @@ namespace SceneName
 {
 	const std::string MainScene = "MainGameScene";
 	const std::string test = "test";
-
+	const std::string LoadingScene = "LoadingScene";
 }

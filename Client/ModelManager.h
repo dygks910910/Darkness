@@ -5,6 +5,7 @@
 #include "TextureMgr.h"
 #include "Camera.h"
 #include "RenderStates.h"
+#include"LogoScene.h"
 class CModelManager
 {
 	ID3D11Device* mDevice;
