@@ -21,6 +21,8 @@ private:
 	설명:Scene전환을 위한 키.
 	*/
 	std::string mSceneKey;
+	int mClientWidth;
+	int mClientHeight;
 public:
 	CSceneManager();
 	~CSceneManager();
@@ -35,10 +37,12 @@ public:
 	void OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWnd);
 	void OnMouseUp(WPARAM btnState, int x, int y);
 	void OnMouseMove(WPARAM btnState, int x, int y);
-	void OnResize(const float& aspectRatio);
+	void OnResize();
 	void ChangeScene(std::string sceneName, const float& dt,
 		ID3D11Device* device, ID3D11DeviceContext* dc);
 	void SetSceneKey(const std::string& sceneName) { mSceneKey = sceneName; }
+private:
+	
 };
 namespace SceneName
 {

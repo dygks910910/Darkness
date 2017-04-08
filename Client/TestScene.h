@@ -29,9 +29,7 @@ class CTestScene :
 	설명:기본적인 dx11 인터페이스 변수들.여기서 Release해주면 안된다.프로그램 종료시 release하도록 
 	세팅해놨음.
 	*/
-	ID3D11Device* mDevice;
-	ID3D11DeviceContext* mDc;
-	IDXGISwapChain* mSwapChain;
+	
 
 	int mClientHeight;
 	int mClientWidth;
@@ -77,7 +75,7 @@ public:
 	virtual void OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWnd) ;
 	virtual void OnMouseUp(WPARAM btnState, int x, int y) ;
 	virtual void OnMouseMove(WPARAM btnState, int x, int y);
-	virtual void OnResize(const float& aspectRatio);
+	virtual void OnResize();
 
 	void DrawSceneToShadowMap();
 	void BuildShadowTransform();

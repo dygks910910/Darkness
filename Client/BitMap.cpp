@@ -18,7 +18,8 @@ CBitMap::~CBitMap()
 {
 }
 
-bool CBitMap::Initialize(ID3D11Device * device, int screenWidth, int screenHeight, WCHAR * textureFilename, int bitmapWidth, int bitmapHeight)
+bool CBitMap::Initialize(ID3D11Device * device, int screenWidth, int screenHeight,
+	WCHAR * textureFilename, int bitmapWidth, int bitmapHeight)
 {
 	bool result;
 
@@ -78,9 +79,20 @@ bool CBitMap::Render(ID3D11DeviceContext* deviceContext,
 
 	// Put the vertex and index buffers on the graphics pipeline to prepare them for drawing.
 	RenderBuffers(deviceContext);
+	Effects::BasicFX->SetDiffuseMap(GetTexture());
+	D3DX11_TECHNIQUE_DESC techDesc;
+	Effects::BasicFX->Light0TexTech->GetDesc(&techDesc);
 
+	for (UINT p = 0; p < techDesc.Passes; ++p)
+	{
+		ID3DX11EffectPass* pass = Effects::BasicFX->Light0TexAlphaClipTech->GetPassByIndex(p);
+		pass->Apply(0, deviceContext);
+
+		deviceContext->DrawIndexed(6, 0, 0);
+	}
 	return true;
 }
+
 
 int CBitMap::GetIndexCount()
 {
@@ -298,7 +310,6 @@ void CBitMap::RenderBuffers(ID3D11DeviceContext* deviceContext)
 	// Set vertex buffer stride and offset.
 	stride = sizeof(Vertex::Basic32);
 	offset = 0;
-
 	// Set the vertex buffer to active in the input assembler so it can be rendered.
 	deviceContext->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
 

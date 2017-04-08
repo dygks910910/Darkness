@@ -54,7 +54,7 @@ bool CMainGame::Init()
 void CMainGame::OnResize()
 {
 	D3DApp::OnResize();
-	mSceneManager->OnResize(AspectRatio());
+	mSceneManager->OnResize();
 	
 }
 
@@ -84,9 +84,9 @@ void CMainGame::DrawScene()
 }
 
 
-void CMainGame::OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWnd)
+void CMainGame::OnMouseDown(WPARAM btnState, int x, int y)
 {
-	mSceneManager->OnMouseDown(btnState, x, y,mhMainWnd);
+	mSceneManager->OnMouseDown(btnState,x,y,mhMainWnd);
 }
 
 void CMainGame::OnMouseUp(WPARAM btnState, int x, int y)

@@ -22,7 +22,6 @@ public:
 	void Shutdown();
 	bool Render(ID3D11DeviceContext* deviceContext,
 		int positionX, int positionY);
-
 	int GetIndexCount();
 	ID3D11ShaderResourceView* GetTexture();
 

@@ -46,9 +46,6 @@
     <Filter Include="Source Files\01 Effects\ParticleSystem">
       <UniqueIdentifier>{0567adf7-8142-499e-8ae9-890af9cb7352}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\02 MiniMap">
-      <UniqueIdentifier>{fadee7c4-acae-4ef8-b832-750764ae638e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\00 Object\01 DynamicObjcet">
       <UniqueIdentifier>{b6af5a3b-5a95-44cb-88b1-113106975362}</UniqueIdentifier>
     </Filter>
@@ -66,6 +63,9 @@
     </Filter>
     <Filter Include="Source Files\SkinedClass">
       <UniqueIdentifier>{a400008f-fffc-4e4c-8bff-6042cdf589b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI">
+      <UniqueIdentifier>{fadee7c4-acae-4ef8-b832-750764ae638e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -130,13 +130,13 @@
       <Filter>Source Files\99 Scene</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
-      <Filter>Source Files\02 MiniMap</Filter>
+      <Filter>Source Files\UI</Filter>
     </ClCompile>
     <ClCompile Include="BitMap.cpp">
-      <Filter>Source Files\02 MiniMap</Filter>
+      <Filter>Source Files\UI</Filter>
     </ClCompile>
     <ClCompile Include="MiniMap.cpp">
-      <Filter>Source Files\02 MiniMap</Filter>
+      <Filter>Source Files\UI</Filter>
     </ClCompile>
     <ClCompile Include="DynamicObject.cpp">
       <Filter>Source Files\00 Object\01 DynamicObjcet</Filter>
@@ -171,11 +171,17 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MainScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="LogoScene.cpp">
       <Filter>Source Files\99 Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="MainScene.cpp">
+      <Filter>Source Files\99 Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="ButtonClass.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -254,13 +260,13 @@
       <Filter>Source Files\99 Scene</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">
-      <Filter>Source Files\02 MiniMap</Filter>
+      <Filter>Source Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="BitMap.h">
-      <Filter>Source Files\02 MiniMap</Filter>
+      <Filter>Source Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="MiniMap.h">
-      <Filter>Source Files\02 MiniMap</Filter>
+      <Filter>Source Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="DynamicObject.h">
       <Filter>Source Files\00 Object\01 DynamicObjcet</Filter>
@@ -292,11 +298,14 @@
     <ClInclude Include="SkinnedModel.h">
       <Filter>Source Files\SkinedClass</Filter>
     </ClInclude>
-    <ClInclude Include="MainScene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="LogoScene.h">
       <Filter>Source Files\99 Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="MainScene.h">
+      <Filter>Source Files\99 Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="ButtonClass.h">
+      <Filter>Source Files\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

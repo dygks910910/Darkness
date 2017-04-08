@@ -4,9 +4,7 @@
 class CLogoScene :
 	public CScene
 {
-	ID3D11Device* mDevice;
-	ID3D11DeviceContext* mDc;
-	IDXGISwapChain* mSwapChain;
+	
 	Camera mCam;
 	
 	XMMATRIX mWorldMtx;
@@ -24,6 +22,6 @@ public:
 	virtual void OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWnd) ;
 	virtual void OnMouseUp(WPARAM btnState, int x, int y) ;
 	virtual void OnMouseMove(WPARAM btnState, int x, int y);
-	virtual void OnResize(const float& aspectRatio) ;
+	virtual void OnResize() ;
 };
 

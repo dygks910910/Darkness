@@ -18,6 +18,9 @@ bool CLogoScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc, IDXGISwap
 	mDevice = device;
 	mDc = dc;
 	mSwapChain = swapChain;
+	mClientHeight = clientHeight;
+	mClientWidth = clientWidth;
+
 
 	mCam.SetPosition(0, 0, 0);
 	mWorldMtx = XMMatrixTranslation(0, 0, 10);
@@ -137,7 +140,7 @@ void CLogoScene::OnMouseMove(WPARAM btnState, int x, int y)
 {
 }
 
-void CLogoScene::OnResize(const float & aspectRatio)
+void CLogoScene::OnResize()
 {
-	mCam.SetLens(0.25f*MathHelper::Pi, aspectRatio, 0.3f, 3000.0f);
+	mCam.SetLens(0.25f*MathHelper::Pi, AspectRatio(), 0.3f, 3000.0f);
 }

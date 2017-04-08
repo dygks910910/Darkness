@@ -22,11 +22,14 @@ bool CSceneManager::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	작성자:박요한(dygks910910@daum.net)
 	설명:메인씬 생성.
 	*/
+	mClientWidth = clientWidth;
+
+	mClientHeight = clientHeight;
+
 	mSceneKey = SceneName::MainScene;
 	mScenes.insert(make_pair(SceneName::MainScene, new CMainScene));
 	mScenes[mSceneKey]->Init(device, dc,swapChain,
 		*viewport, clientWidth, clientHeight);
-
 	/*
 	2017 / 1 / 12 / 20:07
 	작성자:박요한(dygks910910@daum.net)
@@ -36,7 +39,7 @@ bool CSceneManager::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 // 	mScenes.insert(make_pair(SceneName::test, new CBoxScene));
 // 	mScenes[SceneName::test]->Init(device, dc,swapChain,renderTargetView
 // 	,  viewport);
-
+	//OnResize();
 	return true;
 }
 
@@ -51,7 +54,6 @@ void CSceneManager::UpdateScene(const float & dt)
 		mSceneKey = SceneName::MainScene;
 		ChangeScene(SceneName::MainScene, dt);
 	}*/
-
 
 	mScenes[mSceneKey]->UpdateScene(dt);
 }
@@ -73,10 +75,10 @@ void CSceneManager::OnMouseMove(WPARAM btnState, int x, int y)
 {
 	mScenes[mSceneKey]->OnMouseMove(btnState, x, y);
 }
-void CSceneManager::OnResize(const float & aspectRatio)
+void CSceneManager::OnResize()
 {
 	if(mSceneKey != "")
-		mScenes[mSceneKey]->OnResize(aspectRatio);
+		mScenes[mSceneKey]->OnResize();
 }
 
 void CSceneManager::ChangeScene(std::string sceneName, const float & dt, ID3D11Device * device, ID3D11DeviceContext * dc)
@@ -84,4 +86,6 @@ void CSceneManager::ChangeScene(std::string sceneName, const float & dt, ID3D11D
 	mSceneKey = sceneName;
 	//mScenes[mSceneKey]->UpdateScene(dt);
 }
+
+
 

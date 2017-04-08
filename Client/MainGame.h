@@ -26,10 +26,9 @@ public:
 	void OnResize();
 	void UpdateScene(float dt);
 	void DrawScene();
-	void OnMouseDown(WPARAM btnState, int x, int y,
-		const HWND& mhMainWnd);
-	void OnMouseUp(WPARAM btnState, int x, int y);
-	void OnMouseMove(WPARAM btnState, int x, int y);
+	virtual void OnMouseDown(WPARAM btnState, int x, int y);
+	virtual void OnMouseUp(WPARAM btnState, int x, int y);
+	virtual void OnMouseMove(WPARAM btnState, int x, int y);
 
 private:
 	CSceneManager* mSceneManager;

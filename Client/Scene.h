@@ -12,6 +12,12 @@
 */
 class CScene
 {
+protected:
+	int mClientWidth;
+	int mClientHeight;
+	ID3D11Device* mDevice;
+	ID3D11DeviceContext* mDc;
+	IDXGISwapChain* mSwapChain;
 public:
 	virtual bool Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 		IDXGISwapChain* swapChain, const D3D11_VIEWPORT& viewPort, const int& clientWidth, const int& clientHeight) = 0;
@@ -20,7 +26,9 @@ public:
 	virtual void OnMouseDown(WPARAM btnState, int x, int y,const HWND& mhMainWnd)=0;
 	virtual void OnMouseUp(WPARAM btnState, int x, int y)=0;
 	virtual void OnMouseMove(WPARAM btnState, int x, int y)=0;
-	virtual void OnResize(const float& aspectRatio) = 0;
+	virtual void OnResize() = 0;
 	virtual ~CScene() {};
+	float AspectRatio() const;
+	
 };
 

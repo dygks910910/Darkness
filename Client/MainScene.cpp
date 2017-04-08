@@ -9,22 +9,47 @@ CMainScene::CMainScene()
 
 CMainScene::~CMainScene()
 {
+	//////////////////////////////////////////////////////////////////////////
+	//사용한 비트맵 메모리 반환.
+	mBackgroundPicture.Shutdown();
+	mLogo.Shutdown();
+	mInputBoard.Shutdown();
+	mInputIP.Shutdown();
+	mInputPort.Shutdown();
+	mInputNickname.Shutdown();
+
 }
 
-bool CMainScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc, IDXGISwapChain * swapChain, const D3D11_VIEWPORT & viewPort, const int & clientWidth, const int & clientHeight)
+bool CMainScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
+	IDXGISwapChain * swapChain, const D3D11_VIEWPORT & viewPort, 
+	const int & clientWidth, const int & clientHeight)
 {
 	mDevice = device;
 	mDc = dc;
 	mSwapChain = swapChain;
+	mClientWidth = clientWidth;
+	mClientHeight = clientHeight;
 
+	mCam.SetPosition(0, 0, 0);
+	XMStoreFloat4x4(&mWorldMtx, XMMatrixTranslation(0, 0, 7));
 
-	mCam.SetPosition(0, 0, -100);
-	mWorldMtx = XMMatrixTranslation(0, 0, 10);
 	D3D11_DEPTH_STENCIL_DESC depthDisabledStencilDesc;
-	mBackgroundPicture.Initialize(device, 800, 600, L"Textures/MainScene.png", 800, 600);
-	mConnectButton.Initialize(device, 800, 600, L"Textures/connect.png", 600, 100);
-	mExitButton.Initialize(device, 800, 600, L"Textures/exit1.png", 600, 100);
-	
+
+	//////////////////////////////////////////////////////////////////////////
+	//메인화면 초기화.
+	mBackgroundPicture.Initialize(device, 800, 600, L"testBack.jpg", 800, 600);
+	mLogo.Initialize(device, 800, 600, L"UITextures/Logo.png", 400, 100);
+	mConnectButton.Init(device,100, 33, L"UITextures/connect.png",500, 400);
+	mExitButton.Init(device, 100, 33, L"UITextures/exit.png",500,450);
+	//////////////////////////////////////////////////////////////////////////
+	//inputboard 초기화.
+	mInputBoard.Initialize(device, 800, 600, L"UITextures/InputBoard.png", 800, 600);
+	mInputIP.Initialize(device, 800, 600, L"UITextures/InputIP.png", 300, 50);
+	mInputPort.Initialize(device, 800, 600, L"UITextures/InputPort.png", 300, 50);
+	mInputNickname.Initialize(device, 800, 600, L"UITextures/InputNickName.png", 300, 50);
+	mReturnButton.Init(device, 200, 100, L"UITextures/Lobby나가기.png", 500, 450);
+	mLobbyConnectButton.Init(device, 200, 100, L"UITextures/Lobby접속.png", 150, 450);
+
 	// Clear the second depth stencil state before setting the parameters.
 	
 	ZeroMemory(&depthDisabledStencilDesc, sizeof(depthDisabledStencilDesc));
@@ -77,15 +102,47 @@ bool CMainScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc, IDXGISwap
 	// Create the depth stencil state.
 	HR(device->CreateDepthStencilState(&depthStencilDesc, &mDepthStencilState));
 	dc->OMSetDepthStencilState(mDepthStencilState, 1);
-
+	bActivedInputBoard = false;
 	//mMinimap.Initialize(device, 800, 600, mCam.View(), 1000, 1000);
-
-
+	OnResize();
 	return true;
 }
 
 void CMainScene::UpdateScene(const float & dt)
 {
+	if (bActivedInputBoard)
+	{
+		if (mLobbyConnectButton.isClicked)
+		{
+			//////////////////////////////////////////////////////////////////////////
+			//방생성창으로  이동.
+		}
+		if (mReturnButton.isClicked)
+		{
+			////////////////////////////////////////////////////////////
+			//메인화면으로 이동.
+			bActivedInputBoard = false;
+			mConnectButton.isClicked = false;
+			mExitButton.isClicked = false;
+			mLobbyConnectButton.isClicked = false;
+			mReturnButton.isClicked = false;
+			//////////////////////////////////////////////////////////////////////////
+			//메인화면으로 돌아올경우 모든버튼의 Isclicked 초기화해줘야함.
+		}
+	}
+	else
+	{
+		if (mConnectButton.isClicked)
+		{
+			bActivedInputBoard = true;
+		}
+		else if(mExitButton.isClicked)
+		{
+			exit(1);
+		}
+	}
+
+
 	mCam.UpdateViewMatrix();
 }
 
@@ -99,47 +156,32 @@ void CMainScene::Draw(ID3D11RenderTargetView * rtv, ID3D11DepthStencilView * dsv
 	bool result;
 	// center Sky about eye in world space
 	XMFLOAT3 eyePos = mCam.GetPosition();
+	XMMATRIX world = XMLoadFloat4x4(&mWorldMtx);
+	XMMATRIX WVP = XMMatrixMultiply(world, world*mCam.Proj()*mCam.othMtx());
 
-	XMMATRIX WVP = XMMatrixMultiply(XMMatrixTranslation(0, 0, 5),
-		XMMatrixTranslation(0, 0, 5)*mCam.Proj()*mCam.othMtx());
 	Effects::BasicFX->SetWorldViewProj(WVP);
 	Effects::BasicFX->SetDiffuseMap(mBackgroundPicture.GetTexture());
 	Effects::BasicFX->SetTexTransform(XMMatrixScaling(1, 1, 1.0f));
-	mBackgroundPicture.Render(mDc, 0, 0);
+
 	mDc->RSSetState(0);
-	//backGround출력
-	D3DX11_TECHNIQUE_DESC techDesc;
-	Effects::BasicFX->Light0TexTech->GetDesc(&techDesc);
-
-	for (UINT p = 0; p < techDesc.Passes; ++p)
+	//////////////////////////////////////////////////////////////////////////
+	//기본메인화면.
+	mBackgroundPicture.Render(mDc, 0, 0);
+	mLogo.Render(mDc, 250, 100);
+	mConnectButton.Draw(mDc);
+	mExitButton.Draw(mDc);
+	//////////////////////////////////////////////////////////////////////////
+	//IP주소 입력창 화면
+	if (bActivedInputBoard)
 	{
-		ID3DX11EffectPass* pass = Effects::BasicFX->Light0TexTech->GetPassByIndex(p);
-		pass->Apply(0, mDc);
-
-		mDc->DrawIndexed(6, 0, 0);
+		mInputBoard.Render(mDc, 0, 0);
+		mInputIP.Render(mDc, 250, 250);
+		mInputPort.Render(mDc, 250, 300);
+		mInputNickname.Render(mDc, 250, 350);
+		mLobbyConnectButton.Draw(mDc);
+		mReturnButton.Draw(mDc);
 	}
-
-	//버튼 출력
-	mConnectButton.Render(mDc, 100, 300);
-	WVP = XMMatrixMultiply(XMMatrixTranslation(0, 0, 6),
-		XMMatrixTranslation(0, 0, 6)*mCam.Proj()*mCam.othMtx());
-	Effects::BasicFX->SetDiffuseMap(mConnectButton.GetTexture());
-	for (UINT p = 0; p < techDesc.Passes; ++p)
-	{
-		ID3DX11EffectPass* pass = Effects::BasicFX->Light0TexTech->GetPassByIndex(p);
-		pass->Apply(0, mDc);
-
-		mDc->DrawIndexed(6, 0, 0);
-	}
-	mExitButton.Render(mDc, 100, 400);
-	Effects::BasicFX->SetDiffuseMap(mExitButton.GetTexture());
-	for (UINT p = 0; p < techDesc.Passes; ++p)
-	{
-		ID3DX11EffectPass* pass = Effects::BasicFX->Light0TexTech->GetPassByIndex(p);
-		pass->Apply(0, mDc);
-
-		mDc->DrawIndexed(6, 0, 0);
-	}
+	//////////////////////////////////////////////////////////////////////////
 	mDc->OMSetDepthStencilState(mDepthStencilState, 1);
 	// restore default states.
 	mDc->RSSetState(0);
@@ -148,7 +190,50 @@ void CMainScene::Draw(ID3D11RenderTargetView * rtv, ID3D11DepthStencilView * dsv
 	HR(mSwapChain->Present(0, 0));
 }
 
-void CMainScene::OnResize(const float & aspectRatio)
+void CMainScene::OnMouseDown(WPARAM btnState, int x, int y, const HWND & mhMainWnd)
 {
-	mCam.SetLens(0.25f*MathHelper::Pi, aspectRatio, 0.3f, 3000.0f);
+	if (bActivedInputBoard)
+	{
+		mLobbyConnectButton.OnMouseDown(x, y);
+		mReturnButton.OnMouseDown(x, y);
+	}
+	else
+	{
+		mConnectButton.OnMouseDown(x, y);
+		mExitButton.OnMouseDown(x, y);
+	}
+}
+
+void CMainScene::OnMouseUp(WPARAM btnState, int x, int y)
+{
+	if (bActivedInputBoard)
+	{
+		mLobbyConnectButton.OnMouseUp(x, y);
+		mReturnButton.OnMouseUp(x, y);
+	}
+	else
+	{
+		mConnectButton.OnMouseUp(x, y);
+		mExitButton.OnMouseUp(x, y);
+	}
+}
+
+void CMainScene::OnMouseMove(WPARAM btnState, int x, int y)
+{
+	if (bActivedInputBoard)
+	{
+		mLobbyConnectButton.OnMouseMove(x, y);
+		mReturnButton.OnMouseMove(x, y);
+	}
+	else
+	{
+		mConnectButton.OnMouseMove(x, y);
+		mExitButton.OnMouseMove(x, y);
+	}
+}
+
+void CMainScene::OnResize()
+{
+	mCam.SetLens(0.25f*MathHelper::Pi, AspectRatio(), 0, 3000.0f);
+
 }
