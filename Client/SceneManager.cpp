@@ -26,8 +26,8 @@ bool CSceneManager::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 	mClientHeight = clientHeight;
 
-	mSceneKey = SceneName::MainScene;
-	mScenes.insert(make_pair(SceneName::MainScene, new CMainScene));
+	mSceneKey = SceneName::test;
+	mScenes.insert(make_pair(SceneName::test, new CTestScene));
 	mScenes[mSceneKey]->Init(device, dc,swapChain,
 		*viewport, clientWidth, clientHeight);
 	/*
