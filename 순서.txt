@@ -1,0 +1,10 @@
+fbx manager create()
+
+fbxiosetting
+
+fbximport
+
+scenecreate
+
+import scene
+
