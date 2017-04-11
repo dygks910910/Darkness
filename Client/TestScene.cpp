@@ -8,16 +8,6 @@ CTestScene::CTestScene()
 
 CTestScene::~CTestScene()
 {
-	// 	for (auto p = mvDynamicObject.begin(); p != mvDynamicObject.end();)
-	// 	{
-	// 		delete *p;
-	// 		p=mvDynamicObject.erase(p);
-	// 	}
-	// 	for (auto p = mvStaticObject.begin(); p != mvStaticObject.end();)
-	// 	{
-	// 		delete *p;
-	// 		p = mvStaticObject.erase(p);
-	// 	}
 	SafeDelete(mSky);
 	SafeDelete(mSmap);
 	ReleaseCOM(mRainTexSRV);
@@ -56,7 +46,11 @@ bool CTestScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 	//////////////////////////////////////////////////////////////////////////
 	
+	//////////////////////////////////////////////////////////////////////////
 
+
+	
+	//////////////////////////////////////////////////////////////////////////
 	//mTextureMgr.Init(device);
 	mLastMousePos.x = 0;
 	mLastMousePos.y = 0;
@@ -196,6 +190,7 @@ void CTestScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 	ID3DX11EffectTechnique* activeNormalMappingTech = Effects::NormalMapFX->Light3TexTech;
 	ID3DX11EffectTechnique* activeBasicTech = Effects::BasicFX->Light3TexReflectTech;
 	ID3DX11EffectTechnique* activeInstanceTech = Effects::InstancedBasicFX->Light1TexTech;
+	ID3DX11EffectTechnique* activeSkinnedTech = Effects::NormalMapFX->Light3TexSkinnedTech;
 
 	// Figure out which technique to use for different geometry.
 
@@ -221,30 +216,11 @@ void CTestScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 		XMLoadFloat4x4(&mShadowTransform), mCam);
 	mModelMgr.DrawStaticNormalModels(mDc, activeNormalMappingTech,
 		XMLoadFloat4x4(&mShadowTransform), mCam);
-
-	// FX sets tessellation stages, but it does not disable them.  So do that here
-	// to turn off tessellation.
-	mDc->HSSetShader(0, 0, 0);
-	mDc->DSSetShader(0, 0, 0);
-
-	mDc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-
-
-
-	//////////////////////////////////////////////////////////////////////////
-	//인스턴스버퍼 출력
-	//mDc->IASetInputLayout(InputLayouts::InstancedBasic32);
-
 	mModelMgr.DrawInstancedModel(mDc, activeInstanceTech, XMLoadFloat4x4(&mShadowTransform), mCam);
 
-	
-	
-	// Debug view depth buffer.
-	//	if( GetAsyncKeyState('Z') & 0x8000 )
-	{
-		//DrawSceneQuard();
-	}
+	//////////////////////////////////////////////////////////////////////////
+	//draw Animation
+
 	mCordWorld.Draw(mDc, mCam);
 
 	mSky->Draw(mDc, mCam);
@@ -300,7 +276,7 @@ void CTestScene::OnMouseMove(WPARAM btnState, int x, int y)
 
 void CTestScene::OnResize()
 {
-	mCam.SetLens(0.25f*MathHelper::Pi, AspectRatio(), 0.3f, 3000.0f);
+	mCam.SetLens(0.25f*MathHelper::Pi, AspectRatio(), 0.01f, 3000.0f);
 	//XNA::ComputeFrustumFromProjection(&mCamFrustum, &mCam.Proj());
 	// 	if (mSsao)
 	// 	{

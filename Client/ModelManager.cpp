@@ -422,16 +422,23 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 	CInstanceBasicModel tempInstanceModel;
 
 	char objectName[50];
-	char cIgnore[100];
+	std::string cIgnore;
 	int StaticObjCount;
+	int instancedObjectCount;
+	int skinnedObjectCount;
+	ifs >> cIgnore;
 	ifs >> cIgnore >> StaticObjCount;
-
+	ifs >> cIgnore >> skinnedObjectCount;
+	ifs >> cIgnore >> instancedObjectCount;
+	//////////////////////////////////////////////////////////////////////////
+	///Reading staticObject
+	ifs >> cIgnore;
 	for (int i = 0; i < StaticObjCount; ++i)
 	{
-		ifs >> objectName >> cIgnore >> cIgnore >> cIgnore >> cIgnore >> position.x >> position.y >> position.z >> cIgnore;
-		ifs >> cIgnore >> cIgnore >> cIgnore >> rotation.x >> rotation.y >> rotation.z >> rotation.w >> cIgnore;
-		ifs >> cIgnore >> cIgnore >> scale.x >> scale.y >> scale.z >> cIgnore;
-
+		ifs >> objectName;
+		ifs >> cIgnore >> position.x >> position.y >> position.z;
+		ifs >> cIgnore >> rotation.x >> rotation.y >> rotation.z >> rotation.w	;
+		ifs >> cIgnore >> scale.x >> scale.y >> scale.z;
 
 		if (!strcmp(objectName, "Cube"))
 		{
@@ -455,26 +462,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 			));
 
 		}
-		else if (!strcmp(objectName, "Clown"))
-		{
-			XMVECTOR S = XMLoadFloat3(&scale);
-			XMVECTOR P = XMLoadFloat3(&position);
-			XMVECTOR Q = XMLoadFloat4(&rotation);
-			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-
-			XMFLOAT4X4 M;
-			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
-			mStaticNormalModels.push_back(CStaticNomalModel(M,
-				mBoxMat,
-				clownIndexCount,
-				clownVertexOffset,
-				clownIndexOffset,
-				texMgr.CreateTexture(L"true_clown_diffuse1.png"),
-				texMgr.CreateTexture(L"true_clown_normals.png"),
-				"clown"
-			));
-
-		}
+	
 		else if (!strcmp(objectName, "MainCamera"))
 		{
 			cam.SetPosition(position.x, position.y, position.z);
@@ -498,19 +486,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				"grid"
 			));
 		}
-		else if (!strcmp(objectName, "fence1"))
-		{
-			XMVECTOR S = XMLoadFloat3(&scale);
-			XMVECTOR P = XMLoadFloat3(&position);
-			XMVECTOR Q = XMLoadFloat4(&rotation);
-			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-
-			XMFLOAT4X4 M;
-			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
-			//tempInstanceWorld.push_back(M);
-			tempInstanceModel.AddInstanceWorld(M);
-
-		}
+		
 		else if (!strcmp(objectName, "house_1"))
 		{
 			XMVECTOR S = XMLoadFloat3(&scale);
@@ -623,16 +599,37 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 		{
 			std::cout << "찾을수 없음" << std::endl;
 		}
+// 		std::cout << objectName << std::endl;
+// 		std::cout << position.x << " " << position.y << " " << position.z << std::endl;
+// 		std::cout << rotation.x << " " << rotation.y << " " << rotation.z << " " << rotation.w << std::endl;
+// 		std::cout << scale.x << " " << scale.y << " " << scale.z << std::endl << std::endl;
+ 		ZeroMemory(&objectName, sizeof(objectName));
+ 		ZeroMemory(&cIgnore, sizeof(cIgnore));
+ 		ZeroMemory(&position, sizeof(position));
+ 		ZeroMemory(&rotation, sizeof(rotation));
+ 		ZeroMemory(&scale, sizeof(scale));
+	}
+	ifs >> cIgnore;
+	for (int i = 0; i < instancedObjectCount; ++i)
+	{
+		ifs >> objectName;
+		ifs >> cIgnore >> position.x >> position.y >> position.z;
+		ifs >> cIgnore >> rotation.x >> rotation.y >> rotation.z >> rotation.w;
+		ifs >> cIgnore >> scale.x >> scale.y >> scale.z;
 
-		std::cout << objectName << std::endl;
-		std::cout << position.x << " " << position.y << " " << position.z << std::endl;
-		std::cout << rotation.x << " " << rotation.y << " " << rotation.z << " " << rotation.w << std::endl;
-		std::cout << scale.x << " " << scale.y << " " << scale.z << std::endl << std::endl;
-		ZeroMemory(&objectName, sizeof(objectName));
-		ZeroMemory(&cIgnore, sizeof(cIgnore));
-		ZeroMemory(&position, sizeof(position));
-		ZeroMemory(&rotation, sizeof(rotation));
-		ZeroMemory(&scale, sizeof(scale));
+		if (!strcmp(objectName, "fence1"))
+		{
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			//tempInstanceWorld.push_back(M);
+			tempInstanceModel.AddInstanceWorld(M);
+
+		}
 	}
 //	인스턴싱할 객체를 Setting
  	tempInstanceModel.SetDrawInfomation(fenceIndexCount, fenceVertexOffset, fenceIndexOffset);
@@ -640,16 +637,43 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
  	tempInstanceModel.SetSRV(texMgr.CreateTexture(L"diff_fence_gate.dds"));
  	tempInstanceModel.BuildInstanceBuffer(mDevice);
  	mInstanceModels.push_back(tempInstanceModel);
-// 	D3D11_BUFFER_DESC instancevbd;
-// 	instancevbd.Usage = D3D11_USAGE_IMMUTABLE;
-// 	instancevbd.ByteWidth = sizeof(XMFLOAT4X4) * tempInstanceWorld.size();
-// 	instancevbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-// 	instancevbd.CPUAccessFlags = 0;
-// 	instancevbd.MiscFlags = 0;
-// 	instancevbd.StructureByteStride = 0;
-// 	D3D11_SUBRESOURCE_DATA instancevinitData;
-// 	instancevinitData.pSysMem = &tempInstanceWorld[0];
-// 	HR(mDevice->CreateBuffer(&instancevbd, &instancevinitData, &mInstanceBuffer));
+
+	ifs >> cIgnore;
+	for (int i = 0; i < skinnedObjectCount; ++i)
+	{
+		ifs >> objectName;
+		ifs >> cIgnore >> position.x >> position.y >> position.z;
+		ifs >> cIgnore >> rotation.x >> rotation.y >> rotation.z >> rotation.w;
+		ifs >> cIgnore >> scale.x >> scale.y >> scale.z;
+
+			if (!strcmp(objectName, "Clown"))
+			{
+				XMVECTOR S = XMLoadFloat3(&scale);
+				XMVECTOR P = XMLoadFloat3(&position);
+				XMVECTOR Q = XMLoadFloat4(&rotation);
+				XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+				XMFLOAT4X4 M;
+				XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+				mStaticNormalModels.push_back(CStaticNomalModel(M,
+					mBoxMat,
+					clownIndexCount,
+					clownVertexOffset,
+					clownIndexOffset,
+					texMgr.CreateTexture(L"true_clown_diffuse1.png"),
+					texMgr.CreateTexture(L"true_clown_normals.png"),
+					"clown"
+				));
+
+				ifs >> objectName;
+				ifs >> cIgnore >> position.x >> position.y >> position.z;
+				ifs >> cIgnore >> rotation.x >> rotation.y >> rotation.z >> rotation.w;
+				ifs >> cIgnore >> scale.x >> scale.y >> scale.z;
+
+				cam.SetPosition(position);
+			}
+		///skinnedModelRead....
+	}
 	ifs.close();
 
 }

@@ -82,7 +82,6 @@ CStaticBasicModel::~CStaticBasicModel()
 
 void CStaticBasicModel::Draw(ID3D11DeviceContext * dc, ID3DX11EffectTechnique * tech, const XMMATRIX & shadowTransform, const Camera & cam)
 {
-
 	XMMATRIX world;
 	XMMATRIX worldInvTranspose;
 	XMMATRIX worldViewProj;
