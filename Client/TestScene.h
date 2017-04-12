@@ -57,7 +57,6 @@ class CTestScene :
 	SkinnedModelInstance mCharacterInstance1;
 	SkinnedModelInstance mCharacterInstance2;
 	SkinnedModelInstance mCharacterInstances[70];
-
 	//Terrain mTerrain;
 	POINT mLastMousePos;
 	Sky* mSky;
@@ -73,8 +72,8 @@ class CTestScene :
 	ShadowMap* mSmap;
 	Ssao* mSsao;
 
-	ID3D11Buffer* mScreenQuadVB;
-	ID3D11Buffer* mScreenQuadIB;
+// 	ID3D11Buffer* mScreenQuadVB;
+// 	ID3D11Buffer* mScreenQuadIB;
 public:
 	CTestScene();
 	virtual ~CTestScene();
@@ -93,6 +92,6 @@ public:
 	int total = 0;
 
 	int mAnimTotalCnt[4];
-	std::map < std::string, std::vector<XMFLOAT4X4>*> mclipAnimbuf;
+	std::map < std::string, std::vector<XMFLOAT4X4>> mclipAnimbuf;
 	std::string mClipname[4] = { "Idle", "Walk", "Attack1", "Run" };
 };

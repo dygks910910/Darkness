@@ -39,7 +39,7 @@ void SkinnedModelInstance::Update(float dt)
 		//if (test)
 		//{
 			//Model->SkinnedData.GetFinalTransforms(ClipName, TimePos, FinalTransforms);
-		FinalTransforms = (*mClipAnimbuf)[ClipName][mAnimCnt];
+		FinalTransforms = (*mClipAnimbuf)[ClipName];
 		//FinalTransforms = TestFinalTransforms[a];
 		mAnimCnt++;
 		/*for (int i = 0; i < FinalTransforms.size(); ++i)
