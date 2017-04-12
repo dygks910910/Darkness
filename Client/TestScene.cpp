@@ -28,12 +28,11 @@ CTestScene::~CTestScene()
 	ReleaseCOM(mRandomTexSRV);
 	
 
-	
-// 	for (auto p = mclipAnimbuf.begin(); p != mclipAnimbuf.end(); ++p)
-// 	{
-// 		p->second->clear();
-// 		SafeDelete(p->second);
-// 	}
+
+	for (auto p = mclipAnimbuf.begin(); p != mclipAnimbuf.end(); ++p)
+	{
+		delete[](p->second);
+	}
 	
 }
 
@@ -88,20 +87,23 @@ bool CTestScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	{
 		fin >> total;
 		mAnimTotalCnt[k] = total;
-		//mCharacterInstance1.TestFinalTransforms = new std::vector<XMFLOAT4X4>[total];
-		testfinalTransform.resize(total);
+		mCharacterInstance1.TestFinalTransforms = new std::vector<XMFLOAT4X4>[total];
+		//testfinalTransform.resize(total);
 		for (int i = 0; i < total; ++i)
 		{
-			testfinalTransform[i].resize(mCharacterModel->SkinnedData.BoneCount());
+			mCharacterInstance1.TestFinalTransforms[i].resize(mCharacterModel->SkinnedData.BoneCount());
 			for (int j = 0; j < mCharacterModel->SkinnedData.BoneCount(); ++j)
 			{
-				fin >> testfinalTransform[i][j]._11 >> testfinalTransform[i][j]._12 >> testfinalTransform[i][j]._13 >> testfinalTransform[i][j]._14
-					>> testfinalTransform[i][j]._21 >> testfinalTransform[i][j]._22 >> testfinalTransform[i][j]._23 >> testfinalTransform[i][j]._24
-					>> testfinalTransform[i][j]._31 >> testfinalTransform[i][j]._32 >> testfinalTransform[i][j]._33 >> testfinalTransform[i][j]._34
-					>> testfinalTransform[i][j]._41 >> testfinalTransform[i][j]._42 >> testfinalTransform[i][j]._43 >> testfinalTransform[i][j]._44;
+				fin >> mCharacterInstance1.TestFinalTransforms[i][j]._11 >> mCharacterInstance1.TestFinalTransforms[i][j]._12 >> mCharacterInstance1.TestFinalTransforms[i][j]._13 >> mCharacterInstance1.TestFinalTransforms[i][j]._14
+					>> mCharacterInstance1.TestFinalTransforms[i][j]._21 >> mCharacterInstance1.TestFinalTransforms[i][j]._22 >> mCharacterInstance1.TestFinalTransforms[i][j]._23 >> mCharacterInstance1.TestFinalTransforms[i][j]._24
+					>> mCharacterInstance1.TestFinalTransforms[i][j]._31 >> mCharacterInstance1.TestFinalTransforms[i][j]._32 >> mCharacterInstance1.TestFinalTransforms[i][j]._33 >> mCharacterInstance1.TestFinalTransforms[i][j]._34
+					>> mCharacterInstance1.TestFinalTransforms[i][j]._41 >> mCharacterInstance1.TestFinalTransforms[i][j]._42 >> mCharacterInstance1.TestFinalTransforms[i][j]._43 >> mCharacterInstance1.TestFinalTransforms[i][j]._44;
 			}
-			mclipAnimbuf.insert(std::pair<std::string, std::vector<XMFLOAT4X4>>(mClipname[k], testfinalTransform[i]));
 		}
+		//mclipAnimbuf.insert(std::pair<std::string, std::vector<XMFLOAT4X4>>(mClipname[k], testfinalTransform[i]));
+		mclipAnimbuf.insert(std::pair<std::string, std::vector<XMFLOAT4X4>*>(mClipname[k], mCharacterInstance1.TestFinalTransforms));
+
+		testfinalTransform.clear();
 	}
 	mCharacterInstance1.mClipAnimbuf = &mclipAnimbuf;
 	mCharacterInstance1.mAnimTotalTime = mAnimTotalCnt[0];
@@ -185,7 +187,6 @@ bool CTestScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	XMFLOAT4X4 temp4x4;
 	XMStoreFloat4x4(&temp4x4, XMMatrixIdentity());
 	mCordWorld.Init(device, temp4x4, 5000);
-
 
 	mRandomTexSRV = d3dHelper::CreateRandomTexture1DSRV(mDevice);
 	std::vector<std::wstring> raindrops;

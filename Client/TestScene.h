@@ -92,6 +92,6 @@ public:
 	int total = 0;
 
 	int mAnimTotalCnt[4];
-	std::map < std::string, std::vector<XMFLOAT4X4>> mclipAnimbuf;
+	std::map < std::string, std::vector<XMFLOAT4X4>*> mclipAnimbuf;
 	std::string mClipname[4] = { "Idle", "Walk", "Attack1", "Run" };
 };
