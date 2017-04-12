@@ -13,7 +13,6 @@ CStaticNomalModel::CStaticNomalModel(const XMFLOAT4X4 & world,
 	const char* name)
 	: CStaticBasicModel(world,matrial,indexCount,vertexOffset,indexOffset,texSRV,name), mTexNormalSRV(texNormalSRV)
 {
-
 }
 
 

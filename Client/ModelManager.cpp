@@ -28,7 +28,7 @@ CModelManager::~CModelManager()
 
 }
 
-void CModelManager::Init(TextureMgr & texMgr, Camera & cam, ID3D11Device* device)
+void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device)
 {
 	mDevice = device;
 	mGridMat.Ambient = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
@@ -389,7 +389,7 @@ void CModelManager::BuildShapeGeometryBuffers()
 
 void CModelManager::BuildBasicGeometryBuffer()
 {
-	GeometryGenerator::MeshData fence, house1, house2, house3, house4, house5, house6;
+	GeometryGenerator::MeshData fence, house1, house2, house3, house4, house5, house6,angelStatue;
 	CFbxLoader loader;
 
 	loader.LoadFBX("Darkness fbx\\fence1.FBX", fence);
@@ -399,6 +399,10 @@ void CModelManager::BuildBasicGeometryBuffer()
 	loader.LoadFBX("Darkness fbx\\house 4.fbx", house4);
 	loader.LoadFBX("Darkness fbx\\house 5.fbx", house5);
 	loader.LoadFBX("Darkness fbx\\house 6.fbx", house6);
+	loader.LoadFBX("Darkness fbx\\angelStatue.fbx", angelStatue);
+
+//////////////////////////////////////////////////////////////////////////
+	//VertexOffset설정
 
 	house1VertexOffset = 0;
 	house2VertexOffset = house1.Vertices.size();
@@ -407,7 +411,10 @@ void CModelManager::BuildBasicGeometryBuffer()
 	house5VertexOffset = house4VertexOffset + house4.Vertices.size();
 	house6VertexOffset = house5VertexOffset + house5.Vertices.size();
 	fenceVertexOffset = house6VertexOffset + house6.Vertices.size();
+	angelStatueVertexOffset = fenceVertexOffset + fence.Vertices.size();
 
+	//////////////////////////////////////////////////////////////////////////
+	//indexCount설정.
 	house1IndexCount = house1.Indices.size();
 	house2IndexCount = house2.Indices.size();
 	house3IndexCount = house3.Indices.size();
@@ -415,6 +422,9 @@ void CModelManager::BuildBasicGeometryBuffer()
 	house5IndexCount = house5.Indices.size();
 	house6IndexCount = house6.Indices.size();
 	fenceIndexCount = fence.Indices.size();
+	angelStatueIndexCount = angelStatue.Indices.size();
+	//////////////////////////////////////////////////////////////////////////
+	//indexOffset설정
 
 	house1IndexOffset = 0;
 	house2IndexOffset = house1IndexCount;
@@ -423,6 +433,7 @@ void CModelManager::BuildBasicGeometryBuffer()
 	house5IndexOffset = house4IndexOffset + house4IndexCount;
 	house6IndexOffset = house5IndexOffset + house5IndexCount;
 	fenceIndexOffset = house6IndexOffset + house6IndexCount;
+	angelStatueIndexOffset = fenceIndexOffset + fenceIndexCount;
 
 	UINT totalVertexCount =
 		house1.Vertices.size() +
@@ -431,7 +442,8 @@ void CModelManager::BuildBasicGeometryBuffer()
 		house4.Vertices.size() +
 		house5.Vertices.size() +
 		house6.Vertices.size() +
-		fence.Vertices.size();
+		fence.Vertices.size() + 
+		angelStatue.Vertices.size();
 
 	UINT totalIndexCount =
 		house1IndexCount +
@@ -440,7 +452,8 @@ void CModelManager::BuildBasicGeometryBuffer()
 		house4IndexCount +
 		house5IndexCount +
 		house6IndexCount +
-		fenceIndexCount;
+		fenceIndexCount + 
+		angelStatueIndexCount;
 
 	std::vector<Vertex::Basic32> vertices(totalVertexCount);
 
@@ -493,6 +506,12 @@ void CModelManager::BuildBasicGeometryBuffer()
 		vertices[k].Normal = fence.Vertices[i].Normal;
 		vertices[k].Tex = fence.Vertices[i].TexC;
 	}
+	for (size_t i = 0; i < angelStatue.Vertices.size(); ++i, ++k)
+	{
+		vertices[k].Pos = angelStatue.Vertices[i].Position;
+		vertices[k].Normal = angelStatue.Vertices[i].Normal;
+		vertices[k].Tex = angelStatue.Vertices[i].TexC;
+	}
 
 	D3D11_BUFFER_DESC basicvbd;
 	basicvbd.Usage = D3D11_USAGE_IMMUTABLE;
@@ -515,7 +534,7 @@ void CModelManager::BuildBasicGeometryBuffer()
 	indices.insert(indices.end(), house5.Indices.rbegin(), house5.Indices.rend());
 	indices.insert(indices.end(), house6.Indices.rbegin(), house6.Indices.rend());
 	indices.insert(indices.end(), fence.Indices.rbegin(), fence.Indices.rend());
-
+	indices.insert(indices.end(), angelStatue.Indices.rbegin(), angelStatue.Indices.rend());
 
 
 	D3D11_BUFFER_DESC ibd;
@@ -530,7 +549,7 @@ void CModelManager::BuildBasicGeometryBuffer()
 
 }
 
-void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
+void CModelManager::ReadMapData(TextureMgr& texMgr, Camera* cam)
 {
 	std::ifstream ifs;
 	ifs.open("MapData.txt");
@@ -582,10 +601,10 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 
 		}
 	
-		else if (!strcmp(objectName, "MainCamera"))
-		{
-			cam.SetPosition(position.x, position.y, position.z);
-		}
+// 		else if (!strcmp(objectName, "MainCamera"))
+// 		{
+// 			cam.SetPosition(position.x, position.y, position.z);
+// 		}
 		else if (!strcmp(objectName, "Plane"))
 		{
 			XMVECTOR S = XMLoadFloat3(&scale);
@@ -714,6 +733,24 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				"house6"
 			));
 		}
+		else if (!strcmp(objectName, "angelStatue"))
+		{
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			mStaticBasicModels.push_back(CStaticBasicModel(M,
+				mBoxMat,
+				angelStatueIndexCount,
+				angelStatueVertexOffset,
+				angelStatueIndexOffset,
+				texMgr.CreateTexture(L"Textures\\angelStatue.png"),
+				"angelStatue"
+			));
+		}
 		else
 		{
 			std::cout << "찾을수 없음" << std::endl;
@@ -756,7 +793,6 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
  	tempInstanceModel.SetSRV(texMgr.CreateTexture(L"Textures\\diff_fence_gate.dds"));
  	tempInstanceModel.BuildInstanceBuffer(mDevice);
  	mInstanceModels.push_back(tempInstanceModel);
-
 	ifs >> cIgnore;
 	for (int i = 0; i < skinnedObjectCount; ++i)
 	{
@@ -782,16 +818,20 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				tempSkinnedModelInstanced.mClipAnimbuf = &mclipAnimbuf;
 				tempSkinnedModelInstanced.mClipnameAndTotalCount = mClipnameAndTotalCounts[0];//idle;
 				tempSkinnedModelInstanced.mAnimCnt = 0;
+				tempSkinnedModelInstanced.isPlayer = false;
 
-				mSkinnedModelInstance.push_back(tempSkinnedModelInstanced);
 				ifs >> objectName;
 				ifs >> cIgnore >> position.x >> position.y >> position.z;
-				ifs >> cIgnore >> rotation.x >> rotation.y >> rotation.z >> rotation.w;
-				ifs >> cIgnore >> scale.x >> scale.y >> scale.z;
 
-				cam.SetPosition(position);
+				tempSkinnedModelInstanced.camPos = XMFLOAT3(position.x, position.y, position.z);
+				mSkinnedModelInstance.push_back(tempSkinnedModelInstanced);
 			}
 	}
+// 	int randomIndex = rand() % mSkinnedModelInstance.size();
+// 	cam->SetPosition(mSkinnedModelInstance[randomIndex].camPos);
+// 	mSkinnedModelInstance[randomIndex].isPlayer = true;
+// 	mSkinnedModelInstance[randomIndex].cam = cam;
+	
 	ifs.close();
 
 }

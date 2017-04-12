@@ -40,8 +40,6 @@ bool CTestScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	mClientHeight = clientHeight;
 	mClientWidth = clientWidth;
 
-
-
 	//////////////////////////////////////////////////////////////////////////
 	//월드세팅
 
@@ -54,7 +52,7 @@ bool CTestScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	//////////////////////////////////////////////////////////////////////////
 	//재질,텍스처불러오기.
 	mTexMgr.Init(mDevice);
-	mModelMgr.Init(mTexMgr, mCam, device);
+	mModelMgr.Init(mTexMgr, &mCam, device);
 
 
 	//버퍼 빌드
@@ -64,79 +62,6 @@ bool CTestScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	int total = 0;
 	
 	
-	//////////////////////////////////////////////////////////////////////////
-
-// 	mCharacterModel = new SkinnedModel(device, mTexMgr, "Models\\ResultIdle.txt", L"Textures\\");
-// 
-// 	mCharacterInstance1.Model = mCharacterModel;
-// 	mCharacterInstance2.Model = mCharacterModel;
-// 	mCharacterInstance1.TimePos = 0.0f;
-// 	mCharacterInstance2.TimePos = 0.0f;
-// 	mCharacterInstance1.ClipName = "Idle";
-// 	mCharacterInstance2.ClipName = "Idle";
-// 	mCharacterInstance1.FinalTransforms.resize(mCharacterModel->SkinnedData.BoneCount());
-// 	mCharacterInstance2.FinalTransforms.resize(mCharacterModel->SkinnedData.BoneCount());
-// 	std::ifstream fin("Idle.txt");
-// 	std::vector<std::vector<XMFLOAT4X4>> testfinalTransform;
-// 
-// 	for (int k = 0; k < 4; ++k)
-// 	{
-// 		fin >> total;
-// 		mAnimTotalCnt[k] = total;
-// 		mCharacterInstance1.TestFinalTransforms = new std::vector<XMFLOAT4X4>[total];
-// 		//testfinalTransform.resize(total);
-// 		for (int i = 0; i < total; ++i)
-// 		{
-// 			mCharacterInstance1.TestFinalTransforms[i].resize(mCharacterModel->SkinnedData.BoneCount());
-// 			for (int j = 0; j < mCharacterModel->SkinnedData.BoneCount(); ++j)
-// 			{
-// 				fin >> mCharacterInstance1.TestFinalTransforms[i][j]._11 >> mCharacterInstance1.TestFinalTransforms[i][j]._12 >> mCharacterInstance1.TestFinalTransforms[i][j]._13 >> mCharacterInstance1.TestFinalTransforms[i][j]._14
-// 					>> mCharacterInstance1.TestFinalTransforms[i][j]._21 >> mCharacterInstance1.TestFinalTransforms[i][j]._22 >> mCharacterInstance1.TestFinalTransforms[i][j]._23 >> mCharacterInstance1.TestFinalTransforms[i][j]._24
-// 					>> mCharacterInstance1.TestFinalTransforms[i][j]._31 >> mCharacterInstance1.TestFinalTransforms[i][j]._32 >> mCharacterInstance1.TestFinalTransforms[i][j]._33 >> mCharacterInstance1.TestFinalTransforms[i][j]._34
-// 					>> mCharacterInstance1.TestFinalTransforms[i][j]._41 >> mCharacterInstance1.TestFinalTransforms[i][j]._42 >> mCharacterInstance1.TestFinalTransforms[i][j]._43 >> mCharacterInstance1.TestFinalTransforms[i][j]._44;
-// 			}
-// 		}
-// 		//mclipAnimbuf.insert(std::pair<std::string, std::vector<XMFLOAT4X4>>(mClipname[k], testfinalTransform[i]));
-// 		mclipAnimbuf.insert(std::pair<std::string, std::vector<XMFLOAT4X4>*>(mClipname[k], mCharacterInstance1.TestFinalTransforms));
-// 
-// 		testfinalTransform.clear();
-// 	}
-// 	mCharacterInstance1.mClipAnimbuf = &mclipAnimbuf;
-// 	mCharacterInstance1.mAnimTotalTime = mAnimTotalCnt[0];
-// 	mCharacterInstance1.mAnimCnt = 0;
-// 	for (int i = 0; i < Animnum; ++i)
-// 	{
-// 		mCharacterInstances[i].Model = mCharacterModel;
-// 		mCharacterInstances[i].TimePos = 0.0f;
-// 		//mCharacterInstances[i].ClipName = "Scene";
-// 		mCharacterInstances[i].FinalTransforms.resize(mCharacterModel->SkinnedData.BoneCount());
-// 		//mCharacterInstances[i].TestFinalTransforms = new std::vector<XMFLOAT4X4>[total];
-// 		mCharacterInstances[i].mClipAnimbuf = &mclipAnimbuf;
-// 		int a = rand() % 4;
-// 		mCharacterInstances[i].ClipName = mClipname[a];
-// 		mCharacterInstances[i].mAnimTotalTime = mAnimTotalCnt[a];
-// 		mCharacterInstances[i].mAnimCnt = 0;
-// 
-// 		/*for (int j = 0; j < total; ++j)
-// 			mCharacterInstances[i].TestFinalTransforms[j].resize(mCharacterModel->SkinnedData.BoneCount());
-// 		mCharacterInstances[i].TestFinalTransforms = mCharacterInstance1.TestFinalTransforms;*/
-// 	}
-
-	// Reflect to change coordinate system from the RHS the data was exported out as.
-// 	XMMATRIX modelScale = XMMatrixScaling(0.2f, 0.2f, 0.2f);
-// 	XMMATRIX modelRot = XMMatrixRotationY(MathHelper::Pi);
-// 	XMMATRIX modelOffset = XMMatrixTranslation(-2.0f, 2.0f, -7.0f);
-// 	XMStoreFloat4x4(&mCharacterInstance1.World, modelScale*modelRot*modelOffset);
-// 
-// 	modelOffset = XMMatrixTranslation(2.0f, 0.0f, -7.0f);
-// 	XMStoreFloat4x4(&mCharacterInstance2.World, modelScale*modelRot*modelOffset);
-// 
-// 	for (int i = 0; i < Animnum; ++i)
-// 	{
-// 		modelOffset = XMMatrixTranslation(2.0f, 1.0f*i, -7.0f);
-// 		XMStoreFloat4x4(&mCharacterInstances[i].World, modelScale*modelRot*modelOffset);
-// 	}
-
 	
 	//////////////////////////////////////////////////////////////////////////
 	//mTextureMgr.Init(device);

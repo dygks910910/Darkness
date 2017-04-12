@@ -50,7 +50,7 @@ class CModelManager
 	int house4IndexOffset, house4VertexOffset, house4IndexCount;
 	int house5IndexOffset, house5VertexOffset, house5IndexCount;
 	int house6IndexOffset, house6VertexOffset, house6IndexCount;
-
+	int angelStatueIndexOffset, angelStatueVertexOffset, angelStatueIndexCount;
 public:
 	CModelManager();
 	~CModelManager();
@@ -63,7 +63,7 @@ public:
 	std::vector<CStaticBasicModel>& GetStaticBasicModels() { return mStaticBasicModels; }
 
 
-	void Init(TextureMgr& texMgr, Camera& cam, ID3D11Device* device);
+	void Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device);
 	void DrawStaticNormalModels(ID3D11DeviceContext* dc,ID3DX11EffectTechnique* tech,const XMMATRIX& shadowTransform,const Camera& cam);
 	void DrawStaticBasicModels(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMMATRIX& shadowTransform, const Camera& cam);
 
@@ -77,7 +77,7 @@ public:
 private:
 	void BuildShapeGeometryBuffers();
 	void BuildBasicGeometryBuffer();
-	void ReadMapData(TextureMgr& texMgr,Camera& cam);
+	void ReadMapData(TextureMgr& texMgr,Camera* cam);
 };
 enum ANIMATION_INFO
 {

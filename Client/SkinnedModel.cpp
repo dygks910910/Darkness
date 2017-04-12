@@ -14,10 +14,9 @@ SkinnedModel::SkinnedModel(ID3D11Device* device, TextureMgr& texMgr,
 
 	SubsetCount = mats.size();
 
-	for(UINT i = 0; i < SubsetCount; ++i)
+	for (UINT i = 0; i < SubsetCount; ++i)
 	{
 		Mat.push_back(mats[i].Mat);
-
 		ID3D11ShaderResourceView* diffuseMapSRV = texMgr.CreateTexture(texturePath + mats[i].DiffuseMapName);
 		DiffuseMapSRV.push_back(diffuseMapSRV);
 
@@ -33,14 +32,27 @@ SkinnedModel::~SkinnedModel()
 int a = 0;
 void SkinnedModelInstance::Update(float dt)
 {
+// 	if (GetAsyncKeyState('W') & 0x8000)
+// 		cam->Walk(20.0f*dt);
+// 
+// 	if (GetAsyncKeyState('S') & 0x8000)
+// 		cam->Walk(-20.0f*dt);
+// 
+// 	if (GetAsyncKeyState('A') & 0x8000)
+// 		cam->Strafe(-20.0f*dt);
+// 
+// 	if (GetAsyncKeyState('D') & 0x8000)
+// 		cam->Strafe(20.0f*dt);
+
+
 	TimePos += dt;
 	if (TimePos >= 0.003)
 	{
 		FinalTransforms = ((*mClipAnimbuf)[mClipnameAndTotalCount.first])[mAnimCnt];
 		mAnimCnt++;
-	
+
 		// Loop animation
-		if (mAnimCnt > mClipnameAndTotalCount.second-1)//TimePos > Model->SkinnedData.GetClipEndTime(ClipName))
+		if (mAnimCnt > mClipnameAndTotalCount.second - 1)//TimePos > Model->SkinnedData.GetClipEndTime(ClipName))
 		{
 			mAnimCnt = 0;
 		}

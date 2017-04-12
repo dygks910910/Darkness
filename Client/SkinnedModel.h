@@ -5,6 +5,7 @@
 #include "MeshGeometry.h"
 #include "TextureMgr.h"
 #include "Vertex.h"
+#include<Camera.h>
 
 class SkinnedModel
 {
@@ -30,6 +31,9 @@ public:
 
 struct SkinnedModelInstance
 {
+	bool isPlayer;
+	XMFLOAT3 camPos;
+	Camera* cam;
 	SkinnedModel* Model;
 	float TimePos;
 	XMFLOAT4X4 World;
