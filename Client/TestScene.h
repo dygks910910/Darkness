@@ -14,6 +14,7 @@
 #include "ModelManager.h"
 #include "ParticleSystem.h"
 #include "SkinnedModel.h"
+#include "Ssao.h"
 struct BoundingSphere
 {
 	BoundingSphere() : Center(0.0f, 0.0f, 0.0f), Radius(0.0f) {}
@@ -49,7 +50,11 @@ class CTestScene :
 	DirectionalLight mDirLights[3];
 	XMFLOAT3 mOriginalLightDir[3];
 
-	
+	///////////////////////////////Skined Model////////////////////////////////
+	SkinnedModel* mCharacterModel;
+	SkinnedModelInstance mCharacterInstance1;
+	SkinnedModelInstance mCharacterInstance2;
+	SkinnedModelInstance mCharacterInstances[70];
 	//Terrain mTerrain;
 	POINT mLastMousePos;
 	Sky* mSky;
@@ -63,15 +68,16 @@ class CTestScene :
 	XMFLOAT4X4 mLightProj;
 	XMFLOAT4X4 mShadowTransform;
 	ShadowMap* mSmap;
+	Ssao* mSsao;
 
-	ID3D11Buffer* mScreenQuadVB;
-	ID3D11Buffer* mScreenQuadIB;
+// 	ID3D11Buffer* mScreenQuadVB;
+// 	ID3D11Buffer* mScreenQuadIB;
 public:
 	CTestScene();
 	virtual ~CTestScene();
 	virtual bool Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 		IDXGISwapChain* swapChain, const D3D11_VIEWPORT& viewPort, const int& clientWidth, const int& clientHeight);
-	virtual void UpdateScene(const float& dt) ;
+	virtual void UpdateScene(const float dt) ;
 	virtual void Draw(ID3D11RenderTargetView* rtv,ID3D11DepthStencilView* dsv, D3D11_VIEWPORT* viewPort) ;
 	virtual void OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWnd) ;
 	virtual void OnMouseUp(WPARAM btnState, int x, int y) ;
@@ -80,5 +86,10 @@ public:
 
 	void DrawSceneToShadowMap();
 	void BuildShadowTransform();
-	
+	void DrawSceneToSsaoNormalDepthMap();
+	int total = 0;
+
+	int mAnimTotalCnt[4];
+	std::map < std::string, std::vector<XMFLOAT4X4>*> mclipAnimbuf;
+	std::string mClipname[4] = { "Idle", "Walk", "Attack1", "Run" };
 };

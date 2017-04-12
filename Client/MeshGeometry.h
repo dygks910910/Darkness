@@ -2,7 +2,7 @@
 #define MESHGEOMETRY_H
 
 #include "d3dUtil.h"
-
+#include "Vertex.h"
 class MeshGeometry
 {
 public:
@@ -29,7 +29,7 @@ public:
 	template <typename VertexType>
 	void SetVertices(ID3D11Device* device, const VertexType* vertices, UINT count);
 
-	void SetIndices(ID3D11Device* device, const USHORT* indices, UINT count);
+	void SetIndices(ID3D11Device* device, const UINT* indices, UINT count);
 
 	void SetSubsetTable(std::vector<Subset>& subsetTable);
 
@@ -54,11 +54,11 @@ void MeshGeometry::SetVertices(ID3D11Device* device, const VertexType* vertices,
 {
 	ReleaseCOM(mVB);
 
-	mVertexStride = sizeof(VertexType);
+	mVertexStride = sizeof(Vertex::PosNormalTexTanSkinned);
 
 	D3D11_BUFFER_DESC vbd;
     vbd.Usage = D3D11_USAGE_IMMUTABLE;
-	vbd.ByteWidth = sizeof(VertexType) * count;
+	vbd.ByteWidth = sizeof(Vertex::PosNormalTexTanSkinned) * count;
     vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
     vbd.CPUAccessFlags = 0;
     vbd.MiscFlags = 0;

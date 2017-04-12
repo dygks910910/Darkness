@@ -348,11 +348,7 @@ bool D3DApp::InitDirect3D()
 	{
 		return false;
 	}
-	DXGI_ADAPTER_DESC desc;
-	IDXGIAdapter* pAdapter = nullptr;
-	std::vector<IDXGIAdapter*> stdvAdapters;
-	int iHighLevelAdapterIndex = 0;
-	int iMax = 0;
+	
 
 	/*
 	2017 / 2 / 27 / 0:23
@@ -361,6 +357,12 @@ bool D3DApp::InitDirect3D()
 	createDevice(pAdapter가 NULL이 아니라면
 	md3dDriverType 는 Unknown 으로 설정해야 한다.)
 	*/
+
+	DXGI_ADAPTER_DESC desc;
+	IDXGIAdapter* pAdapter = nullptr;
+	std::vector<IDXGIAdapter*> stdvAdapters;
+	int iHighLevelAdapterIndex = 0;
+	int iMax = 0;
 	for (UINT i = 0; (factory->EnumAdapters(i, &pAdapter) != DXGI_ERROR_NOT_FOUND); ++i)
 	{
 		stdvAdapters.push_back(pAdapter);

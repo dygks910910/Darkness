@@ -2,7 +2,7 @@
  
 bool M3DLoader::LoadM3d(const std::string& filename, 
 						std::vector<Vertex::PosNormalTexTan>& vertices,
-						std::vector<USHORT>& indices,
+						std::vector<UINT>& indices,
 						std::vector<MeshGeometry::Subset>& subsets,
 						std::vector<M3dMaterial>& mats)
 {
@@ -37,7 +37,7 @@ bool M3DLoader::LoadM3d(const std::string& filename,
 
 bool M3DLoader::LoadM3d(const std::string& filename, 
 						std::vector<Vertex::PosNormalTexTanSkinned>& vertices,
-						std::vector<USHORT>& indices,
+						std::vector<UINT>& indices,
 						std::vector<MeshGeometry::Subset>& subsets,
 						std::vector<M3dMaterial>& mats,
 						SkinnedData& skinInfo)
@@ -100,7 +100,10 @@ void M3DLoader::ReadMaterials(std::ifstream& fin, UINT numMaterials, std::vector
 			fin >> ignore >> mats[i].EffectTypeName;
 			fin >> ignore >> diffuseMapName;
 			fin >> ignore >> normalMapName;
-
+			mats[i].Mat.Ambient.w = 1;
+			mats[i].Mat.Diffuse.w = 1;
+			mats[i].Mat.Reflect.w = 1;
+			mats[i].Mat.Specular.w = 16;
 			mats[i].DiffuseMapName.resize(diffuseMapName.size(), ' ');
 			mats[i].NormalMapName.resize(normalMapName.size(), ' ');
 			std::copy(diffuseMapName.begin(), diffuseMapName.end(), mats[i].DiffuseMapName.begin());
@@ -167,7 +170,7 @@ void M3DLoader::ReadSkinnedVertices(std::ifstream& fin, UINT numVertices, std::v
     }
 }
 
-void M3DLoader::ReadTriangles(std::ifstream& fin, UINT numTriangles, std::vector<USHORT>& indices)
+void M3DLoader::ReadTriangles(std::ifstream& fin, UINT numTriangles, std::vector<UINT>& indices)
 {
 	std::string ignore;
     indices.resize(numTriangles*3);

@@ -63,6 +63,81 @@ void CStaticNomalModel::Draw(ID3D11DeviceContext* dc,
 
 }
 
+void CStaticNomalModel::DrawSsao(ID3D11DeviceContext* dc,
+	ID3DX11EffectTechnique* tech, const XMMATRIX& shadowTransform, const Camera& cam)
+{
+	XMMATRIX world;
+	XMMATRIX worldView;
+	XMMATRIX worldInvTranspose;
+	XMMATRIX worldInvTransposeView;
+	XMMATRIX worldViewProj;
+	XMMATRIX toTexSpace(
+		0.5f, 0.0f, 0.0f, 0.0f,
+		0.0f, -0.5f, 0.0f, 0.0f,
+		0.0f, 0.0f, 1.0f, 0.0f,
+		0.5f, 0.5f, 0.0f, 1.0f);
+	D3DX11_TECHNIQUE_DESC techDesc;
+
+
+	tech->GetDesc(&techDesc);
+	for (UINT p = 0; p < techDesc.Passes; ++p)
+	{
+		// Draw the grid.
+		world = XMLoadFloat4x4(&mWorld);
+		worldView = world*cam.View();
+		worldInvTranspose = MathHelper::InverseTranspose(world);
+		worldInvTransposeView = worldInvTranspose*cam.View();
+
+		worldViewProj = world*cam.View()*cam.Proj();
+
+		Effects::SsaoNormalDepthFX->SetWorldView(worldView);
+		Effects::SsaoNormalDepthFX->SetWorldInvTransposeView(worldInvTransposeView);
+		Effects::SsaoNormalDepthFX->SetWorldViewProj(worldViewProj);
+		Effects::SsaoNormalDepthFX->SetTexTransform(XMMatrixIdentity());
+
+		tech->GetPassByIndex(p)->Apply(0, dc);
+		dc->DrawIndexed(mIndexCount, mIndexOffset, mVertexOffset);
+	}
+
+}
+
+void CStaticBasicModel::DrawSsao(ID3D11DeviceContext* dc,
+	ID3DX11EffectTechnique* tech, const XMMATRIX& shadowTransform, const Camera& cam)
+{
+	XMMATRIX world;
+	XMMATRIX worldView;
+	XMMATRIX worldInvTranspose;
+	XMMATRIX worldInvTransposeView;
+	XMMATRIX worldViewProj;
+	XMMATRIX toTexSpace(
+		0.5f, 0.0f, 0.0f, 0.0f,
+		0.0f, -0.5f, 0.0f, 0.0f,
+		0.0f, 0.0f, 1.0f, 0.0f,
+		0.5f, 0.5f, 0.0f, 1.0f);
+	D3DX11_TECHNIQUE_DESC techDesc;
+
+
+	tech->GetDesc(&techDesc);
+	for (UINT p = 0; p < techDesc.Passes; ++p)
+	{
+		// Draw the grid.
+		world = XMLoadFloat4x4(&mWorld);
+		worldView = world*cam.View();
+		worldInvTranspose = MathHelper::InverseTranspose(world);
+		worldInvTransposeView = worldInvTranspose*cam.View();
+
+		worldViewProj = world*cam.View()*cam.Proj();
+
+		Effects::SsaoNormalDepthFX->SetWorldView(worldView);
+		Effects::SsaoNormalDepthFX->SetWorldInvTransposeView(worldInvTransposeView);
+		Effects::SsaoNormalDepthFX->SetWorldViewProj(worldViewProj);
+		Effects::SsaoNormalDepthFX->SetTexTransform(XMMatrixIdentity());
+
+		tech->GetPassByIndex(p)->Apply(0, dc);
+		dc->DrawIndexed(mIndexCount, mIndexOffset, mVertexOffset);
+	}
+
+}
 void CStaticNomalModel::DrawToShadowMap(ID3D11DeviceContext * dc, ID3DX11EffectTechnique * tech, const XMFLOAT4X4 & lightView, const XMFLOAT4X4 & lightProj)
 {
 	CStaticBasicModel::DrawToShadowMap(dc, tech, lightView, lightProj);

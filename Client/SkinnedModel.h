@@ -21,7 +21,7 @@ public:
 
 	// Keep CPU copies of the mesh data to read from.  
 	std::vector<Vertex::PosNormalTexTanSkinned> Vertices;
-	std::vector<USHORT> Indices;
+	std::vector<UINT> Indices;
 	std::vector<MeshGeometry::Subset> Subsets;
 
 	MeshGeometry ModelMesh;
@@ -35,6 +35,10 @@ struct SkinnedModelInstance
 	std::string ClipName;
 	XMFLOAT4X4 World;
 	std::vector<XMFLOAT4X4> FinalTransforms;
+	std::vector<XMFLOAT4X4>* TestFinalTransforms;
+	std::map < std::string, std::vector<XMFLOAT4X4>*>* mClipAnimbuf;
+	int mAnimTotalTime;
+	int mAnimCnt;
 	void Update(float dt);
 };
 #endif // SKINNEDMODEL_H

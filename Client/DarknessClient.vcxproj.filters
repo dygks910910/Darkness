@@ -64,6 +64,7 @@
     <Filter Include="Source Files\SkinedClass">
       <UniqueIdentifier>{a400008f-fffc-4e4c-8bff-6042cdf589b9}</UniqueIdentifier>
     </Filter>
+<<<<<<< HEAD
     <Filter Include="Source Files\UI">
       <UniqueIdentifier>{fadee7c4-acae-4ef8-b832-750764ae638e}</UniqueIdentifier>
     </Filter>
@@ -78,6 +79,10 @@
     </Filter>
     <Filter Include="Source Files\UI\Texture">
       <UniqueIdentifier>{46b43dc6-9426-49c2-ba0b-3c86dee02313}</UniqueIdentifier>
+=======
+    <Filter Include="Source Files\Ssao">
+      <UniqueIdentifier>{d783dddc-a737-418a-8952-91b25065e789}</UniqueIdentifier>
+>>>>>>> AnimationWork
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -195,6 +200,9 @@
     <ClCompile Include="Texture.cpp">
       <Filter>Source Files\UI\Texture</Filter>
     </ClCompile>
+    <ClCompile Include="Ssao.cpp">
+      <Filter>Source Files\Ssao</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="FX\color.fx">
@@ -304,6 +312,7 @@
     <ClInclude Include="LogoScene.h">
       <Filter>Source Files\99 Scene</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="MainScene.h">
       <Filter>Source Files\99 Scene</Filter>
     </ClInclude>
@@ -318,6 +327,10 @@
     </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>Source Files\UI\Texture</Filter>
+=======
+    <ClInclude Include="Ssao.h">
+      <Filter>Source Files\Ssao</Filter>
+>>>>>>> AnimationWork
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

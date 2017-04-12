@@ -1,0 +1,9 @@
+diff a/Client/SceneManager.cpp b/Client/SceneManager.cpp	(rejected hunks)
+@@ -22,6 +22,7 @@
+ 	�ۼ���:�ڿ���(dygks910910@daum.net)
+ 	����:���ξ� ����.
+ 	*/
++<<<<<<< HEAD
+ 	mClientWidth = clientWidth;
+ 
+ 	mClientHeight = clientHeight;

@@ -22,6 +22,7 @@ bool CSceneManager::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	작성자:박요한(dygks910910@daum.net)
 	설명:메인씬 생성.
 	*/
+<<<<<<< HEAD
 	mClientWidth = clientWidth;
 
 	mClientHeight = clientHeight;
@@ -43,7 +44,6 @@ bool CSceneManager::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	return true;
 }
 
-void CSceneManager::UpdateScene(const float & dt)
 {
 	/*
 	2017 / 1 / 12 / 22:06
