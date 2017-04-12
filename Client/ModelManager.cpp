@@ -266,6 +266,13 @@ void CModelManager::UpdateModel(const float & dt)
 	{
 		mSkinnedModelInstance[i].Update(dt);
 	}
+
+	#define KEYDOWN(VK_UP) if(GetAsyncKeyState(VK_UP) & 0x8000 ? 0 : 1)
+		mSkinnedModelInstance[0].mClipnameAndTotalCount = mClipnameAndTotalCounts[1];
+	#define KEYDOWN(VK_UP) if((GetAsyncKeyState(VK_UP) & 0x8000 ? 1 : 0)))
+	mSkinnedModelInstance[0].mClipnameAndTotalCount = mClipnameAndTotalCounts[0];
+
+
 }
 
 void CModelManager::BuildShapeGeometryBuffers()
