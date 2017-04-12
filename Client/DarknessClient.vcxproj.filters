@@ -1,89 +1,100 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
+    <FxCompile Include="FX\Basic.fx">
+      <Filter>FX</Filter>
+    </FxCompile>
+    <FxCompile Include="FX\BuildShadowMap.fx">
+      <Filter>FX</Filter>
+    </FxCompile>
+    <FxCompile Include="FX\DebugTexture.fx">
+      <Filter>FX</Filter>
+    </FxCompile>
+    <FxCompile Include="FX\Fire.fx">
+      <Filter>FX</Filter>
+    </FxCompile>
+    <FxCompile Include="FX\InstancedBasic.fx">
+      <Filter>FX</Filter>
+    </FxCompile>
+    <FxCompile Include="FX\LightHelper.fx">
+      <Filter>FX</Filter>
+    </FxCompile>
+    <FxCompile Include="FX\NormalMap.fx">
+      <Filter>FX</Filter>
+    </FxCompile>
+    <FxCompile Include="FX\Rain.fx">
+      <Filter>FX</Filter>
+    </FxCompile>
+    <FxCompile Include="FX\Sky.fx">
+      <Filter>FX</Filter>
+    </FxCompile>
+    <FxCompile Include="FX\Ssao.fx">
+      <Filter>FX</Filter>
+    </FxCompile>
+    <FxCompile Include="FX\SsaoBlur.fx">
+      <Filter>FX</Filter>
+    </FxCompile>
+    <FxCompile Include="FX\SsaoNormalDepth.fx">
+      <Filter>FX</Filter>
+    </FxCompile>
+    <FxCompile Include="FX\Terrain.fx">
+      <Filter>FX</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
     <Filter Include="Common">
-      <UniqueIdentifier>{d2e2a002-e4a4-471c-9ddb-b41efd5f0e3a}</UniqueIdentifier>
+      <UniqueIdentifier>{412b5d1d-ef98-4c24-a0c2-de377ac0f407}</UniqueIdentifier>
     </Filter>
     <Filter Include="FX">
-      <UniqueIdentifier>{ddb510f0-86c2-4ad3-a801-361c96e98c4e}</UniqueIdentifier>
+      <UniqueIdentifier>{e084f150-b82b-4c69-b506-0389a76799c0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\00 FBXLoader">
-      <UniqueIdentifier>{e3d6ba9d-5e76-4f0e-83e7-9e8b4bd227ef}</UniqueIdentifier>
+    <Filter Include="souce">
+      <UniqueIdentifier>{afc21474-4352-40f5-bb40-fa75219e7efa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\99 Scene">
-      <UniqueIdentifier>{4f8f113f-6a06-43f2-9261-cfd65ef93d27}</UniqueIdentifier>
+    <Filter Include="souce\2D">
+      <UniqueIdentifier>{c7505412-d1ea-411f-aa0c-814260e8fa61}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\00 Object">
-      <UniqueIdentifier>{58efbd12-b275-4fcc-aae5-23b9e8394dff}</UniqueIdentifier>
+    <Filter Include="souce\Scene">
+      <UniqueIdentifier>{b0bce442-18c3-4386-bad7-34ec35e15dc9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\01 Effects">
-      <UniqueIdentifier>{0c80e789-8bf3-4901-b728-61b78654b4a2}</UniqueIdentifier>
+    <Filter Include="souce\FBXLoader">
+      <UniqueIdentifier>{fda9e756-aea2-4a72-b357-1076ddfb7988}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Sky">
-      <UniqueIdentifier>{409c8258-139d-4350-b1b9-e2d0f36860fa}</UniqueIdentifier>
+    <Filter Include="souce\Effect">
+      <UniqueIdentifier>{91628b2e-e279-4dc6-b13e-dd9297becc52}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Terrain">
-      <UniqueIdentifier>{6531c057-db56-4940-b46e-1ff971072e5d}</UniqueIdentifier>
+    <Filter Include="souce\3DObject">
+      <UniqueIdentifier>{fe83f14b-0a13-4bd8-bcde-8e1c59b9bd6b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\MainGame">
-      <UniqueIdentifier>{b9598f8b-563f-4be6-8c34-101ea0f233e5}</UniqueIdentifier>
+    <Filter Include="souce\SkinnedClass">
+      <UniqueIdentifier>{5bb07476-67ee-49cc-a371-bd9f5d07ea68}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\01 Effects\RenderState">
-      <UniqueIdentifier>{f854c84c-be84-461c-b2b6-5325efb76ba0}</UniqueIdentifier>
+    <Filter Include="souce\Particle">
+      <UniqueIdentifier>{64979b64-6112-45da-8a90-155ebf1ae03f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\01 Effects\ParticleSystem">
-      <UniqueIdentifier>{0567adf7-8142-499e-8ae9-890af9cb7352}</UniqueIdentifier>
+    <Filter Include="souce\Sky">
+      <UniqueIdentifier>{f66f14f4-ee4b-4206-975d-c1b49fdf18b0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\00 Object\01 DynamicObjcet">
-      <UniqueIdentifier>{b6af5a3b-5a95-44cb-88b1-113106975362}</UniqueIdentifier>
+    <Filter Include="souce\Main">
+      <UniqueIdentifier>{273d9cf1-d5f6-4fde-88a7-eaaf6746abff}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\00 Object\02 Coordinate">
-      <UniqueIdentifier>{81901539-93ee-46f7-bec5-18ae1ce38a18}</UniqueIdentifier>
+    <Filter Include="souce\Models">
+      <UniqueIdentifier>{c7086227-6a8f-4044-af31-9cd88414de2d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\00 Vertex">
-      <UniqueIdentifier>{7e0ece3b-4bbd-4fd4-a408-21858e329224}</UniqueIdentifier>
+    <Filter Include="souce\Vertex">
+      <UniqueIdentifier>{a3b6fd6b-4038-4d49-ac13-454586e9e80e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\ShadowMap">
-      <UniqueIdentifier>{ef84a664-9d3a-446e-a4ba-0b4e48b349b3}</UniqueIdentifier>
+    <Filter Include="souce\Terrian">
+      <UniqueIdentifier>{80f27256-990a-44ad-b6dc-5481aaffb268}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Model">
-      <UniqueIdentifier>{0ac9d828-468b-4aab-9b0b-c6eab64cd3dc}</UniqueIdentifier>
+    <Filter Include="souce\EffectMap">
+      <UniqueIdentifier>{d7140ab6-40c4-4531-b623-6c51137331d0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\SkinedClass">
-      <UniqueIdentifier>{a400008f-fffc-4e4c-8bff-6042cdf589b9}</UniqueIdentifier>
-    </Filter>
-<<<<<<< HEAD
-    <Filter Include="Source Files\UI">
-      <UniqueIdentifier>{fadee7c4-acae-4ef8-b832-750764ae638e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\UI\Bitmap">
-      <UniqueIdentifier>{0bfcf4b4-c3cc-4934-8ab1-76fb5e64ad7a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\UI\ButtonClass">
-      <UniqueIdentifier>{e3e52070-bd05-4862-bb4c-0f69ab945c46}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\UI\Minimap">
-      <UniqueIdentifier>{9bef255a-9052-4a70-98a5-a71135d930a0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\UI\Texture">
-      <UniqueIdentifier>{46b43dc6-9426-49c2-ba0b-3c86dee02313}</UniqueIdentifier>
-=======
-    <Filter Include="Source Files\Ssao">
-      <UniqueIdentifier>{d783dddc-a737-418a-8952-91b25065e789}</UniqueIdentifier>
->>>>>>> AnimationWork
-    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="FX\color.fx">
+      <Filter>FX</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Camera.cpp">
@@ -93,6 +104,9 @@
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="Common\d3dUtil.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\dxerr.cpp">
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="Common\GameTimer.cpp">
@@ -116,98 +130,87 @@
     <ClCompile Include="Common\xnacollision.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="Common\dxerr.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="FbxLoader.cpp">
-      <Filter>Source Files\00 FBXLoader</Filter>
-    </ClCompile>
-    <ClCompile Include="Effects.cpp">
-      <Filter>Source Files\01 Effects</Filter>
-    </ClCompile>
-    <ClCompile Include="ParticleSystem.cpp">
-      <Filter>Source Files\01 Effects\ParticleSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="Sky.cpp">
-      <Filter>Source Files\Sky</Filter>
-    </ClCompile>
-    <ClCompile Include="Terrain.cpp">
-      <Filter>Source Files\Terrain</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderStates.cpp">
-      <Filter>Source Files\01 Effects\RenderState</Filter>
-    </ClCompile>
-    <ClCompile Include="Vertex.cpp">
-      <Filter>Source Files\00 Vertex</Filter>
-    </ClCompile>
-    <ClCompile Include="MainGame.cpp">
-      <Filter>Source Files\MainGame</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>Source Files\99 Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="DynamicObject.cpp">
-      <Filter>Source Files\00 Object\01 DynamicObjcet</Filter>
-    </ClCompile>
-    <ClCompile Include="TestScene.cpp">
-      <Filter>Source Files\99 Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Cordinate.cpp">
-      <Filter>Source Files\00 Object\02 Coordinate</Filter>
-    </ClCompile>
-    <ClCompile Include="ShadowMap.cpp">
-      <Filter>Source Files\ShadowMap</Filter>
-    </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>Source Files\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="ModelManager.cpp">
-      <Filter>Source Files\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="LoadM3d.cpp">
-      <Filter>Source Files\SkinedClass</Filter>
-    </ClCompile>
-    <ClCompile Include="MeshGeometry.cpp">
-      <Filter>Source Files\SkinedClass</Filter>
-    </ClCompile>
-    <ClCompile Include="SkinnedData.cpp">
-      <Filter>Source Files\SkinedClass</Filter>
-    </ClCompile>
-    <ClCompile Include="SkinnedModel.cpp">
-      <Filter>Source Files\SkinedClass</Filter>
-    </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LogoScene.cpp">
-      <Filter>Source Files\99 Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="MainScene.cpp">
-      <Filter>Source Files\99 Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BitMap.cpp">
-      <Filter>Source Files\UI\Bitmap</Filter>
-    </ClCompile>
-    <ClCompile Include="ButtonClass.cpp">
-      <Filter>Source Files\UI\ButtonClass</Filter>
+      <Filter>souce\2D</Filter>
     </ClCompile>
     <ClCompile Include="MiniMap.cpp">
-      <Filter>Source Files\UI\Minimap</Filter>
+      <Filter>souce\2D</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
-      <Filter>Source Files\UI\Texture</Filter>
+      <Filter>souce\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="MainScene.cpp">
+      <Filter>souce\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>souce\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>souce\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="TestScene.cpp">
+      <Filter>souce\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="ButtonClass.cpp">
+      <Filter>souce\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="FbxLoader.cpp">
+      <Filter>souce\FBXLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="Effects.cpp">
+      <Filter>souce\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="LogoScene.cpp">
+      <Filter>souce\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Cordinate.cpp">
+      <Filter>souce\3DObject</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadM3d.cpp">
+      <Filter>souce\SkinnedClass</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinnedData.cpp">
+      <Filter>souce\SkinnedClass</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinnedModel.cpp">
+      <Filter>souce\SkinnedClass</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>souce\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Sky.cpp">
+      <Filter>souce\Sky</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>souce\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame.cpp">
+      <Filter>souce\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshGeometry.cpp">
+      <Filter>souce\SkinnedClass</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>souce\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelManager.cpp">
+      <Filter>souce\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderStates.cpp">
+      <Filter>souce\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Vertex.cpp">
+      <Filter>souce\Vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="Terrain.cpp">
+      <Filter>souce\Terrian</Filter>
+    </ClCompile>
+    <ClCompile Include="ShadowMap.cpp">
+      <Filter>souce\EffectMap</Filter>
     </ClCompile>
     <ClCompile Include="Ssao.cpp">
-      <Filter>Source Files\Ssao</Filter>
+      <Filter>souce\EffectMap</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="FX\color.fx">
-      <Filter>FX</Filter>
-    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common\Camera.h">
@@ -223,6 +226,9 @@
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Common\d3dxGlobal.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\dxerr.h">
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Common\GameTimer.h">
@@ -246,132 +252,83 @@
     <ClInclude Include="Common\xnacollision.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="Common\dxerr.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="FbxLoader.h">
-      <Filter>Source Files\00 FBXLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Source Files\99 Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Effects.h">
-      <Filter>Source Files\01 Effects</Filter>
-    </ClInclude>
-    <ClInclude Include="ParticleSystem.h">
-      <Filter>Source Files\01 Effects\ParticleSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="Sky.h">
-      <Filter>Source Files\Sky</Filter>
-    </ClInclude>
-    <ClInclude Include="Terrain.h">
-      <Filter>Source Files\Terrain</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderStates.h">
-      <Filter>Source Files\01 Effects\RenderState</Filter>
-    </ClInclude>
-    <ClInclude Include="Vertex.h">
-      <Filter>Source Files\00 Vertex</Filter>
-    </ClInclude>
-    <ClInclude Include="MainGame.h">
-      <Filter>Source Files\MainGame</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>Source Files\99 Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="DynamicObject.h">
-      <Filter>Source Files\00 Object\01 DynamicObjcet</Filter>
-    </ClInclude>
-    <ClInclude Include="TestScene.h">
-      <Filter>Source Files\99 Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Cordinate.h">
-      <Filter>Source Files\00 Object\02 Coordinate</Filter>
-    </ClInclude>
-    <ClInclude Include="ShadowMap.h">
-      <Filter>Source Files\ShadowMap</Filter>
-    </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>Source Files\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="ModelManager.h">
-      <Filter>Source Files\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="LoadM3d.h">
-      <Filter>Source Files\SkinedClass</Filter>
-    </ClInclude>
-    <ClInclude Include="MeshGeometry.h">
-      <Filter>Source Files\SkinedClass</Filter>
-    </ClInclude>
-    <ClInclude Include="SkinnedData.h">
-      <Filter>Source Files\SkinedClass</Filter>
-    </ClInclude>
-    <ClInclude Include="SkinnedModel.h">
-      <Filter>Source Files\SkinedClass</Filter>
-    </ClInclude>
-    <ClInclude Include="LogoScene.h">
-      <Filter>Source Files\99 Scene</Filter>
-    </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="MainScene.h">
-      <Filter>Source Files\99 Scene</Filter>
-    </ClInclude>
     <ClInclude Include="BitMap.h">
-      <Filter>Source Files\UI\Bitmap</Filter>
-    </ClInclude>
-    <ClInclude Include="ButtonClass.h">
-      <Filter>Source Files\UI\ButtonClass</Filter>
+      <Filter>souce\2D</Filter>
     </ClInclude>
     <ClInclude Include="MiniMap.h">
-      <Filter>Source Files\UI\Minimap</Filter>
+      <Filter>souce\2D</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">
-      <Filter>Source Files\UI\Texture</Filter>
-=======
-    <ClInclude Include="Ssao.h">
-      <Filter>Source Files\Ssao</Filter>
->>>>>>> AnimationWork
+      <Filter>souce\2D</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="FX\Basic.fx">
-      <Filter>FX</Filter>
-    </FxCompile>
-    <FxCompile Include="FX\Fire.fx">
-      <Filter>FX</Filter>
-    </FxCompile>
-    <FxCompile Include="FX\LightHelper.fx">
-      <Filter>FX</Filter>
-    </FxCompile>
-    <FxCompile Include="FX\Rain.fx">
-      <Filter>FX</Filter>
-    </FxCompile>
-    <FxCompile Include="FX\Sky.fx">
-      <Filter>FX</Filter>
-    </FxCompile>
-    <FxCompile Include="FX\Terrain.fx">
-      <Filter>FX</Filter>
-    </FxCompile>
-    <FxCompile Include="FX\BuildShadowMap.fx">
-      <Filter>FX</Filter>
-    </FxCompile>
-    <FxCompile Include="FX\SsaoNormalDepth.fx">
-      <Filter>FX</Filter>
-    </FxCompile>
-    <FxCompile Include="FX\NormalMap.fx">
-      <Filter>FX</Filter>
-    </FxCompile>
-    <FxCompile Include="FX\Ssao.fx">
-      <Filter>FX</Filter>
-    </FxCompile>
-    <FxCompile Include="FX\SsaoBlur.fx">
-      <Filter>FX</Filter>
-    </FxCompile>
-    <FxCompile Include="FX\DebugTexture.fx">
-      <Filter>FX</Filter>
-    </FxCompile>
-    <FxCompile Include="FX\InstancedBasic.fx">
-      <Filter>FX</Filter>
-    </FxCompile>
+    <ClInclude Include="MainScene.h">
+      <Filter>souce\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>souce\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>souce\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="TestScene.h">
+      <Filter>souce\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="ButtonClass.h">
+      <Filter>souce\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="FbxLoader.h">
+      <Filter>souce\FBXLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="Effects.h">
+      <Filter>souce\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="LogoScene.h">
+      <Filter>souce\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Cordinate.h">
+      <Filter>souce\3DObject</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadM3d.h">
+      <Filter>souce\SkinnedClass</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinnedData.h">
+      <Filter>souce\SkinnedClass</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinnedModel.h">
+      <Filter>souce\SkinnedClass</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>souce\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Sky.h">
+      <Filter>souce\Sky</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame.h">
+      <Filter>souce\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshGeometry.h">
+      <Filter>souce\SkinnedClass</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>souce\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelManager.h">
+      <Filter>souce\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderStates.h">
+      <Filter>souce\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>souce\Vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain.h">
+      <Filter>souce\Terrian</Filter>
+    </ClInclude>
+    <ClInclude Include="ShadowMap.h">
+      <Filter>souce\EffectMap</Filter>
+    </ClInclude>
+    <ClInclude Include="Ssao.h">
+      <Filter>souce\EffectMap</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

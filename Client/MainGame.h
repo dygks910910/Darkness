@@ -13,8 +13,6 @@
 #include "Sky.h"
 #include "Terrain.h"
 #include "ParticleSystem.h"
-#include "SceneMainGame.h"
-#include "BoxScene.h"
 #include "SceneManager.h"
 class CMainGame : public D3DApp
 {

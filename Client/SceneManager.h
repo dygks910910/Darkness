@@ -1,7 +1,4 @@
 #pragma once
-#include "BoxScene.h"
-#include "SceneMainGame.h"
-#include "BoxScene.h"
 #include<map>
 #include<string.h>
 #include "LogoScene.h"

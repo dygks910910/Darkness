@@ -34,7 +34,6 @@ struct SkinnedModelInstance
 	float TimePos;
 	XMFLOAT4X4 World;
 	std::vector<XMFLOAT4X4> FinalTransforms;
-	std::vector<XMFLOAT4X4>* TestFinalTransforms;
 	std::map < std::string, std::vector<XMFLOAT4X4>*>* mClipAnimbuf;
 	std::pair<std::string, int> mClipnameAndTotalCount;
 	int mAnimCnt;

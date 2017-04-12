@@ -167,47 +167,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BitMap.cpp" />
-    <ClCompile Include="ButtonClass.cpp" />
-    <ClCompile Include="Common\Camera.cpp" />
-    <ClCompile Include="Common\d3dApp.cpp" />
-    <ClCompile Include="Common\d3dUtil.cpp" />
-    <ClCompile Include="Common\dxerr.cpp" />
-    <ClCompile Include="Common\GameTimer.cpp" />
-    <ClCompile Include="Common\GeometryGenerator.cpp" />
-    <ClCompile Include="Common\LightHelper.cpp" />
-    <ClCompile Include="Common\MathHelper.cpp" />
-    <ClCompile Include="Common\TextureMgr.cpp" />
-    <ClCompile Include="Common\Waves.cpp" />
-    <ClCompile Include="Common\xnacollision.cpp" />
-    <ClCompile Include="Cordinate.cpp" />
-    <ClCompile Include="DynamicObject.cpp" />
-    <ClCompile Include="Effects.cpp" />
-    <ClCompile Include="FbxLoader.cpp" />
-    <ClCompile Include="LogoScene.cpp" />
-    <ClCompile Include="LoadM3d.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="MainGame.cpp" />
-    <ClCompile Include="MainScene.cpp" />
-    <ClCompile Include="MeshGeometry.cpp" />
-    <ClCompile Include="MiniMap.cpp" />
-    <ClCompile Include="ModelManager.cpp" />
-    <ClCompile Include="ParticleSystem.cpp" />
-    <ClCompile Include="RenderStates.cpp" />
-    <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="SceneManager.cpp" />
-    <ClCompile Include="ShadowMap.cpp" />
-    <ClCompile Include="SkinnedData.cpp" />
-    <ClCompile Include="SkinnedModel.cpp" />
-    <ClCompile Include="Sky.cpp" />
-    <ClCompile Include="Model.cpp" />
-    <ClCompile Include="Ssao.cpp" />
-    <ClCompile Include="Terrain.cpp" />
-    <ClCompile Include="TestScene.cpp" />
-    <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="Vertex.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <CustomBuild Include="FX\color.fx">
       <FileType>Document</FileType>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">fxc /Fc /Od /T fx_5_0 /Fo "%(RelativeDir)\%(Filename).fxo" "%(FullPath)"</Command>
@@ -223,6 +182,61 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RelativeDir)\%(Filename).fxo</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(RelativeDir)\%(Filename).fxo</Outputs>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="FX\Basic.fx" />
+    <FxCompile Include="FX\BuildShadowMap.fx" />
+    <FxCompile Include="FX\DebugTexture.fx" />
+    <FxCompile Include="FX\Fire.fx" />
+    <FxCompile Include="FX\InstancedBasic.fx" />
+    <FxCompile Include="FX\LightHelper.fx" />
+    <FxCompile Include="FX\NormalMap.fx" />
+    <FxCompile Include="FX\Rain.fx" />
+    <FxCompile Include="FX\Sky.fx" />
+    <FxCompile Include="FX\Ssao.fx" />
+    <FxCompile Include="FX\SsaoBlur.fx" />
+    <FxCompile Include="FX\SsaoNormalDepth.fx" />
+    <FxCompile Include="FX\Terrain.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="BitMap.cpp" />
+    <ClCompile Include="ButtonClass.cpp" />
+    <ClCompile Include="Common\Camera.cpp" />
+    <ClCompile Include="Common\d3dApp.cpp" />
+    <ClCompile Include="Common\d3dUtil.cpp" />
+    <ClCompile Include="Common\dxerr.cpp" />
+    <ClCompile Include="Common\GameTimer.cpp" />
+    <ClCompile Include="Common\GeometryGenerator.cpp" />
+    <ClCompile Include="Common\LightHelper.cpp" />
+    <ClCompile Include="Common\MathHelper.cpp" />
+    <ClCompile Include="Common\TextureMgr.cpp" />
+    <ClCompile Include="Common\Waves.cpp" />
+    <ClCompile Include="Common\xnacollision.cpp" />
+    <ClCompile Include="Cordinate.cpp" />
+    <ClCompile Include="Effects.cpp" />
+    <ClCompile Include="FbxLoader.cpp" />
+    <ClCompile Include="LoadM3d.cpp" />
+    <ClCompile Include="LogoScene.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MainGame.cpp" />
+    <ClCompile Include="MainScene.cpp" />
+    <ClCompile Include="MeshGeometry.cpp" />
+    <ClCompile Include="MiniMap.cpp" />
+    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="ModelManager.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
+    <ClCompile Include="RenderStates.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="ShadowMap.cpp" />
+    <ClCompile Include="SkinnedData.cpp" />
+    <ClCompile Include="SkinnedModel.cpp" />
+    <ClCompile Include="Sky.cpp" />
+    <ClCompile Include="Ssao.cpp" />
+    <ClCompile Include="Terrain.cpp" />
+    <ClCompile Include="TestScene.cpp" />
+    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BitMap.h" />
@@ -241,15 +255,15 @@
     <ClInclude Include="Common\Waves.h" />
     <ClInclude Include="Common\xnacollision.h" />
     <ClInclude Include="Cordinate.h" />
-    <ClInclude Include="DynamicObject.h" />
     <ClInclude Include="Effects.h" />
     <ClInclude Include="FbxLoader.h" />
-    <ClInclude Include="LogoScene.h" />
     <ClInclude Include="LoadM3d.h" />
+    <ClInclude Include="LogoScene.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="MainScene.h" />
     <ClInclude Include="MeshGeometry.h" />
     <ClInclude Include="MiniMap.h" />
+    <ClInclude Include="Model.h" />
     <ClInclude Include="ModelManager.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="RenderStates.h" />
@@ -259,27 +273,11 @@
     <ClInclude Include="SkinnedData.h" />
     <ClInclude Include="SkinnedModel.h" />
     <ClInclude Include="Sky.h" />
-    <ClInclude Include="Model.h" />
     <ClInclude Include="Ssao.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="TestScene.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Vertex.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="FX\Basic.fx" />
-    <FxCompile Include="FX\BuildShadowMap.fx" />
-    <FxCompile Include="FX\DebugTexture.fx" />
-    <FxCompile Include="FX\Fire.fx" />
-    <FxCompile Include="FX\InstancedBasic.fx" />
-    <FxCompile Include="FX\LightHelper.fx" />
-    <FxCompile Include="FX\NormalMap.fx" />
-    <FxCompile Include="FX\Rain.fx" />
-    <FxCompile Include="FX\Sky.fx" />
-    <FxCompile Include="FX\Ssao.fx" />
-    <FxCompile Include="FX\SsaoBlur.fx" />
-    <FxCompile Include="FX\SsaoNormalDepth.fx" />
-    <FxCompile Include="FX\Terrain.fx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

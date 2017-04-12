@@ -44,9 +44,8 @@ void CModelManager::Init(TextureMgr & texMgr, Camera & cam, ID3D11Device* device
 	std::string clipname[4] = { "Idle", "Walk", "Attack1", "Run" };
 
 
-	mCharacterModel = new SkinnedModel(mDevice, texMgr, "ResultIdle.txt", L"Textures\\");
-
-	std::ifstream fin("Idle.txt");
+	mCharacterModel = new SkinnedModel(mDevice, texMgr, "Models/Clown.txt", L"Textures\\");
+	std::ifstream fin("Models/ClownAnimationData.txt");
 	std::vector<std::vector<XMFLOAT4X4>> testfinalTransform;
 	int total = 0;
 
@@ -393,13 +392,13 @@ void CModelManager::BuildBasicGeometryBuffer()
 	GeometryGenerator::MeshData fence, house1, house2, house3, house4, house5, house6;
 	CFbxLoader loader;
 
-	loader.LoadFBX("fence1.FBX", fence);
-	loader.LoadFBX("house 1.fbx", house1);
-	loader.LoadFBX("house 2.fbx", house2);
-	loader.LoadFBX("house 3.fbx", house3);
-	loader.LoadFBX("house 4.fbx", house4);
-	loader.LoadFBX("house 5.fbx", house5);
-	loader.LoadFBX("house 6.fbx", house6);
+	loader.LoadFBX("Darkness fbx\\fence1.FBX", fence);
+	loader.LoadFBX("Darkness fbx\\house 1.fbx", house1);
+	loader.LoadFBX("Darkness fbx\\house 2.fbx", house2);
+	loader.LoadFBX("Darkness fbx\\house 3.fbx", house3);
+	loader.LoadFBX("Darkness fbx\\house 4.fbx", house4);
+	loader.LoadFBX("Darkness fbx\\house 5.fbx", house5);
+	loader.LoadFBX("Darkness fbx\\house 6.fbx", house6);
 
 	house1VertexOffset = 0;
 	house2VertexOffset = house1.Vertices.size();
@@ -621,7 +620,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				house1IndexCount,
 				house1VertexOffset,
 				house1IndexOffset,
-				texMgr.CreateTexture(L"house diffuse.dds"),
+				texMgr.CreateTexture(L"Textures\\house diffuse.dds"),
 				"house1"
 			));
 		}
@@ -639,7 +638,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				house2IndexCount,
 				house2VertexOffset,
 				house2IndexOffset,
-				texMgr.CreateTexture(L"house diffuse.dds"),
+				texMgr.CreateTexture(L"Textures\\house diffuse.dds"),
 				"house2"
 			));
 		}
@@ -657,7 +656,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				house3IndexCount,
 				house3VertexOffset,
 				house3IndexOffset,
-				texMgr.CreateTexture(L"house diffuse.dds"),
+				texMgr.CreateTexture(L"Textures\\house diffuse.dds"),
 				"house3"
 			));
 		}
@@ -675,7 +674,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				house4IndexCount,
 				house4VertexOffset,
 				house4IndexOffset,
-				texMgr.CreateTexture(L"house diffuse.dds"),
+				texMgr.CreateTexture(L"Textures\\house diffuse.dds"),
 				"house4"
 			));
 		}
@@ -685,7 +684,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 			XMVECTOR P = XMLoadFloat3(&position);
 			XMVECTOR Q = XMLoadFloat4(&rotation);
 			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-			ID3D11ShaderResourceView* tempSRV = texMgr.CreateTexture(L"house diffuse.dds");
+			//ID3D11ShaderResourceView* tempSRV = texMgr.CreateTexture(L"Textures\\house diffuse.dds");
 			XMFLOAT4X4 M;
 			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
 			mStaticBasicModels.push_back(CStaticBasicModel(M,
@@ -693,7 +692,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				house5IndexCount,
 				house5VertexOffset,
 				house5IndexOffset,
-				texMgr.CreateTexture(L"house diffuse.dds"),
+				texMgr.CreateTexture(L"Textures\\house diffuse.dds"),
 				"house5"
 			));
 		}
@@ -711,7 +710,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				house6IndexCount,
 				house6VertexOffset,
 				house6IndexOffset,
-				texMgr.CreateTexture(L"house diffuse.dds"),
+				texMgr.CreateTexture(L"Textures\\house diffuse.dds"),
 				"house6"
 			));
 		}
@@ -724,7 +723,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 // 		std::cout << rotation.x << " " << rotation.y << " " << rotation.z << " " << rotation.w << std::endl;
 // 		std::cout << scale.x << " " << scale.y << " " << scale.z << std::endl << std::endl;
  		ZeroMemory(&objectName, sizeof(objectName));
- 		ZeroMemory(&cIgnore, sizeof(cIgnore));
+ 		//ZeroMemory(&cIgnore, sizeof(cIgnore));
  		ZeroMemory(&position, sizeof(position));
  		ZeroMemory(&rotation, sizeof(rotation));
  		ZeroMemory(&scale, sizeof(scale));
@@ -754,7 +753,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 //	ÀÎ½ºÅÏ½ÌÇÒ °´Ã¼¸¦ Setting
  	tempInstanceModel.SetDrawInfomation(fenceIndexCount, fenceVertexOffset, fenceIndexOffset);
  	tempInstanceModel.SetMatrial(mBoxMat);
- 	tempInstanceModel.SetSRV(texMgr.CreateTexture(L"diff_fence_gate.dds"));
+ 	tempInstanceModel.SetSRV(texMgr.CreateTexture(L"Textures\\diff_fence_gate.dds"));
  	tempInstanceModel.BuildInstanceBuffer(mDevice);
  	mInstanceModels.push_back(tempInstanceModel);
 

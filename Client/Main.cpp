@@ -1,7 +1,6 @@
 
 
 #include "MainGame.h"
-#include "SceneMainGame.h"
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 	PSTR cmdLine, int showCmd)
 {
@@ -14,7 +13,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 #pragma comment( linker, "/entry:WinMainCRTStartup /subsystem:console" )
 #endif
 	
-   //_CrtSetBreakAlloc(1978);
+   //_CrtSetBreakAlloc(1917127);
 	CMainGame mainGame(hInstance);
 
 	if (!mainGame.Init())
