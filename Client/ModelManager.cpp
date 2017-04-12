@@ -59,6 +59,51 @@ void CModelManager::DrawStaticNormalModels(ID3D11DeviceContext * dc, ID3DX11Effe
 
 }
 
+void CModelManager::DrawStaticSsaoNormalModels(ID3D11DeviceContext * dc, ID3DX11EffectTechnique * tech, const XMMATRIX & shadowTransform, const Camera & cam)
+{
+	UINT stride = sizeof(Vertex::PosNormalTexTan);
+	UINT  offset = 0;
+
+	dc->IASetInputLayout(InputLayouts::PosNormalTexTan);
+	dc->IASetVertexBuffers(0, 1, &mStaticNormalMappingObjectVB, &stride, &offset);
+	dc->IASetIndexBuffer(mStaticNormalMappingObjectIB, DXGI_FORMAT_R32_UINT, 0);
+
+	for (auto p : mStaticNormalModels)
+	{
+		p.DrawSsao(dc, tech, shadowTransform, cam);
+		//p.Draw(dc, tech, shadowTransform, cam);
+	}
+
+	UINT stride2 = sizeof(Vertex::Basic32);
+	UINT  offset2 = 0;
+	dc->IASetInputLayout(InputLayouts::Basic32);
+	dc->IASetVertexBuffers(0, 1, &mStaticBasicObjectVB, &stride2, &offset2);
+	dc->IASetIndexBuffer(mStaticBasicObjectIB, DXGI_FORMAT_R32_UINT, 0);
+	for (auto p : mStaticBasicModels)
+	{
+		p.DrawSsao(dc, tech, shadowTransform, cam);
+	}
+
+	//dc->IASetInputLayout(InputLayouts::InstancedBasic32);
+
+	//UINT instanceStride[2] = { sizeof(Vertex::Basic32), sizeof(XMFLOAT4X4) };
+	//UINT instanceOffset[2] = { 0,0 };
+	//ID3D11Buffer* vbs[2] = { mStaticBasicObjectVB,mInstanceModels[0].GetInstanceBuffer() };
+
+
+	//for (int i = 0; i < mInstanceModels.size(); ++i)
+	//{
+	//	dc->IASetVertexBuffers(0, 2, vbs, instanceStride, instanceOffset);
+	//	dc->IASetIndexBuffer(mStaticBasicObjectIB, DXGI_FORMAT_R32_UINT, 0);
+	//	//Effects::InstancedBasicFX->Light3TexTech->GetDesc(&techDesc);
+
+
+	//	mInstanceModels[i].DrawSsao(dc, tech, shadowTransform, cam);
+	//}
+
+
+}
+
 void CModelManager::DrawStaticBasicModels(ID3D11DeviceContext * dc, ID3DX11EffectTechnique * tech, const XMMATRIX & shadowTransform, const Camera & cam)
 {
 	UINT stride = sizeof(Vertex::Basic32);

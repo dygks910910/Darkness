@@ -136,6 +136,8 @@ void InputLayouts::InitAll(ID3D11Device* device)
 	Effects::NormalMapFX->Light1SkinnedTech->GetPassByIndex(0)->GetDesc(&passDesc);
 	HR(device->CreateInputLayout(InputLayoutDesc::PosNormalTexTanSkinned, 6, passDesc.pIAInputSignature,
 		passDesc.IAInputSignatureSize, &PosNormalTexTanSkinned));
+
+
 }
 
 void InputLayouts::DestroyAll()

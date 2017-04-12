@@ -2,7 +2,7 @@
 
 MeshGeometry::MeshGeometry()
 	: mVB(0), mIB(0), 
-	mIndexBufferFormat(DXGI_FORMAT_R16_UINT), 
+	mIndexBufferFormat(DXGI_FORMAT_R32_UINT), 
 	mVertexStride(0)
 {
 }
@@ -13,11 +13,11 @@ MeshGeometry::~MeshGeometry()
 	ReleaseCOM(mIB);
 }
 
-void MeshGeometry::SetIndices(ID3D11Device* device, const USHORT* indices, UINT count)
+void MeshGeometry::SetIndices(ID3D11Device* device, const UINT* indices, UINT count)
 {
 	D3D11_BUFFER_DESC ibd;
     ibd.Usage = D3D11_USAGE_IMMUTABLE;
-    ibd.ByteWidth = sizeof(USHORT) * count;
+    ibd.ByteWidth = sizeof(UINT) * count;
     ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
     ibd.CPUAccessFlags = 0;
     ibd.MiscFlags = 0;

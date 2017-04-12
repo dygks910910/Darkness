@@ -67,6 +67,9 @@
     <Filter Include="Source Files\SkinedClass">
       <UniqueIdentifier>{a400008f-fffc-4e4c-8bff-6042cdf589b9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Ssao">
+      <UniqueIdentifier>{d783dddc-a737-418a-8952-91b25065e789}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Camera.cpp">
@@ -176,6 +179,9 @@
     </ClCompile>
     <ClCompile Include="LogoScene.cpp">
       <Filter>Source Files\99 Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Ssao.cpp">
+      <Filter>Source Files\Ssao</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -297,6 +303,9 @@
     </ClInclude>
     <ClInclude Include="LogoScene.h">
       <Filter>Source Files\99 Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Ssao.h">
+      <Filter>Source Files\Ssao</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

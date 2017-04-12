@@ -3,6 +3,7 @@
 #include "SkinnedData.h"
 #include "MeshGeometry.h"
 
+
 Keyframe::Keyframe()
 	: TimePos(0.0f),
 	Translation(0.0f, 0.0f, 0.0f),
@@ -85,6 +86,9 @@ float AnimationClip::GetClipStartTime()const
 	float t = MathHelper::Infinity;
 	for(UINT i = 0; i < BoneAnimations.size(); ++i)
 	{
+		if (BoneAnimations[i].Keyframes.size() == 0)
+			continue;
+		else
 		t = MathHelper::Min(t, BoneAnimations[i].GetStartTime());
 	}
 
@@ -97,6 +101,9 @@ float AnimationClip::GetClipEndTime()const
 	float t = 0.0f;
 	for(UINT i = 0; i < BoneAnimations.size(); ++i)
 	{
+		if (BoneAnimations[i].Keyframes.size() == 0)
+			continue;
+		else
 		t = MathHelper::Max(t, BoneAnimations[i].GetEndTime());
 	}
 
@@ -107,6 +114,9 @@ void AnimationClip::Interpolate(float t, std::vector<XMFLOAT4X4>& boneTransforms
 {
 	for(UINT i = 0; i < BoneAnimations.size(); ++i)
 	{
+		if (BoneAnimations[i].Keyframes.size() == 0)
+			continue;
+		else
 		BoneAnimations[i].Interpolate(t, boneTransforms[i]);
 	}
 }
@@ -136,7 +146,6 @@ void SkinnedData::Set(std::vector<int>& boneHierarchy,
 	mBoneOffsets   = boneOffsets;
 	mAnimations    = animations;
 }
- 
 void SkinnedData::GetFinalTransforms(const std::string& clipName, float timePos,  std::vector<XMFLOAT4X4>& finalTransforms)const
 {
 	UINT numBones = mBoneOffsets.size();
@@ -176,5 +185,6 @@ void SkinnedData::GetFinalTransforms(const std::string& clipName, float timePos,
 		XMMATRIX offset = XMLoadFloat4x4(&mBoneOffsets[i]);
 		XMMATRIX toRoot = XMLoadFloat4x4(&toRootTransforms[i]);
 		XMStoreFloat4x4(&finalTransforms[i], XMMatrixMultiply(offset, toRoot));
+		
 	}
 }

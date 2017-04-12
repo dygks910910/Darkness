@@ -22,8 +22,8 @@ bool CSceneManager::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	작성자:박요한(dygks910910@daum.net)
 	설명:메인씬 생성.
 	*/
-	mSceneKey = SceneName::MainScene;
-	mScenes.insert(make_pair(SceneName::MainScene, new CMainScene));
+	mSceneKey = SceneName::test;
+	mScenes.insert(make_pair(SceneName::test, new CTestScene));
 	mScenes[mSceneKey]->Init(device, dc,swapChain,
 		*viewport, clientWidth, clientHeight);
 
@@ -40,7 +40,7 @@ bool CSceneManager::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	return true;
 }
 
-void CSceneManager::UpdateScene(const float & dt)
+void CSceneManager::UpdateScene(const float dt)
 {
 	/*
 	2017 / 1 / 12 / 22:06
