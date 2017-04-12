@@ -31,11 +31,8 @@ class CTestScene :
 	설명:기본적인 dx11 인터페이스 변수들.여기서 Release해주면 안된다.프로그램 종료시 release하도록 
 	세팅해놨음.
 	*/
-	
-
 	int mClientHeight;
 	int mClientWidth;
-
 //////////////////////////////////////////////////////////////////////////
  	TextureMgr mTexMgr;
 	CModelManager mModelMgr;
@@ -51,10 +48,10 @@ class CTestScene :
 	XMFLOAT3 mOriginalLightDir[3];
 
 	///////////////////////////////Skined Model////////////////////////////////
-	SkinnedModel* mCharacterModel;
-	SkinnedModelInstance mCharacterInstance1;
-	SkinnedModelInstance mCharacterInstance2;
-	SkinnedModelInstance mCharacterInstances[70];
+// 	SkinnedModel* mCharacterModel;
+// 	SkinnedModelInstance mCharacterInstance1;
+// 	SkinnedModelInstance mCharacterInstance2;
+// 	SkinnedModelInstance mCharacterInstances[70];
 	//Terrain mTerrain;
 	POINT mLastMousePos;
 	Sky* mSky;
@@ -70,8 +67,6 @@ class CTestScene :
 	ShadowMap* mSmap;
 	Ssao* mSsao;
 
-// 	ID3D11Buffer* mScreenQuadVB;
-// 	ID3D11Buffer* mScreenQuadIB;
 public:
 	CTestScene();
 	virtual ~CTestScene();
@@ -86,10 +81,5 @@ public:
 
 	void DrawSceneToShadowMap();
 	void BuildShadowTransform();
-	void DrawSceneToSsaoNormalDepthMap();
-	int total = 0;
-
-	int mAnimTotalCnt[4];
-	std::map < std::string, std::vector<XMFLOAT4X4>*> mclipAnimbuf;
-	std::string mClipname[4] = { "Idle", "Walk", "Attack1", "Run" };
+	
 };

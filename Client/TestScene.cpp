@@ -20,19 +20,12 @@ CTestScene::~CTestScene()
 	// 		delete *p;
 	// 		p = mvStaticObject.erase(p);
 	// 	}
-	SafeDelete(mCharacterModel);
+	//SafeDelete(mCharacterModel);
 	SafeDelete(mSky);
 	SafeDelete(mSmap);
 	SafeDelete(mSsao);
 	ReleaseCOM(mRainTexSRV);
 	ReleaseCOM(mRandomTexSRV);
-	
-
-
-	for (auto p = mclipAnimbuf.begin(); p != mclipAnimbuf.end(); ++p)
-	{
-		delete[](p->second);
-	}
 	
 }
 
@@ -69,81 +62,80 @@ bool CTestScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 	//////////////////////////////////////////////////////////////////////////
 	int total = 0;
-	std::ifstream fin("Idle.txt");
+	
 	
 	//////////////////////////////////////////////////////////////////////////
 
-=======
-	mCharacterModel = new SkinnedModel(device, mTexMgr, "Models\\ResultIdle.txt", L"Textures\\");
-
-	mCharacterInstance1.Model = mCharacterModel;
-	mCharacterInstance2.Model = mCharacterModel;
-	mCharacterInstance1.TimePos = 0.0f;
-	mCharacterInstance2.TimePos = 0.0f;
-	mCharacterInstance1.ClipName = "Idle";
-	mCharacterInstance2.ClipName = "Idle";
-	mCharacterInstance1.FinalTransforms.resize(mCharacterModel->SkinnedData.BoneCount());
-	mCharacterInstance2.FinalTransforms.resize(mCharacterModel->SkinnedData.BoneCount());
-	std::vector<std::vector<XMFLOAT4X4>> testfinalTransform;
-
-	for (int k = 0; k < 4; ++k)
-	{
-		fin >> total;
-		mAnimTotalCnt[k] = total;
-		mCharacterInstance1.TestFinalTransforms = new std::vector<XMFLOAT4X4>[total];
-		//testfinalTransform.resize(total);
-		for (int i = 0; i < total; ++i)
-		{
-			mCharacterInstance1.TestFinalTransforms[i].resize(mCharacterModel->SkinnedData.BoneCount());
-			for (int j = 0; j < mCharacterModel->SkinnedData.BoneCount(); ++j)
-			{
-				fin >> mCharacterInstance1.TestFinalTransforms[i][j]._11 >> mCharacterInstance1.TestFinalTransforms[i][j]._12 >> mCharacterInstance1.TestFinalTransforms[i][j]._13 >> mCharacterInstance1.TestFinalTransforms[i][j]._14
-					>> mCharacterInstance1.TestFinalTransforms[i][j]._21 >> mCharacterInstance1.TestFinalTransforms[i][j]._22 >> mCharacterInstance1.TestFinalTransforms[i][j]._23 >> mCharacterInstance1.TestFinalTransforms[i][j]._24
-					>> mCharacterInstance1.TestFinalTransforms[i][j]._31 >> mCharacterInstance1.TestFinalTransforms[i][j]._32 >> mCharacterInstance1.TestFinalTransforms[i][j]._33 >> mCharacterInstance1.TestFinalTransforms[i][j]._34
-					>> mCharacterInstance1.TestFinalTransforms[i][j]._41 >> mCharacterInstance1.TestFinalTransforms[i][j]._42 >> mCharacterInstance1.TestFinalTransforms[i][j]._43 >> mCharacterInstance1.TestFinalTransforms[i][j]._44;
-			}
-		}
-		//mclipAnimbuf.insert(std::pair<std::string, std::vector<XMFLOAT4X4>>(mClipname[k], testfinalTransform[i]));
-		mclipAnimbuf.insert(std::pair<std::string, std::vector<XMFLOAT4X4>*>(mClipname[k], mCharacterInstance1.TestFinalTransforms));
-
-		testfinalTransform.clear();
-	}
-	mCharacterInstance1.mClipAnimbuf = &mclipAnimbuf;
-	mCharacterInstance1.mAnimTotalTime = mAnimTotalCnt[0];
-	mCharacterInstance1.mAnimCnt = 0;
-	for (int i = 0; i < Animnum; ++i)
-	{
-		mCharacterInstances[i].Model = mCharacterModel;
-		mCharacterInstances[i].TimePos = 0.0f;
-		//mCharacterInstances[i].ClipName = "Scene";
-		mCharacterInstances[i].FinalTransforms.resize(mCharacterModel->SkinnedData.BoneCount());
-		//mCharacterInstances[i].TestFinalTransforms = new std::vector<XMFLOAT4X4>[total];
-		mCharacterInstances[i].mClipAnimbuf = &mclipAnimbuf;
-		int a = rand() % 4;
-		mCharacterInstances[i].ClipName = mClipname[a];
-		mCharacterInstances[i].mAnimTotalTime = mAnimTotalCnt[a];
-		mCharacterInstances[i].mAnimCnt = 0;
-
-		/*for (int j = 0; j < total; ++j)
-			mCharacterInstances[i].TestFinalTransforms[j].resize(mCharacterModel->SkinnedData.BoneCount());
-		mCharacterInstances[i].TestFinalTransforms = mCharacterInstance1.TestFinalTransforms;*/
-	}
-	fin.close();
+// 	mCharacterModel = new SkinnedModel(device, mTexMgr, "Models\\ResultIdle.txt", L"Textures\\");
+// 
+// 	mCharacterInstance1.Model = mCharacterModel;
+// 	mCharacterInstance2.Model = mCharacterModel;
+// 	mCharacterInstance1.TimePos = 0.0f;
+// 	mCharacterInstance2.TimePos = 0.0f;
+// 	mCharacterInstance1.ClipName = "Idle";
+// 	mCharacterInstance2.ClipName = "Idle";
+// 	mCharacterInstance1.FinalTransforms.resize(mCharacterModel->SkinnedData.BoneCount());
+// 	mCharacterInstance2.FinalTransforms.resize(mCharacterModel->SkinnedData.BoneCount());
+// 	std::ifstream fin("Idle.txt");
+// 	std::vector<std::vector<XMFLOAT4X4>> testfinalTransform;
+// 
+// 	for (int k = 0; k < 4; ++k)
+// 	{
+// 		fin >> total;
+// 		mAnimTotalCnt[k] = total;
+// 		mCharacterInstance1.TestFinalTransforms = new std::vector<XMFLOAT4X4>[total];
+// 		//testfinalTransform.resize(total);
+// 		for (int i = 0; i < total; ++i)
+// 		{
+// 			mCharacterInstance1.TestFinalTransforms[i].resize(mCharacterModel->SkinnedData.BoneCount());
+// 			for (int j = 0; j < mCharacterModel->SkinnedData.BoneCount(); ++j)
+// 			{
+// 				fin >> mCharacterInstance1.TestFinalTransforms[i][j]._11 >> mCharacterInstance1.TestFinalTransforms[i][j]._12 >> mCharacterInstance1.TestFinalTransforms[i][j]._13 >> mCharacterInstance1.TestFinalTransforms[i][j]._14
+// 					>> mCharacterInstance1.TestFinalTransforms[i][j]._21 >> mCharacterInstance1.TestFinalTransforms[i][j]._22 >> mCharacterInstance1.TestFinalTransforms[i][j]._23 >> mCharacterInstance1.TestFinalTransforms[i][j]._24
+// 					>> mCharacterInstance1.TestFinalTransforms[i][j]._31 >> mCharacterInstance1.TestFinalTransforms[i][j]._32 >> mCharacterInstance1.TestFinalTransforms[i][j]._33 >> mCharacterInstance1.TestFinalTransforms[i][j]._34
+// 					>> mCharacterInstance1.TestFinalTransforms[i][j]._41 >> mCharacterInstance1.TestFinalTransforms[i][j]._42 >> mCharacterInstance1.TestFinalTransforms[i][j]._43 >> mCharacterInstance1.TestFinalTransforms[i][j]._44;
+// 			}
+// 		}
+// 		//mclipAnimbuf.insert(std::pair<std::string, std::vector<XMFLOAT4X4>>(mClipname[k], testfinalTransform[i]));
+// 		mclipAnimbuf.insert(std::pair<std::string, std::vector<XMFLOAT4X4>*>(mClipname[k], mCharacterInstance1.TestFinalTransforms));
+// 
+// 		testfinalTransform.clear();
+// 	}
+// 	mCharacterInstance1.mClipAnimbuf = &mclipAnimbuf;
+// 	mCharacterInstance1.mAnimTotalTime = mAnimTotalCnt[0];
+// 	mCharacterInstance1.mAnimCnt = 0;
+// 	for (int i = 0; i < Animnum; ++i)
+// 	{
+// 		mCharacterInstances[i].Model = mCharacterModel;
+// 		mCharacterInstances[i].TimePos = 0.0f;
+// 		//mCharacterInstances[i].ClipName = "Scene";
+// 		mCharacterInstances[i].FinalTransforms.resize(mCharacterModel->SkinnedData.BoneCount());
+// 		//mCharacterInstances[i].TestFinalTransforms = new std::vector<XMFLOAT4X4>[total];
+// 		mCharacterInstances[i].mClipAnimbuf = &mclipAnimbuf;
+// 		int a = rand() % 4;
+// 		mCharacterInstances[i].ClipName = mClipname[a];
+// 		mCharacterInstances[i].mAnimTotalTime = mAnimTotalCnt[a];
+// 		mCharacterInstances[i].mAnimCnt = 0;
+// 
+// 		/*for (int j = 0; j < total; ++j)
+// 			mCharacterInstances[i].TestFinalTransforms[j].resize(mCharacterModel->SkinnedData.BoneCount());
+// 		mCharacterInstances[i].TestFinalTransforms = mCharacterInstance1.TestFinalTransforms;*/
+// 	}
 
 	// Reflect to change coordinate system from the RHS the data was exported out as.
-	XMMATRIX modelScale = XMMatrixScaling(0.2f, 0.2f, 0.2f);
-	XMMATRIX modelRot = XMMatrixRotationY(MathHelper::Pi);
-	XMMATRIX modelOffset = XMMatrixTranslation(-2.0f, 2.0f, -7.0f);
-	XMStoreFloat4x4(&mCharacterInstance1.World, modelScale*modelRot*modelOffset);
-
-	modelOffset = XMMatrixTranslation(2.0f, 0.0f, -7.0f);
-	XMStoreFloat4x4(&mCharacterInstance2.World, modelScale*modelRot*modelOffset);
-
-	for (int i = 0; i < Animnum; ++i)
-	{
-		modelOffset = XMMatrixTranslation(2.0f, 1.0f*i, -7.0f);
-		XMStoreFloat4x4(&mCharacterInstances[i].World, modelScale*modelRot*modelOffset);
-	}
+// 	XMMATRIX modelScale = XMMatrixScaling(0.2f, 0.2f, 0.2f);
+// 	XMMATRIX modelRot = XMMatrixRotationY(MathHelper::Pi);
+// 	XMMATRIX modelOffset = XMMatrixTranslation(-2.0f, 2.0f, -7.0f);
+// 	XMStoreFloat4x4(&mCharacterInstance1.World, modelScale*modelRot*modelOffset);
+// 
+// 	modelOffset = XMMatrixTranslation(2.0f, 0.0f, -7.0f);
+// 	XMStoreFloat4x4(&mCharacterInstance2.World, modelScale*modelRot*modelOffset);
+// 
+// 	for (int i = 0; i < Animnum; ++i)
+// 	{
+// 		modelOffset = XMMatrixTranslation(2.0f, 1.0f*i, -7.0f);
+// 		XMStoreFloat4x4(&mCharacterInstances[i].World, modelScale*modelRot*modelOffset);
+// 	}
 
 	
 	//////////////////////////////////////////////////////////////////////////
@@ -221,30 +213,30 @@ void CTestScene::UpdateScene(const float dt)
 	if (GetAsyncKeyState('D') & 0x8000)
 		mCam.Strafe(20.0f*dt);
 
-	if (GetAsyncKeyState('Z') & 0x8000)
-	{
-		mCharacterInstance1.ClipName = "Idle";
-		mCharacterInstance1.mAnimTotalTime = mAnimTotalCnt[0];
-		mCharacterInstance1.mAnimCnt = 0;
-	}
-	if (GetAsyncKeyState('X') & 0x8000)
-	{
-		mCharacterInstance1.ClipName = "Attack1";
-		mCharacterInstance1.mAnimTotalTime = mAnimTotalCnt[2];
-		mCharacterInstance1.mAnimCnt = 0;
-	}
-	if (GetAsyncKeyState('V') & 0x8000)
-	{
-		mCharacterInstance1.ClipName = "Run";
-		mCharacterInstance1.mAnimTotalTime = mAnimTotalCnt[3];
-		mCharacterInstance1.mAnimCnt = 0;
-	}
-	if (GetAsyncKeyState('B') & 0x8000)
-	{
-		mCharacterInstance1.ClipName = "Walk";
-		mCharacterInstance1.mAnimTotalTime = mAnimTotalCnt[1];
-		mCharacterInstance1.mAnimCnt = 0;
-	}
+// 	if (GetAsyncKeyState('Z') & 0x8000)
+// 	{
+// 		mCharacterInstance1.ClipName = "Idle";
+// 		mCharacterInstance1.mAnimTotalTime = mAnimTotalCnt[0];
+// 		mCharacterInstance1.mAnimCnt = 0;
+// 	}
+// 	if (GetAsyncKeyState('X') & 0x8000)
+// 	{
+// 		mCharacterInstance1.ClipName = "Attack1";
+// 		mCharacterInstance1.mAnimTotalTime = mAnimTotalCnt[2];
+// 		mCharacterInstance1.mAnimCnt = 0;
+// 	}
+// 	if (GetAsyncKeyState('V') & 0x8000)
+// 	{
+// 		mCharacterInstance1.ClipName = "Run";
+// 		mCharacterInstance1.mAnimTotalTime = mAnimTotalCnt[3];
+// 		mCharacterInstance1.mAnimCnt = 0;
+// 	}
+// 	if (GetAsyncKeyState('B') & 0x8000)
+// 	{
+// 		mCharacterInstance1.ClipName = "Walk";
+// 		mCharacterInstance1.mAnimTotalTime = mAnimTotalCnt[1];
+// 		mCharacterInstance1.mAnimCnt = 0;
+// 	}
 	/*if (GetAsyncKeyState('N') & 0x8000)
 		mCharacterInstance1.ClipName = "Jump";
 	if (GetAsyncKeyState('M') & 0x8000)
@@ -256,10 +248,10 @@ void CTestScene::UpdateScene(const float dt)
 	//
 
 	// 	if (GetAsyncKeyState('R') & 0x8000)
-	{
-		// 		mFire.Reset();
-		// 		mRain.Reset();
-	}
+// 	{
+// 		// 		mFire.Reset();
+// 		// 		mRain.Reset();
+// 	}
 	// 
 	// Clamp camera to terrain surface in walk mode.
 	//
@@ -270,11 +262,11 @@ void CTestScene::UpdateScene(const float dt)
 	BuildShadowTransform();
 	mRain.Update(dt, mTimer.TotalTime());
 
-
-	mCharacterInstance1.Update(dt);
-
-	for (int i = 0; i < Animnum; ++i)
-		mCharacterInstances[i].Update(dt);
+	mModelMgr.UpdateModel(dt);
+// 	mCharacterInstance1.Update(dt);
+// 
+// 	for (int i = 0; i < Animnum; ++i)
+// 		mCharacterInstances[i].Update(dt);
 
 	mCam.UpdateViewMatrix();
 }
@@ -293,12 +285,7 @@ void CTestScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 	//ID3DX11EffectTechnique* animatedTech = Effects::SsaoNormalDepthFX->NormalDepthSkinnedTech;
 	//ID3DX11EffectTechnique* activeSkinnedTech = Effects::NormalMapFX->Light3TexSkinnedTech;
 
-	XMMATRIX toTexSpace(
-		0.5f, 0.0f, 0.0f, 0.0f,
-		0.0f, -0.5f, 0.0f, 0.0f,
-		0.0f, 0.0f, 1.0f, 0.0f,
-		0.5f, 0.5f, 0.0f, 1.0f);
-
+	
 
 	XMMATRIX shadowTransform = XMLoadFloat4x4(&mShadowTransform);
 
@@ -383,7 +370,6 @@ void CTestScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 	//////////////////////////////////////////////////////////////////////////
 	//draw Animation
 
-=======
 
 	XMMATRIX world;
 	XMMATRIX worldInvTranspose;
@@ -392,61 +378,61 @@ void CTestScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 	D3DX11_TECHNIQUE_DESC techDesc;
 
 	mDc->IASetInputLayout(InputLayouts::PosNormalTexTanSkinned);
-	
-	activeSkinnedTech->GetDesc(&techDesc);
-	for (UINT p = 0; p < techDesc.Passes; ++p)
-	{
-		world = XMLoadFloat4x4(&mCharacterInstance1.World);
-		worldInvTranspose = MathHelper::InverseTranspose(world);
-		worldViewProj = world*mCam.View()*mCam.Proj();
-
-		Effects::NormalMapFX->SetWorld(world);
-		Effects::NormalMapFX->SetWorldInvTranspose(worldInvTranspose);
-		Effects::NormalMapFX->SetWorldViewProj(worldViewProj);
-		Effects::NormalMapFX->SetWorldViewProjTex(worldViewProj*toTexSpace);
-		Effects::NormalMapFX->SetShadowTransform(world*shadowTransform);
-		Effects::NormalMapFX->SetTexTransform(XMMatrixScaling(1.0f, 1.0f, 1.0f));
-		Effects::NormalMapFX->SetBoneTransforms(
-			&mCharacterInstance1.FinalTransforms[0],
-			mCharacterInstance1.FinalTransforms.size());
-
-		for (UINT subset = 0; subset < mCharacterInstance1.Model->SubsetCount; ++subset)
-		{
-			Effects::NormalMapFX->SetMaterial(mCharacterInstance1.Model->Mat[subset]);
-			Effects::NormalMapFX->SetDiffuseMap(mCharacterInstance1.Model->DiffuseMapSRV[subset]);
-			Effects::NormalMapFX->SetNormalMap(mCharacterInstance1.Model->NormalMapSRV[subset]);
-
-			activeSkinnedTech->GetPassByIndex(p)->Apply(0, mDc);
-			mCharacterInstance1.Model->ModelMesh.Draw(mDc, subset);
-		}
-		for (int i = 0; i < Animnum; ++i)
-		{
-				world = XMLoadFloat4x4(&mCharacterInstances[i].World);
-				worldInvTranspose = MathHelper::InverseTranspose(world);
-				worldViewProj = world*mCam.View()*mCam.Proj();
-
-				Effects::NormalMapFX->SetWorld(world);
-				Effects::NormalMapFX->SetWorldInvTranspose(worldInvTranspose);
-				Effects::NormalMapFX->SetWorldViewProj(worldViewProj);
-				Effects::NormalMapFX->SetWorldViewProjTex(worldViewProj*toTexSpace);
-				Effects::NormalMapFX->SetShadowTransform(world*shadowTransform);
-				Effects::NormalMapFX->SetTexTransform(XMMatrixScaling(1.0f, 1.0f, 1.0f));
-				Effects::NormalMapFX->SetBoneTransforms(
-					&mCharacterInstances[i].FinalTransforms[0],
-					mCharacterInstances[i].FinalTransforms.size());
-
-				for (UINT subset = 0; subset < mCharacterInstances[i].Model->SubsetCount; ++subset)
-				{
-					Effects::NormalMapFX->SetMaterial(mCharacterInstances[i].Model->Mat[subset]);
-					Effects::NormalMapFX->SetDiffuseMap(mCharacterInstances[i].Model->DiffuseMapSRV[subset]);
-					Effects::NormalMapFX->SetNormalMap(mCharacterInstances[i].Model->NormalMapSRV[subset]);
-
-					activeSkinnedTech->GetPassByIndex(p)->Apply(0, mDc);
-					mCharacterInstances[i].Model->ModelMesh.Draw(mDc, subset);
-				}
-
-		}
-	}
+	mModelMgr.DrawSkinnedModels(mDc, activeSkinnedTech, XMLoadFloat4x4(&mShadowTransform), mCam);
+// 	activeSkinnedTech->GetDesc(&techDesc);
+// 	for (UINT p = 0; p < techDesc.Passes; ++p)
+// 	{
+// 		world = XMLoadFloat4x4(&mCharacterInstance1.World);
+// 		worldInvTranspose = MathHelper::InverseTranspose(world);
+// 		worldViewProj = world*mCam.View()*mCam.Proj();
+// 
+// 		Effects::NormalMapFX->SetWorld(world);
+// 		Effects::NormalMapFX->SetWorldInvTranspose(worldInvTranspose);
+// 		Effects::NormalMapFX->SetWorldViewProj(worldViewProj);
+// 		Effects::NormalMapFX->SetWorldViewProjTex(worldViewProj*toTexSpace);
+// 		Effects::NormalMapFX->SetShadowTransform(world*shadowTransform);
+// 		Effects::NormalMapFX->SetTexTransform(XMMatrixScaling(1.0f, 1.0f, 1.0f));
+// 		Effects::NormalMapFX->SetBoneTransforms(
+// 			&mCharacterInstance1.FinalTransforms[0],
+// 			mCharacterInstance1.FinalTransforms.size());
+// 
+// 		for (UINT subset = 0; subset < mCharacterInstance1.Model->SubsetCount; ++subset)
+// 		{
+// 			Effects::NormalMapFX->SetMaterial(mCharacterInstance1.Model->Mat[subset]);
+// 			Effects::NormalMapFX->SetDiffuseMap(mCharacterInstance1.Model->DiffuseMapSRV[subset]);
+// 			Effects::NormalMapFX->SetNormalMap(mCharacterInstance1.Model->NormalMapSRV[subset]);
+// 
+// 			activeSkinnedTech->GetPassByIndex(p)->Apply(0, mDc);
+// 			mCharacterInstance1.Model->ModelMesh.Draw(mDc, subset);
+// 		}
+// 		for (int i = 0; i < Animnum; ++i)
+// 		{
+// 				world = XMLoadFloat4x4(&mCharacterInstances[i].World);
+// 				worldInvTranspose = MathHelper::InverseTranspose(world);
+// 				worldViewProj = world*mCam.View()*mCam.Proj();
+// 
+// 				Effects::NormalMapFX->SetWorld(world);
+// 				Effects::NormalMapFX->SetWorldInvTranspose(worldInvTranspose);
+// 				Effects::NormalMapFX->SetWorldViewProj(worldViewProj);
+// 				Effects::NormalMapFX->SetWorldViewProjTex(worldViewProj*toTexSpace);
+// 				Effects::NormalMapFX->SetShadowTransform(world*shadowTransform);
+// 				Effects::NormalMapFX->SetTexTransform(XMMatrixScaling(1.0f, 1.0f, 1.0f));
+// 				Effects::NormalMapFX->SetBoneTransforms(
+// 					&mCharacterInstances[i].FinalTransforms[0],
+// 					mCharacterInstances[i].FinalTransforms.size());
+// 
+// 				for (UINT subset = 0; subset < mCharacterInstances[i].Model->SubsetCount; ++subset)
+// 				{
+// 					Effects::NormalMapFX->SetMaterial(mCharacterInstances[i].Model->Mat[subset]);
+// 					Effects::NormalMapFX->SetDiffuseMap(mCharacterInstances[i].Model->DiffuseMapSRV[subset]);
+// 					Effects::NormalMapFX->SetNormalMap(mCharacterInstances[i].Model->NormalMapSRV[subset]);
+// 
+// 					activeSkinnedTech->GetPassByIndex(p)->Apply(0, mDc);
+// 					mCharacterInstances[i].Model->ModelMesh.Draw(mDc, subset);
+// 				}
+// 
+// 		}
+// 	}
 	
 	// FX sets tessellation stages, but it does not disable them.  So do that here
 	// to turn off tessellation.
@@ -537,148 +523,6 @@ void CTestScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 }
 //////////////////////0406/////////////////////////
 
-void CTestScene::DrawSceneToSsaoNormalDepthMap()
-{
-	XMMATRIX view = mCam.View();
-	XMMATRIX proj = mCam.Proj();
-	XMMATRIX viewProj = XMMatrixMultiply(view, proj);
-
-	ID3DX11EffectTechnique* tech = Effects::SsaoNormalDepthFX->NormalDepthTech;
-	ID3DX11EffectTechnique* animatedTech = Effects::SsaoNormalDepthFX->NormalDepthSkinnedTech;
-
-
-	XMMATRIX world;
-	XMMATRIX worldInvTranspose;
-	XMMATRIX worldView;
-	XMMATRIX worldInvTransposeView;
-	XMMATRIX worldViewProj;
-	mDc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-	mModelMgr.DrawStaticSsaoNormalModels(mDc, tech,
-		XMLoadFloat4x4(&mShadowTransform), mCam);
-
-
-
-	//	mModelMgr.DrawInstanceSsaoModels(mDc, tech, XMLoadFloat4x4(&mShadowTransform), mCam);
-	//
-
-
-	D3DX11_TECHNIQUE_DESC techDesc;
-
-
-	//
-	// Draw the animated characters.
-	//
-
-	mDc->IASetInputLayout(InputLayouts::PosNormalTexTanSkinned);
-
-	animatedTech->GetDesc(&techDesc);
-	for (UINT p = 0; p < techDesc.Passes; ++p)
-	{
-		// Instance 1
-
-		world = XMLoadFloat4x4(&mCharacterInstance1.World);
-		worldInvTranspose = MathHelper::InverseTranspose(world);
-		worldView = world*view;
-		worldInvTransposeView = worldInvTranspose*view;
-		worldViewProj = world*view*proj;
-
-		Effects::SsaoNormalDepthFX->SetWorldView(worldView);
-		Effects::SsaoNormalDepthFX->SetWorldInvTransposeView(worldInvTransposeView);
-		Effects::SsaoNormalDepthFX->SetWorldViewProj(worldViewProj);
-		Effects::SsaoNormalDepthFX->SetTexTransform(XMMatrixIdentity());
-		Effects::SsaoNormalDepthFX->SetBoneTransforms(
-			&mCharacterInstance1.FinalTransforms[0],
-			mCharacterInstance1.FinalTransforms.size());
-
-		animatedTech->GetPassByIndex(p)->Apply(0, mDc);
-
-		for (UINT subset = 0; subset < mCharacterInstance1.Model->SubsetCount; ++subset)
-		{
-			mCharacterInstance1.Model->ModelMesh.Draw(mDc, subset);
-		}
-	}
-
-	//for (int i = 0; i < 70; ++i)
-	//{
-	//	for (UINT p = 0; p < techDesc.Passes; ++p)
-	//	{
-	//		// Instance 1
-
-	//		world = XMLoadFloat4x4(&mCharacterInstances[i].World);
-	//		worldInvTranspose = MathHelper::InverseTranspose(world);
-	//		worldView = world*view;
-	//		worldInvTransposeView = worldInvTranspose*view;
-	//		worldViewProj = world*view*proj;
-
-	//		Effects::SsaoNormalDepthFX->SetWorldView(worldView);
-	//		Effects::SsaoNormalDepthFX->SetWorldInvTransposeView(worldInvTransposeView);
-	//		Effects::SsaoNormalDepthFX->SetWorldViewProj(worldViewProj);
-	//		Effects::SsaoNormalDepthFX->SetTexTransform(XMMatrixIdentity());
-	//		Effects::SsaoNormalDepthFX->SetBoneTransforms(
-	//			&mCharacterInstances[i].FinalTransforms[0],
-	//			mCharacterInstances[i].FinalTransforms.size());
-
-	//		animatedTech->GetPassByIndex(p)->Apply(0, mDc);
-
-	//		for (UINT subset = 0; subset < mCharacterInstances[i].Model->SubsetCount; ++subset)
-	//		{
-	//			mCharacterInstances[i].Model->ModelMesh.Draw(mDc, subset);
-	//		}
-	//	}
-	//}
-		// Instance 2
-
-		/*world = XMLoadFloat4x4(&mCharacterInstance2.World);
-		worldInvTranspose = MathHelper::InverseTranspose(world);
-		worldView = world*view;
-		worldInvTransposeView = worldInvTranspose*view;
-		worldViewProj = world*view*proj;
-
-		Effects::SsaoNormalDepthFX->SetWorldView(worldView);
-		Effects::SsaoNormalDepthFX->SetWorldInvTransposeView(worldInvTransposeView);
-		Effects::SsaoNormalDepthFX->SetWorldViewProj(worldViewProj);
-		Effects::SsaoNormalDepthFX->SetTexTransform(XMMatrixIdentity());
-		Effects::SsaoNormalDepthFX->SetBoneTransforms(
-		&mCharacterInstance2.FinalTransforms[0],
-		mCharacterInstance2.FinalTransforms.size());
-
-		animatedTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
-
-		for (UINT subset = 0; subset < mCharacterInstance2.Model->SubsetCount; ++subset)
-		{
-		mCharacterInstance2.Model->ModelMesh.Draw(md3dImmediateContext, subset);
-		}*/
-		//////////////////////////
-		/*for (int i = 0; i < 70; ++i)
-		{
-		world = XMLoadFloat4x4(&mCharacterInstance[i].World);
-		worldInvTranspose = MathHelper::InverseTranspose(world);
-		worldView = world*view;
-		worldInvTransposeView = worldInvTranspose*view;
-		worldViewProj = world*view*proj;
-
-		Effects::SsaoNormalDepthFX->SetWorldView(worldView);
-		Effects::SsaoNormalDepthFX->SetWorldInvTransposeView(worldInvTransposeView);
-		Effects::SsaoNormalDepthFX->SetWorldViewProj(worldViewProj);
-		Effects::SsaoNormalDepthFX->SetTexTransform(XMMatrixIdentity());
-		Effects::SsaoNormalDepthFX->SetBoneTransforms(
-		&mCharacterInstance[i].FinalTransforms[0],
-		mCharacterInstance[i].FinalTransforms.size());
-
-		animatedTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
-
-		for (UINT subset = 0; subset < mCharacterInstance1.Model->SubsetCount; ++subset)
-		{
-		mCharacterInstance[i].Model->ModelMesh.Draw(md3dImmediateContext, subset);
-		}
-		}*/
-	
-
-	mDc->RSSetState(0);
-}
-///////////////////////////////////////////////////////////////////
-
 void CTestScene::OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWnd)
 {
 	mLastMousePos.x = x;
@@ -701,7 +545,7 @@ void CTestScene::OnMouseMove(WPARAM btnState, int x, int y)
 		float dy = XMConvertToRadians(0.25f*static_cast<float>(y - mLastMousePos.y));
 
 		mCam.Pitch(dy);
-		mCam.RotateAxis(XMVectorZero(),dx);
+		mCam.RotateY(dx);
 	}
 	mLastMousePos.x = x;
 	mLastMousePos.y = y;

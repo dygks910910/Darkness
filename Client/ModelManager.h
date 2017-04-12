@@ -24,6 +24,9 @@ class CModelManager
 	std::vector<CInstanceBasicModel> mInstanceModels;
 	std::vector<SkinnedModelInstance> mSkinnedModelInstance;
 
+	std::map < std::string, std::vector<XMFLOAT4X4>*> mclipAnimbuf;
+	std::pair<std::string, int> mClipnameAndTotalCounts[4];
+
 	Material mGridMat;
 	Material mBoxMat;
 	//////////////////////////////////////////////////////////////////////////
@@ -36,9 +39,9 @@ class CModelManager
 	int boxIndexOffset;
 	int boxIndexCount;
 
-	int clownIndexOffset;
-	int clownVertexOffset;
-	int clownIndexCount;
+// 	int clownIndexOffset;
+// 	int clownVertexOffset;
+// 	int clownIndexCount;
 
 	int fenceIndexOffset, fenceVertexOffset, fenceIndexCount;
 	int house1IndexOffset, house1VertexOffset, house1IndexCount;
@@ -65,14 +68,21 @@ public:
 	void DrawStaticBasicModels(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMMATRIX& shadowTransform, const Camera& cam);
 
 	void DrawStaticSsaoNormalModels(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMMATRIX& shadowTransform, const Camera& cam);
-
+	void DrawSkinnedModels(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMMATRIX& shadowTransform, const Camera& cam);
 
 	void DrawToShadowMap(ID3D11DeviceContext * dc, ID3DX11EffectTechnique * tech, 
 		const XMFLOAT4X4 & lightView, const XMFLOAT4X4 & lightProj);
 	void DrawInstancedModel(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMMATRIX& shadowTransform, const Camera& cam);
+	void UpdateModel(const float& dt);
 private:
 	void BuildShapeGeometryBuffers();
 	void BuildBasicGeometryBuffer();
 	void ReadMapData(TextureMgr& texMgr,Camera& cam);
 };
-
+enum ANIMATION_INFO
+{
+	IDLE,
+	WARK,
+	ATTACT,
+	RUN
+};

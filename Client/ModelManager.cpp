@@ -21,11 +21,16 @@ CModelManager::~CModelManager()
 	{
 		p.Destroy();
 	}
+	for (auto p = mclipAnimbuf.begin(); p != mclipAnimbuf.end(); ++p)
+	{
+		delete[](p->second);
+	}
 
 }
 
 void CModelManager::Init(TextureMgr & texMgr, Camera & cam, ID3D11Device* device)
 {
+	mDevice = device;
 	mGridMat.Ambient = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
 	mGridMat.Diffuse = XMFLOAT4(0.6f, 0.6f, 0.6f, 1.0f);
 	mGridMat.Specular = XMFLOAT4(0.4f, 0.4f, 0.4f, 16.0f);
@@ -35,10 +40,45 @@ void CModelManager::Init(TextureMgr & texMgr, Camera & cam, ID3D11Device* device
 	mBoxMat.Diffuse = XMFLOAT4(0.4f, 0.4f, 0.4f, 1.0f);
 	mBoxMat.Specular = XMFLOAT4(0.8f, 0.8f, 0.8f, 16.0f);
 	mBoxMat.Reflect = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
+	int animTotalCounts[4];
+	std::string clipname[4] = { "Idle", "Walk", "Attack1", "Run" };
 
 
-	mDevice = device;
 	mCharacterModel = new SkinnedModel(mDevice, texMgr, "ResultIdle.txt", L"Textures\\");
+
+	std::ifstream fin("Idle.txt");
+	std::vector<std::vector<XMFLOAT4X4>> testfinalTransform;
+	int total = 0;
+
+	for (int k = 0; k < 4; ++k)
+	{
+		fin >> total;
+		animTotalCounts[k] = total;
+		auto TestFinalTransforms = new std::vector<XMFLOAT4X4>[total];
+		//testfinalTransform.resize(total);
+		for (int i = 0; i < total; ++i)
+		{
+			TestFinalTransforms[i].resize(mCharacterModel->SkinnedData.BoneCount());
+			for (int j = 0; j < mCharacterModel->SkinnedData.BoneCount(); ++j)
+			{
+				fin >> TestFinalTransforms[i][j]._11 >> TestFinalTransforms[i][j]._12 >> TestFinalTransforms[i][j]._13 >> TestFinalTransforms[i][j]._14
+					>> TestFinalTransforms[i][j]._21 >> TestFinalTransforms[i][j]._22 >> TestFinalTransforms[i][j]._23 >> TestFinalTransforms[i][j]._24
+					>> TestFinalTransforms[i][j]._31 >>TestFinalTransforms[i][j]._32 >> TestFinalTransforms[i][j]._33 >> TestFinalTransforms[i][j]._34
+					>> TestFinalTransforms[i][j]._41 >> TestFinalTransforms[i][j]._42 >> TestFinalTransforms[i][j]._43 >> TestFinalTransforms[i][j]._44;
+			}
+		}
+		mclipAnimbuf.insert(std::pair<std::string, std::vector<XMFLOAT4X4>*>(clipname[k], TestFinalTransforms));
+
+		testfinalTransform.clear();
+	}
+	fin.close();
+
+	for (int i = 0; i < 4; ++i)
+	{
+		mClipnameAndTotalCounts[i] = std::make_pair(clipname[i], animTotalCounts[i]);
+	}
+
+
 	BuildBasicGeometryBuffer();
 	BuildShapeGeometryBuffers();
 	ReadMapData(texMgr, cam);
@@ -104,6 +144,51 @@ void CModelManager::DrawStaticSsaoNormalModels(ID3D11DeviceContext * dc, ID3DX11
 	//}
 
 
+}
+
+void CModelManager::DrawSkinnedModels(ID3D11DeviceContext * dc, ID3DX11EffectTechnique * tech, const XMMATRIX & shadowTransform, const Camera & cam)
+{
+	XMMATRIX toTexSpace(
+		0.5f, 0.0f, 0.0f, 0.0f,
+		0.0f, -0.5f, 0.0f, 0.0f,
+		0.0f, 0.0f, 1.0f, 0.0f,
+		0.5f, 0.5f, 0.0f, 1.0f);
+
+	D3DX11_TECHNIQUE_DESC techDesc;
+	XMMATRIX world;
+	XMMATRIX worldInvTranspose;
+	XMMATRIX worldViewProj;
+
+	tech->GetDesc(&techDesc);
+	for (int i = 0; i < mSkinnedModelInstance.size(); ++i)
+	{
+		for (UINT p = 0; p < techDesc.Passes; ++p)
+		{
+			world = XMLoadFloat4x4(&mSkinnedModelInstance[i].World);
+			worldInvTranspose = MathHelper::InverseTranspose(world);
+			worldViewProj = world*cam.View()*cam.Proj();
+
+			Effects::NormalMapFX->SetWorld(world);
+			Effects::NormalMapFX->SetWorldInvTranspose(worldInvTranspose);
+			Effects::NormalMapFX->SetWorldViewProj(worldViewProj);
+			Effects::NormalMapFX->SetWorldViewProjTex(worldViewProj*toTexSpace);
+			Effects::NormalMapFX->SetShadowTransform(world*shadowTransform);
+			Effects::NormalMapFX->SetTexTransform(XMMatrixScaling(1.0f, 1.0f, 1.0f));
+			Effects::NormalMapFX->SetBoneTransforms(
+				&mSkinnedModelInstance[i].FinalTransforms[0],
+				mSkinnedModelInstance[i].FinalTransforms.size());
+
+			for (UINT subset = 0; subset < mSkinnedModelInstance[i].Model->SubsetCount; ++subset)
+			{
+				Effects::NormalMapFX->SetMaterial(mSkinnedModelInstance[i].Model->Mat[subset]);
+				Effects::NormalMapFX->SetDiffuseMap(mSkinnedModelInstance[i].Model->DiffuseMapSRV[subset]);
+				Effects::NormalMapFX->SetNormalMap(mSkinnedModelInstance[i].Model->NormalMapSRV[subset]);
+
+				tech->GetPassByIndex(p)->Apply(0, dc);
+				mSkinnedModelInstance[i].Model->ModelMesh.Draw(dc, subset);
+			}
+		}
+	}
 }
 
 void CModelManager::DrawStaticBasicModels(ID3D11DeviceContext * dc, ID3DX11EffectTechnique * tech, const XMMATRIX & shadowTransform, const Camera & cam)
@@ -176,6 +261,14 @@ void CModelManager::DrawInstancedModel(ID3D11DeviceContext * dc, ID3DX11EffectTe
 
 }
 
+void CModelManager::UpdateModel(const float & dt)
+{
+	for (int i = 0; i < mSkinnedModelInstance.size(); ++i)
+	{
+		mSkinnedModelInstance[i].Update(dt);
+	}
+}
+
 void CModelManager::BuildShapeGeometryBuffers()
 {
 
@@ -184,7 +277,6 @@ void CModelManager::BuildShapeGeometryBuffers()
 
 	GeometryGenerator::MeshData box;
 	GeometryGenerator::MeshData grid;
-	GeometryGenerator::MeshData clown;
 
 
 
@@ -196,39 +288,31 @@ void CModelManager::BuildShapeGeometryBuffers()
 	CFbxLoader loader;
 
 
-	loader.LoadFBX("true_clownTri.FBX", clown);
-
-
 
 
 	boxVertexOffset = 0;
 	gridVertexOffset = box.Vertices.size();
-	clownVertexOffset = gridVertexOffset + grid.Vertices.size();
 
 
 
 	boxIndexCount = box.Indices.size();
 	gridIndexCount = grid.Indices.size();
-	clownIndexCount = clown.Indices.size();
 
 
 
 
 	boxIndexOffset = 0;
 	gridIndexOffset = boxIndexCount;
-	clownIndexOffset = gridIndexOffset + gridIndexCount;
 
 
 
 	UINT totalVertexCount =
 		box.Vertices.size() +
-		grid.Vertices.size() +
-		clown.Vertices.size();
+		grid.Vertices.size();
 
-	UINT totalIndexCount =
+		UINT totalIndexCount =
 		boxIndexCount +
-		gridIndexCount +
-		clownIndexCount;
+		gridIndexCount;
 
 	std::vector<Vertex::PosNormalTexTan> vertices(totalVertexCount);
 
@@ -257,18 +341,7 @@ void CModelManager::BuildShapeGeometryBuffers()
 			1.0f);
 	}
 
-	for (size_t i = 0; i < clown.Vertices.size(); ++i, ++k)
-	{
-		vertices[k].Pos = clown.Vertices[i].Position;
-		vertices[k].Normal = clown.Vertices[i].Normal;
-		vertices[k].Tex = clown.Vertices[i].TexC;
-		vertices[k].TangentU = XMFLOAT4(
-			clown.Vertices[i].TangentU.x,
-			clown.Vertices[i].TangentU.y,
-			clown.Vertices[i].TangentU.z,
-			1.0f);
-	}
-
+	
 
 
 	D3D11_BUFFER_DESC vbd;
@@ -291,7 +364,7 @@ void CModelManager::BuildShapeGeometryBuffers()
 	설명:fbx로더에 문제가 있어서 와인딩오더를 반대로 해줌.fbx로더에서 인덱스를 잘못 뽑는거같다.
 	따라서 앞으로 FBX는 무조건 와인딩오더 반대로 하길바람.
 	*/
-	indices.insert(indices.end(), clown.Indices.rbegin(), clown.Indices.rend());
+	//indices.insert(indices.end(), clown.Indices.rbegin(), clown.Indices.rend());
 
 
 	D3D11_BUFFER_DESC ibd;
@@ -702,15 +775,16 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 
 				XMFLOAT4X4 M;
 				XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
-				mStaticNormalModels.push_back(CStaticNomalModel(M,
-					mBoxMat,
-					clownIndexCount,
-					clownVertexOffset,
-					clownIndexOffset,
-					texMgr.CreateTexture(L"true_clown_diffuse1.png"),
-					texMgr.CreateTexture(L"true_clown_normals.png"),
-					"clown"
-				));
+				SkinnedModelInstance tempSkinnedModelInstanced;
+				tempSkinnedModelInstanced.Model = mCharacterModel;
+				tempSkinnedModelInstanced.TimePos = 0;
+				tempSkinnedModelInstanced.FinalTransforms.resize(mCharacterModel->SkinnedData.BoneCount());
+				tempSkinnedModelInstanced.World = M;
+				tempSkinnedModelInstanced.mClipAnimbuf = &mclipAnimbuf;
+				tempSkinnedModelInstanced.mClipnameAndTotalCount = mClipnameAndTotalCounts[0];//idle;
+				tempSkinnedModelInstanced.mAnimCnt = 0;
+
+				mSkinnedModelInstance.push_back(tempSkinnedModelInstanced);
 				ifs >> objectName;
 				ifs >> cIgnore >> position.x >> position.y >> position.z;
 				ifs >> cIgnore >> rotation.x >> rotation.y >> rotation.z >> rotation.w;
