@@ -67,7 +67,7 @@ public:
 	// Rotate the camera.
 	void Pitch(float angle);
 	void RotateY(float angle);
-
+	void RotateAxis(const XMVECTOR& axis, const float& angle);
 	// After modifying camera position/orientation, call to rebuild the view matrix.
 	void UpdateViewMatrix();
 

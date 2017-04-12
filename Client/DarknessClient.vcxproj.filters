@@ -67,6 +67,18 @@
     <Filter Include="Source Files\UI">
       <UniqueIdentifier>{fadee7c4-acae-4ef8-b832-750764ae638e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\UI\Bitmap">
+      <UniqueIdentifier>{0bfcf4b4-c3cc-4934-8ab1-76fb5e64ad7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\ButtonClass">
+      <UniqueIdentifier>{e3e52070-bd05-4862-bb4c-0f69ab945c46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\Minimap">
+      <UniqueIdentifier>{9bef255a-9052-4a70-98a5-a71135d930a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\Texture">
+      <UniqueIdentifier>{46b43dc6-9426-49c2-ba0b-3c86dee02313}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Camera.cpp">
@@ -129,15 +141,6 @@
     <ClCompile Include="SceneManager.cpp">
       <Filter>Source Files\99 Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="BitMap.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="MiniMap.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
     <ClCompile Include="DynamicObject.cpp">
       <Filter>Source Files\00 Object\01 DynamicObjcet</Filter>
     </ClCompile>
@@ -177,11 +180,20 @@
     <ClCompile Include="MainScene.cpp">
       <Filter>Source Files\99 Scene</Filter>
     </ClCompile>
-    <ClCompile Include="ButtonClass.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BitMap.cpp">
+      <Filter>Source Files\UI\Bitmap</Filter>
+    </ClCompile>
+    <ClCompile Include="ButtonClass.cpp">
+      <Filter>Source Files\UI\ButtonClass</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniMap.cpp">
+      <Filter>Source Files\UI\Minimap</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source Files\UI\Texture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -259,15 +271,6 @@
     <ClInclude Include="SceneManager.h">
       <Filter>Source Files\99 Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Source Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="BitMap.h">
-      <Filter>Source Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="MiniMap.h">
-      <Filter>Source Files\UI</Filter>
-    </ClInclude>
     <ClInclude Include="DynamicObject.h">
       <Filter>Source Files\00 Object\01 DynamicObjcet</Filter>
     </ClInclude>
@@ -304,8 +307,17 @@
     <ClInclude Include="MainScene.h">
       <Filter>Source Files\99 Scene</Filter>
     </ClInclude>
+    <ClInclude Include="BitMap.h">
+      <Filter>Source Files\UI\Bitmap</Filter>
+    </ClInclude>
     <ClInclude Include="ButtonClass.h">
-      <Filter>Source Files\UI</Filter>
+      <Filter>Source Files\UI\ButtonClass</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniMap.h">
+      <Filter>Source Files\UI\Minimap</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Source Files\UI\Texture</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

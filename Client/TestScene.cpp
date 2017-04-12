@@ -268,7 +268,7 @@ void CTestScene::OnMouseMove(WPARAM btnState, int x, int y)
 		float dy = XMConvertToRadians(0.25f*static_cast<float>(y - mLastMousePos.y));
 
 		mCam.Pitch(dy);
-		mCam.RotateY(dx);
+		mCam.RotateAxis(XMVectorZero(),dx);
 	}
 	mLastMousePos.x = x;
 	mLastMousePos.y = y;

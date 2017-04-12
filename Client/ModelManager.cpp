@@ -16,6 +16,7 @@ CModelManager::~CModelManager()
 	ReleaseCOM(mStaticNormalMappingObjectIB);
 	ReleaseCOM(mStaticBasicObjectVB);
 	ReleaseCOM(mStaticBasicObjectIB);
+	SafeDelete(mCharacterModel);
 	for (auto p : mInstanceModels)
 	{
 		p.Destroy();
@@ -37,6 +38,7 @@ void CModelManager::Init(TextureMgr & texMgr, Camera & cam, ID3D11Device* device
 
 
 	mDevice = device;
+	mCharacterModel = new SkinnedModel(mDevice, texMgr, "ResultIdle.txt", L"Textures\\");
 	BuildBasicGeometryBuffer();
 	BuildShapeGeometryBuffers();
 	ReadMapData(texMgr, cam);
@@ -664,7 +666,6 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 					texMgr.CreateTexture(L"true_clown_normals.png"),
 					"clown"
 				));
-
 				ifs >> objectName;
 				ifs >> cIgnore >> position.x >> position.y >> position.z;
 				ifs >> cIgnore >> rotation.x >> rotation.y >> rotation.z >> rotation.w;
@@ -672,7 +673,6 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 
 				cam.SetPosition(position);
 			}
-		///skinnedModelRead....
 	}
 	ifs.close();
 

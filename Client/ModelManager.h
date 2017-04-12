@@ -6,9 +6,11 @@
 #include "Camera.h"
 #include "RenderStates.h"
 #include"LogoScene.h"
+#include "SkinnedModel.h"
 class CModelManager
 {
 	ID3D11Device* mDevice;
+	SkinnedModel* mCharacterModel;
 
 	ID3D11Buffer* mStaticNormalMappingObjectVB;
 	ID3D11Buffer* mStaticNormalMappingObjectIB;
@@ -20,10 +22,10 @@ class CModelManager
 	std::vector<CStaticNomalModel> mStaticNormalModels;
 	std::vector<CStaticBasicModel> mStaticBasicModels;
 	std::vector<CInstanceBasicModel> mInstanceModels;
+	std::vector<SkinnedModelInstance> mSkinnedModelInstance;
 
 	Material mGridMat;
 	Material mBoxMat;
-
 	//////////////////////////////////////////////////////////////////////////
 
 	int gridVertexOffset;

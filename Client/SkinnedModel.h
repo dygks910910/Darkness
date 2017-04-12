@@ -35,8 +35,6 @@ struct SkinnedModelInstance
 	std::string ClipName;
 	XMFLOAT4X4 World;
 	std::vector<XMFLOAT4X4> FinalTransforms;
-
 	void Update(float dt);
 };
-
 #endif // SKINNEDMODEL_H
