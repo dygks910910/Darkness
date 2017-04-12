@@ -788,7 +788,6 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				ifs >> cIgnore >> position.x >> position.y >> position.z;
 				ifs >> cIgnore >> rotation.x >> rotation.y >> rotation.z >> rotation.w;
 				ifs >> cIgnore >> scale.x >> scale.y >> scale.z;
-
 				cam.SetPosition(position);
 			}
 	}
