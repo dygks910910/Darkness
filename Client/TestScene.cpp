@@ -1,5 +1,4 @@
 #include "TestScene.h"
-
 #define Animnum 10
 
 
@@ -194,7 +193,7 @@ bool CTestScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 	return true;
 }
-
+bool testcamera = true;
 void CTestScene::UpdateScene(const float dt)
 {
 	mTimer.Tick();
@@ -213,12 +212,14 @@ void CTestScene::UpdateScene(const float dt)
 	if (GetAsyncKeyState('D') & 0x8000)
 		mCam.Strafe(20.0f*dt);
 
-// 	if (GetAsyncKeyState('Z') & 0x8000)
-// 	{
-// 		mCharacterInstance1.ClipName = "Idle";
-// 		mCharacterInstance1.mAnimTotalTime = mAnimTotalCnt[0];
-// 		mCharacterInstance1.mAnimCnt = 0;
-// 	}
+ 	if (GetAsyncKeyState('Z') & 0x8000)
+ 	{
+		testcamera = false;
+ 	}
+	if (GetAsyncKeyState('X') & 0x8000)
+	{
+		testcamera = true;
+	}
 // 	if (GetAsyncKeyState('X') & 0x8000)
 // 	{
 // 		mCharacterInstance1.ClipName = "Attack1";
@@ -262,7 +263,7 @@ void CTestScene::UpdateScene(const float dt)
 	BuildShadowTransform();
 	mRain.Update(dt, mTimer.TotalTime());
 
-	mModelMgr.UpdateModel(dt);
+	mModelMgr.UpdateModel(dt, mCam);
 // 	mCharacterInstance1.Update(dt);
 // 
 // 	for (int i = 0; i < Animnum; ++i)
@@ -540,12 +541,58 @@ void CTestScene::OnMouseMove(WPARAM btnState, int x, int y)
 {
 	if ((btnState & MK_LBUTTON) != 0)
 	{
-		// Make each pixel correspond to a quarter of a degree.
-		float dx = XMConvertToRadians(0.25f*static_cast<float>(x - mLastMousePos.x));
-		float dy = XMConvertToRadians(0.25f*static_cast<float>(y - mLastMousePos.y));
+		if (testcamera)
+		{
+			XMMATRIX	matRot;
+			XMFLOAT3 objectpos, campos, dist, up;
+			XMVECTOR eye, upper;
+			//XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+			up.x = 0;
+			up.y = 1;
+			up.z = 0;
+			///////////////오브젝트 위치 얻기/////////////////
+			objectpos.x = mModelMgr.GetSkinnedInstanceModels()[5].World._41;
+			objectpos.y = mModelMgr.GetSkinnedInstanceModels()[5].World._42 + 1;
+			objectpos.z = mModelMgr.GetSkinnedInstanceModels()[5].World._43;
 
-		mCam.Pitch(dy);
-		mCam.RotateY(dx);
+			//////////////카메라 위치 얻기////////////////////
+			campos = mCam.GetPosition();
+			// Make each pixel correspond to a quarter of a degree.
+			float dx = XMConvertToRadians(0.25f*static_cast<float>(x - mLastMousePos.x));
+			float dy = XMConvertToRadians(0.25f*static_cast<float>(y - mLastMousePos.y));
+
+			//////////////카메라와 객체 거리 구하기///////////
+			dist.x = campos.x - objectpos.x;
+			dist.y = campos.y - objectpos.y;
+			dist.z = campos.z - objectpos.z;
+
+
+			matRot = XMMatrixRotationY(dx);
+			eye = XMVector3TransformCoord(XMLoadFloat3(&dist), matRot);
+			upper = XMVector3TransformCoord(XMLoadFloat3(&up), matRot);
+
+			XMStoreFloat3(&dist, eye);
+			XMStoreFloat3(&up, upper);
+
+			campos.x = dist.x + objectpos.x;
+			campos.y = dist.y + objectpos.y;
+			campos.z = dist.z + objectpos.z;
+			mCam.LookAt(campos, objectpos, up);
+			///////////////////////////////////////////
+
+			//mCam.Pitch(dy);
+			//mCam.RotateAxis(v, dx);
+			//mCam.SetPosition(test);
+			//mCam.RotateY(dx);
+		}
+		else
+		{
+			float dx = XMConvertToRadians(0.25f*static_cast<float>(x - mLastMousePos.x));
+			float dy = XMConvertToRadians(0.25f*static_cast<float>(y - mLastMousePos.y));
+			mCam.Pitch(dy);
+			mCam.RotateY(dx);
+		}
+
 	}
 	mLastMousePos.x = x;
 	mLastMousePos.y = y;

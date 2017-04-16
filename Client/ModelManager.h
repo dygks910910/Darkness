@@ -61,7 +61,7 @@ public:
 	//ID3D11Buffer* GetInstanceBuffer() { return mInstanceBuffer; }
 	std::vector<CStaticNomalModel>& GetStaticNormalModels() { return mStaticNormalModels; }
 	std::vector<CStaticBasicModel>& GetStaticBasicModels() { return mStaticBasicModels; }
-
+	std::vector<SkinnedModelInstance>& GetSkinnedInstanceModels() { return mSkinnedModelInstance; }
 
 	void Init(TextureMgr& texMgr, Camera& cam, ID3D11Device* device);
 	void DrawStaticNormalModels(ID3D11DeviceContext* dc,ID3DX11EffectTechnique* tech,const XMMATRIX& shadowTransform,const Camera& cam);
@@ -73,7 +73,7 @@ public:
 	void DrawToShadowMap(ID3D11DeviceContext * dc, ID3DX11EffectTechnique * tech, 
 		const XMFLOAT4X4 & lightView, const XMFLOAT4X4 & lightProj);
 	void DrawInstancedModel(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMMATRIX& shadowTransform, const Camera& cam);
-	void UpdateModel(const float& dt);
+	void UpdateModel(const float& dt, Camera& camera);
 private:
 	void BuildShapeGeometryBuffers();
 	void BuildBasicGeometryBuffer();

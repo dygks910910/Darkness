@@ -260,19 +260,65 @@ void CModelManager::DrawInstancedModel(ID3D11DeviceContext * dc, ID3DX11EffectTe
 
 }
 
-void CModelManager::UpdateModel(const float & dt)
+void CModelManager::UpdateModel(const float & dt, Camera& camera)
 {
+	XMFLOAT3 pos, pos2, up;
+	up.x = 0;
+	up.y = 1;
+	up.z = 0;
 	for (int i = 0; i < mSkinnedModelInstance.size(); ++i)
 	{
 		mSkinnedModelInstance[i].Update(dt);
 	}
 
-	#define KEYDOWN(VK_UP) if(GetAsyncKeyState(VK_UP) & 0x8000 ? 0 : 1)
-		mSkinnedModelInstance[0].mClipnameAndTotalCount = mClipnameAndTotalCounts[1];
-	#define KEYDOWN(VK_UP) if((GetAsyncKeyState(VK_UP) & 0x8000 ? 1 : 0)))
-	mSkinnedModelInstance[0].mClipnameAndTotalCount = mClipnameAndTotalCounts[0];
+	pos2.x = mSkinnedModelInstance[5].World._41;
+	pos2.y = mSkinnedModelInstance[5].World._42;
+	pos2.z = mSkinnedModelInstance[5].World._43;
 
+	if (GetAsyncKeyState(VK_UP) & 0x8000)
+	{
+		mSkinnedModelInstance[5].World._41 += 0.0015;
+		pos = camera.GetPosition();
+		pos.x += 0.0015;
+		camera.SetPosition(pos);
 
+		mSkinnedModelInstance[5].mClipnameAndTotalCount = mClipnameAndTotalCounts[1];
+
+		//XMVECTOR rotationQuaternion = XMQuaternionRotationRollPitchYaw(0,5,0);
+
+		//XMVECTOR m_tempQuaternion = XMQuaternionMultiply(XMLoadFloat3(&up), rotationQuaternion);
+		//rotationQuaternion = XMQuaternionConjugate(rotationQuaternion);
+		//XMFLOAT3 scale;
+		//XMFLOAT4 rotation, rotation2;
+		//XMFLOAT3 position;
+		//scale.x = 0.13;
+		//scale.y = 0.13;
+		//scale.z = 0.13;
+		//rotation.x = -0.7009093;
+		//rotation.y = 0;
+		//rotation.z = 0;
+		//rotation.w = 0.7132505;
+
+		//position = pos2;
+		//XMVECTOR S = XMLoadFloat3(&scale);
+		//XMVECTOR P = XMLoadFloat3(&position);
+		//XMVECTOR Q = XMLoadFloat4(&rotation);
+		//XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+		//XMFLOAT4X4 M;
+		//XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+
+		//mSkinnedModelInstance[5].World = M;
+
+		/////////////////이부분 작업하면 누움///////////////////
+		/*XMMATRIX modelScale = XMMatrixScaling(0.13, 0.13, 0.13);
+		XMMATRIX modelRot = XMMatrixRotationY(0);
+		XMMATRIX modelOffset = XMMatrixTranslation(pos2.x, pos2.y, pos2.z);
+		XMMATRIX finalm = modelScale*modelRot*modelOffset;
+		XMStoreFloat4x4(&mSkinnedModelInstance[5].World, finalm);*/
+
+		
+	}
 }
 
 void CModelManager::BuildShapeGeometryBuffers()
