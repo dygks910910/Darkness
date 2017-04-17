@@ -27,8 +27,8 @@ public:
 	~MeshGeometry();
 
 	template <typename VertexType>
-	void SetVertices(ID3D11Device* device, const VertexType* vertices, UINT count);
-
+	void SetVertices(ID3D11Device* device, const VertexType* vertices, UINT count, bool isPosTanTexNormal);
+	
 	void SetIndices(ID3D11Device* device, const UINT* indices, UINT count);
 
 	void SetSubsetTable(std::vector<Subset>& subsetTable);
@@ -50,15 +50,23 @@ private:
 };
 
 template <typename VertexType>
-void MeshGeometry::SetVertices(ID3D11Device* device, const VertexType* vertices, UINT count)
+void MeshGeometry::SetVertices(ID3D11Device* device, const VertexType* vertices, UINT count, bool isPosTanTexNormal)
 {
 	ReleaseCOM(mVB);
-
+	if(!isPosTanTexNormal)
 	mVertexStride = sizeof(Vertex::PosNormalTexTanSkinned);
-
+	else
+	{
+		mVertexStride = sizeof(Vertex::PosNormalTexTan);
+	}
 	D3D11_BUFFER_DESC vbd;
     vbd.Usage = D3D11_USAGE_IMMUTABLE;
+	if(!isPosTanTexNormal)
 	vbd.ByteWidth = sizeof(Vertex::PosNormalTexTanSkinned) * count;
+	else
+	{
+		vbd.ByteWidth = sizeof(Vertex::PosNormalTexTan) * count;
+	}
     vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
     vbd.CPUAccessFlags = 0;
     vbd.MiscFlags = 0;
@@ -69,5 +77,6 @@ void MeshGeometry::SetVertices(ID3D11Device* device, const VertexType* vertices,
 
     HR(device->CreateBuffer(&vbd, &vinitData, &mVB));
 }
+
 
 #endif // MESHGEOMETRY_H

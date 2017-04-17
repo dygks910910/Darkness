@@ -233,6 +233,7 @@
     <ClCompile Include="SkinnedModel.cpp" />
     <ClCompile Include="Sky.cpp" />
     <ClCompile Include="Ssao.cpp" />
+    <ClCompile Include="StaticModels.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="TestScene.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -274,6 +275,7 @@
     <ClInclude Include="SkinnedModel.h" />
     <ClInclude Include="Sky.h" />
     <ClInclude Include="Ssao.h" />
+    <ClInclude Include="StaticModel.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="TestScene.h" />
     <ClInclude Include="Texture.h" />

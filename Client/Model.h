@@ -62,7 +62,7 @@ public:
 
 class CInstanceBasicModel
 {
-private:
+	protected:
 	std::string mName;
 	ID3D11Buffer* mInstanceBuffer;
 	int mIndexCount;

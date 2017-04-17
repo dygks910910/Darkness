@@ -39,7 +39,6 @@ bool CTestScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	mSwapChain = swapChain;
 	mClientHeight = clientHeight;
 	mClientWidth = clientWidth;
-
 	//////////////////////////////////////////////////////////////////////////
 	//월드세팅
 
@@ -261,7 +260,7 @@ void CTestScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 	Effects::InstancedBasicFX->SetEyePosW(mCam.GetPosition());
 
 	ID3DX11EffectTechnique* activeNormalMappingTech = Effects::NormalMapFX->Light3TexTech;
-	ID3DX11EffectTechnique* activeBasicTech = Effects::BasicFX->Light3TexReflectTech;
+	ID3DX11EffectTechnique* activeBasicTech = Effects::BasicFX->Light3TexAlphaClipTech;
 	ID3DX11EffectTechnique* activeInstanceTech = Effects::InstancedBasicFX->Light1TexTech;
 	ID3DX11EffectTechnique* activeSkinnedTech = Effects::NormalMapFX->Light3TexSkinnedTech;
 
@@ -295,70 +294,10 @@ void CTestScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 	//////////////////////////////////////////////////////////////////////////
 	//draw Animation
 
-
-	XMMATRIX world;
-	XMMATRIX worldInvTranspose;
-	XMMATRIX worldViewProj;
-
-	D3DX11_TECHNIQUE_DESC techDesc;
-
 	mDc->IASetInputLayout(InputLayouts::PosNormalTexTanSkinned);
 	mModelMgr.DrawSkinnedModels(mDc, activeSkinnedTech, XMLoadFloat4x4(&mShadowTransform), mCam);
-// 	activeSkinnedTech->GetDesc(&techDesc);
-// 	for (UINT p = 0; p < techDesc.Passes; ++p)
-// 	{
-// 		world = XMLoadFloat4x4(&mCharacterInstance1.World);
-// 		worldInvTranspose = MathHelper::InverseTranspose(world);
-// 		worldViewProj = world*mCam.View()*mCam.Proj();
-// 
-// 		Effects::NormalMapFX->SetWorld(world);
-// 		Effects::NormalMapFX->SetWorldInvTranspose(worldInvTranspose);
-// 		Effects::NormalMapFX->SetWorldViewProj(worldViewProj);
-// 		Effects::NormalMapFX->SetWorldViewProjTex(worldViewProj*toTexSpace);
-// 		Effects::NormalMapFX->SetShadowTransform(world*shadowTransform);
-// 		Effects::NormalMapFX->SetTexTransform(XMMatrixScaling(1.0f, 1.0f, 1.0f));
-// 		Effects::NormalMapFX->SetBoneTransforms(
-// 			&mCharacterInstance1.FinalTransforms[0],
-// 			mCharacterInstance1.FinalTransforms.size());
-// 
-// 		for (UINT subset = 0; subset < mCharacterInstance1.Model->SubsetCount; ++subset)
-// 		{
-// 			Effects::NormalMapFX->SetMaterial(mCharacterInstance1.Model->Mat[subset]);
-// 			Effects::NormalMapFX->SetDiffuseMap(mCharacterInstance1.Model->DiffuseMapSRV[subset]);
-// 			Effects::NormalMapFX->SetNormalMap(mCharacterInstance1.Model->NormalMapSRV[subset]);
-// 
-// 			activeSkinnedTech->GetPassByIndex(p)->Apply(0, mDc);
-// 			mCharacterInstance1.Model->ModelMesh.Draw(mDc, subset);
-// 		}
-// 		for (int i = 0; i < Animnum; ++i)
-// 		{
-// 				world = XMLoadFloat4x4(&mCharacterInstances[i].World);
-// 				worldInvTranspose = MathHelper::InverseTranspose(world);
-// 				worldViewProj = world*mCam.View()*mCam.Proj();
-// 
-// 				Effects::NormalMapFX->SetWorld(world);
-// 				Effects::NormalMapFX->SetWorldInvTranspose(worldInvTranspose);
-// 				Effects::NormalMapFX->SetWorldViewProj(worldViewProj);
-// 				Effects::NormalMapFX->SetWorldViewProjTex(worldViewProj*toTexSpace);
-// 				Effects::NormalMapFX->SetShadowTransform(world*shadowTransform);
-// 				Effects::NormalMapFX->SetTexTransform(XMMatrixScaling(1.0f, 1.0f, 1.0f));
-// 				Effects::NormalMapFX->SetBoneTransforms(
-// 					&mCharacterInstances[i].FinalTransforms[0],
-// 					mCharacterInstances[i].FinalTransforms.size());
-// 
-// 				for (UINT subset = 0; subset < mCharacterInstances[i].Model->SubsetCount; ++subset)
-// 				{
-// 					Effects::NormalMapFX->SetMaterial(mCharacterInstances[i].Model->Mat[subset]);
-// 					Effects::NormalMapFX->SetDiffuseMap(mCharacterInstances[i].Model->DiffuseMapSRV[subset]);
-// 					Effects::NormalMapFX->SetNormalMap(mCharacterInstances[i].Model->NormalMapSRV[subset]);
-// 
-// 					activeSkinnedTech->GetPassByIndex(p)->Apply(0, mDc);
-// 					mCharacterInstances[i].Model->ModelMesh.Draw(mDc, subset);
-// 				}
-// 
-// 		}
-// 	}
-	
+
+
 	// FX sets tessellation stages, but it does not disable them.  So do that here
 	// to turn off tessellation.
 	mDc->HSSetShader(0, 0, 0);
@@ -422,7 +361,7 @@ void CTestScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 	mCordWorld.Draw(mDc, mCam);
 
 	mSky->Draw(mDc, mCam);
-	mModelMgr.DrawInstancedModel(mDc, activeInstanceTech, XMLoadFloat4x4(&mShadowTransform), mCam);
+	//mModelMgr.DrawInstancedModel(mDc, activeInstanceTech, XMLoadFloat4x4(&mShadowTransform), mCam);
 
 	mDc->OMSetBlendState(0, blendFactor, 0xffffffff); // restore default
 	mDc->IASetInputLayout(InputLayouts::Particle);

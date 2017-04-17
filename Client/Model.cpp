@@ -48,7 +48,7 @@ void CStaticNomalModel::Draw(ID3D11DeviceContext* dc,
 		Effects::NormalMapFX->SetWorldViewProjTex(worldViewProj*toTexSpace);
 		Effects::NormalMapFX->SetShadowTransform(world*shadowTransform);
 		if (mObjName == "grid")
-			Effects::NormalMapFX->SetTexTransform(XMMatrixScaling(10, 10, 10));
+			Effects::NormalMapFX->SetTexTransform(XMMatrixScaling(40, 40,0));
 		else
 			Effects::NormalMapFX->SetTexTransform(XMMatrixIdentity());
 

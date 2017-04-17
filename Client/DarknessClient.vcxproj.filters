@@ -211,6 +211,7 @@
     <ClCompile Include="Ssao.cpp">
       <Filter>souce\EffectMap</Filter>
     </ClCompile>
+    <ClCompile Include="StaticModels.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common\Camera.h">
@@ -330,5 +331,6 @@
     <ClInclude Include="Ssao.h">
       <Filter>souce\EffectMap</Filter>
     </ClInclude>
+    <ClInclude Include="StaticModel.h" />
   </ItemGroup>
 </Project>

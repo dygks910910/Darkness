@@ -15,6 +15,7 @@
 #include "ParticleSystem.h"
 #include "SkinnedModel.h"
 #include "Ssao.h"
+#include "StaticModel.h"
 struct BoundingSphere
 {
 	BoundingSphere() : Center(0.0f, 0.0f, 0.0f), Radius(0.0f) {}
@@ -66,7 +67,6 @@ class CTestScene :
 	XMFLOAT4X4 mShadowTransform;
 	ShadowMap* mSmap;
 	Ssao* mSsao;
-
 public:
 	CTestScene();
 	virtual ~CTestScene();

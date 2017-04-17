@@ -62,7 +62,7 @@ void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device)
 			{
 				fin >> TestFinalTransforms[i][j]._11 >> TestFinalTransforms[i][j]._12 >> TestFinalTransforms[i][j]._13 >> TestFinalTransforms[i][j]._14
 					>> TestFinalTransforms[i][j]._21 >> TestFinalTransforms[i][j]._22 >> TestFinalTransforms[i][j]._23 >> TestFinalTransforms[i][j]._24
-					>> TestFinalTransforms[i][j]._31 >>TestFinalTransforms[i][j]._32 >> TestFinalTransforms[i][j]._33 >> TestFinalTransforms[i][j]._34
+					>> TestFinalTransforms[i][j]._31 >> TestFinalTransforms[i][j]._32 >> TestFinalTransforms[i][j]._33 >> TestFinalTransforms[i][j]._34
 					>> TestFinalTransforms[i][j]._41 >> TestFinalTransforms[i][j]._42 >> TestFinalTransforms[i][j]._43 >> TestFinalTransforms[i][j]._44;
 			}
 		}
@@ -227,16 +227,16 @@ void CModelManager::DrawToShadowMap(ID3D11DeviceContext * dc, ID3DX11EffectTechn
 	{
 		p.DrawToShadowMap(dc, tech, lightView, lightProj);
 	}
-// 	UINT instanceStride[2] = { sizeof(Vertex::Basic32), sizeof(XMFLOAT4X4) };
-// 	UINT instanceOffset[2] = { 0,0 };
-// 	for (int i = 0; i < mInstanceModels.size(); ++i)
-// 	{
-// 		ID3D11Buffer* vbs[2] = { mStaticBasicObjectVB,mInstanceModels[i].GetInstanceBuffer() };
-// 		dc->IASetVertexBuffers(0, 2, vbs, instanceStride, instanceOffset);
-// 		dc->IASetIndexBuffer(mStaticBasicObjectIB, DXGI_FORMAT_R32_UINT, 0);
-// 
-// 		mInstanceModels[i].DrawToShadowMap(dc, tech, lightView, lightProj);
-// 	}
+	// 	UINT instanceStride[2] = { sizeof(Vertex::Basic32), sizeof(XMFLOAT4X4) };
+	// 	UINT instanceOffset[2] = { 0,0 };
+	// 	for (int i = 0; i < mInstanceModels.size(); ++i)
+	// 	{
+	// 		ID3D11Buffer* vbs[2] = { mStaticBasicObjectVB,mInstanceModels[i].GetInstanceBuffer() };
+	// 		dc->IASetVertexBuffers(0, 2, vbs, instanceStride, instanceOffset);
+	// 		dc->IASetIndexBuffer(mStaticBasicObjectIB, DXGI_FORMAT_R32_UINT, 0);
+	// 
+	// 		mInstanceModels[i].DrawToShadowMap(dc, tech, lightView, lightProj);
+	// 	}
 }
 
 void CModelManager::DrawInstancedModel(ID3D11DeviceContext * dc, ID3DX11EffectTechnique * tech, const XMMATRIX & shadowTransform, const Camera & cam)
@@ -246,14 +246,14 @@ void CModelManager::DrawInstancedModel(ID3D11DeviceContext * dc, ID3DX11EffectTe
 	UINT instanceStride[2] = { sizeof(Vertex::Basic32), sizeof(XMFLOAT4X4) };
 	UINT instanceOffset[2] = { 0,0 };
 	ID3D11Buffer* vbs[2] = { mStaticBasicObjectVB,mInstanceModels[0].GetInstanceBuffer() };
-	
+
 
 	for (int i = 0; i < mInstanceModels.size(); ++i)
 	{
 		dc->IASetVertexBuffers(0, 2, vbs, instanceStride, instanceOffset);
 		dc->IASetIndexBuffer(mStaticBasicObjectIB, DXGI_FORMAT_R32_UINT, 0);
 		//Effects::InstancedBasicFX->Light3TexTech->GetDesc(&techDesc);
-		
+
 
 		mInstanceModels[i].Draw(dc, tech, shadowTransform, cam);
 	}
@@ -309,7 +309,7 @@ void CModelManager::BuildShapeGeometryBuffers()
 		box.Vertices.size() +
 		grid.Vertices.size();
 
-		UINT totalIndexCount =
+	UINT totalIndexCount =
 		boxIndexCount +
 		gridIndexCount;
 
@@ -340,7 +340,7 @@ void CModelManager::BuildShapeGeometryBuffers()
 			1.0f);
 	}
 
-	
+
 
 
 	D3D11_BUFFER_DESC vbd;
@@ -389,130 +389,383 @@ void CModelManager::BuildShapeGeometryBuffers()
 
 void CModelManager::BuildBasicGeometryBuffer()
 {
-	GeometryGenerator::MeshData fence, house1, house2, house3, house4, house5, house6,angelStatue;
+	GeometryGenerator::MeshData fence, house1, house2, house3, house4, house5,
+		house6, angelStatue, wall, tower_corner, tower_round, building_b, building_c,
+		building_d, building_e, building_f, barrel,
+		well,food_a,food_b,hay_a,hay_b,hay_c,hay_d,sack_a,sack_b,sewers_entrance,tent,crate;
 	CFbxLoader loader;
 
-	loader.LoadFBX("Darkness fbx\\fence1.FBX", fence);
-	loader.LoadFBX("Darkness fbx\\house 1.fbx", house1);
-	loader.LoadFBX("Darkness fbx\\house 2.fbx", house2);
-	loader.LoadFBX("Darkness fbx\\house 3.fbx", house3);
-	loader.LoadFBX("Darkness fbx\\house 4.fbx", house4);
-	loader.LoadFBX("Darkness fbx\\house 5.fbx", house5);
-	loader.LoadFBX("Darkness fbx\\house 6.fbx", house6);
+	// 	loader.LoadFBX("Darkness fbx\\fence1.FBX", fence);
+	// 	loader.LoadFBX("Darkness fbx\\house 1.fbx", house1);
+	// 	loader.LoadFBX("Darkness fbx\\house 2.fbx", house2);
+	// 	loader.LoadFBX("Darkness fbx\\house 3.fbx", house3);
+	// 	loader.LoadFBX("Darkness fbx\\house 4.fbx", house4);
+	// 	loader.LoadFBX("Darkness fbx\\house 5.fbx", house5);
+	// 	loader.LoadFBX("Darkness fbx\\house 6.fbx", house6);
 	loader.LoadFBX("Darkness fbx\\angelStatue.fbx", angelStatue);
-
-//////////////////////////////////////////////////////////////////////////
-	//VertexOffset설정
-
-	house1VertexOffset = 0;
-	house2VertexOffset = house1.Vertices.size();
-	house3VertexOffset = house2VertexOffset + house2.Vertices.size();
-	house4VertexOffset = house3VertexOffset + house3.Vertices.size();
-	house5VertexOffset = house4VertexOffset + house4.Vertices.size();
-	house6VertexOffset = house5VertexOffset + house5.Vertices.size();
-	fenceVertexOffset = house6VertexOffset + house6.Vertices.size();
-	angelStatueVertexOffset = fenceVertexOffset + fence.Vertices.size();
+	loader.LoadFBX("Darkness fbx\\wall.fbx", wall);
+	loader.LoadFBX("Darkness fbx\\tower_corner.fbx", tower_corner);
+	loader.LoadFBX("Darkness fbx\\tower_round.fbx", tower_round);
+	loader.LoadFBX("Darkness fbx\\Building_b.fbx", building_b);
+	loader.LoadFBX("Darkness fbx\\Building_c.fbx", building_c);
+	loader.LoadFBX("Darkness fbx\\Building_d.fbx", building_d);
+	loader.LoadFBX("Darkness fbx\\Building_e.fbx", building_e);
+	loader.LoadFBX("Darkness fbx\\Well.FBX", well);
+	loader.LoadFBX("Darkness fbx\\Food_a.FBX", food_a);
+	loader.LoadFBX("Darkness fbx\\Food_b.FBX", food_b);
+	loader.LoadFBX("Darkness fbx\\Hay_a.FBX", hay_a);
+	loader.LoadFBX("Darkness fbx\\Hay_b.FBX", hay_b);
+	loader.LoadFBX("Darkness fbx\\Hay_c.FBX", hay_c);
+	loader.LoadFBX("Darkness fbx\\Hay_d.FBX", hay_d);
+	loader.LoadFBX("Darkness fbx\\Sack_a.FBX", sack_a);
+	loader.LoadFBX("Darkness fbx\\Sack_b.FBX", sack_b);
+	loader.LoadFBX("Darkness fbx\\Sewers_entrance.FBX", sewers_entrance);
+	loader.LoadFBX("Darkness fbx\\Tent.FBX", tent);
+	loader.LoadFBX("Darkness fbx\\Crate.FBX", crate);
+	loader.LoadFBX("Darkness fbx\\Building_f.FBX", building_f);
+	loader.LoadFBX("Darkness fbx\\Barrel.FBX", barrel);
 
 	//////////////////////////////////////////////////////////////////////////
+		//VertexOffset설정
+
+// 	house1VertexOffset = 0;
+// 	house2VertexOffset = house1.Vertices.size();
+// 	house3VertexOffset = house2VertexOffset + house2.Vertices.size();
+// 	house4VertexOffset = house3VertexOffset + house3.Vertices.size();
+// 	house5VertexOffset = house4VertexOffset + house4.Vertices.size();
+// 	house6VertexOffset = house5VertexOffset + house5.Vertices.size();
+// 	fenceVertexOffset = house6VertexOffset + house6.Vertices.size();
+	angelStatueVertexOffset = 0;
+	wallVertexOffset = angelStatue.Vertices.size();
+	tower_conerVertexOffset = wallVertexOffset + wall.Vertices.size();
+	tower_roundVertexOffset = tower_conerVertexOffset + tower_corner.Vertices.size();
+	building_b_VertexOffset = tower_roundVertexOffset + tower_round.Vertices.size();
+	building_c_VertexOffset = building_b_VertexOffset + building_b.Vertices.size();
+	building_d_VertexOffset = building_c_VertexOffset + building_c.Vertices.size();
+	building_e_VertexOffset = building_d_VertexOffset + building_d.Vertices.size();
+
+	well_VertexOffset = building_e_VertexOffset + building_e.Vertices.size();
+	food_a_VertexOffset = well_VertexOffset + well.Vertices.size();
+	food_b_VertexOffset = food_a_VertexOffset + food_a.Vertices.size();
+	hay_a_VertexOffset = food_b_VertexOffset + food_b.Vertices.size();
+	hay_b_VertexOffset = hay_a_VertexOffset + hay_a.Vertices.size();
+	hay_c_VertexOffset = hay_b_VertexOffset + hay_b.Vertices.size();
+	hay_d_VertexOffset = hay_c_VertexOffset + hay_c.Vertices.size();
+	sack_a_VertexOffset = hay_d_VertexOffset + hay_d.Vertices.size();
+	sack_b_VertexOffset = sack_a_VertexOffset + sack_a.Vertices.size();
+	sewers_entrance_VertexOffset = sack_b_VertexOffset + sack_b.Vertices.size();
+	tent_VertexOffset = sewers_entrance_VertexOffset + sewers_entrance.Vertices.size();
+	crate_VertexOffset = tent_VertexOffset + tent.Vertices.size();
+	building_f_VertexOffset = crate_VertexOffset + crate.Vertices.size();
+	barrel_VertexOffset = building_f_VertexOffset + building_f.Vertices.size();
+	//////////////////////////////////////////////////////////////////////////
 	//indexCount설정.
-	house1IndexCount = house1.Indices.size();
-	house2IndexCount = house2.Indices.size();
-	house3IndexCount = house3.Indices.size();
-	house4IndexCount = house4.Indices.size();
-	house5IndexCount = house5.Indices.size();
-	house6IndexCount = house6.Indices.size();
-	fenceIndexCount = fence.Indices.size();
+// 	house1IndexCount = house1.Indices.size();
+// 	house2IndexCount = house2.Indices.size();
+// 	house3IndexCount = house3.Indices.size();
+// 	house4IndexCount = house4.Indices.size();
+// 	house5IndexCount = house5.Indices.size();
+// 	house6IndexCount = house6.Indices.size();
+// 	fenceIndexCount = fence.Indices.size();
 	angelStatueIndexCount = angelStatue.Indices.size();
+	wallIndexCount = wall.Indices.size();
+	tower_conerIndexCount = tower_corner.Indices.size();
+	tower_roundIndexCount = tower_round.Indices.size();
+	building_b_IndexCount = building_b.Indices.size();
+	building_c_IndexCount = building_c.Indices.size();
+	building_d_IndexCount = building_d.Indices.size();
+	building_e_IndexCount = building_e.Indices.size();
+	well_IndexCount = well.Indices.size();
+	food_a_IndexCount = food_a.Indices.size();
+	food_b_IndexCount = food_b.Indices.size();
+	hay_a_IndexCount = hay_a.Indices.size();
+	hay_b_IndexCount = hay_b.Indices.size();
+	hay_c_IndexCount = hay_c.Indices.size();
+	hay_d_IndexCount = hay_d.Indices.size();
+	sack_a_IndexCount = sack_a.Indices.size();
+	sack_b_IndexCount = sack_b.Indices.size();
+	sewers_entrance_IndexCount = sewers_entrance.Indices.size();
+	tent_indexCount = tent.Indices.size();
+	crate_indexCount = crate.Indices.size();
+	building_f_IndexCount = building_f.Indices.size();
+	barrel_IndexCount = barrel.Indices.size();
 	//////////////////////////////////////////////////////////////////////////
 	//indexOffset설정
 
-	house1IndexOffset = 0;
-	house2IndexOffset = house1IndexCount;
-	house3IndexOffset = house2IndexOffset + house2IndexCount;
-	house4IndexOffset = house3IndexOffset + house3IndexCount;
-	house5IndexOffset = house4IndexOffset + house4IndexCount;
-	house6IndexOffset = house5IndexOffset + house5IndexCount;
-	fenceIndexOffset = house6IndexOffset + house6IndexCount;
-	angelStatueIndexOffset = fenceIndexOffset + fenceIndexCount;
-
+// 	house1IndexOffset = 0;
+// 	house2IndexOffset = house1IndexCount;
+// 	house3IndexOffset = house2IndexOffset + house2IndexCount;
+// 	house4IndexOffset = house3IndexOffset + house3IndexCount;
+// 	house5IndexOffset = house4IndexOffset + house4IndexCount;
+// 	house6IndexOffset = house5IndexOffset + house5IndexCount;
+// 	fenceIndexOffset = house6IndexOffset + house6IndexCount;
+	angelStatueIndexOffset = 0;
+	wallIndexOffset = angelStatueIndexCount;
+	tower_conerIndexOffset = wallIndexOffset + wallIndexCount;
+	tower_roundIndexOffset = tower_conerIndexOffset + tower_conerIndexCount;
+	building_b_IndexOffset = tower_roundIndexOffset + tower_roundIndexCount;
+	building_c_IndexOffset = building_b_IndexOffset + building_b_IndexCount;
+	building_d_IndexOffset = building_c_IndexOffset + building_c_IndexCount;
+	building_e_IndexOffset = building_d_IndexOffset + building_d_IndexCount;
+	well_IndexOffset = building_e_IndexOffset + building_e_IndexCount;
+	food_a_IndexOffset = well_IndexOffset + well_IndexCount;
+	food_b_IndexOffset = food_a_IndexOffset + food_a_IndexCount;
+	hay_a_IndexOffset = food_b_IndexOffset + food_b_IndexCount;
+	hay_b_IndexOffset = hay_a_IndexOffset + hay_a_IndexCount;
+	hay_c_IndexOffset = hay_b_IndexOffset + hay_b_IndexCount;
+	hay_d_IndexOffset = hay_c_IndexOffset + hay_c_IndexCount;
+	sack_a_IndexOffset = hay_d_IndexOffset + hay_d_IndexCount;
+	sack_b_IndexOffset = sack_a_IndexOffset + sack_a_IndexCount;
+	sewers_entrance_IndexOffset = sack_b_IndexOffset + sack_b_IndexCount;
+	tent_indexOffset = sewers_entrance_IndexOffset + sewers_entrance_IndexCount;
+	crate_indexOffset = tent_indexOffset + tent_indexCount;
+	building_f_IndexOffset = crate_indexOffset + crate_indexCount;
+	barrel_IndexOffset = building_f_IndexOffset + building_f_IndexCount;
+	//////////////////////////////////////////////////////////////////////////
 	UINT totalVertexCount =
-		house1.Vertices.size() +
-		house2.Vertices.size() +
-		house3.Vertices.size() +
-		house4.Vertices.size() +
-		house5.Vertices.size() +
-		house6.Vertices.size() +
-		fence.Vertices.size() + 
-		angelStatue.Vertices.size();
+		// 		house1.Vertices.size() +
+		// 		house2.Vertices.size() +
+		// 		house3.Vertices.size() +
+		// 		house4.Vertices.size() +
+		// 		house5.Vertices.size() +
+		// 		house6.Vertices.size() +
+		// 		fence.Vertices.size() +
+		angelStatue.Vertices.size() +
+		wall.Vertices.size() +
+		tower_corner.Vertices.size() +
+		tower_round.Vertices.size() +
+		building_b.Vertices.size() +
+		building_c.Vertices.size() +
+		building_d.Vertices.size() +
+		building_e.Vertices.size() +
+		well.Vertices.size() +
+		food_a.Vertices.size() +
+		food_b.Vertices.size() +
+		hay_a.Vertices.size() +
+		hay_b.Vertices.size() +
+		hay_c.Vertices.size() +
+		hay_d.Vertices.size() +
+		sack_a.Vertices.size() +
+		sack_b.Vertices.size() +
+		sewers_entrance.Vertices.size() +
+		tent.Vertices.size() +
+		crate.Vertices.size() +
+		building_f.Vertices.size() +
+		barrel.Vertices.size();
 
 	UINT totalIndexCount =
-		house1IndexCount +
-		house2IndexCount +
-		house3IndexCount +
-		house4IndexCount +
-		house5IndexCount +
-		house6IndexCount +
-		fenceIndexCount + 
-		angelStatueIndexCount;
+		// 		house1IndexCount +
+		// 		house2IndexCount +
+		// 		house3IndexCount +
+		// 		house4IndexCount +
+		// 		house5IndexCount +
+		// 		house6IndexCount +
+		// 		fenceIndexCount +
+		angelStatueIndexCount +
+		wallIndexCount +
+		tower_conerIndexCount +
+		tower_roundIndexCount +
+		building_b_IndexCount +
+		building_c_IndexCount +
+		building_d_IndexCount +
+		building_e_IndexCount +
+		well_IndexCount +
+		food_a_IndexCount +
+		food_b_IndexCount +
+		hay_a_IndexCount +
+		hay_b_IndexCount +
+		hay_c_IndexCount +
+		hay_d_IndexCount +
+		sack_a_IndexCount +
+		sack_b_IndexCount +
+		sewers_entrance_IndexCount +
+		tent_indexCount + crate_indexCount + building_f_IndexCount + barrel_IndexCount;
+		;
 
 	std::vector<Vertex::Basic32> vertices(totalVertexCount);
 
 	UINT k = 0;
-	for (size_t i = 0; i < house1.Vertices.size(); ++i, ++k)
-	{
-		vertices[k].Pos = house1.Vertices[i].Position;
-		vertices[k].Normal = house1.Vertices[i].Normal;
-		vertices[k].Tex = house1.Vertices[i].TexC;
-
-	}
-	for (size_t i = 0; i < house2.Vertices.size(); ++i, ++k)
-	{
-		vertices[k].Pos = house2.Vertices[i].Position;
-		vertices[k].Normal = house2.Vertices[i].Normal;
-		vertices[k].Tex = house2.Vertices[i].TexC;
-
-	}
-	for (size_t i = 0; i < house3.Vertices.size(); ++i, ++k)
-	{
-		vertices[k].Pos = house3.Vertices[i].Position;
-		vertices[k].Normal = house3.Vertices[i].Normal;
-		vertices[k].Tex = house3.Vertices[i].TexC;
-
-	}
-	for (size_t i = 0; i < house4.Vertices.size(); ++i, ++k)
-	{
-		vertices[k].Pos = house4.Vertices[i].Position;
-		vertices[k].Normal = house4.Vertices[i].Normal;
-		vertices[k].Tex = house4.Vertices[i].TexC;
-
-	}
-	for (size_t i = 0; i < house5.Vertices.size(); ++i, ++k)
-	{
-		vertices[k].Pos = house5.Vertices[i].Position;
-		vertices[k].Normal = house5.Vertices[i].Normal;
-		vertices[k].Tex = house5.Vertices[i].TexC;
-
-	}
-	for (size_t i = 0; i < house6.Vertices.size(); ++i, ++k)
-	{
-		vertices[k].Pos = house6.Vertices[i].Position;
-		vertices[k].Normal = house6.Vertices[i].Normal;
-		vertices[k].Tex = house6.Vertices[i].TexC;
-
-	}
-	for (size_t i = 0; i < fence.Vertices.size(); ++i, ++k)
-	{
-		vertices[k].Pos = fence.Vertices[i].Position;
-		vertices[k].Normal = fence.Vertices[i].Normal;
-		vertices[k].Tex = fence.Vertices[i].TexC;
-	}
+// 	for (size_t i = 0; i < house1.Vertices.size(); ++i, ++k)
+// 	{
+// 		vertices[k].Pos = house1.Vertices[i].Position;
+// 		vertices[k].Normal = house1.Vertices[i].Normal;
+// 		vertices[k].Tex = house1.Vertices[i].TexC;
+// 
+// 	}
+// 	for (size_t i = 0; i < house2.Vertices.size(); ++i, ++k)
+// 	{
+// 		vertices[k].Pos = house2.Vertices[i].Position;
+// 		vertices[k].Normal = house2.Vertices[i].Normal;
+// 		vertices[k].Tex = house2.Vertices[i].TexC;
+// 
+// 	}
+// 	for (size_t i = 0; i < house3.Vertices.size(); ++i, ++k)
+// 	{
+// 		vertices[k].Pos = house3.Vertices[i].Position;
+// 		vertices[k].Normal = house3.Vertices[i].Normal;
+// 		vertices[k].Tex = house3.Vertices[i].TexC;
+// 
+// 	}
+// 	for (size_t i = 0; i < house4.Vertices.size(); ++i, ++k)
+// 	{
+// 		vertices[k].Pos = house4.Vertices[i].Position;
+// 		vertices[k].Normal = house4.Vertices[i].Normal;
+// 		vertices[k].Tex = house4.Vertices[i].TexC;
+// 
+// 	}
+// 	for (size_t i = 0; i < house5.Vertices.size(); ++i, ++k)
+// 	{
+// 		vertices[k].Pos = house5.Vertices[i].Position;
+// 		vertices[k].Normal = house5.Vertices[i].Normal;
+// 		vertices[k].Tex = house5.Vertices[i].TexC;
+// 
+// 	}
+// 	for (size_t i = 0; i < house6.Vertices.size(); ++i, ++k)
+// 	{
+// 		vertices[k].Pos = house6.Vertices[i].Position;
+// 		vertices[k].Normal = house6.Vertices[i].Normal;
+// 		vertices[k].Tex = house6.Vertices[i].TexC;
+// 
+// 	}
+// 	for (size_t i = 0; i < fence.Vertices.size(); ++i, ++k)
+// 	{
+// 		vertices[k].Pos = fence.Vertices[i].Position;
+// 		vertices[k].Normal = fence.Vertices[i].Normal;
+// 		vertices[k].Tex = fence.Vertices[i].TexC;
+// 	}
 	for (size_t i = 0; i < angelStatue.Vertices.size(); ++i, ++k)
 	{
 		vertices[k].Pos = angelStatue.Vertices[i].Position;
 		vertices[k].Normal = angelStatue.Vertices[i].Normal;
 		vertices[k].Tex = angelStatue.Vertices[i].TexC;
 	}
-
+	for (size_t i = 0; i < wall.Vertices.size(); ++i, ++k)
+	{
+		vertices[k].Pos = wall.Vertices[i].Position;
+		vertices[k].Normal = wall.Vertices[i].Normal;
+		vertices[k].Tex = wall.Vertices[i].TexC;
+	}
+	for (size_t i = 0; i < tower_corner.Vertices.size(); ++i, ++k)
+	{
+		vertices[k].Pos = tower_corner.Vertices[i].Position;
+		vertices[k].Normal = tower_corner.Vertices[i].Normal;
+		vertices[k].Tex = tower_corner.Vertices[i].TexC;
+	}
+	for (size_t i = 0; i < tower_round.Vertices.size(); ++i, ++k)
+	{
+		vertices[k].Pos = tower_round.Vertices[i].Position;
+		vertices[k].Normal = tower_round.Vertices[i].Normal;
+		vertices[k].Tex = tower_round.Vertices[i].TexC;
+	}
+	for (size_t i = 0; i < building_b.Vertices.size(); ++i, ++k)
+	{
+		vertices[k].Pos = building_b.Vertices[i].Position;
+		vertices[k].Normal = building_b.Vertices[i].Normal;
+		vertices[k].Tex = building_b.Vertices[i].TexC;
+	}
+	for (size_t i = 0; i < building_c.Vertices.size(); ++i, ++k)
+	{
+		vertices[k].Pos = building_c.Vertices[i].Position;
+		vertices[k].Normal = building_c.Vertices[i].Normal;
+		vertices[k].Tex = building_c.Vertices[i].TexC;
+	}
+	for (size_t i = 0; i < building_d.Vertices.size(); ++i, ++k)
+	{
+		vertices[k].Pos = building_d.Vertices[i].Position;
+		vertices[k].Normal = building_d.Vertices[i].Normal;
+		vertices[k].Tex = building_d.Vertices[i].TexC;
+	}
+	for (size_t i = 0; i < building_e.Vertices.size(); ++i, ++k)
+	{
+		vertices[k].Pos = building_e.Vertices[i].Position;
+		vertices[k].Normal = building_e.Vertices[i].Normal;
+		vertices[k].Tex = building_e.Vertices[i].TexC;
+	}
+	for (size_t i = 0; i < well.Vertices.size(); ++i, ++k)
+	{
+		vertices[k].Pos = well.Vertices[i].Position;
+		vertices[k].Normal = well.Vertices[i].Normal;
+		vertices[k].Tex = well.Vertices[i].TexC;
+	}
+	for (size_t i = 0; i < food_a.Vertices.size(); ++i, ++k)
+	{
+		vertices[k].Pos = food_a.Vertices[i].Position;
+		vertices[k].Normal = food_a.Vertices[i].Normal;
+		vertices[k].Tex = food_a.Vertices[i].TexC;
+	}
+	for (size_t i = 0; i < food_b.Vertices.size(); ++i, ++k)
+	{
+		vertices[k].Pos = food_b.Vertices[i].Position;
+		vertices[k].Normal = food_b.Vertices[i].Normal;
+		vertices[k].Tex = food_b.Vertices[i].TexC;
+	}
+	for (size_t i = 0; i < hay_a.Vertices.size(); ++i, ++k)
+	{
+		vertices[k].Pos = hay_a.Vertices[i].Position;
+		vertices[k].Normal = hay_a.Vertices[i].Normal;
+		vertices[k].Tex = hay_a.Vertices[i].TexC;
+	}
+	for (size_t i = 0; i < hay_b.Vertices.size(); ++i, ++k)
+	{
+		vertices[k].Pos = hay_b.Vertices[i].Position;
+		vertices[k].Normal = hay_b.Vertices[i].Normal;
+		vertices[k].Tex = hay_b.Vertices[i].TexC;
+	}
+	for (size_t i = 0; i < hay_c.Vertices.size(); ++i, ++k)
+	{
+		vertices[k].Pos = hay_c.Vertices[i].Position;
+		vertices[k].Normal = hay_c.Vertices[i].Normal;
+		vertices[k].Tex = hay_c.Vertices[i].TexC;
+	}
+	for (size_t i = 0; i < hay_d.Vertices.size(); ++i, ++k)
+	{
+		vertices[k].Pos = hay_d.Vertices[i].Position;
+		vertices[k].Normal = hay_d.Vertices[i].Normal;
+		vertices[k].Tex = hay_d.Vertices[i].TexC;
+	}
+	for (size_t i = 0; i < sack_a.Vertices.size(); ++i, ++k)
+	{
+		vertices[k].Pos = sack_a.Vertices[i].Position;
+		vertices[k].Normal = sack_a.Vertices[i].Normal;
+		vertices[k].Tex = sack_a.Vertices[i].TexC;
+	}
+	for (size_t i = 0; i < sack_b.Vertices.size(); ++i, ++k)
+	{
+		vertices[k].Pos = sack_b.Vertices[i].Position;
+		vertices[k].Normal = sack_b.Vertices[i].Normal;
+		vertices[k].Tex = sack_b.Vertices[i].TexC;
+	}
+	for (size_t i = 0; i < sewers_entrance.Vertices.size(); ++i, ++k)
+	{
+		vertices[k].Pos = sewers_entrance.Vertices[i].Position;
+		vertices[k].Normal = sewers_entrance.Vertices[i].Normal;
+		vertices[k].Tex = sewers_entrance.Vertices[i].TexC;
+	}
+	for (size_t i = 0; i < tent.Vertices.size(); ++i, ++k)
+	{
+		vertices[k].Pos = tent.Vertices[i].Position;
+		vertices[k].Normal = tent.Vertices[i].Normal;
+		vertices[k].Tex = tent.Vertices[i].TexC;
+	}
+	for (size_t i = 0; i < crate.Vertices.size(); ++i, ++k)
+	{
+		vertices[k].Pos = crate.Vertices[i].Position;
+		vertices[k].Normal = crate.Vertices[i].Normal;
+		vertices[k].Tex = crate.Vertices[i].TexC;
+	}
+	for (size_t i = 0; i < building_f.Vertices.size(); ++i, ++k)
+	{
+		vertices[k].Pos = building_f.Vertices[i].Position;
+		vertices[k].Normal = building_f.Vertices[i].Normal;
+		vertices[k].Tex = building_f.Vertices[i].TexC;
+	}
+	for (size_t i = 0; i < barrel.Vertices.size(); ++i, ++k)
+	{
+		vertices[k].Pos = barrel.Vertices[i].Position;
+		vertices[k].Normal = barrel.Vertices[i].Normal;
+		vertices[k].Tex = barrel.Vertices[i].TexC;
+	}
+	
 	D3D11_BUFFER_DESC basicvbd;
 	basicvbd.Usage = D3D11_USAGE_IMMUTABLE;
 	basicvbd.ByteWidth = sizeof(Vertex::Basic32) * totalVertexCount;
@@ -522,19 +775,40 @@ void CModelManager::BuildBasicGeometryBuffer()
 	D3D11_SUBRESOURCE_DATA basicvinitData;
 	basicvinitData.pSysMem = &vertices[0];
 	HR(mDevice->CreateBuffer(&basicvbd, &basicvinitData, &mStaticBasicObjectVB));
-
 	//
 	// Pack the indices of all the meshes into one index buffer.
 	//
 	std::vector<UINT> indices;
-	indices.insert(indices.end(), house1.Indices.rbegin(), house1.Indices.rend());
-	indices.insert(indices.end(), house2.Indices.rbegin(), house2.Indices.rend());
-	indices.insert(indices.end(), house3.Indices.rbegin(), house3.Indices.rend());
-	indices.insert(indices.end(), house4.Indices.rbegin(), house4.Indices.rend());
-	indices.insert(indices.end(), house5.Indices.rbegin(), house5.Indices.rend());
-	indices.insert(indices.end(), house6.Indices.rbegin(), house6.Indices.rend());
-	indices.insert(indices.end(), fence.Indices.rbegin(), fence.Indices.rend());
+// 	indices.insert(indices.end(), house1.Indices.rbegin(), house1.Indices.rend());
+// 	indices.insert(indices.end(), house2.Indices.rbegin(), house2.Indices.rend());
+// 	indices.insert(indices.end(), house3.Indices.rbegin(), house3.Indices.rend());
+// 	indices.insert(indices.end(), house4.Indices.rbegin(), house4.Indices.rend());
+// 	indices.insert(indices.end(), house5.Indices.rbegin(), house5.Indices.rend());
+// 	indices.insert(indices.end(), house6.Indices.rbegin(), house6.Indices.rend());
+// 	indices.insert(indices.end(), fence.Indices.rbegin(), fence.Indices.rend());
 	indices.insert(indices.end(), angelStatue.Indices.rbegin(), angelStatue.Indices.rend());
+	indices.insert(indices.end(), wall.Indices.rbegin(), wall.Indices.rend());
+	indices.insert(indices.end(), tower_corner.Indices.rbegin(), tower_corner.Indices.rend());
+	indices.insert(indices.end(), tower_round.Indices.rbegin(), tower_round.Indices.rend());
+	indices.insert(indices.end(), building_b.Indices.rbegin(), building_b.Indices.rend());
+	indices.insert(indices.end(), building_c.Indices.rbegin(), building_c.Indices.rend());
+	indices.insert(indices.end(), building_d.Indices.rbegin(), building_d.Indices.rend());
+	indices.insert(indices.end(), building_e.Indices.rbegin(), building_e.Indices.rend());
+	indices.insert(indices.end(), well.Indices.rbegin(), well.Indices.rend());
+	indices.insert(indices.end(), food_a.Indices.rbegin(), food_a.Indices.rend());
+	indices.insert(indices.end(), food_b.Indices.rbegin(), food_b.Indices.rend());
+	indices.insert(indices.end(), hay_a.Indices.rbegin(), hay_a.Indices.rend());
+	indices.insert(indices.end(), hay_b.Indices.rbegin(), hay_b.Indices.rend());
+	indices.insert(indices.end(), hay_c.Indices.rbegin(), hay_c.Indices.rend());
+	indices.insert(indices.end(), hay_d.Indices.rbegin(), hay_d.Indices.rend());
+	indices.insert(indices.end(), sack_a.Indices.rbegin(), sack_a.Indices.rend());
+	indices.insert(indices.end(), sack_b.Indices.rbegin(), sack_b.Indices.rend());
+	indices.insert(indices.end(), sewers_entrance.Indices.rbegin(), sewers_entrance.Indices.rend());
+	indices.insert(indices.end(), tent.Indices.rbegin(), tent.Indices.rend());
+	indices.insert(indices.end(), crate.Indices.rbegin(), crate.Indices.rend());
+	indices.insert(indices.end(), building_f.Indices.rbegin(), building_f.Indices.rend());
+	indices.insert(indices.end(), barrel.Indices.rbegin(), barrel.Indices.rend());
+
 
 
 	D3D11_BUFFER_DESC ibd;
@@ -552,60 +826,33 @@ void CModelManager::BuildBasicGeometryBuffer()
 void CModelManager::ReadMapData(TextureMgr& texMgr, Camera* cam)
 {
 	std::ifstream ifs;
-	ifs.open("MapData.txt");
+	ifs.open("NewMapData.txt");
 	XMFLOAT3 scale;
 	XMFLOAT4 rotation;
 	XMFLOAT3 position;
 
-	CInstanceBasicModel tempInstanceModel;
+	CInstanceBasicModel tempInstanceModelWall;
 
 	char objectName[50];
 	std::string cIgnore;
-	int StaticObjCount;
+	int staticObjCount;
 	int instancedObjectCount;
 	int skinnedObjectCount;
 	ifs >> cIgnore;
-	ifs >> cIgnore >> StaticObjCount;
+	ifs >> cIgnore >> staticObjCount;
 	ifs >> cIgnore >> skinnedObjectCount;
 	ifs >> cIgnore >> instancedObjectCount;
 	//////////////////////////////////////////////////////////////////////////
 	///Reading staticObject
 	ifs >> cIgnore;
-	for (int i = 0; i < StaticObjCount; ++i)
+	for (int i = 0; i < staticObjCount; ++i)
 	{
 		ifs >> objectName;
 		ifs >> cIgnore >> position.x >> position.y >> position.z;
-		ifs >> cIgnore >> rotation.x >> rotation.y >> rotation.z >> rotation.w	;
+		ifs >> cIgnore >> rotation.x >> rotation.y >> rotation.z >> rotation.w;
 		ifs >> cIgnore >> scale.x >> scale.y >> scale.z;
 
-		if (!strcmp(objectName, "Cube"))
-		{
-
-			XMVECTOR S = XMLoadFloat3(&scale);
-			XMVECTOR P = XMLoadFloat3(&position);
-			XMVECTOR Q = XMLoadFloat4(&rotation);
-			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-
-			XMFLOAT4X4 M;
-			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
-
-			mStaticNormalModels.push_back(CStaticNomalModel(M,
-				mBoxMat,
-				boxIndexCount,
-				boxVertexOffset,
-				boxIndexOffset,
-				texMgr.CreateTexture(L"Textures\\bricks.dds"),
-				texMgr.CreateTexture(L"Textures\\bricks_nmap.dds"),
-				"box"
-			));
-
-		}
-	
-// 		else if (!strcmp(objectName, "MainCamera"))
-// 		{
-// 			cam.SetPosition(position.x, position.y, position.z);
-// 		}
-		else if (!strcmp(objectName, "Plane"))
+		if (!strcmp(objectName, "Plane"))
 		{
 			XMVECTOR S = XMLoadFloat3(&scale);
 			XMVECTOR P = XMLoadFloat3(&position);
@@ -619,118 +866,9 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera* cam)
 				gridIndexCount,
 				gridVertexOffset,
 				gridIndexOffset,
-				texMgr.CreateTexture(L"Textures\\floor.dds"),
-				texMgr.CreateTexture(L"Textures\\floor_nmap.dds"),
+				texMgr.CreateTexture(L"Textures\\PBC_Texture_RoadsPack_Pebbles_D.png"),
+				texMgr.CreateTexture(L"Textures\\PBC_Texture_RoadsPack_Pebbles_NM.png"),
 				"grid"
-			));
-		}
-		
-		else if (!strcmp(objectName, "house_1"))
-		{
-			XMVECTOR S = XMLoadFloat3(&scale);
-			XMVECTOR P = XMLoadFloat3(&position);
-			XMVECTOR Q = XMLoadFloat4(&rotation);
-			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-
-			XMFLOAT4X4 M;
-			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
-			mStaticBasicModels.push_back(CStaticBasicModel(M,
-				mGridMat,
-				house1IndexCount,
-				house1VertexOffset,
-				house1IndexOffset,
-				texMgr.CreateTexture(L"Textures\\house diffuse.dds"),
-				"house1"
-			));
-		}
-		else if (!strcmp(objectName, "house_2"))
-		{
-			XMVECTOR S = XMLoadFloat3(&scale);
-			XMVECTOR P = XMLoadFloat3(&position);
-			XMVECTOR Q = XMLoadFloat4(&rotation);
-			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-
-			XMFLOAT4X4 M;
-			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
-			mStaticBasicModels.push_back(CStaticBasicModel(M,
-				mGridMat,
-				house2IndexCount,
-				house2VertexOffset,
-				house2IndexOffset,
-				texMgr.CreateTexture(L"Textures\\house diffuse.dds"),
-				"house2"
-			));
-		}
-		else if (!strcmp(objectName, "house_3"))
-		{
-			XMVECTOR S = XMLoadFloat3(&scale);
-			XMVECTOR P = XMLoadFloat3(&position);
-			XMVECTOR Q = XMLoadFloat4(&rotation);
-			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-
-			XMFLOAT4X4 M;
-			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
-			mStaticBasicModels.push_back(CStaticBasicModel(M,
-				mGridMat,
-				house3IndexCount,
-				house3VertexOffset,
-				house3IndexOffset,
-				texMgr.CreateTexture(L"Textures\\house diffuse.dds"),
-				"house3"
-			));
-		}
-		else if (!strcmp(objectName, "house_4"))
-		{
-			XMVECTOR S = XMLoadFloat3(&scale);
-			XMVECTOR P = XMLoadFloat3(&position);
-			XMVECTOR Q = XMLoadFloat4(&rotation);
-			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-
-			XMFLOAT4X4 M;
-			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
-			mStaticBasicModels.push_back(CStaticBasicModel(M,
-				mGridMat,
-				house4IndexCount,
-				house4VertexOffset,
-				house4IndexOffset,
-				texMgr.CreateTexture(L"Textures\\house diffuse.dds"),
-				"house4"
-			));
-		}
-		else if (!strcmp(objectName, "house_5"))
-		{
-			XMVECTOR S = XMLoadFloat3(&scale);
-			XMVECTOR P = XMLoadFloat3(&position);
-			XMVECTOR Q = XMLoadFloat4(&rotation);
-			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-			//ID3D11ShaderResourceView* tempSRV = texMgr.CreateTexture(L"Textures\\house diffuse.dds");
-			XMFLOAT4X4 M;
-			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
-			mStaticBasicModels.push_back(CStaticBasicModel(M,
-				mGridMat,
-				house5IndexCount,
-				house5VertexOffset,
-				house5IndexOffset,
-				texMgr.CreateTexture(L"Textures\\house diffuse.dds"),
-				"house5"
-			));
-		}
-		else if (!strcmp(objectName, "house_6"))
-		{
-			XMVECTOR S = XMLoadFloat3(&scale);
-			XMVECTOR P = XMLoadFloat3(&position);
-			XMVECTOR Q = XMLoadFloat4(&rotation);
-			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-
-			XMFLOAT4X4 M;
-			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
-			mStaticBasicModels.push_back(CStaticBasicModel(M,
-				mGridMat,
-				house6IndexCount,
-				house6VertexOffset,
-				house6IndexOffset,
-				texMgr.CreateTexture(L"Textures\\house diffuse.dds"),
-				"house6"
 			));
 		}
 		else if (!strcmp(objectName, "angelStatue"))
@@ -751,19 +889,382 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera* cam)
 				"angelStatue"
 			));
 		}
+		else if (!strcmp(objectName, "tower_corner"))
+		{
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			mStaticBasicModels.push_back(CStaticBasicModel(M,
+				mBoxMat,
+				tower_conerIndexCount,
+				tower_conerVertexOffset,
+				tower_conerIndexOffset,
+				texMgr.CreateTexture(L"Textures\\bricks_albedo.png"),
+				"tower_coner"
+			));
+		}
+		else if (!strcmp(objectName, "tower_round"))
+		{
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			mStaticBasicModels.push_back(CStaticBasicModel(M,
+				mBoxMat,
+				tower_roundIndexCount,
+				tower_roundVertexOffset,
+				tower_roundIndexOffset,
+				texMgr.CreateTexture(L"Textures\\bricks_albedo.png"),
+				"tower_round"
+			));
+		}
+		else if (!strcmp(objectName, "Building_b"))
+		{
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			mStaticBasicModels.push_back(CStaticBasicModel(M,
+				mBoxMat,
+				building_b_IndexCount,
+				building_b_VertexOffset,
+				building_b_IndexOffset,
+				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
+				"Building_b"
+			));
+		}
+		else if (!strcmp(objectName, "Building_c"))
+		{
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			mStaticBasicModels.push_back(CStaticBasicModel(M,
+				mBoxMat,
+				building_c_IndexCount,
+				building_c_VertexOffset,
+				building_c_IndexOffset,
+				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
+				"Building_c"
+			));
+		}
+
+		else if (!strcmp(objectName, "Building_d"))
+		{
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			mStaticBasicModels.push_back(CStaticBasicModel(M,
+				mBoxMat,
+				building_d_IndexCount,
+				building_d_VertexOffset,
+				building_d_IndexOffset,
+				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
+				"Building_b"
+			));
+		}
+		else if (!strcmp(objectName, "Building_e"))
+		{
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			mStaticBasicModels.push_back(CStaticBasicModel(M,
+				mBoxMat,
+				building_e_IndexCount,
+				building_e_VertexOffset,
+				building_e_IndexOffset,
+				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
+				"Building_e"
+			));
+		}
+		
+		else if (!strcmp(objectName, "Well"))
+		{
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			mStaticBasicModels.push_back(CStaticBasicModel(M,
+				mBoxMat,
+				well_IndexCount,
+				well_VertexOffset,
+				well_IndexOffset,
+				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
+				"Well"
+			));
+		}
+		else if (!strcmp(objectName, "Food_a"))
+		{
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			mStaticBasicModels.push_back(CStaticBasicModel(M,
+				mBoxMat,
+				food_a_IndexCount,
+				food_a_VertexOffset,
+				food_a_IndexOffset,
+				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
+				"Food_a"
+			));
+		}
+		else if (!strcmp(objectName, "Food_b"))
+		{
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			mStaticBasicModels.push_back(CStaticBasicModel(M,
+				mBoxMat,
+				food_b_IndexCount,
+				food_b_VertexOffset,
+				food_b_IndexOffset,
+				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
+				"Food_b"
+			));
+		}
+		else if (!strcmp(objectName, "Hay_a"))
+		{
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			mStaticBasicModels.push_back(CStaticBasicModel(M,
+				mBoxMat,
+				hay_a_IndexCount,
+				hay_a_VertexOffset,
+				hay_a_IndexOffset,
+				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
+				"Hay_a"
+			));
+		}
+		else if (!strcmp(objectName, "Hay_b"))
+		{
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			mStaticBasicModels.push_back(CStaticBasicModel(M,
+				mBoxMat,
+				hay_b_IndexCount,
+				hay_b_VertexOffset,
+				hay_b_IndexOffset,
+				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
+				"Hay_b"
+			));
+		}
+		else if (!strcmp(objectName, "Hay_c"))
+		{
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			mStaticBasicModels.push_back(CStaticBasicModel(M,
+				mBoxMat,
+				hay_c_IndexCount,
+				hay_c_VertexOffset,
+				hay_c_IndexOffset,
+				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
+				"Hay_c"
+			));
+		}
+		else if (!strcmp(objectName, "Hay_d"))
+		{
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			mStaticBasicModels.push_back(CStaticBasicModel(M,
+				mBoxMat,
+				hay_d_IndexCount,
+				hay_d_VertexOffset,
+				hay_d_IndexOffset,
+				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
+				"Hay_d"
+			));
+		}
+		else if (!strcmp(objectName, "Sack_a"))
+		{
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			mStaticBasicModels.push_back(CStaticBasicModel(M,
+				mBoxMat,
+				sack_a_IndexCount,
+				sack_a_VertexOffset,
+				sack_a_IndexOffset,
+				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
+				"Sack_a"
+			));
+		}
+		else if (!strcmp(objectName, "Sack_b"))
+		{
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			mStaticBasicModels.push_back(CStaticBasicModel(M,
+				mBoxMat,
+				sack_b_IndexCount,
+				sack_b_VertexOffset,
+				sack_b_IndexOffset,
+				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
+				"Sack_b"
+			));
+		}
+		else if (!strcmp(objectName, "Sewers_entrance"))
+		{
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			mStaticBasicModels.push_back(CStaticBasicModel(M,
+				mBoxMat,
+				sewers_entrance_IndexCount,
+				sewers_entrance_VertexOffset,
+				sewers_entrance_IndexOffset,
+				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
+				"Sewers_entrance"
+			));
+		}
+		else if (!strcmp(objectName, "Tent"))
+		{
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			mStaticBasicModels.push_back(CStaticBasicModel(M,
+				mBoxMat,
+				tent_indexCount,
+				tent_VertexOffset,
+				tent_indexOffset,
+				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
+				"Tent"
+			));
+		}
+		else if (!strcmp(objectName, "Crate"))
+		{
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			mStaticBasicModels.push_back(CStaticBasicModel(M,
+				mBoxMat,
+				crate_indexCount,
+				crate_VertexOffset,
+				crate_indexOffset,
+				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
+				"Crate"
+			));
+		}
+		else if (!strcmp(objectName, "Building_f"))
+		{
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			mStaticBasicModels.push_back(CStaticBasicModel(M,
+				mBoxMat,
+				building_f_IndexCount,
+				building_f_VertexOffset,
+				building_f_IndexOffset,
+				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
+				"Building_f"
+			));
+		}
+		else if (!strcmp(objectName, "Barrel"))
+		{
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			mStaticBasicModels.push_back(CStaticBasicModel(M,
+				mBoxMat,
+				barrel_IndexCount,
+				barrel_VertexOffset,
+				barrel_IndexOffset,
+				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
+				"Barrel"
+			));
+		}
+		//////////////////////////////////////////////////////////////////////////아직 추가 안함.
 		else
 		{
 			std::cout << "찾을수 없음" << std::endl;
 		}
-// 		std::cout << objectName << std::endl;
-// 		std::cout << position.x << " " << position.y << " " << position.z << std::endl;
-// 		std::cout << rotation.x << " " << rotation.y << " " << rotation.z << " " << rotation.w << std::endl;
-// 		std::cout << scale.x << " " << scale.y << " " << scale.z << std::endl << std::endl;
- 		ZeroMemory(&objectName, sizeof(objectName));
- 		//ZeroMemory(&cIgnore, sizeof(cIgnore));
- 		ZeroMemory(&position, sizeof(position));
- 		ZeroMemory(&rotation, sizeof(rotation));
- 		ZeroMemory(&scale, sizeof(scale));
+		// 		std::cout << objectName << std::endl;
+		// 		std::cout << position.x << " " << position.y << " " << position.z << std::endl;
+		// 		std::cout << rotation.x << " " << rotation.y << " " << rotation.z << " " << rotation.w << std::endl;
+		// 		std::cout << scale.x << " " << scale.y << " " << scale.z << std::endl << std::endl;
+		ZeroMemory(&objectName, sizeof(objectName));
+		//ZeroMemory(&cIgnore, sizeof(cIgnore));
+		ZeroMemory(&position, sizeof(position));
+		ZeroMemory(&rotation, sizeof(rotation));
+		ZeroMemory(&scale, sizeof(scale));
 	}
 	ifs >> cIgnore;
 	for (int i = 0; i < instancedObjectCount; ++i)
@@ -773,7 +1274,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera* cam)
 		ifs >> cIgnore >> rotation.x >> rotation.y >> rotation.z >> rotation.w;
 		ifs >> cIgnore >> scale.x >> scale.y >> scale.z;
 
-		if (!strcmp(objectName, "fence1"))
+		if (!strcmp(objectName, "wall"))
 		{
 			XMVECTOR S = XMLoadFloat3(&scale);
 			XMVECTOR P = XMLoadFloat3(&position);
@@ -783,16 +1284,16 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera* cam)
 			XMFLOAT4X4 M;
 			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
 			//tempInstanceWorld.push_back(M);
-			tempInstanceModel.AddInstanceWorld(M);
+			tempInstanceModelWall.AddInstanceWorld(M);
 
 		}
 	}
-//	인스턴싱할 객체를 Setting
- 	tempInstanceModel.SetDrawInfomation(fenceIndexCount, fenceVertexOffset, fenceIndexOffset);
- 	tempInstanceModel.SetMatrial(mBoxMat);
- 	tempInstanceModel.SetSRV(texMgr.CreateTexture(L"Textures\\diff_fence_gate.dds"));
- 	tempInstanceModel.BuildInstanceBuffer(mDevice);
- 	mInstanceModels.push_back(tempInstanceModel);
+	//	인스턴싱할 객체를 Setting
+	tempInstanceModelWall.SetDrawInfomation(wallIndexCount, wallVertexOffset, wallIndexOffset);
+	tempInstanceModelWall.SetMatrial(mBoxMat);
+	tempInstanceModelWall.SetSRV(texMgr.CreateTexture(L"Textures\\bricks_albedo.png"));
+	tempInstanceModelWall.BuildInstanceBuffer(mDevice);
+	mInstanceModels.push_back(tempInstanceModelWall);
 	ifs >> cIgnore;
 	for (int i = 0; i < skinnedObjectCount; ++i)
 	{
@@ -801,37 +1302,37 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera* cam)
 		ifs >> cIgnore >> rotation.x >> rotation.y >> rotation.z >> rotation.w;
 		ifs >> cIgnore >> scale.x >> scale.y >> scale.z;
 
-			if (!strcmp(objectName, "Clown"))
-			{
-				XMVECTOR S = XMLoadFloat3(&scale);
-				XMVECTOR P = XMLoadFloat3(&position);
-				XMVECTOR Q = XMLoadFloat4(&rotation);
-				XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+		if (!strcmp(objectName, "Clown"))
+		{
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
 
-				XMFLOAT4X4 M;
-				XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
-				SkinnedModelInstance tempSkinnedModelInstanced;
-				tempSkinnedModelInstanced.Model = mCharacterModel;
-				tempSkinnedModelInstanced.TimePos = 0;
-				tempSkinnedModelInstanced.FinalTransforms.resize(mCharacterModel->SkinnedData.BoneCount());
-				tempSkinnedModelInstanced.World = M;
-				tempSkinnedModelInstanced.mClipAnimbuf = &mclipAnimbuf;
-				tempSkinnedModelInstanced.mClipnameAndTotalCount = mClipnameAndTotalCounts[0];//idle;
-				tempSkinnedModelInstanced.mAnimCnt = 0;
-				tempSkinnedModelInstanced.isPlayer = false;
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			SkinnedModelInstance tempSkinnedModelInstanced;
+			tempSkinnedModelInstanced.Model = mCharacterModel;
+			tempSkinnedModelInstanced.TimePos = 0;
+			tempSkinnedModelInstanced.FinalTransforms.resize(mCharacterModel->SkinnedData.BoneCount());
+			tempSkinnedModelInstanced.World = M;
+			tempSkinnedModelInstanced.mClipAnimbuf = &mclipAnimbuf;
+			tempSkinnedModelInstanced.mClipnameAndTotalCount = mClipnameAndTotalCounts[0];//idle;
+			tempSkinnedModelInstanced.mAnimCnt = 0;
+			tempSkinnedModelInstanced.isPlayer = false;
 
-				ifs >> objectName;
-				ifs >> cIgnore >> position.x >> position.y >> position.z;
+			ifs >> objectName;
+			ifs >> cIgnore >> position.x >> position.y >> position.z;
 
-				tempSkinnedModelInstanced.camPos = XMFLOAT3(position.x, position.y, position.z);
-				mSkinnedModelInstance.push_back(tempSkinnedModelInstanced);
-			}
+			tempSkinnedModelInstanced.camPos = XMFLOAT3(position.x, position.y, position.z);
+			mSkinnedModelInstance.push_back(tempSkinnedModelInstanced);
+		}
 	}
-// 	int randomIndex = rand() % mSkinnedModelInstance.size();
-// 	cam->SetPosition(mSkinnedModelInstance[randomIndex].camPos);
-// 	mSkinnedModelInstance[randomIndex].isPlayer = true;
-// 	mSkinnedModelInstance[randomIndex].cam = cam;
-	
+	// 	int randomIndex = rand() % mSkinnedModelInstance.size();
+	// 	cam->SetPosition(mSkinnedModelInstance[randomIndex].camPos);
+	// 	mSkinnedModelInstance[randomIndex].isPlayer = true;
+	// 	mSkinnedModelInstance[randomIndex].cam = cam;
+
 	ifs.close();
 
 }

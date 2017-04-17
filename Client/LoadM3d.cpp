@@ -22,8 +22,8 @@ bool M3DLoader::LoadM3d(const std::string& filename,
 		fin >> ignore >> numMaterials;
 		fin >> ignore >> numVertices;
 		fin >> ignore >> numTriangles;
-		fin >> ignore >> numBones;
-		fin >> ignore >> numAnimationClips;
+// 		fin >> ignore >> numBones;
+// 		fin >> ignore >> numAnimationClips;
  
 		ReadMaterials(fin, numMaterials, mats);
 		ReadSubsetTable(fin, numMaterials, subsets);
@@ -100,6 +100,7 @@ void M3DLoader::ReadMaterials(std::ifstream& fin, UINT numMaterials, std::vector
 			fin >> ignore >> mats[i].EffectTypeName;
 			fin >> ignore >> diffuseMapName;
 			fin >> ignore >> normalMapName;
+
 			mats[i].Mat.Ambient.w = 1;
 			mats[i].Mat.Diffuse.w = 1;
 			mats[i].Mat.Reflect.w = 1;
