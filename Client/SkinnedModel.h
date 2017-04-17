@@ -38,6 +38,7 @@ struct SkinnedModelInstance
 	std::pair<std::string, int> mClipnameAndTotalCount;
 	int mAnimCnt;
 	float mRotateAngle;
+	XMVECTOR mLook;
 	void Update(float dt);
 };
 #endif // SKINNEDMODEL_H

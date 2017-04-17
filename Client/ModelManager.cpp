@@ -263,22 +263,20 @@ void CModelManager::DrawInstancedModel(ID3D11DeviceContext * dc, ID3DX11EffectTe
 
 void CModelManager::UpdateModel(const float & dt, Camera& camera)
 {
-	XMFLOAT3 pos, pos2, up, mLook, mPosition;
-	up.x = 0;
-	up.y = 1;
-	up.z = 0;
+	XMFLOAT3 campos, charpos, camLook, charlook;
+	
 	for (int i = 0; i < mSkinnedModelInstance.size(); ++i)
 	{
 		mSkinnedModelInstance[i].Update(dt);
 	}
 
-	pos2.x = mSkinnedModelInstance[5].World._41;
-	pos2.y = mSkinnedModelInstance[5].World._42;
-	pos2.z = mSkinnedModelInstance[5].World._43;
+	charpos.x = mSkinnedModelInstance[5].World._41;
+	charpos.y = mSkinnedModelInstance[5].World._42;
+	charpos.z = mSkinnedModelInstance[5].World._43;
 
 	if (GetAsyncKeyState(VK_UP) & 0x8000)
 	{
-		pos = camera.GetPosition();
+		campos = camera.GetPosition();
 		mSkinnedModelInstance[5].mClipnameAndTotalCount = mClipnameAndTotalCounts[1];
 
 		XMMATRIX objoffset;
@@ -287,11 +285,14 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 		XMMATRIX modelOffset = XMMatrixTranslation(0, 0, 0);
 		XMMATRIX finalm = modelScale*modelRot*modelOffset;
 		objoffset = XMLoadFloat4x4(&mSkinnedModelInstance[5].World);
-
 		objoffset = finalm * objoffset;
-
 		XMStoreFloat4x4(&mSkinnedModelInstance[5].World, objoffset);
 
+		charlook.x = charpos.x - campos.x;
+		charlook.y = charpos.y - campos.y;
+		charlook.z = charpos.z - campos.z;
+
+		mSkinnedModelInstance[5].mLook = XMLoadFloat3(&charlook);
 
 		if (mSkinnedModelInstance[5].mRotateAngle > 0 && mCheckAngle < mSkinnedModelInstance[5].mRotateAngle)
 		{
@@ -311,21 +312,20 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 		}
 
 
-		mLook.x = pos2.x - pos.x;
-		mLook.y = pos2.y - pos.y;
-		mLook.z = pos2.z - pos.z;
+		camLook.x = charpos.x - campos.x;
+		camLook.y = charpos.y - campos.y;
+		camLook.z = charpos.z - campos.z;
 
-		mPosition = pos2;
 		XMVECTOR s = XMVectorReplicate(0.5f*dt);
-		XMVECTOR l = XMLoadFloat3(&mLook);
-		XMVECTOR p = XMLoadFloat3(&mPosition);
-		XMStoreFloat3(&mPosition, XMVectorMultiplyAdd(s, l, p));
-		pos.x += mPosition.x - mSkinnedModelInstance[5].World._41;
-		pos.z += mPosition.z - mSkinnedModelInstance[5].World._43;
-		camera.SetPosition(pos);
-		mSkinnedModelInstance[5].World._41 = mPosition.x;
+		XMVECTOR l = XMLoadFloat3(&camLook);
+		XMVECTOR p = XMLoadFloat3(&charpos);
+		XMStoreFloat3(&charpos, XMVectorMultiplyAdd(s, l, p));
+		campos.x += charpos.x - mSkinnedModelInstance[5].World._41;
+		campos.z += charpos.z - mSkinnedModelInstance[5].World._43;
+		camera.SetPosition(campos);
+		mSkinnedModelInstance[5].World._41 = charpos.x;
 		//mSkinnedModelInstance[5].World._42 = mPosition.y;
-		mSkinnedModelInstance[5].World._43 = mPosition.z;
+		mSkinnedModelInstance[5].World._43 = charpos.z;
 
 		//worldInvTranspose = MathHelper::InverseTranspose(XMLoadFloat4x4(&mSkinnedModelInstance[5].World));
 		//int a = 10;
