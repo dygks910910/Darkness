@@ -536,7 +536,7 @@ void CTestScene::OnMouseUp(WPARAM btnState, int x, int y)
 {
 	ReleaseCapture();
 }
-
+float sumdx = 0;
 void CTestScene::OnMouseMove(WPARAM btnState, int x, int y)
 {
 	if ((btnState & MK_LBUTTON) != 0)
@@ -560,12 +560,16 @@ void CTestScene::OnMouseMove(WPARAM btnState, int x, int y)
 			// Make each pixel correspond to a quarter of a degree.
 			float dx = XMConvertToRadians(0.25f*static_cast<float>(x - mLastMousePos.x));
 			float dy = XMConvertToRadians(0.25f*static_cast<float>(y - mLastMousePos.y));
-
 			//////////////카메라와 객체 거리 구하기///////////
 			dist.x = campos.x - objectpos.x;
 			dist.y = campos.y - objectpos.y;
 			dist.z = campos.z - objectpos.z;
 
+			if (mModelMgr.GetSkinnedInstanceModels()[5].mRotateAngle == 0)
+				sumdx = 0;
+			sumdx += dx;
+
+			mModelMgr.GetSkinnedInstanceModels()[5].mRotateAngle = sumdx;
 
 			matRot = XMMatrixRotationY(dx);
 			eye = XMVector3TransformCoord(XMLoadFloat3(&dist), matRot);
@@ -579,11 +583,6 @@ void CTestScene::OnMouseMove(WPARAM btnState, int x, int y)
 			campos.z = dist.z + objectpos.z;
 			mCam.LookAt(campos, objectpos, up);
 			///////////////////////////////////////////
-
-			//mCam.Pitch(dy);
-			//mCam.RotateAxis(v, dx);
-			//mCam.SetPosition(test);
-			//mCam.RotateY(dx);
 		}
 		else
 		{
@@ -594,6 +593,7 @@ void CTestScene::OnMouseMove(WPARAM btnState, int x, int y)
 		}
 
 	}
+	
 	mLastMousePos.x = x;
 	mLastMousePos.y = y;
 }

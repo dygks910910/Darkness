@@ -39,6 +39,9 @@ class CModelManager
 	int boxIndexOffset;
 	int boxIndexCount;
 
+
+	float mCheckAngle = 0;
+	float mRotateAngle = 0.005;
 // 	int clownIndexOffset;
 // 	int clownVertexOffset;
 // 	int clownIndexCount;

@@ -54,6 +54,8 @@ class CTestScene :
 // 	SkinnedModelInstance mCharacterInstances[70];
 	//Terrain mTerrain;
 	POINT mLastMousePos;
+	POINT mUpMousePos;
+
 	Sky* mSky;
 
 

@@ -62,7 +62,7 @@ void CModelManager::Init(TextureMgr & texMgr, Camera & cam, ID3D11Device* device
 			{
 				fin >> TestFinalTransforms[i][j]._11 >> TestFinalTransforms[i][j]._12 >> TestFinalTransforms[i][j]._13 >> TestFinalTransforms[i][j]._14
 					>> TestFinalTransforms[i][j]._21 >> TestFinalTransforms[i][j]._22 >> TestFinalTransforms[i][j]._23 >> TestFinalTransforms[i][j]._24
-					>> TestFinalTransforms[i][j]._31 >>TestFinalTransforms[i][j]._32 >> TestFinalTransforms[i][j]._33 >> TestFinalTransforms[i][j]._34
+					>> TestFinalTransforms[i][j]._31 >> TestFinalTransforms[i][j]._32 >> TestFinalTransforms[i][j]._33 >> TestFinalTransforms[i][j]._34
 					>> TestFinalTransforms[i][j]._41 >> TestFinalTransforms[i][j]._42 >> TestFinalTransforms[i][j]._43 >> TestFinalTransforms[i][j]._44;
 			}
 		}
@@ -227,16 +227,16 @@ void CModelManager::DrawToShadowMap(ID3D11DeviceContext * dc, ID3DX11EffectTechn
 	{
 		p.DrawToShadowMap(dc, tech, lightView, lightProj);
 	}
-// 	UINT instanceStride[2] = { sizeof(Vertex::Basic32), sizeof(XMFLOAT4X4) };
-// 	UINT instanceOffset[2] = { 0,0 };
-// 	for (int i = 0; i < mInstanceModels.size(); ++i)
-// 	{
-// 		ID3D11Buffer* vbs[2] = { mStaticBasicObjectVB,mInstanceModels[i].GetInstanceBuffer() };
-// 		dc->IASetVertexBuffers(0, 2, vbs, instanceStride, instanceOffset);
-// 		dc->IASetIndexBuffer(mStaticBasicObjectIB, DXGI_FORMAT_R32_UINT, 0);
-// 
-// 		mInstanceModels[i].DrawToShadowMap(dc, tech, lightView, lightProj);
-// 	}
+	// 	UINT instanceStride[2] = { sizeof(Vertex::Basic32), sizeof(XMFLOAT4X4) };
+	// 	UINT instanceOffset[2] = { 0,0 };
+	// 	for (int i = 0; i < mInstanceModels.size(); ++i)
+	// 	{
+	// 		ID3D11Buffer* vbs[2] = { mStaticBasicObjectVB,mInstanceModels[i].GetInstanceBuffer() };
+	// 		dc->IASetVertexBuffers(0, 2, vbs, instanceStride, instanceOffset);
+	// 		dc->IASetIndexBuffer(mStaticBasicObjectIB, DXGI_FORMAT_R32_UINT, 0);
+	// 
+	// 		mInstanceModels[i].DrawToShadowMap(dc, tech, lightView, lightProj);
+	// 	}
 }
 
 void CModelManager::DrawInstancedModel(ID3D11DeviceContext * dc, ID3DX11EffectTechnique * tech, const XMMATRIX & shadowTransform, const Camera & cam)
@@ -246,23 +246,24 @@ void CModelManager::DrawInstancedModel(ID3D11DeviceContext * dc, ID3DX11EffectTe
 	UINT instanceStride[2] = { sizeof(Vertex::Basic32), sizeof(XMFLOAT4X4) };
 	UINT instanceOffset[2] = { 0,0 };
 	ID3D11Buffer* vbs[2] = { mStaticBasicObjectVB,mInstanceModels[0].GetInstanceBuffer() };
-	
+
 
 	for (int i = 0; i < mInstanceModels.size(); ++i)
 	{
 		dc->IASetVertexBuffers(0, 2, vbs, instanceStride, instanceOffset);
 		dc->IASetIndexBuffer(mStaticBasicObjectIB, DXGI_FORMAT_R32_UINT, 0);
 		//Effects::InstancedBasicFX->Light3TexTech->GetDesc(&techDesc);
-		
+
 
 		mInstanceModels[i].Draw(dc, tech, shadowTransform, cam);
 	}
 
 }
 
+
 void CModelManager::UpdateModel(const float & dt, Camera& camera)
 {
-	XMFLOAT3 pos, pos2, up;
+	XMFLOAT3 pos, pos2, up, mLook, mPosition;
 	up.x = 0;
 	up.y = 1;
 	up.z = 0;
@@ -277,48 +278,60 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 
 	if (GetAsyncKeyState(VK_UP) & 0x8000)
 	{
-		mSkinnedModelInstance[5].World._41 += 0.0015;
 		pos = camera.GetPosition();
-		pos.x += 0.0015;
-		camera.SetPosition(pos);
-
 		mSkinnedModelInstance[5].mClipnameAndTotalCount = mClipnameAndTotalCounts[1];
 
-		//XMVECTOR rotationQuaternion = XMQuaternionRotationRollPitchYaw(0,5,0);
-
-		//XMVECTOR m_tempQuaternion = XMQuaternionMultiply(XMLoadFloat3(&up), rotationQuaternion);
-		//rotationQuaternion = XMQuaternionConjugate(rotationQuaternion);
-		//XMFLOAT3 scale;
-		//XMFLOAT4 rotation, rotation2;
-		//XMFLOAT3 position;
-		//scale.x = 0.13;
-		//scale.y = 0.13;
-		//scale.z = 0.13;
-		//rotation.x = -0.7009093;
-		//rotation.y = 0;
-		//rotation.z = 0;
-		//rotation.w = 0.7132505;
-
-		//position = pos2;
-		//XMVECTOR S = XMLoadFloat3(&scale);
-		//XMVECTOR P = XMLoadFloat3(&position);
-		//XMVECTOR Q = XMLoadFloat4(&rotation);
-		//XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-
-		//XMFLOAT4X4 M;
-		//XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
-
-		//mSkinnedModelInstance[5].World = M;
-
-		/////////////////이부분 작업하면 누움///////////////////
-		/*XMMATRIX modelScale = XMMatrixScaling(0.13, 0.13, 0.13);
-		XMMATRIX modelRot = XMMatrixRotationY(0);
-		XMMATRIX modelOffset = XMMatrixTranslation(pos2.x, pos2.y, pos2.z);
+		XMMATRIX objoffset;
+		XMMATRIX modelScale = XMMatrixScaling(1, 1, 1);
+		XMMATRIX modelRot = XMMatrixRotationZ(mRotateAngle);
+		XMMATRIX modelOffset = XMMatrixTranslation(0, 0, 0);
 		XMMATRIX finalm = modelScale*modelRot*modelOffset;
-		XMStoreFloat4x4(&mSkinnedModelInstance[5].World, finalm);*/
+		objoffset = XMLoadFloat4x4(&mSkinnedModelInstance[5].World);
 
-		
+		objoffset = finalm * objoffset;
+
+		XMStoreFloat4x4(&mSkinnedModelInstance[5].World, objoffset);
+
+
+		if (mSkinnedModelInstance[5].mRotateAngle > 0 && mCheckAngle < mSkinnedModelInstance[5].mRotateAngle)
+		{
+			mRotateAngle = 0.001;
+			mCheckAngle += 0.001;
+		}
+		else if (mSkinnedModelInstance[5].mRotateAngle < 0 && mCheckAngle > mSkinnedModelInstance[5].mRotateAngle)
+		{
+			mRotateAngle = -0.001;
+			mCheckAngle -= 0.001;
+		}
+		else
+		{
+			mRotateAngle = 0;
+			mCheckAngle = 0;
+			mSkinnedModelInstance[5].mRotateAngle = 0;
+		}
+
+
+		mLook.x = pos2.x - pos.x;
+		mLook.y = pos2.y - pos.y;
+		mLook.z = pos2.z - pos.z;
+
+		mPosition = pos2;
+		XMVECTOR s = XMVectorReplicate(0.5f*dt);
+		XMVECTOR l = XMLoadFloat3(&mLook);
+		XMVECTOR p = XMLoadFloat3(&mPosition);
+		XMStoreFloat3(&mPosition, XMVectorMultiplyAdd(s, l, p));
+		pos.x += mPosition.x - mSkinnedModelInstance[5].World._41;
+		pos.z += mPosition.z - mSkinnedModelInstance[5].World._43;
+		camera.SetPosition(pos);
+		mSkinnedModelInstance[5].World._41 = mPosition.x;
+		//mSkinnedModelInstance[5].World._42 = mPosition.y;
+		mSkinnedModelInstance[5].World._43 = mPosition.z;
+
+		//worldInvTranspose = MathHelper::InverseTranspose(XMLoadFloat4x4(&mSkinnedModelInstance[5].World));
+		//int a = 10;
+
 	}
+
 }
 
 void CModelManager::BuildShapeGeometryBuffers()
@@ -362,7 +375,7 @@ void CModelManager::BuildShapeGeometryBuffers()
 		box.Vertices.size() +
 		grid.Vertices.size();
 
-		UINT totalIndexCount =
+	UINT totalIndexCount =
 		boxIndexCount +
 		gridIndexCount;
 
@@ -393,7 +406,7 @@ void CModelManager::BuildShapeGeometryBuffers()
 			1.0f);
 	}
 
-	
+
 
 
 	D3D11_BUFFER_DESC vbd;
@@ -609,7 +622,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 	{
 		ifs >> objectName;
 		ifs >> cIgnore >> position.x >> position.y >> position.z;
-		ifs >> cIgnore >> rotation.x >> rotation.y >> rotation.z >> rotation.w	;
+		ifs >> cIgnore >> rotation.x >> rotation.y >> rotation.z >> rotation.w;
 		ifs >> cIgnore >> scale.x >> scale.y >> scale.z;
 
 		if (!strcmp(objectName, "Cube"))
@@ -634,7 +647,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 			));
 
 		}
-	
+
 		else if (!strcmp(objectName, "MainCamera"))
 		{
 			cam.SetPosition(position.x, position.y, position.z);
@@ -658,7 +671,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				"grid"
 			));
 		}
-		
+
 		else if (!strcmp(objectName, "house_1"))
 		{
 			XMVECTOR S = XMLoadFloat3(&scale);
@@ -771,15 +784,15 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 		{
 			std::cout << "찾을수 없음" << std::endl;
 		}
-// 		std::cout << objectName << std::endl;
-// 		std::cout << position.x << " " << position.y << " " << position.z << std::endl;
-// 		std::cout << rotation.x << " " << rotation.y << " " << rotation.z << " " << rotation.w << std::endl;
-// 		std::cout << scale.x << " " << scale.y << " " << scale.z << std::endl << std::endl;
- 		ZeroMemory(&objectName, sizeof(objectName));
- 		//ZeroMemory(&cIgnore, sizeof(cIgnore));
- 		ZeroMemory(&position, sizeof(position));
- 		ZeroMemory(&rotation, sizeof(rotation));
- 		ZeroMemory(&scale, sizeof(scale));
+		// 		std::cout << objectName << std::endl;
+		// 		std::cout << position.x << " " << position.y << " " << position.z << std::endl;
+		// 		std::cout << rotation.x << " " << rotation.y << " " << rotation.z << " " << rotation.w << std::endl;
+		// 		std::cout << scale.x << " " << scale.y << " " << scale.z << std::endl << std::endl;
+		ZeroMemory(&objectName, sizeof(objectName));
+		//ZeroMemory(&cIgnore, sizeof(cIgnore));
+		ZeroMemory(&position, sizeof(position));
+		ZeroMemory(&rotation, sizeof(rotation));
+		ZeroMemory(&scale, sizeof(scale));
 	}
 	ifs >> cIgnore;
 	for (int i = 0; i < instancedObjectCount; ++i)
@@ -803,12 +816,12 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 
 		}
 	}
-//	인스턴싱할 객체를 Setting
- 	tempInstanceModel.SetDrawInfomation(fenceIndexCount, fenceVertexOffset, fenceIndexOffset);
- 	tempInstanceModel.SetMatrial(mBoxMat);
- 	tempInstanceModel.SetSRV(texMgr.CreateTexture(L"Textures\\diff_fence_gate.dds"));
- 	tempInstanceModel.BuildInstanceBuffer(mDevice);
- 	mInstanceModels.push_back(tempInstanceModel);
+	//	인스턴싱할 객체를 Setting
+	tempInstanceModel.SetDrawInfomation(fenceIndexCount, fenceVertexOffset, fenceIndexOffset);
+	tempInstanceModel.SetMatrial(mBoxMat);
+	tempInstanceModel.SetSRV(texMgr.CreateTexture(L"Textures\\diff_fence_gate.dds"));
+	tempInstanceModel.BuildInstanceBuffer(mDevice);
+	mInstanceModels.push_back(tempInstanceModel);
 
 	ifs >> cIgnore;
 	for (int i = 0; i < skinnedObjectCount; ++i)
@@ -818,32 +831,32 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 		ifs >> cIgnore >> rotation.x >> rotation.y >> rotation.z >> rotation.w;
 		ifs >> cIgnore >> scale.x >> scale.y >> scale.z;
 
-			if (!strcmp(objectName, "Clown"))
-			{
-				XMVECTOR S = XMLoadFloat3(&scale);
-				XMVECTOR P = XMLoadFloat3(&position);
-				XMVECTOR Q = XMLoadFloat4(&rotation);
-				XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+		if (!strcmp(objectName, "Clown"))
+		{
+			XMVECTOR S = XMLoadFloat3(&scale);
+			XMVECTOR P = XMLoadFloat3(&position);
+			XMVECTOR Q = XMLoadFloat4(&rotation);
+			XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
 
-				XMFLOAT4X4 M;
-				XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
-				SkinnedModelInstance tempSkinnedModelInstanced;
-				tempSkinnedModelInstanced.Model = mCharacterModel;
-				tempSkinnedModelInstanced.TimePos = 0;
-				tempSkinnedModelInstanced.FinalTransforms.resize(mCharacterModel->SkinnedData.BoneCount());
-				tempSkinnedModelInstanced.World = M;
-				tempSkinnedModelInstanced.mClipAnimbuf = &mclipAnimbuf;
-				tempSkinnedModelInstanced.mClipnameAndTotalCount = mClipnameAndTotalCounts[0];//idle;
-				tempSkinnedModelInstanced.mAnimCnt = 0;
+			XMFLOAT4X4 M;
+			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
+			SkinnedModelInstance tempSkinnedModelInstanced;
+			tempSkinnedModelInstanced.Model = mCharacterModel;
+			tempSkinnedModelInstanced.TimePos = 0;
+			tempSkinnedModelInstanced.FinalTransforms.resize(mCharacterModel->SkinnedData.BoneCount());
+			tempSkinnedModelInstanced.World = M;
+			tempSkinnedModelInstanced.mClipAnimbuf = &mclipAnimbuf;
+			tempSkinnedModelInstanced.mClipnameAndTotalCount = mClipnameAndTotalCounts[0];//idle;
+			tempSkinnedModelInstanced.mAnimCnt = 0;
 
-				mSkinnedModelInstance.push_back(tempSkinnedModelInstanced);
-				ifs >> objectName;
-				ifs >> cIgnore >> position.x >> position.y >> position.z;
-				ifs >> cIgnore >> rotation.x >> rotation.y >> rotation.z >> rotation.w;
-				ifs >> cIgnore >> scale.x >> scale.y >> scale.z;
+			mSkinnedModelInstance.push_back(tempSkinnedModelInstanced);
+			ifs >> objectName;
+			ifs >> cIgnore >> position.x >> position.y >> position.z;
+			ifs >> cIgnore >> rotation.x >> rotation.y >> rotation.z >> rotation.w;
+			ifs >> cIgnore >> scale.x >> scale.y >> scale.z;
 
-				cam.SetPosition(position);
-			}
+			cam.SetPosition(position);
+		}
 	}
 	ifs.close();
 
