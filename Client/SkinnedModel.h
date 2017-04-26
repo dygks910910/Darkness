@@ -37,8 +37,7 @@ struct SkinnedModelInstance
 	std::map < std::string, std::vector<XMFLOAT4X4>*>* mClipAnimbuf;
 	std::pair<std::string, int> mClipnameAndTotalCount;
 	int mAnimCnt;
-	float mRotateAngle;
-	XMVECTOR mLook;
+	XMVECTOR mLook = { 0,0,1 };
 	void Update(float dt);
 };
 #endif // SKINNEDMODEL_H

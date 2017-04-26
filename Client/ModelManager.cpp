@@ -260,11 +260,12 @@ void CModelManager::DrawInstancedModel(ID3D11DeviceContext * dc, ID3DX11EffectTe
 
 }
 
+XMFLOAT3 charlook = { 0,0,1 };
 
 void CModelManager::UpdateModel(const float & dt, Camera& camera)
 {
-	XMFLOAT3 campos, charpos, camLook, charlook;
-	
+	XMFLOAT3 campos, charpos, camLook, cl;
+	XMVECTOR vcharlook, vcamlook;
 	for (int i = 0; i < mSkinnedModelInstance.size(); ++i)
 	{
 		mSkinnedModelInstance[i].Update(dt);
@@ -288,29 +289,25 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 		objoffset = finalm * objoffset;
 		XMStoreFloat4x4(&mSkinnedModelInstance[5].World, objoffset);
 
-		charlook.x = charpos.x - campos.x;
-		charlook.y = charpos.y - campos.y;
-		charlook.z = charpos.z - campos.z;
+		XMMATRIX Rot = XMMatrixRotationY(mRotateAngle);
+		XMStoreFloat3(&charlook, XMVector3TransformNormal(XMLoadFloat3(&charlook), Rot));
 
+		vcharlook = XMLoadFloat3(&charlook);
+		vcamlook = XMLoadFloat3(&camera.GetLook());
+		vcharlook = XMVector3Normalize(vcharlook);
+		vcamlook = XMVector3Normalize(vcamlook);
+
+		float angle = XMConvertToDegrees(XMVectorGetX(XMVector3AngleBetweenNormals(vcharlook, vcamlook)));
+		std::cout << angle << std::endl;
 		mSkinnedModelInstance[5].mLook = XMLoadFloat3(&charlook);
+		if(angle > 89.6213)
+			mRotateAngle = 0.003;
 
-		if (mSkinnedModelInstance[5].mRotateAngle > 0 && mCheckAngle < mSkinnedModelInstance[5].mRotateAngle)
-		{
-			mRotateAngle = 0.001;
-			mCheckAngle += 0.001;
-		}
-		else if (mSkinnedModelInstance[5].mRotateAngle < 0 && mCheckAngle > mSkinnedModelInstance[5].mRotateAngle)
-		{
-			mRotateAngle = -0.001;
-			mCheckAngle -= 0.001;
-		}
+		else if (angle < 89.6213)
+			mRotateAngle = -0.003;
+
 		else
-		{
 			mRotateAngle = 0;
-			mCheckAngle = 0;
-			mSkinnedModelInstance[5].mRotateAngle = 0;
-		}
-
 
 		camLook.x = charpos.x - campos.x;
 		camLook.y = charpos.y - campos.y;
@@ -324,14 +321,71 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 		campos.z += charpos.z - mSkinnedModelInstance[5].World._43;
 		camera.SetPosition(campos);
 		mSkinnedModelInstance[5].World._41 = charpos.x;
-		//mSkinnedModelInstance[5].World._42 = mPosition.y;
 		mSkinnedModelInstance[5].World._43 = charpos.z;
 
-		//worldInvTranspose = MathHelper::InverseTranspose(XMLoadFloat4x4(&mSkinnedModelInstance[5].World));
-		//int a = 10;
-
+		mOneCheck = true;
 	}
 
+	else if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+	{
+		campos = camera.GetPosition();
+		mSkinnedModelInstance[5].mClipnameAndTotalCount = mClipnameAndTotalCounts[1];
+
+		XMMATRIX objoffset;
+		XMMATRIX modelScale = XMMatrixScaling(1, 1, 1);
+		XMMATRIX modelRot = XMMatrixRotationZ(mRotateAngle);
+		XMMATRIX modelOffset = XMMatrixTranslation(0, 0, 0);
+		XMMATRIX finalm = modelScale*modelRot*modelOffset;
+		objoffset = XMLoadFloat4x4(&mSkinnedModelInstance[5].World);
+		objoffset = finalm * objoffset;
+		XMStoreFloat4x4(&mSkinnedModelInstance[5].World, objoffset);
+
+		XMMATRIX Rot = XMMatrixRotationY(mRotateAngle);
+		XMStoreFloat3(&charlook, XMVector3TransformNormal(XMLoadFloat3(&charlook), Rot));
+
+
+		vcharlook = XMLoadFloat3(&charlook);
+		vcamlook = XMLoadFloat3(&camera.GetRight());
+		vcharlook = XMVector3Normalize(vcharlook);
+		vcamlook = XMVector3Normalize(vcamlook);
+
+		float angle = XMConvertToDegrees(XMVectorGetX(XMVector3AngleBetweenNormals(vcharlook, vcamlook)));
+		std::cout << angle << std::endl;
+		mSkinnedModelInstance[5].mLook = XMLoadFloat3(&charlook);
+
+		if (angle >160)
+			mRotateAngle = 0.003;
+
+		else if (angle < 160)
+			mRotateAngle = -0.003;
+
+		else
+			mRotateAngle = 0;
+
+		camLook.x = charpos.x - campos.x;
+		camLook.y = charpos.y - campos.y;
+		camLook.z = charpos.z - campos.z;
+
+		XMVECTOR s = XMVectorReplicate(0.5f*dt);
+		XMVECTOR l = XMLoadFloat3(&camera.GetRight());
+		XMVECTOR p = XMLoadFloat3(&charpos);
+		XMStoreFloat3(&charpos, XMVectorMultiplyAdd(s, -l, p));
+		campos.x += charpos.x - mSkinnedModelInstance[5].World._41;
+		campos.z += charpos.z - mSkinnedModelInstance[5].World._43;
+		camera.SetPosition(campos);
+		mSkinnedModelInstance[5].World._41 = charpos.x;
+		mSkinnedModelInstance[5].World._43 = charpos.z;
+
+		mOneCheck = true;
+	}
+
+	else
+	{
+		if(mOneCheck)
+			mSkinnedModelInstance[5].mAnimCnt = 0;
+		mSkinnedModelInstance[5].mClipnameAndTotalCount = mClipnameAndTotalCounts[0];
+		mOneCheck = false;
+	}
 }
 
 void CModelManager::BuildShapeGeometryBuffers()

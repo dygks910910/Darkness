@@ -536,7 +536,7 @@ void CTestScene::OnMouseUp(WPARAM btnState, int x, int y)
 {
 	ReleaseCapture();
 }
-float sumdx = 0;
+
 void CTestScene::OnMouseMove(WPARAM btnState, int x, int y)
 {
 	if ((btnState & MK_LBUTTON) != 0)
@@ -564,12 +564,6 @@ void CTestScene::OnMouseMove(WPARAM btnState, int x, int y)
 			dist.x = campos.x - objectpos.x;
 			dist.y = campos.y - objectpos.y;
 			dist.z = campos.z - objectpos.z;
-
-			if (mModelMgr.GetSkinnedInstanceModels()[5].mRotateAngle == 0)
-				sumdx = 0;
-			sumdx += dx;
-
-			mModelMgr.GetSkinnedInstanceModels()[5].mRotateAngle = sumdx;
 
 			matRot = XMMatrixRotationY(dx);
 			eye = XMVector3TransformCoord(XMLoadFloat3(&dist), matRot);

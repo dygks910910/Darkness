@@ -42,6 +42,7 @@ class CModelManager
 
 	float mCheckAngle = 0;
 	float mRotateAngle = 0.005;
+	bool mOneCheck = true;
 // 	int clownIndexOffset;
 // 	int clownVertexOffset;
 // 	int clownIndexCount;
