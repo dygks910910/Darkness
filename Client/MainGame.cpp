@@ -42,6 +42,8 @@ bool CMainGame::Init()
 		return false;
 
 	// Must init Effects first since InputLayouts depend on shader signatures.
+	NetworkMgr::GetInstance()->SetWindowHandle(D3DApp::MainWnd());
+	NetworkMgr::GetInstance()->Initialize();
 	Effects::InitAll(md3dDevice);
 	InputLayouts::InitAll(md3dDevice);
 	RenderStates::InitAll(md3dDevice);

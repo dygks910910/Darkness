@@ -1,6 +1,7 @@
 #include "ModelManager.h"
 
 
+CModelManager* CModelManager::model = nullptr;
 
 CModelManager::CModelManager()
 
@@ -81,6 +82,9 @@ void CModelManager::Init(TextureMgr & texMgr, Camera & cam, ID3D11Device* device
 	BuildBasicGeometryBuffer();
 	BuildShapeGeometryBuffers();
 	ReadMapData(texMgr, cam);
+	send_wsa_buf.buf = reinterpret_cast<char*>(send_buf);
+	send_wsa_buf.len = MAX_BUF_SIZE;
+
 }
 
 void CModelManager::DrawStaticNormalModels(ID3D11DeviceContext * dc, ID3DX11EffectTechnique * tech, const XMMATRIX & shadowTransform, const Camera & cam)
@@ -260,128 +264,170 @@ void CModelManager::DrawInstancedModel(ID3D11DeviceContext * dc, ID3DX11EffectTe
 
 }
 
-XMFLOAT3 charlook = { 0,0,1 };
-
 void CModelManager::UpdateModel(const float & dt, Camera& camera)
 {
-	XMFLOAT3 campos, charpos, camLook, cl;
-	XMVECTOR vcharlook, vcamlook;
+	XMFLOAT3 campos, charpos, camLook, charlook, camRight;
+
 	for (int i = 0; i < mSkinnedModelInstance.size(); ++i)
 	{
 		mSkinnedModelInstance[i].Update(dt);
 	}
 
-	charpos.x = mSkinnedModelInstance[5].World._41;
-	charpos.y = mSkinnedModelInstance[5].World._42;
-	charpos.z = mSkinnedModelInstance[5].World._43;
 
 	if (GetAsyncKeyState(VK_UP) & 0x8000)
 	{
+		charpos.x = mSkinnedModelInstance[5].World._41;
+		charpos.y = mSkinnedModelInstance[5].World._42;
+		charpos.z = mSkinnedModelInstance[5].World._43;
+
 		campos = camera.GetPosition();
+
+		cs_packet_player_move* move = reinterpret_cast<cs_packet_player_move*>(&send_buf);
+		move->size = sizeof(cs_packet_player_move);
+		move->type = CS_UP;
+		move->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mId;
+		move->camlook = camera.GetLook();
+		move->campos = campos;
+		send_wsa_buf.len = sizeof(cs_packet_player_move);
+
+		DWORD io_byte;
+
+		int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf, 1, &io_byte, 0, NULL, NULL);
+		if (ret_val == SOCKET_ERROR)
+			std::cout << " [error] WSASend() " << std::endl;
+
 		mSkinnedModelInstance[5].mClipnameAndTotalCount = mClipnameAndTotalCounts[1];
 
-		XMMATRIX objoffset;
-		XMMATRIX modelScale = XMMatrixScaling(1, 1, 1);
-		XMMATRIX modelRot = XMMatrixRotationZ(mRotateAngle);
-		XMMATRIX modelOffset = XMMatrixTranslation(0, 0, 0);
-		XMMATRIX finalm = modelScale*modelRot*modelOffset;
-		objoffset = XMLoadFloat4x4(&mSkinnedModelInstance[5].World);
-		objoffset = finalm * objoffset;
-		XMStoreFloat4x4(&mSkinnedModelInstance[5].World, objoffset);
-
-		XMMATRIX Rot = XMMatrixRotationY(mRotateAngle);
-		XMStoreFloat3(&charlook, XMVector3TransformNormal(XMLoadFloat3(&charlook), Rot));
-
-		vcharlook = XMLoadFloat3(&charlook);
-		vcamlook = XMLoadFloat3(&camera.GetLook());
-		vcharlook = XMVector3Normalize(vcharlook);
-		vcamlook = XMVector3Normalize(vcamlook);
-
-		float angle = XMConvertToDegrees(XMVectorGetX(XMVector3AngleBetweenNormals(vcharlook, vcamlook)));
-		std::cout << angle << std::endl;
-		mSkinnedModelInstance[5].mLook = XMLoadFloat3(&charlook);
-		if(angle > 89.6213)
-			mRotateAngle = 0.003;
-
-		else if (angle < 89.6213)
-			mRotateAngle = -0.003;
-
-		else
-			mRotateAngle = 0;
 
 		camLook.x = charpos.x - campos.x;
 		camLook.y = charpos.y - campos.y;
 		camLook.z = charpos.z - campos.z;
 
-		XMVECTOR s = XMVectorReplicate(0.5f*dt);
+		XMVECTOR s = XMVectorReplicate(0.5f*0.0005);
 		XMVECTOR l = XMLoadFloat3(&camLook);
 		XMVECTOR p = XMLoadFloat3(&charpos);
 		XMStoreFloat3(&charpos, XMVectorMultiplyAdd(s, l, p));
 		campos.x += charpos.x - mSkinnedModelInstance[5].World._41;
 		campos.z += charpos.z - mSkinnedModelInstance[5].World._43;
+
 		camera.SetPosition(campos);
-		mSkinnedModelInstance[5].World._41 = charpos.x;
-		mSkinnedModelInstance[5].World._43 = charpos.z;
-
-		mOneCheck = true;
 	}
-
-	else if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+	else if (GetAsyncKeyState(VK_DOWN) & 0x8000)
 	{
+		charpos.x = mSkinnedModelInstance[5].World._41;
+		charpos.y = mSkinnedModelInstance[5].World._42;
+		charpos.z = mSkinnedModelInstance[5].World._43;
+
 		campos = camera.GetPosition();
+
+		cs_packet_player_move* move = reinterpret_cast<cs_packet_player_move*>(&send_buf);
+		move->size = sizeof(cs_packet_player_move);
+		move->type = CS_DOWN;
+		move->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mId;
+		move->camlook = camera.GetLook();
+		move->campos = campos;
+		send_wsa_buf.len = sizeof(cs_packet_player_move);
+
+		DWORD io_byte;
+
+		int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf, 1, &io_byte, 0, NULL, NULL);
+		if (ret_val == SOCKET_ERROR)
+			std::cout << " [error] WSASend() " << std::endl;
+
 		mSkinnedModelInstance[5].mClipnameAndTotalCount = mClipnameAndTotalCounts[1];
-
-		XMMATRIX objoffset;
-		XMMATRIX modelScale = XMMatrixScaling(1, 1, 1);
-		XMMATRIX modelRot = XMMatrixRotationZ(mRotateAngle);
-		XMMATRIX modelOffset = XMMatrixTranslation(0, 0, 0);
-		XMMATRIX finalm = modelScale*modelRot*modelOffset;
-		objoffset = XMLoadFloat4x4(&mSkinnedModelInstance[5].World);
-		objoffset = finalm * objoffset;
-		XMStoreFloat4x4(&mSkinnedModelInstance[5].World, objoffset);
-
-		XMMATRIX Rot = XMMatrixRotationY(mRotateAngle);
-		XMStoreFloat3(&charlook, XMVector3TransformNormal(XMLoadFloat3(&charlook), Rot));
-
-
-		vcharlook = XMLoadFloat3(&charlook);
-		vcamlook = XMLoadFloat3(&camera.GetRight());
-		vcharlook = XMVector3Normalize(vcharlook);
-		vcamlook = XMVector3Normalize(vcamlook);
-
-		float angle = XMConvertToDegrees(XMVectorGetX(XMVector3AngleBetweenNormals(vcharlook, vcamlook)));
-		std::cout << angle << std::endl;
-		mSkinnedModelInstance[5].mLook = XMLoadFloat3(&charlook);
-
-		if (angle >160)
-			mRotateAngle = 0.003;
-
-		else if (angle < 160)
-			mRotateAngle = -0.003;
-
-		else
-			mRotateAngle = 0;
 
 		camLook.x = charpos.x - campos.x;
 		camLook.y = charpos.y - campos.y;
 		camLook.z = charpos.z - campos.z;
 
-		XMVECTOR s = XMVectorReplicate(0.5f*dt);
+		XMVECTOR s = XMVectorReplicate(0.5f*0.0005);
+		XMVECTOR l = XMLoadFloat3(&camLook);
+		XMVECTOR p = XMLoadFloat3(&charpos);
+		XMStoreFloat3(&charpos, XMVectorMultiplyAdd(s, -l, p));
+		campos.x += charpos.x - mSkinnedModelInstance[5].World._41;
+		campos.z += charpos.z - mSkinnedModelInstance[5].World._43;
+
+		camera.SetPosition(campos);
+
+	}
+	else if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+	{
+		charpos.x = mSkinnedModelInstance[5].World._41;
+		charpos.y = mSkinnedModelInstance[5].World._42;
+		charpos.z = mSkinnedModelInstance[5].World._43;
+
+		campos = camera.GetPosition();
+
+		cs_packet_player_move* move = reinterpret_cast<cs_packet_player_move*>(&send_buf);
+		move->size = sizeof(cs_packet_player_move);
+		move->type = CS_LEFT;
+		move->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mId;
+		move->camlook = camera.GetRight();
+		move->campos = campos;
+		send_wsa_buf.len = sizeof(cs_packet_player_move);
+
+		DWORD io_byte;
+
+		int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf, 1, &io_byte, 0, NULL, NULL);
+		if (ret_val == SOCKET_ERROR)
+			std::cout << " [error] WSASend() " << std::endl;
+
+		mSkinnedModelInstance[5].mClipnameAndTotalCount = mClipnameAndTotalCounts[1];
+
+		camLook.x = charpos.x - campos.x;
+		camLook.y = charpos.y - campos.y;
+		camLook.z = charpos.z - campos.z;
+
+		XMVECTOR s = XMVectorReplicate(0.5f*0.0005);
 		XMVECTOR l = XMLoadFloat3(&camera.GetRight());
 		XMVECTOR p = XMLoadFloat3(&charpos);
 		XMStoreFloat3(&charpos, XMVectorMultiplyAdd(s, -l, p));
 		campos.x += charpos.x - mSkinnedModelInstance[5].World._41;
 		campos.z += charpos.z - mSkinnedModelInstance[5].World._43;
-		camera.SetPosition(campos);
-		mSkinnedModelInstance[5].World._41 = charpos.x;
-		mSkinnedModelInstance[5].World._43 = charpos.z;
 
-		mOneCheck = true;
+		camera.SetPosition(campos);
 	}
 
+	else if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+	{
+		charpos.x = mSkinnedModelInstance[5].World._41;
+		charpos.y = mSkinnedModelInstance[5].World._42;
+		charpos.z = mSkinnedModelInstance[5].World._43;
+
+		campos = camera.GetPosition();
+
+		cs_packet_player_move* move = reinterpret_cast<cs_packet_player_move*>(&send_buf);
+		move->size = sizeof(cs_packet_player_move);
+		move->type = CS_RIGHT;
+		move->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mId;
+		move->camlook = camera.GetRight();
+		move->campos = campos;
+		send_wsa_buf.len = sizeof(cs_packet_player_move);
+
+		DWORD io_byte;
+
+		int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf, 1, &io_byte, 0, NULL, NULL);
+		if (ret_val == SOCKET_ERROR)
+			std::cout << " [error] WSASend() " << std::endl;
+
+		mSkinnedModelInstance[5].mClipnameAndTotalCount = mClipnameAndTotalCounts[1];
+
+		camLook.x = charpos.x - campos.x;
+		camLook.y = charpos.y - campos.y;
+		camLook.z = charpos.z - campos.z;
+
+		XMVECTOR s = XMVectorReplicate(0.5f*0.0005);
+		XMVECTOR l = XMLoadFloat3(&camera.GetRight());
+		XMVECTOR p = XMLoadFloat3(&charpos);
+		XMStoreFloat3(&charpos, XMVectorMultiplyAdd(s, l, p));
+		campos.x += charpos.x - mSkinnedModelInstance[5].World._41;
+		campos.z += charpos.z - mSkinnedModelInstance[5].World._43;
+
+		camera.SetPosition(campos);
+	}
 	else
 	{
-		if(mOneCheck)
+		if (mOneCheck)
 			mSkinnedModelInstance[5].mAnimCnt = 0;
 		mSkinnedModelInstance[5].mClipnameAndTotalCount = mClipnameAndTotalCounts[0];
 		mOneCheck = false;

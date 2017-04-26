@@ -1,4 +1,5 @@
 #pragma once
+#include"TestScene.h"
 #include<map>
 #include<string.h>
 #include "LogoScene.h"

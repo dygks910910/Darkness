@@ -90,6 +90,9 @@
     <Filter Include="souce\EffectMap">
       <UniqueIdentifier>{d7140ab6-40c4-4531-b623-6c51137331d0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="souce\Network">
+      <UniqueIdentifier>{c5b9bec0-6c29-4cb7-9550-6bdf2afced58}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="FX\color.fx">
@@ -211,6 +214,9 @@
     <ClCompile Include="Ssao.cpp">
       <Filter>souce\EffectMap</Filter>
     </ClCompile>
+    <ClCompile Include="NetworkMgr.cpp">
+      <Filter>souce\Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common\Camera.h">
@@ -329,6 +335,9 @@
     </ClInclude>
     <ClInclude Include="Ssao.h">
       <Filter>souce\EffectMap</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkMgr.h">
+      <Filter>souce\Network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

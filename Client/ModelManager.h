@@ -1,4 +1,5 @@
 #pragma once
+#include "NetworkMgr.h"
 #include "Model.h"
 #include "GeometryGenerator.h"
 #include "FbxLoader.h"
@@ -7,6 +8,24 @@
 #include "RenderStates.h"
 #include"LogoScene.h"
 #include "SkinnedModel.h"
+
+const int MAX_BUF_SIZE = 4000;
+
+const int CS_UP = 1;
+const int CS_DOWN = 2;
+const int CS_LEFT = 3;
+const int CS_RIGHT = 4;
+
+//cs_packet
+struct cs_packet_player_move
+{
+	BYTE size;
+	BYTE type;
+	WORD id;
+	XMFLOAT3 campos;
+	XMFLOAT3 camlook;
+};
+
 class CModelManager
 {
 	ID3D11Device* mDevice;
@@ -43,9 +62,9 @@ class CModelManager
 	float mCheckAngle = 0;
 	float mRotateAngle = 0.005;
 	bool mOneCheck = true;
-// 	int clownIndexOffset;
-// 	int clownVertexOffset;
-// 	int clownIndexCount;
+	// 	int clownIndexOffset;
+	// 	int clownVertexOffset;
+	// 	int clownIndexCount;
 
 	int fenceIndexOffset, fenceVertexOffset, fenceIndexCount;
 	int house1IndexOffset, house1VertexOffset, house1IndexCount;
@@ -55,8 +74,33 @@ class CModelManager
 	int house5IndexOffset, house5VertexOffset, house5IndexCount;
 	int house6IndexOffset, house6VertexOffset, house6IndexCount;
 
+private:
+	static CModelManager* model;
 public:
+	UINT id;
+
+public:
+	static CModelManager* GetInstance()
+	{
+		if (model == nullptr)
+			model = new CModelManager();
+
+		return model;
+
+	}
+
+	void DestroyInstance()
+	{
+		if (model)
+		{
+			delete model;
+			model = nullptr;
+		}
+	}
+
+private:
 	CModelManager();
+public:
 	~CModelManager();
 	ID3D11Buffer* GetStaticNormalMappingObjectVB() { return mStaticNormalMappingObjectVB; }
 	ID3D11Buffer* GetStaticNormalMappingObjectIB() { return mStaticNormalMappingObjectIB; }
@@ -68,20 +112,25 @@ public:
 	std::vector<SkinnedModelInstance>& GetSkinnedInstanceModels() { return mSkinnedModelInstance; }
 
 	void Init(TextureMgr& texMgr, Camera& cam, ID3D11Device* device);
-	void DrawStaticNormalModels(ID3D11DeviceContext* dc,ID3DX11EffectTechnique* tech,const XMMATRIX& shadowTransform,const Camera& cam);
+	void DrawStaticNormalModels(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMMATRIX& shadowTransform, const Camera& cam);
 	void DrawStaticBasicModels(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMMATRIX& shadowTransform, const Camera& cam);
 
 	void DrawStaticSsaoNormalModels(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMMATRIX& shadowTransform, const Camera& cam);
 	void DrawSkinnedModels(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMMATRIX& shadowTransform, const Camera& cam);
 
-	void DrawToShadowMap(ID3D11DeviceContext * dc, ID3DX11EffectTechnique * tech, 
+	void DrawToShadowMap(ID3D11DeviceContext * dc, ID3DX11EffectTechnique * tech,
 		const XMFLOAT4X4 & lightView, const XMFLOAT4X4 & lightProj);
 	void DrawInstancedModel(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMMATRIX& shadowTransform, const Camera& cam);
 	void UpdateModel(const float& dt, Camera& camera);
+
+
+	BYTE   send_buf[MAX_BUF_SIZE];
+	WSABUF   send_wsa_buf;
+
 private:
 	void BuildShapeGeometryBuffers();
 	void BuildBasicGeometryBuffer();
-	void ReadMapData(TextureMgr& texMgr,Camera& cam);
+	void ReadMapData(TextureMgr& texMgr, Camera& cam);
 };
 enum ANIMATION_INFO
 {

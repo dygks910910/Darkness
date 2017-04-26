@@ -1,5 +1,5 @@
 #pragma once
-
+#include "SceneManager.h"
 #include "d3dApp.h"
 #include"d3dUtil.h"
 #include "d3dx11Effect.h"
@@ -13,7 +13,7 @@
 #include "Sky.h"
 #include "Terrain.h"
 #include "ParticleSystem.h"
-#include "SceneManager.h"
+
 class CMainGame : public D3DApp
 {
 public:
