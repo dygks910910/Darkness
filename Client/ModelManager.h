@@ -15,6 +15,7 @@ const int CS_UP = 1;
 const int CS_DOWN = 2;
 const int CS_LEFT = 3;
 const int CS_RIGHT = 4;
+const int CS_PACKET_START_ANIMATION = 5;
 
 //cs_packet
 struct cs_packet_player_move
@@ -25,6 +26,22 @@ struct cs_packet_player_move
 	XMFLOAT3 campos;
 	XMFLOAT3 camlook;
 };
+
+
+
+const int ANIMATION_STATE_IDLE = 0;
+const int ANIMATION_STATE_ATTACK = 1;
+const int ANIMATION_STATE_RUN = 2;
+const int ANIMATION_STATE_WORK = 3;
+struct cs_packet_player_anmation_start
+{
+	BYTE size;
+	BYTE type;
+	WORD id;
+	UINT animationState;
+};
+
+
 
 class CModelManager
 {

@@ -574,13 +574,13 @@ void CTestScene::OnMouseMove(WPARAM btnState, int x, int y)
 			dist.y = campos.y - objectpos.y;
 			dist.z = campos.z - objectpos.z;
 
-			//if (CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mRotateAngle == 0)
-			//	sumdx = 0;
+			if (CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mRotateAngle == 0)
+				sumdx = 0;
 
-			//sumdx += dx;
-			////std::cout << "sum" << sumdx << std::endl;
+			sumdx += dx;
+			//std::cout << "sum" << sumdx << std::endl;
 
-			//CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mRotateAngle = sumdx;
+			CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mRotateAngle = sumdx;
 
 			matRot = XMMatrixRotationY(dx);
 			eye = XMVector3TransformCoord(XMLoadFloat3(&dist), matRot);

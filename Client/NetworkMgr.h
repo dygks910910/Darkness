@@ -15,7 +15,7 @@ const int WM_SOCKET = WM_USER + 1;
 const int SC_PACKET_PUT_USER = 0;
 const int SC_PACKET_PLAYGAME_INIT_POS = 1;
 const int SC_PACKET_PLAYGAME_PLAYER_POS = 2;
-const int SC_PACKET_PLAYGAME_PUT_PLAYER = 3;
+const int SC_PACKET_PLAYGAME_START_ANMATION = 3;
 
 
 #pragma pack(push, 1)   
@@ -47,6 +47,13 @@ struct sc_packet_playgame_player_pos
 	XMFLOAT4X4 worldMatrix;
 };
 
+struct sc_packet_player_anmation_start
+{
+	BYTE size;
+	BYTE type;
+	WORD id;
+	UINT animationState;
+};
 
 #pragma pack(pop)  
 

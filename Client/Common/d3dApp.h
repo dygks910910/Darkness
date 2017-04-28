@@ -20,11 +20,11 @@ class D3DApp
 public:
 	D3DApp(HINSTANCE hInstance);
 	virtual ~D3DApp();
-	
+
 	HINSTANCE AppInst()const;
 	HWND      MainWnd()const;
 	float     AspectRatio()const;
-	
+
 	int Run()
 	{
 		MSG msg = { 0 };
@@ -47,7 +47,7 @@ public:
 				if (!mAppPaused)
 				{
 					CalculateFrameStats();
-					UpdateScene(mTimer.DeltaTime());
+					UpdateScene(mTimer.DeltaTime(), msg);
 					DrawScene();
 				}
 				else
@@ -59,20 +59,22 @@ public:
 
 		return (int)msg.wParam;
 	}
- 
+
 	// Framework methods.  Derived client class overrides these methods to 
 	// implement specific application requirements.
 
 	virtual bool Init();
-	virtual void OnResize(); 
-	virtual void UpdateScene(float dt)=0;
-	virtual void DrawScene()=0; 
+	virtual void OnResize();
+	virtual void UpdateScene(float dt, MSG& msg) = 0;
+	virtual void DrawScene() = 0;
 	virtual LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 	// Convenience overrides for handling mouse input.
-	virtual void OnMouseDown(WPARAM btnState, int x, int y){ }
-	virtual void OnMouseUp(WPARAM btnState, int x, int y)  { }
-	virtual void OnMouseMove(WPARAM btnState, int x, int y){ }
+	virtual void OnMouseDown(WPARAM btnState, int x, int y) { }
+	virtual void OnMouseUp(WPARAM btnState, int x, int y) { }
+	virtual void OnMouseMove(WPARAM btnState, int x, int y) { }
+
+	virtual void Packet(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {}
 
 protected:
 	bool InitMainWindow();

@@ -140,7 +140,7 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 	{
 		sc_packet_playgame_player_pos player_pos;
 		memcpy(&player_pos, packet, packet[0]);
-		if(CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mId == player_pos.id)
+		if (CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mId == player_pos.id)
 			CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].World = player_pos.worldMatrix;
 		else
 			CModelManager::GetInstance()->GetSkinnedInstanceModels()[3].World = player_pos.worldMatrix;
@@ -148,7 +148,15 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 	}
 	break;
 
-	
+	case SC_PACKET_PLAYGAME_START_ANMATION:
+	{
+		sc_packet_player_anmation_start player_anim;
+		memcpy(&player_anim, packet, packet[0]);
+		CModelManager::GetInstance()->GetSkinnedInstanceModels()[3].mAnimstate = player_anim.animationState;
+		CModelManager::GetInstance()->GetSkinnedInstanceModels()[3].mAnimCnt = 0;
+	}
+	break;
+
 	default:
 		break;
 

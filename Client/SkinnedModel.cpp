@@ -14,7 +14,7 @@ SkinnedModel::SkinnedModel(ID3D11Device* device, TextureMgr& texMgr,
 
 	SubsetCount = mats.size();
 
-	for(UINT i = 0; i < SubsetCount; ++i)
+	for (UINT i = 0; i < SubsetCount; ++i)
 	{
 		Mat.push_back(mats[i].Mat);
 
@@ -38,9 +38,9 @@ void SkinnedModelInstance::Update(float dt)
 	{
 		FinalTransforms = ((*mClipAnimbuf)[mClipnameAndTotalCount.first])[mAnimCnt];
 		mAnimCnt++;
-	
+
 		// Loop animation
-		if (mAnimCnt > mClipnameAndTotalCount.second-1)//TimePos > Model->SkinnedData.GetClipEndTime(ClipName))
+		if (mAnimCnt > mClipnameAndTotalCount.second - 1)//TimePos > Model->SkinnedData.GetClipEndTime(ClipName))
 		{
 			mAnimCnt = 0;
 		}

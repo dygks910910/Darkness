@@ -21,14 +21,15 @@ protected:
 public:
 	virtual bool Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 		IDXGISwapChain* swapChain, const D3D11_VIEWPORT& viewPort, const int& clientWidth, const int& clientHeight) = 0;
-	virtual void UpdateScene(const float dt) = 0;
-	virtual void Draw(ID3D11RenderTargetView* rtv,ID3D11DepthStencilView* dsv, D3D11_VIEWPORT* viewPort) = 0;
-	virtual void OnMouseDown(WPARAM btnState, int x, int y,const HWND& mhMainWnd)=0;
-	virtual void OnMouseUp(WPARAM btnState, int x, int y)=0;
-	virtual void OnMouseMove(WPARAM btnState, int x, int y)=0;
+	virtual void UpdateScene(const float dt, MSG& msg) = 0;
+	virtual void Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, D3D11_VIEWPORT* viewPort) = 0;
+	virtual void OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWnd) = 0;
+	virtual void OnMouseUp(WPARAM btnState, int x, int y) = 0;
+	virtual void OnMouseMove(WPARAM btnState, int x, int y) = 0;
+
 	virtual void OnResize() = 0;
 	virtual ~CScene() {};
 	float AspectRatio() const;
-	
+
 };
 
