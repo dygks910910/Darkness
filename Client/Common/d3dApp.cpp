@@ -26,8 +26,8 @@ D3DApp::D3DApp(HINSTANCE hInstance)
 :	mhAppInst(hInstance),
 	mMainWndCaption(L"D3D11 Application"),
 	md3dDriverType(D3D_DRIVER_TYPE_UNKNOWN),
-	mClientWidth(800),
-	mClientHeight(600),
+	mClientWidth(1600),
+	mClientHeight(900),
 	mEnable4xMsaa(false),
 	mhMainWnd(0),
 	mAppPaused(false),
@@ -286,6 +286,9 @@ LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	case WM_MOUSEMOVE:
 		OnMouseMove(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 		return 0;
+	case WM_CHAR:
+		OnKeyboardButtonDown(wParam);
+		return 0;
 	}
 
 	return DefWindowProc(hwnd, msg, wParam, lParam);
@@ -341,14 +344,6 @@ bool D3DApp::InitDirect3D()
     createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
-	IDXGIFactory* factory;
-	int result;
-	result = CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory);
-	if (FAILED(result))
-	{
-		return false;
-	}
-	
 
 	/*
 	2017 / 2 / 27 / 0:23
@@ -357,7 +352,13 @@ bool D3DApp::InitDirect3D()
 	createDevice(pAdapter가 NULL이 아니라면
 	md3dDriverType 는 Unknown 으로 설정해야 한다.)
 	*/
-
+	IDXGIFactory* factory;
+	int result;
+	result = CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory);
+	if (FAILED(result))
+	{
+		return false;
+	}
 	DXGI_ADAPTER_DESC desc;
 	IDXGIAdapter* pAdapter = nullptr;
 	std::vector<IDXGIAdapter*> stdvAdapters;
@@ -392,7 +393,6 @@ bool D3DApp::InitDirect3D()
 		MessageBox(0, L"D3D11CreateDevice Failed.", 0, 0);
 		return false;
 	}
-
 	if( featureLevel != D3D_FEATURE_LEVEL_11_0 )
 	{
 		MessageBox(0, L"Direct3D Feature Level 11 unsupported.", 0, 0);
@@ -461,7 +461,7 @@ bool D3DApp::InitDirect3D()
 	// The remaining steps that need to be carried out for d3d creation
 	// also need to be executed every time the window is resized.  So
 	// just call the OnResize method here to avoid code duplication.
-	
+	//factory->MakeWindowAssociation(mhMainWnd,DXGI_MWA)
 	OnResize();
 
 	return true;

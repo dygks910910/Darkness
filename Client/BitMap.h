@@ -10,6 +10,7 @@
 #include "Effects.h"
 #include "Camera.h"
 #include "Vertex.h"
+#include "xnacollision.h"
 
 class CBitMap
 {
@@ -24,6 +25,7 @@ public:
 		int positionX, int positionY);
 	int GetIndexCount();
 	ID3D11ShaderResourceView* GetTexture();
+	XNA::AxisAlignedBox mMeshBox;
 
 private:
 	bool InitializeBuffers(ID3D11Device* device);

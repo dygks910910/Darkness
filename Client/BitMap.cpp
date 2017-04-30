@@ -82,9 +82,11 @@ bool CBitMap::Render(ID3D11DeviceContext* deviceContext,
 	Effects::BasicFX->SetDiffuseMap(GetTexture());
 	D3DX11_TECHNIQUE_DESC techDesc;
 	Effects::BasicFX->Light0TexTech->GetDesc(&techDesc);
+	
 
 	for (UINT p = 0; p < techDesc.Passes; ++p)
 	{
+		//Effects::BasicFX->SetWorld(XMMatrixIdentity());
 		ID3DX11EffectPass* pass = Effects::BasicFX->Light0TexAlphaClipTech->GetPassByIndex(p);
 		pass->Apply(0, deviceContext);
 
@@ -277,6 +279,21 @@ bool CBitMap::UpdateBuffers(ID3D11DeviceContext * deviceContext, int positionX, 
 	vertices[5].Pos = XMFLOAT3(right, bottom, 0.0f);  // Bottom right.
 	vertices[5].Tex = XMFLOAT2(1.0f, 1.0f);
 	vertices[5].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
+
+
+	XMFLOAT3 vMinf3(+MathHelper::Infinity, +MathHelper::Infinity, +MathHelper::Infinity);
+	XMFLOAT3 vMaxf3(-MathHelper::Infinity, -MathHelper::Infinity, -MathHelper::Infinity);
+	XMVECTOR vMin = XMLoadFloat3(&vMinf3);
+	XMVECTOR vMax = XMLoadFloat3(&vMaxf3);
+	for (UINT i = 0; i < 6; ++i)
+	{
+		XMVECTOR P = XMLoadFloat3(&vertices[i].Pos);
+		vMin = XMVectorMin(vMin, P);
+		vMax = XMVectorMax(vMax, P);
+	}
+
+	XMStoreFloat3(&mMeshBox.Center, 0.5f*(vMin + vMax));
+	XMStoreFloat3(&mMeshBox.Extents, 0.5f*(vMax - vMin));
 
 	// Lock the vertex buffer so it can be written to.
 	result = deviceContext->Map(m_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);

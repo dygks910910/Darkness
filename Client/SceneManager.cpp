@@ -26,8 +26,8 @@ bool CSceneManager::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 	mClientHeight = clientHeight;
 
-	mSceneKey = SceneName::test;
-	mScenes.insert(make_pair(SceneName::test, new CTestScene));
+	mSceneKey = SceneName::MainScene;
+	mScenes.insert(make_pair(SceneName::MainScene, new CMainScene));
 	mScenes[mSceneKey]->Init(device, dc,swapChain,
 		*viewport, clientWidth, clientHeight);
 	/*
@@ -53,7 +53,6 @@ void CSceneManager::UpdateScene(const float dt)
 		mSceneKey = SceneName::MainScene;
 		ChangeScene(SceneName::MainScene, dt);
 	}*/
-
 	mScenes[mSceneKey]->UpdateScene(dt);
 }
 void CSceneManager::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
@@ -84,6 +83,11 @@ void CSceneManager::ChangeScene(std::string sceneName, const float & dt, ID3D11D
 {
 	mSceneKey = sceneName;
 	//mScenes[mSceneKey]->UpdateScene(dt);
+}
+
+void CSceneManager::OnKeyBoardButtonDown(WPARAM wparam)
+{
+	mScenes[mSceneKey]->OnKeyboardButtonDown(wparam);
 }
 
 

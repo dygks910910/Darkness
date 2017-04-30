@@ -99,3 +99,8 @@ void CMainGame::OnMouseMove(WPARAM btnState, int x, int y)
 	mSceneManager->OnMouseMove(btnState, x, y);
 }
 
+void CMainGame::GetChar(WPARAM btnState)
+{
+	mSceneManager->OnKeyBoardButtonDown(btnState);
+}
+

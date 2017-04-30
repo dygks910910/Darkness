@@ -332,5 +332,6 @@
       <Filter>souce\EffectMap</Filter>
     </ClInclude>
     <ClInclude Include="StaticModel.h" />
+    <ClInclude Include="FW1FontWrapper.h" />
   </ItemGroup>
 </Project>

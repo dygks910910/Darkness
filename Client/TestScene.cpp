@@ -119,7 +119,7 @@ bool CTestScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	return true;
 }
 
-void CTestScene::UpdateScene(const float dt)
+void CTestScene::UpdateScene(const float& dt)
 {
 	mTimer.Tick();
 	//

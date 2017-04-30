@@ -38,6 +38,7 @@ public:
 	void ChangeScene(std::string sceneName, const float& dt,
 		ID3D11Device* device, ID3D11DeviceContext* dc);
 	void SetSceneKey(const std::string& sceneName) { mSceneKey = sceneName; }
+	void OnKeyBoardButtonDown(WPARAM wparam);
 private:
 	
 };
