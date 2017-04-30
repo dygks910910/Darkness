@@ -78,7 +78,7 @@ public:
 	virtual void OnMouseUp(WPARAM btnState, int x, int y) ;
 	virtual void OnMouseMove(WPARAM btnState, int x, int y);
 	virtual void OnResize();
-	virtual void OnKeyboardButtonDown(WPARAM btnState) {};
+	virtual void OnKeyboardButtonDown(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam) {};
 
 	void DrawSceneToShadowMap();
 	void BuildShadowTransform();

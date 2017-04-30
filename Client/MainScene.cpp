@@ -106,6 +106,8 @@ bool CMainScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	bActivedInputBoard = false;
 	//mMinimap.Initialize(device, 800, 600, mCam.View(), 1000, 1000);
 	mIpString = L"기본";
+	ZeroMemory(&Text, sizeof(Text));
+	ZeroMemory(&Cstr, sizeof(Cstr));
 
 	OnResize();
 	return true;
@@ -254,8 +256,12 @@ void CMainScene::OnResize()
 
 }
 
-void CMainScene::OnKeyboardButtonDown(WPARAM btnState)
+void CMainScene::OnKeyboardButtonDown(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
+	if (GetText(hWnd, msg, wparam, lparam) == 0)
+	{
+		return;
+	}
 // 	if (focusOnInIP)
 // 	{
 // 
@@ -268,6 +274,68 @@ void CMainScene::OnKeyboardButtonDown(WPARAM btnState)
 // 	{
 // 
 // 	}
+}
+
+int CMainScene::GetText(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
+{
+	int len;
+	HIMC m_hIMC = NULL;   // IME 핸들
+
+	switch (msg)
+	{
+	case WM_IME_COMPOSITION:
+		m_hIMC = ImmGetContext(hWnd);	// ime핸들을 얻는것
+
+		if (lparam & GCS_RESULTSTR)
+		{
+			if ((len = ImmGetCompositionString(m_hIMC, GCS_RESULTSTR, NULL, 0)) > 0)
+			{
+				// 완성된 글자가 있다.
+				ImmGetCompositionString(m_hIMC, GCS_RESULTSTR, Cstr, len);
+				Cstr[len] = 0;
+				wcscpy(Text + wcslen(Text), Cstr);
+				memset(Cstr, 0, 10);
+
+
+				{
+					WCHAR szTemp[256] = _T("");
+					wsprintf(szTemp, L"완성된 글자 : %s\r\n", Text);
+					mIpString = szTemp;
+					//std::wcout << szTemp;
+					//OutputDebugString(_T(szTemp));
+				}
+			}
+
+		}
+		else if (lparam & GCS_COMPSTR)
+		{
+			// 현재 글자를 조합 중이다.
+
+			// 조합중인 길이를 얻는다.
+			// str에  조합중인 문자를 얻는다.
+			len = ImmGetCompositionString(m_hIMC, GCS_COMPSTR, NULL, 0);
+			ImmGetCompositionString(m_hIMC, GCS_COMPSTR, Cstr, len);
+			Cstr[len] = 0;
+			{
+				wchar_t szTemp[256] = L"";
+				wsprintf(szTemp, L"조합중인 글자 : %s\r\n", Cstr);
+				mIpString += szTemp;
+				//std::wcout << szTemp;
+				//OutputDebugString(_T(szTemp));
+			}
+		}
+
+		ImmReleaseContext(hWnd, m_hIMC);	// IME 핸들 반환!!
+		return 0;
+
+	case WM_CHAR:				// 1byte 문자 (ex : 영어)
+		return 0;
+	case WM_IME_NOTIFY:			// 한자입력...
+		return 0;
+	case WM_KEYDOWN:			// 키다운..
+		return 0;
+	}
+	return 1;
 }
 
 void CMainScene::Pick(const int & sx, const int & sy, CButtonClass& button)
@@ -349,7 +417,7 @@ void CMainScene::drawText(ID3D11Device *pDevice, ID3D11DeviceContext *pContext, 
 	pFontWrapper->DrawString(
 		pContext,
 		text.c_str(),// String
-		10.0f,// Font size
+		20.0f,// Font size
 		100.0f,// X position
 		50.0f,// Y position
 		0xff0099ff,// Text color, 0xAaBbGgRr

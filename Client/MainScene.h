@@ -4,6 +4,7 @@
 #include "ButtonClass.h"
 #include "xnacollision.h"
 #include "FW1FontWrapper.h"
+#include<tchar.h>
 class CMainScene :
 	public CScene
 {
@@ -33,6 +34,11 @@ class CMainScene :
 	bool bActivedInputBoard;
 // 	IFW1Factory* m_factory;
 // 	IFW1FontWrapper* mFontWrapper;
+
+
+	wchar_t Text[255];     // 텍스트를 저장하기위한 변수
+	wchar_t Cstr[10];      // 조합중인 문자!!
+
 public:
 	CMainScene();
 	virtual ~CMainScene();
@@ -45,7 +51,9 @@ public:
 	virtual void OnMouseUp(WPARAM btnState, int x, int y) ;
 	virtual void OnMouseMove(WPARAM btnState, int x, int y);
 	virtual void OnResize();
-	virtual void OnKeyboardButtonDown(WPARAM btnState);
+	virtual void OnKeyboardButtonDown(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam);
+	int GetText(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam);
+
 	void Pick(const int& sx, const int& sy,CButtonClass& button);
 	void drawText(ID3D11Device *pDevice, ID3D11DeviceContext *pContext,std::wstring text);
 

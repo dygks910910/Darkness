@@ -85,9 +85,10 @@ void CSceneManager::ChangeScene(std::string sceneName, const float & dt, ID3D11D
 	//mScenes[mSceneKey]->UpdateScene(dt);
 }
 
-void CSceneManager::OnKeyBoardButtonDown(WPARAM wparam)
+void CSceneManager::OnKeyBoardButtonDown(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
-	mScenes[mSceneKey]->OnKeyboardButtonDown(wparam);
+	if(mSceneKey!= "")
+	mScenes[mSceneKey]->OnKeyboardButtonDown(hWnd, msg,wparam, lparam);
 }
 
 

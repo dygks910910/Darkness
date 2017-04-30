@@ -26,7 +26,7 @@ public:
 	virtual void OnMouseDown(WPARAM btnState, int x, int y,const HWND& mhMainWnd)=0;
 	virtual void OnMouseUp(WPARAM btnState, int x, int y)=0;
 	virtual void OnMouseMove(WPARAM btnState, int x, int y)=0;
-	virtual void OnKeyboardButtonDown(WPARAM btnState)=0;
+	virtual void OnKeyboardButtonDown(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)=0;
 	virtual void OnResize() = 0;
 	virtual ~CScene() {};
 	float AspectRatio() const;

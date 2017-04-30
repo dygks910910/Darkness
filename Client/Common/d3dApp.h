@@ -73,7 +73,7 @@ public:
 	virtual void OnMouseDown(WPARAM btnState, int x, int y){ }
 	virtual void OnMouseUp(WPARAM btnState, int x, int y)  { }
 	virtual void OnMouseMove(WPARAM btnState, int x, int y){ }
-	virtual void OnKeyboardButtonDown(WPARAM btnState) {};
+	virtual void OnKeyboardButtonDown(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam) {};
 protected:
 	bool InitMainWindow();
 	bool InitDirect3D();
