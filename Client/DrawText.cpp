@@ -2,22 +2,28 @@
 
 
 
-CDrawText::CDrawText()
+void CDrawText::Init(ID3D11Device* device, ID3D11DeviceContext *context)
 {
+	this->pDevice = device;
+	this->pContext = context;
+	HRESULT hResult = FW1CreateFactory(FW1_VERSION, &pFW1Factory);
+	hResult = pFW1Factory->CreateFontWrapper(device, L"Arial", &pFontWrapper);
 }
 
 
 CDrawText::~CDrawText()
 {
+	pFontWrapper->Release();
+	pFW1Factory->Release();
 }
 
-void CDrawText::operator()(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, std::wstring text)
+void CDrawText::operator()(std::wstring text)
 {
-	IFW1Factory *pFW1Factory;
-		HRESULT hResult = FW1CreateFactory(FW1_VERSION, &pFW1Factory);
-
-		IFW1FontWrapper *pFontWrapper;
-		hResult = pFW1Factory->CreateFontWrapper(pDevice, L"Arial", &pFontWrapper);
+// 	IFW1Factory *pFW1Factory;
+// 		HRESULT hResult = FW1CreateFactory(FW1_VERSION, &pFW1Factory);
+// 
+// 		IFW1FontWrapper *pFontWrapper;
+// 		hResult = pFW1Factory->CreateFontWrapper(pDevice, L"Arial", &pFontWrapper);
 
 		pFontWrapper->DrawString(
 			pContext,
@@ -33,13 +39,8 @@ void CDrawText::operator()(ID3D11Device * pDevice, ID3D11DeviceContext * pContex
 		pFW1Factory->Release();
 }
 
-void CDrawText::operator()(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, std::wstring text, const float & fontSize, const float & posX, const float & posY)
+void CDrawText::operator()(std::wstring text, const float & fontSize, const float & posX, const float & posY)
 {
-	IFW1Factory *pFW1Factory;
-	HRESULT hResult = FW1CreateFactory(FW1_VERSION, &pFW1Factory);
-
-	IFW1FontWrapper *pFontWrapper;
-	hResult = pFW1Factory->CreateFontWrapper(pDevice, L"Arial", &pFontWrapper);
 
 	pFontWrapper->DrawString(
 		pContext,
@@ -51,6 +52,5 @@ void CDrawText::operator()(ID3D11Device * pDevice, ID3D11DeviceContext * pContex
 		FW1_RESTORESTATE// Flags (for example FW1_RESTORESTATE to keep context states unchanged)
 	);
 
-	pFontWrapper->Release();
-	pFW1Factory->Release();
+	
 }
