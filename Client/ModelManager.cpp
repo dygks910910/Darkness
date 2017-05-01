@@ -203,8 +203,11 @@ void CModelManager::DrawStaticBasicModels(ID3D11DeviceContext * dc, ID3DX11Effec
 	}
 }
 
-void CModelManager::DrawToShadowMap(ID3D11DeviceContext * dc, ID3DX11EffectTechnique * tech, const XMFLOAT4X4 & lightView, const XMFLOAT4X4 & lightProj)
+void CModelManager::DrawToShadowMap(ID3D11DeviceContext * dc, ID3DX11EffectTechnique * tech, 
+	const XMFLOAT4X4 & lightView, const XMFLOAT4X4 & lightProj)
 {
+	ID3DX11EffectTechnique* animatedSmapTech = Effects::BuildShadowMapFX->BuildShadowMapSkinnedTech;
+
 	UINT stride = sizeof(Vertex::PosNormalTexTan);
 	UINT offset = 0;
 	if (GetAsyncKeyState('1') & 0x8000)
@@ -216,7 +219,40 @@ void CModelManager::DrawToShadowMap(ID3D11DeviceContext * dc, ID3DX11EffectTechn
 	{
 		p.DrawToShadowMap(dc, tech, lightView, lightProj);
 	}
+	//////////////////////////////////////////////////////////////////////////애니메이션 객체 그림자
+	D3DX11_TECHNIQUE_DESC techDesc;
+	XMMATRIX world;
+	XMMATRIX worldInvTranspose;
+	XMMATRIX worldViewProj;
+	XMMATRIX view = XMLoadFloat4x4(&lightView);
+	XMMATRIX proj = XMLoadFloat4x4(&lightProj);
+	animatedSmapTech->GetDesc(&techDesc);
+	dc->IASetInputLayout(InputLayouts::PosNormalTexTanSkinned);
 
+	for (int i = 0; i < mSkinnedModelInstance.size(); ++i)
+	{
+		for (UINT p = 0; p < techDesc.Passes; ++p)
+		{
+			world = XMLoadFloat4x4(&mSkinnedModelInstance[i].World);
+			worldInvTranspose = MathHelper::InverseTranspose(world);
+			worldViewProj = world*view*proj;
+
+			Effects::BuildShadowMapFX->SetWorld(world);
+			Effects::BuildShadowMapFX->SetWorldInvTranspose(worldInvTranspose);
+			Effects::BuildShadowMapFX->SetWorldViewProj(worldViewProj);
+			Effects::BuildShadowMapFX->SetTexTransform(XMMatrixIdentity());
+			Effects::BuildShadowMapFX->SetBoneTransforms(
+				&mSkinnedModelInstance[i].FinalTransforms[0],
+				mSkinnedModelInstance[i].FinalTransforms.size());
+			animatedSmapTech->GetPassByIndex(p)->Apply(0, dc);
+
+			for (UINT subset = 0; subset < mSkinnedModelInstance[i].Model->SubsetCount; ++subset)
+			{
+				mSkinnedModelInstance[i].Model->ModelMesh.Draw(dc, subset);
+			}
+		}
+	}
+	//////////////////////////////////////////////////////////////////////////까지
 	stride = sizeof(Vertex::Basic32);
 	offset = 0;
 
@@ -227,6 +263,9 @@ void CModelManager::DrawToShadowMap(ID3D11DeviceContext * dc, ID3DX11EffectTechn
 	{
 		p.DrawToShadowMap(dc, tech, lightView, lightProj);
 	}
+
+
+
 	// 	UINT instanceStride[2] = { sizeof(Vertex::Basic32), sizeof(XMFLOAT4X4) };
 	// 	UINT instanceOffset[2] = { 0,0 };
 	// 	for (int i = 0; i < mInstanceModels.size(); ++i)
@@ -237,6 +276,7 @@ void CModelManager::DrawToShadowMap(ID3D11DeviceContext * dc, ID3DX11EffectTechn
 	// 
 	// 		mInstanceModels[i].DrawToShadowMap(dc, tech, lightView, lightProj);
 	// 	}
+	//dc->RSSetState(0);
 }
 
 void CModelManager::DrawInstancedModel(ID3D11DeviceContext * dc, ID3DX11EffectTechnique * tech, const XMMATRIX & shadowTransform, const Camera & cam)

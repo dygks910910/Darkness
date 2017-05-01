@@ -59,10 +59,12 @@ class CMainScene :
 	const int INPUT_NICKNAME_Y = 550;
 	const int FONT_SIZE = 20;
 
+	//////////////////////////////////////////////////////////////////////////
+	//Lobby
+
 public:
 	CMainScene();
 	virtual ~CMainScene();
-
 	virtual bool Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 		IDXGISwapChain* swapChain, const D3D11_VIEWPORT& viewPort, const int& clientWidth, const int& clientHeight);
 	virtual void UpdateScene(const float& dt);

@@ -47,8 +47,8 @@ bool CMainScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	mInputIP.Initialize(device, mClientWidth, mClientHeight, L"UITextures/InputIP.png", 300, 50);
 	mInputPort.Initialize(device, mClientWidth, mClientHeight, L"UITextures/InputPort.png", 300, 50);
 	mInputNickname.Initialize(device, mClientWidth, mClientHeight, L"UITextures/InputNickName.png", 300, 50);
-	mReturnButton.Init(device, 200, 100, L"UITextures/Lobby나가기.png", RETURN_BUTTON_X, RETURN_BUTTON_Y, mClientWidth, mClientHeight);
-	mLobbyConnectButton.Init(device, 200, 100, L"UITextures/Lobby접속.png", LOBBY_CONNECT_BUTTON_X, LOBBY_CONNECT_BUTTON_Y, mClientWidth, mClientHeight);
+	mReturnButton.Init(device, 200, 100, L"UITextures/cancel.png", RETURN_BUTTON_X, RETURN_BUTTON_Y, mClientWidth, mClientHeight);
+	mLobbyConnectButton.Init(device, 200, 100, L"UITextures/connect.png", LOBBY_CONNECT_BUTTON_X, LOBBY_CONNECT_BUTTON_Y, mClientWidth, mClientHeight);
 
 	// Clear the second depth stencil state before setting the parameters.
 	
@@ -226,21 +226,21 @@ void CMainScene::OnMouseDown(WPARAM btnState, int x, int y, const HWND & mhMainW
   		mReturnButton.OnMouseDown(x, y);
 		if (x > 650 && x < 950 && y > 450 && y < 500)
 		{
-			std::cout << "m_bFocusOnIP = true" <<std::endl;
+			//std::cout << "m_bFocusOnIP = true" <<std::endl;
 			m_bFocusOnIP = true;
 			m_bFocusOnNickName = false;
 			m_bFocusOnPort = false;
 		}
 		else if (x > 650 && x < 950 && y > 500 && y < 550)
 		{
-			std::cout << "m_bFocusOnPort = true" << std::endl;
+			//std::cout << "m_bFocusOnPort = true" << std::endl;
 			m_bFocusOnIP = false;
 			m_bFocusOnNickName = false;
 			m_bFocusOnPort = true;
 		}
 		else if (x > 650 && x < 950 && y > 550 && y < 600)
 		{
-			std::cout << "m_bFocusOnNickname = true" << std::endl;
+			//std::cout << "m_bFocusOnNickname = true" << std::endl;
 			m_bFocusOnIP = false;
 			m_bFocusOnNickName = true;
 			m_bFocusOnPort = false;

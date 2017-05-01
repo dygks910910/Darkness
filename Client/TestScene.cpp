@@ -417,7 +417,7 @@ void CTestScene::OnMouseMove(WPARAM btnState, int x, int y)
 
 void CTestScene::OnResize()
 {
-	mCam.SetLens(0.25f*MathHelper::Pi, AspectRatio(), 0.01f, 3000.0f);
+	mCam.SetLens(0.36f*MathHelper::Pi, AspectRatio(), 0.01f, 3000.0f);
 	//XNA::ComputeFrustumFromProjection(&mCamFrustum, &mCam.Proj());
 	// 	if (mSsao)
 	// 	{
