@@ -81,7 +81,7 @@ void CSceneManager::OnResize()
 
 void CSceneManager::ChangeScene(std::string sceneName, const float & dt, ID3D11Device * device, ID3D11DeviceContext * dc)
 {
-	mSceneKey = sceneName;
+	//mSceneKey = sceneName;
 	//mScenes[mSceneKey]->UpdateScene(dt);
 }
 
