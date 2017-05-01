@@ -103,7 +103,12 @@ bool CMainScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	// Create the depth stencil state.
 	HR(device->CreateDepthStencilState(&depthStencilDesc, &mDepthStencilState));
 	dc->OMSetDepthStencilState(mDepthStencilState, 1);
+
 	bActivedInputBoard = false;
+	m_bFocusOnIP = false;
+	m_bFocusOnNickName = false;
+	m_bFocusOnPort = false;
+
 	//mMinimap.Initialize(device, 800, 600, mCam.View(), 1000, 1000);
 	mIpString = L"기본";
 	ZeroMemory(&Text, sizeof(Text));
@@ -123,6 +128,7 @@ void CMainScene::UpdateScene(const float & dt)
 
 	if (bActivedInputBoard)
 	{
+		
 		if (mLobbyConnectButton.isClicked)
 		{
 			//////////////////////////////////////////////////////////////////////////
@@ -181,7 +187,7 @@ void CMainScene::Draw(ID3D11RenderTargetView * rtv, ID3D11DepthStencilView * dsv
 	mLogo.Render(mDc, 250, 100);
 	mConnectButton.Draw(mDc);
 	mExitButton.Draw(mDc);
-	drawText(mDevice, mDc,mIpString);
+	DrawText(mDevice, mDc,mIpString,30,400,100);
 	//////////////////////////////////////////////////////////////////////////
 	//IP주소 입력창 화면
 	if (bActivedInputBoard)
@@ -207,13 +213,13 @@ void CMainScene::OnMouseDown(WPARAM btnState, int x, int y, const HWND & mhMainW
  
   	if (bActivedInputBoard)
   	{
-		
+		//ip입력창 active state check
   		mLobbyConnectButton.OnMouseDown(x, y);
   		mReturnButton.OnMouseDown(x, y);
   	}
   	else
   	{
-		Pick(x, y, mConnectButton);
+		//Pick(x, y, mConnectButton);
 //   		mConnectButton.OnMouseDown(x, y);
 //   		mExitButton.OnMouseDown(x, y);
   	}
@@ -235,8 +241,8 @@ void CMainScene::OnMouseUp(WPARAM btnState, int x, int y)
 
 void CMainScene::OnMouseMove(WPARAM btnState, int x, int y)
 {
-	std::cout << "mouse pos :" << "(" << x << "," << y << ")" << std::endl;
-	std::cout << "aspectRatio x : " << x * AspectRatio() << std::endl;
+// 	std::cout << "mouse pos :" << "(" << x << "," << y << ")" << std::endl;
+// 	std::cout << "aspectRatio x : " << x * AspectRatio() << std::endl;
 	if (bActivedInputBoard)
 	{
 		mLobbyConnectButton.OnMouseMove(x, y);
@@ -284,51 +290,61 @@ int CMainScene::GetText(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
 	switch (msg)
 	{
 	case WM_IME_COMPOSITION:
-		m_hIMC = ImmGetContext(hWnd);	// ime핸들을 얻는것
-
-		if (lparam & GCS_RESULTSTR)
+		if (m_bFocusOnNickName)
 		{
-			if ((len = ImmGetCompositionString(m_hIMC, GCS_RESULTSTR, NULL, 0)) > 0)
+			m_hIMC = ImmGetContext(hWnd);	// ime핸들을 얻는것
+
+			if (lparam & GCS_RESULTSTR)
 			{
-				// 완성된 글자가 있다.
-				ImmGetCompositionString(m_hIMC, GCS_RESULTSTR, Cstr, len);
-				Cstr[len] = 0;
-				wcscpy(Text + wcslen(Text), Cstr);
-				memset(Cstr, 0, 10);
-
-
+				if ((len = ImmGetCompositionString(m_hIMC, GCS_RESULTSTR, NULL, 0)) > 0)
 				{
-					WCHAR szTemp[256] = _T("");
-					wsprintf(szTemp, L"완성된 글자 : %s\r\n", Text);
-					mIpString = szTemp;
+					// 완성된 글자가 있다.
+					ImmGetCompositionString(m_hIMC, GCS_RESULTSTR, Cstr, len);
+					Cstr[len] = 0;
+					wcscpy(Text + wcslen(Text), Cstr);
+					memset(Cstr, 0, 10);
+					{
+						WCHAR szTemp[256] = _T("");
+						wsprintf(szTemp, L"%s", Text);
+						mIpString = szTemp;
+						//std::wcout << szTemp;
+						//OutputDebugString(_T(szTemp));
+					}
+				}
+
+			}
+			else if (lparam & GCS_COMPSTR)
+			{
+				// 현재 글자를 조합 중이다.
+
+				// 조합중인 길이를 얻는다.
+				// str에  조합중인 문자를 얻는다.
+				len = ImmGetCompositionString(m_hIMC, GCS_COMPSTR, NULL, 0);
+				ImmGetCompositionString(m_hIMC, GCS_COMPSTR, Cstr, len);
+				Cstr[len] = 0;
+				{
+					wchar_t szTemp[256] = L"";
+					wsprintf(szTemp, L"%s", Cstr);
+					//mIpString += szTemp;
 					//std::wcout << szTemp;
 					//OutputDebugString(_T(szTemp));
 				}
 			}
 
+			ImmReleaseContext(hWnd, m_hIMC);	// IME 핸들 반환!!
 		}
-		else if (lparam & GCS_COMPSTR)
-		{
-			// 현재 글자를 조합 중이다.
-
-			// 조합중인 길이를 얻는다.
-			// str에  조합중인 문자를 얻는다.
-			len = ImmGetCompositionString(m_hIMC, GCS_COMPSTR, NULL, 0);
-			ImmGetCompositionString(m_hIMC, GCS_COMPSTR, Cstr, len);
-			Cstr[len] = 0;
-			{
-				wchar_t szTemp[256] = L"";
-				wsprintf(szTemp, L"조합중인 글자 : %s\r\n", Cstr);
-				mIpString += szTemp;
-				//std::wcout << szTemp;
-				//OutputDebugString(_T(szTemp));
-			}
-		}
-
-		ImmReleaseContext(hWnd, m_hIMC);	// IME 핸들 반환!!
 		return 0;
-
 	case WM_CHAR:				// 1byte 문자 (ex : 영어)
+		if (m_bFocusOnIP) 
+		{
+			mIpString += (wchar_t)wparam;
+		}
+		if (m_bFocusOnPort)
+		{
+			mIpString += (wchar_t)wparam;
+		}
+		/*Text[wcslen(Text)] = (wchar_t)wparam;*/
+		//mIpString += (wchar_t)wparam;
 		return 0;
 	case WM_IME_NOTIFY:			// 한자입력...
 		return 0;
@@ -336,94 +352,4 @@ int CMainScene::GetText(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
 		return 0;
 	}
 	return 1;
-}
-
-void CMainScene::Pick(const int & sx, const int & sy, CButtonClass& button)
-{
-	XMMATRIX P = mCam.Proj();
-	// Compute picking ray in view space.
-	float vx = (+2.0f*sx / mClientWidth - 1.0f) / P(0, 0);
-	float vy = (-2.0f*sy / mClientHeight + 1.0f) / P(1, 1);
-
-	// Ray definition in view space.
-	XMVECTOR rayOrigin = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-	XMVECTOR rayDir = XMVectorSet(vx, vy, 1.0f, 0.0f);
-
-	// Tranform ray to local space of Mesh.
-	XMMATRIX V = mCam.View();
-	XMMATRIX invView = XMMatrixInverse(&XMMatrixDeterminant(V), V);
-
-	XMMATRIX W = XMLoadFloat4x4(&button.mWorld);
-	XMMATRIX invWorld = XMMatrixInverse(&XMMatrixDeterminant(W), W);
-
-	XMMATRIX toLocal = XMMatrixMultiply(invView, invWorld);
-
-	rayOrigin = XMVector3TransformCoord(rayOrigin, toLocal);
-	rayDir = XMVector3TransformNormal(rayDir, toLocal);
-
-	// Make the ray direction unit length for the intersection tests.
-	rayDir = XMVector3Normalize(rayDir);
-
-	// If we hit the bounding box of the Mesh, then we might have picked a Mesh triangle,
-	// so do the ray/triangle tests.
-	//
-	// If we did not hit the bounding box, then it is impossible that we hit 
-	// the Mesh, so do not waste effort doing ray/triangle tests.
-
-	// Assume we have not picked anything yet, so init to -1.
-	//mPickedTriangle = -1;
-	float tmin = 0.0f;
-	XNA::AxisAlignedBox tempBox = button.GetBox();
-	if (XNA::IntersectRayAxisAlignedBox(rayOrigin, rayDir, &tempBox, &tmin))
-	{
-		std::cout << "버튼 클릭됨";
-			//// Find the nearest ray/triangle intersection.
-			//tmin = MathHelper::Infinity;
-			//for (UINT i = 0; i < mMeshIndices.size() / 3; ++i)
-			//{
-			//	// Indices for this triangle.
-			//	UINT i0 = mMeshIndices[i * 3 + 0];
-			//	UINT i1 = mMeshIndices[i * 3 + 1];
-			//	UINT i2 = mMeshIndices[i * 3 + 2];
-
-			//	// Vertices for this triangle.
-			//	XMVECTOR v0 = XMLoadFloat3(&mMeshVertices[i0].Pos);
-			//	XMVECTOR v1 = XMLoadFloat3(&mMeshVertices[i1].Pos);
-			//	XMVECTOR v2 = XMLoadFloat3(&mMeshVertices[i2].Pos);
-
-			//	// We have to iterate over all the triangles in order to find the nearest intersection.
-			//	float t = 0.0f;
-			//	if (XNA::IntersectRayTriangle(rayOrigin, rayDir, v0, v1, v2, &t))
-			//	{
-			//		if (t < tmin)
-			//		{
-			//			// This is the new nearest picked triangle.
-			//			tmin = t;
-			//			mPickedTriangle = i;
-			//		}
-			//	}
-			//}
-	};
-}
-
-void CMainScene::drawText(ID3D11Device *pDevice, ID3D11DeviceContext *pContext, std::wstring text)
-{
-	IFW1Factory *pFW1Factory;
-	HRESULT hResult = FW1CreateFactory(FW1_VERSION, &pFW1Factory);
-
-	IFW1FontWrapper *pFontWrapper;
-	hResult = pFW1Factory->CreateFontWrapper(pDevice, L"Arial", &pFontWrapper);
-
-	pFontWrapper->DrawString(
-		pContext,
-		text.c_str(),// String
-		20.0f,// Font size
-		100.0f,// X position
-		50.0f,// Y position
-		0xff0099ff,// Text color, 0xAaBbGgRr
-		FW1_RESTORESTATE// Flags (for example FW1_RESTORESTATE to keep context states unchanged)
-	);
-
-	pFontWrapper->Release();
-	pFW1Factory->Release();
 }

@@ -213,6 +213,7 @@
     <ClCompile Include="Common\Waves.cpp" />
     <ClCompile Include="Common\xnacollision.cpp" />
     <ClCompile Include="Cordinate.cpp" />
+    <ClCompile Include="DrawText.cpp" />
     <ClCompile Include="Effects.cpp" />
     <ClCompile Include="FbxLoader.cpp" />
     <ClCompile Include="LoadM3d.cpp" />
@@ -256,6 +257,7 @@
     <ClInclude Include="Common\Waves.h" />
     <ClInclude Include="Common\xnacollision.h" />
     <ClInclude Include="Cordinate.h" />
+    <ClInclude Include="DrawText.h" />
     <ClInclude Include="Effects.h" />
     <ClInclude Include="FbxLoader.h" />
     <ClInclude Include="FW1FontWrapper.h" />

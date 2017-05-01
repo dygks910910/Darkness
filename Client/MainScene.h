@@ -3,8 +3,7 @@
 #include "Scene.h"
 #include "ButtonClass.h"
 #include "xnacollision.h"
-#include "FW1FontWrapper.h"
-#include<tchar.h>
+#include "DrawText.h"
 class CMainScene :
 	public CScene
 {
@@ -32,6 +31,11 @@ class CMainScene :
 	std::wstring mNicknameString;
 
 	bool bActivedInputBoard;
+
+	bool m_bFocusOnIP;
+	bool m_bFocusOnPort;
+	bool m_bFocusOnNickName;
+
 // 	IFW1Factory* m_factory;
 // 	IFW1FontWrapper* mFontWrapper;
 
@@ -53,31 +57,9 @@ public:
 	virtual void OnResize();
 	virtual void OnKeyboardButtonDown(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam);
 	int GetText(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam);
+	//함수객체
+	CDrawText DrawText;
 
-	void Pick(const int& sx, const int& sy,CButtonClass& button);
-	void drawText(ID3D11Device *pDevice, ID3D11DeviceContext *pContext,std::wstring text);
-
-	
-	//  	char getKey()
-//  	{
-//  		if (kbhit()) // kbhit()이용해 입력값이 있는지 확인 
-//  		{
-//  			char a = getch();
-//  			return a;     // 입력값이 getch()로 char를 리턴해줌
-//  		}
-//  		return '\0'; // 입력값이 없으면 널 문자 리턴
-//  	}
-// 	wchar_t ConverCtoWC(char str)
-// 	{
-// 		//wchar_t형 변수 선언
-// 		wchar_t pStr;
-// 		//멀티 바이트 크기 계산 길이 반환
-// 		int strSize = MultiByteToWideChar(CP_ACP, 0, &str, -1, NULL, NULL);
-// 		//wchar_t 메모리 할당
-// 		//형 변환
-// 		MultiByteToWideChar(CP_ACP, 0, &str, strlen(&str) + 1, &pStr, strSize);
-// 		return pStr;
-// 	}
 
 
 };
