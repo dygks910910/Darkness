@@ -1,4 +1,5 @@
 #pragma once
+#include "NetworkMgr.h"
 #include "Scene.h"
 #include "Camera.h"
 #include "GameTimer.h"
@@ -15,7 +16,11 @@
 #include "ParticleSystem.h"
 #include "SkinnedModel.h"
 #include "Ssao.h"
-#include "StaticModel.h"
+// <<<<<<< HEAD
+// #include "StaticModel.h"
+// =======
+
+/*>>>>>>> SpotLight*/
 struct BoundingSphere
 {
 	BoundingSphere() : Center(0.0f, 0.0f, 0.0f), Radius(0.0f) {}
@@ -29,14 +34,14 @@ class CTestScene :
 	/*
 	2017 / 3 / 22 / 16:13
 	작성자:박요한(dygks910910@daum.net)
-	설명:기본적인 dx11 인터페이스 변수들.여기서 Release해주면 안된다.프로그램 종료시 release하도록 
+	설명:기본적인 dx11 인터페이스 변수들.여기서 Release해주면 안된다.프로그램 종료시 release하도록
 	세팅해놨음.
 	*/
 	int mClientHeight;
 	int mClientWidth;
-//////////////////////////////////////////////////////////////////////////
- 	TextureMgr mTexMgr;
-	CModelManager mModelMgr;
+	//////////////////////////////////////////////////////////////////////////
+	TextureMgr mTexMgr;
+	//CModelManager mModelMgr;
 	GameTimer mTimer;
 	//RainParticle
 	ID3D11ShaderResourceView* mRainTexSRV;
@@ -49,12 +54,14 @@ class CTestScene :
 	XMFLOAT3 mOriginalLightDir[3];
 
 	///////////////////////////////Skined Model////////////////////////////////
-// 	SkinnedModel* mCharacterModel;
-// 	SkinnedModelInstance mCharacterInstance1;
-// 	SkinnedModelInstance mCharacterInstance2;
-// 	SkinnedModelInstance mCharacterInstances[70];
+	// 	SkinnedModel* mCharacterModel;
+	// 	SkinnedModelInstance mCharacterInstance1;
+	// 	SkinnedModelInstance mCharacterInstance2;
+	// 	SkinnedModelInstance mCharacterInstances[70];
 	//Terrain mTerrain;
 	POINT mLastMousePos;
+	POINT mUpMousePos;
+
 	Sky* mSky;
 
 
@@ -72,15 +79,24 @@ public:
 	virtual ~CTestScene();
 	virtual bool Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 		IDXGISwapChain* swapChain, const D3D11_VIEWPORT& viewPort, const int& clientWidth, const int& clientHeight);
-	virtual void UpdateScene(const float& dt) ;
-	virtual void Draw(ID3D11RenderTargetView* rtv,ID3D11DepthStencilView* dsv, D3D11_VIEWPORT* viewPort) ;
-	virtual void OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWnd) ;
-	virtual void OnMouseUp(WPARAM btnState, int x, int y) ;
+// <<<<<<< HEAD
+// 	virtual void UpdateScene(const float& dt) ;
+// 	virtual void Draw(ID3D11RenderTargetView* rtv,ID3D11DepthStencilView* dsv, D3D11_VIEWPORT* viewPort) ;
+// 	virtual void OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWnd) ;
+// 	virtual void OnMouseUp(WPARAM btnState, int x, int y) ;
+// =======
+	virtual void UpdateScene(const float dt, MSG& msg);
+	virtual void Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, D3D11_VIEWPORT* viewPort);
+	virtual void OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWnd);
+	virtual void OnMouseUp(WPARAM btnState, int x, int y);
+/*>>>>>>> SpotLight*/
 	virtual void OnMouseMove(WPARAM btnState, int x, int y);
+
 	virtual void OnResize();
 	virtual void OnKeyboardButtonDown(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam) {};
 
 	void DrawSceneToShadowMap();
 	void BuildShadowTransform();
-	
+
+
 };

@@ -1,5 +1,4 @@
 #include "SceneManager.h"
-#include"TestScene.h"
 
 
 CSceneManager::CSceneManager()
@@ -14,7 +13,7 @@ CSceneManager::~CSceneManager()
 }
 bool CSceneManager::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	IDXGISwapChain* swapChain, ID3D11RenderTargetView* renderTargetView,
-	D3D11_VIEWPORT* viewport, ID3D11DepthStencilView* dsv, 
+	D3D11_VIEWPORT* viewport, ID3D11DepthStencilView* dsv,
 	const int& clientWidth, const int& clientHeight)
 {
 	/*
@@ -28,7 +27,7 @@ bool CSceneManager::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 	mSceneKey = SceneName::test;
 	mScenes.insert(make_pair(SceneName::test, new CTestScene));
-	mScenes[mSceneKey]->Init(device, dc,swapChain,
+	mScenes[mSceneKey]->Init(device, dc, swapChain,
 		*viewport, clientWidth, clientHeight);
 	/*
 	2017 / 1 / 12 / 20:07
@@ -36,13 +35,13 @@ bool CSceneManager::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	설명:TestScene생성.
 	*/
 
-// 	mScenes.insert(make_pair(SceneName::test, new CBoxScene));
-// 	mScenes[SceneName::test]->Init(device, dc,swapChain,renderTargetView
-// 	,  viewport);
+	// 	mScenes.insert(make_pair(SceneName::test, new CBoxScene));
+	// 	mScenes[SceneName::test]->Init(device, dc,swapChain,renderTargetView
+	// 	,  viewport);
 	//OnResize();
 	return true;
 }
-void CSceneManager::UpdateScene(const float dt)
+void CSceneManager::UpdateScene(const float dt, MSG& msg)
 {
 	/*
 	2017 / 1 / 12 / 22:06
@@ -50,10 +49,15 @@ void CSceneManager::UpdateScene(const float dt)
 	설명:씬 변경.Test
 	*/
 	/*if (GetAsyncKeyState('C') & 0x8000) {
-		mSceneKey = SceneName::MainScene;
-		ChangeScene(SceneName::MainScene, dt);
+	mSceneKey = SceneName::MainScene;
+	ChangeScene(SceneName::MainScene, dt);
 	}*/
-	mScenes[mSceneKey]->UpdateScene(dt);
+// <<<<<<< HEAD
+// 	mScenes[mSceneKey]->UpdateScene(dt);
+// =======
+
+	mScenes[mSceneKey]->UpdateScene(dt, msg);
+// >>>>>>> SpotLight
 }
 void CSceneManager::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	IDXGISwapChain* swapChain, ID3D11RenderTargetView* renderTargetView,
@@ -61,6 +65,8 @@ void CSceneManager::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 {
 	mScenes[mSceneKey]->Draw(renderTargetView, depthStencilView, viewport);
 }
+
+
 void CSceneManager::OnMouseDown(WPARAM btnState, int x, int y, const HWND & mhMainWnd)
 {
 	mScenes[mSceneKey]->OnMouseDown(btnState, x, y, mhMainWnd);
@@ -75,7 +81,7 @@ void CSceneManager::OnMouseMove(WPARAM btnState, int x, int y)
 }
 void CSceneManager::OnResize()
 {
-	if(mSceneKey != "")
+	if (mSceneKey != "")
 		mScenes[mSceneKey]->OnResize();
 }
 

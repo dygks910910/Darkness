@@ -1,8 +1,7 @@
 #include "TestScene.h"
-
 #define Animnum 10
 
-
+XMFLOAT3 camtest;
 CTestScene::CTestScene()
 {
 }
@@ -26,7 +25,7 @@ CTestScene::~CTestScene()
 	SafeDelete(mSsao);
 	ReleaseCOM(mRainTexSRV);
 	ReleaseCOM(mRandomTexSRV);
-	
+
 }
 
 bool CTestScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
@@ -51,7 +50,11 @@ bool CTestScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	//////////////////////////////////////////////////////////////////////////
 	//재질,텍스처불러오기.
 	mTexMgr.Init(mDevice);
-	mModelMgr.Init(mTexMgr, &mCam, device);
+// <<<<<<< HEAD
+// 	mModelMgr.Init(mTexMgr, &mCam, device);
+// =======
+	CModelManager::GetInstance()->Init(mTexMgr, mCam, device);
+// >>>>>>> SpotLight
 
 
 	//버퍼 빌드
@@ -59,9 +62,7 @@ bool CTestScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 	//////////////////////////////////////////////////////////////////////////
 	int total = 0;
-	
-	
-	
+
 	//////////////////////////////////////////////////////////////////////////
 	//mTextureMgr.Init(device);
 	mLastMousePos.x = 0;
@@ -118,13 +119,18 @@ bool CTestScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 	return true;
 }
-
-void CTestScene::UpdateScene(const float& dt)
+// <<<<<<< HEAD
+// 
+// void CTestScene::UpdateScene(const float& dt)
+// =======
+bool testcamera = true;
+void CTestScene::UpdateScene(const float dt, MSG& msg)
 {
 	mTimer.Tick();
 	//
 	// Control the camera.
 	//
+
 	if (GetAsyncKeyState('W') & 0x8000)
 		mCam.Walk(20.0f*dt);
 
@@ -137,34 +143,36 @@ void CTestScene::UpdateScene(const float& dt)
 	if (GetAsyncKeyState('D') & 0x8000)
 		mCam.Strafe(20.0f*dt);
 
-// 	if (GetAsyncKeyState('Z') & 0x8000)
-// 	{
-// 		mCharacterInstance1.ClipName = "Idle";
-// 		mCharacterInstance1.mAnimTotalTime = mAnimTotalCnt[0];
-// 		mCharacterInstance1.mAnimCnt = 0;
-// 	}
-// 	if (GetAsyncKeyState('X') & 0x8000)
-// 	{
-// 		mCharacterInstance1.ClipName = "Attack1";
-// 		mCharacterInstance1.mAnimTotalTime = mAnimTotalCnt[2];
-// 		mCharacterInstance1.mAnimCnt = 0;
-// 	}
-// 	if (GetAsyncKeyState('V') & 0x8000)
-// 	{
-// 		mCharacterInstance1.ClipName = "Run";
-// 		mCharacterInstance1.mAnimTotalTime = mAnimTotalCnt[3];
-// 		mCharacterInstance1.mAnimCnt = 0;
-// 	}
-// 	if (GetAsyncKeyState('B') & 0x8000)
-// 	{
-// 		mCharacterInstance1.ClipName = "Walk";
-// 		mCharacterInstance1.mAnimTotalTime = mAnimTotalCnt[1];
-// 		mCharacterInstance1.mAnimCnt = 0;
-// 	}
+	if (GetAsyncKeyState('Z') & 0x8000)
+	{
+		testcamera = false;
+	}
+	if (GetAsyncKeyState('X') & 0x8000)
+	{
+		testcamera = true;
+	}
+	// 	if (GetAsyncKeyState('X') & 0x8000)
+	// 	{
+	// 		mCharacterInstance1.ClipName = "Attack1";
+	// 		mCharacterInstance1.mAnimTotalTime = mAnimTotalCnt[2];
+	// 		mCharacterInstance1.mAnimCnt = 0;
+	// 	}
+	// 	if (GetAsyncKeyState('V') & 0x8000)
+	// 	{
+	// 		mCharacterInstance1.ClipName = "Run";
+	// 		mCharacterInstance1.mAnimTotalTime = mAnimTotalCnt[3];
+	// 		mCharacterInstance1.mAnimCnt = 0;
+	// 	}
+	// 	if (GetAsyncKeyState('B') & 0x8000)
+	// 	{
+	// 		mCharacterInstance1.ClipName = "Walk";
+	// 		mCharacterInstance1.mAnimTotalTime = mAnimTotalCnt[1];
+	// 		mCharacterInstance1.mAnimCnt = 0;
+	// 	}
 	/*if (GetAsyncKeyState('N') & 0x8000)
-		mCharacterInstance1.ClipName = "Jump";
+	mCharacterInstance1.ClipName = "Jump";
 	if (GetAsyncKeyState('M') & 0x8000)
-		mCharacterInstance1.ClipName = "Death";*/
+	mCharacterInstance1.ClipName = "Death";*/
 
 
 	//
@@ -172,10 +180,10 @@ void CTestScene::UpdateScene(const float& dt)
 	//
 
 	// 	if (GetAsyncKeyState('R') & 0x8000)
-// 	{
-// 		// 		mFire.Reset();
-// 		// 		mRain.Reset();
-// 	}
+	// 	{
+	// 		// 		mFire.Reset();
+	// 		// 		mRain.Reset();
+	// 	}
 	// 
 	// Clamp camera to terrain surface in walk mode.
 	//
@@ -186,17 +194,24 @@ void CTestScene::UpdateScene(const float& dt)
 	BuildShadowTransform();
 	mRain.Update(dt, mTimer.TotalTime());
 
-	mModelMgr.UpdateModel(dt);
-// 	mCharacterInstance1.Update(dt);
-// 
-// 	for (int i = 0; i < Animnum; ++i)
-// 		mCharacterInstances[i].Update(dt);
+	CModelManager::GetInstance()->UpdateModel(dt, mCam);
+	// 	mCharacterInstance1.Update(dt);
+	// 
+	// 	for (int i = 0; i < Animnum; ++i)
+	// 		mCharacterInstances[i].Update(dt);
 
 	mCam.UpdateViewMatrix();
 }
 
+bool camset = false;
 void CTestScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, D3D11_VIEWPORT* viewPort)
 {
+
+	if (!camset)
+	{
+		mCam.SetPosition(camtest);
+		camset = true;
+	}
 
 	mSmap->BindDsvAndSetNullRenderTarget(mDc);
 
@@ -209,7 +224,7 @@ void CTestScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 	//ID3DX11EffectTechnique* animatedTech = Effects::SsaoNormalDepthFX->NormalDepthSkinnedTech;
 	//ID3DX11EffectTechnique* activeSkinnedTech = Effects::NormalMapFX->Light3TexSkinnedTech;
 
-	
+
 
 	XMMATRIX shadowTransform = XMLoadFloat4x4(&mShadowTransform);
 
@@ -268,7 +283,7 @@ void CTestScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 
 	// Figure out which technique to use for different geometry.
 
-	
+
 	//XMMATRIX worldView;
 	//XMMATRIX worldInvTransposeView;
 	//
@@ -285,18 +300,21 @@ void CTestScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 	//
 
 
-	mModelMgr.DrawStaticBasicModels(mDc, activeBasicTech,
+	CModelManager::GetInstance()->DrawStaticBasicModels(mDc, activeBasicTech,
 		XMLoadFloat4x4(&mShadowTransform), mCam);
-	mModelMgr.DrawStaticNormalModels(mDc, activeNormalMappingTech,
+	CModelManager::GetInstance()->DrawStaticNormalModels(mDc, activeNormalMappingTech,
 		XMLoadFloat4x4(&mShadowTransform), mCam);
-	mModelMgr.DrawInstancedModel(mDc, activeInstanceTech, XMLoadFloat4x4(&mShadowTransform), mCam);
+	CModelManager::GetInstance()->DrawInstancedModel(mDc, activeInstanceTech, XMLoadFloat4x4(&mShadowTransform), mCam);
 
 	//////////////////////////////////////////////////////////////////////////
 	//draw Animation
 
 	mDc->IASetInputLayout(InputLayouts::PosNormalTexTanSkinned);
-	mModelMgr.DrawSkinnedModels(mDc, activeSkinnedTech, XMLoadFloat4x4(&mShadowTransform), mCam);
-
+// <<<<<<< HEAD
+// 	mModelMgr.DrawSkinnedModels(mDc, activeSkinnedTech, XMLoadFloat4x4(&mShadowTransform), mCam);
+// 
+// =======
+	CModelManager::GetInstance()->DrawSkinnedModels(mDc, activeSkinnedTech, XMLoadFloat4x4(&mShadowTransform), mCam);
 
 	// FX sets tessellation stages, but it does not disable them.  So do that here
 	// to turn off tessellation.
@@ -361,8 +379,8 @@ void CTestScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 	mCordWorld.Draw(mDc, mCam);
 
 	mSky->Draw(mDc, mCam);
-	//mModelMgr.DrawInstancedModel(mDc, activeInstanceTech, XMLoadFloat4x4(&mShadowTransform), mCam);
 
+	CModelManager::GetInstance()->DrawInstancedModel(mDc, activeInstanceTech, XMLoadFloat4x4(&mShadowTransform), mCam);
 	mDc->OMSetBlendState(0, blendFactor, 0xffffffff); // restore default
 	mDc->IASetInputLayout(InputLayouts::Particle);
 	mDc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
@@ -387,6 +405,7 @@ void CTestScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 }
 //////////////////////0406/////////////////////////
 
+
 void CTestScene::OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWnd)
 {
 	mLastMousePos.x = x;
@@ -399,18 +418,66 @@ void CTestScene::OnMouseUp(WPARAM btnState, int x, int y)
 {
 	ReleaseCapture();
 }
-
+float sumdx = 0;
 void CTestScene::OnMouseMove(WPARAM btnState, int x, int y)
 {
 	if ((btnState & MK_LBUTTON) != 0)
 	{
-		// Make each pixel correspond to a quarter of a degree.
-		float dx = XMConvertToRadians(0.25f*static_cast<float>(x - mLastMousePos.x));
-		float dy = XMConvertToRadians(0.25f*static_cast<float>(y - mLastMousePos.y));
+		if (testcamera)
+		{
+			XMMATRIX	matRot;
+			XMFLOAT3 objectpos, campos, dist, up;
+			XMVECTOR eye, upper;
+			//XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+			up.x = 0;
+			up.y = 1;
+			up.z = 0;
+			///////////////오브젝트 위치 얻기/////////////////
+			objectpos.x = CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].World._41;
+			objectpos.y = CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].World._42 + 1;
+			objectpos.z = CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].World._43;
 
-		mCam.Pitch(dy);
-		mCam.RotateY(dx);
+			//////////////카메라 위치 얻기////////////////////
+			campos = mCam.GetPosition();
+			// Make each pixel correspond to a quarter of a degree.
+			float dx = XMConvertToRadians(0.25f*static_cast<float>(x - mLastMousePos.x));
+			float dy = XMConvertToRadians(0.25f*static_cast<float>(y - mLastMousePos.y));
+			//////////////카메라와 객체 거리 구하기///////////
+			dist.x = campos.x - objectpos.x;
+			dist.y = campos.y - objectpos.y;
+			dist.z = campos.z - objectpos.z;
+
+			if (CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mRotateAngle == 0)
+				sumdx = 0;
+
+			sumdx += dx;
+			//std::cout << "sum" << sumdx << std::endl;
+
+			CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mRotateAngle = sumdx;
+
+			matRot = XMMatrixRotationY(dx);
+			eye = XMVector3TransformCoord(XMLoadFloat3(&dist), matRot);
+			upper = XMVector3TransformCoord(XMLoadFloat3(&up), matRot);
+
+			XMStoreFloat3(&dist, eye);
+			XMStoreFloat3(&up, upper);
+
+			campos.x = dist.x + objectpos.x;
+			campos.y = dist.y + objectpos.y;
+			campos.z = dist.z + objectpos.z;
+			mCam.LookAt(campos, objectpos, up);
+			///////////////////////////////////////////
+		}
+		else
+		{
+			float dx = XMConvertToRadians(0.25f*static_cast<float>(x - mLastMousePos.x));
+			float dy = XMConvertToRadians(0.25f*static_cast<float>(y - mLastMousePos.y));
+			mCam.Pitch(dy);
+			mCam.RotateY(dx);
+		}
+
 	}
+
 	mLastMousePos.x = x;
 	mLastMousePos.y = y;
 }
@@ -452,7 +519,7 @@ void CTestScene::DrawSceneToShadowMap()
 	XMMATRIX worldInvTranspose;
 	XMMATRIX worldViewProj;
 
-	mModelMgr.DrawToShadowMap(mDc, smapTech, mLightView, mLightProj);
+	CModelManager::GetInstance()->DrawToShadowMap(mDc, smapTech, mLightView, mLightProj);
 
 
 	//mDc->IASetInputLayout(InputLayouts::PosNormalTexTanSkinned);

@@ -1,9 +1,9 @@
 #include "ModelManager.h"
 
-
+#define SPEED 0.008
+CModelManager* CModelManager::model = nullptr;
 
 CModelManager::CModelManager()
-
 {
 
 
@@ -25,7 +25,6 @@ CModelManager::~CModelManager()
 	{
 		delete[](p->second);
 	}
-
 }
 
 void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device)
@@ -80,6 +79,9 @@ void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device)
 	BuildBasicGeometryBuffer();
 	BuildShapeGeometryBuffers();
 	ReadMapData(texMgr, cam);
+	send_wsa_buf.buf = reinterpret_cast<char*>(send_buf);
+	send_wsa_buf.len = MAX_BUF_SIZE;
+
 }
 
 void CModelManager::DrawStaticNormalModels(ID3D11DeviceContext * dc, ID3DX11EffectTechnique * tech, const XMMATRIX & shadowTransform, const Camera & cam)
@@ -263,8 +265,6 @@ void CModelManager::DrawToShadowMap(ID3D11DeviceContext * dc, ID3DX11EffectTechn
 		p.DrawToShadowMap(dc, tech, lightView, lightProj);
 	}
 
-
-
 	// 	UINT instanceStride[2] = { sizeof(Vertex::Basic32), sizeof(XMFLOAT4X4) };
 	// 	UINT instanceOffset[2] = { 0,0 };
 	// 	for (int i = 0; i < mInstanceModels.size(); ++i)
@@ -275,7 +275,7 @@ void CModelManager::DrawToShadowMap(ID3D11DeviceContext * dc, ID3DX11EffectTechn
 	// 
 	// 		mInstanceModels[i].DrawToShadowMap(dc, tech, lightView, lightProj);
 	// 	}
-	//dc->RSSetState(0);
+
 }
 
 void CModelManager::DrawInstancedModel(ID3D11DeviceContext * dc, ID3DX11EffectTechnique * tech, const XMMATRIX & shadowTransform, const Camera & cam)
@@ -299,11 +299,295 @@ void CModelManager::DrawInstancedModel(ID3D11DeviceContext * dc, ID3DX11EffectTe
 
 }
 
-void CModelManager::UpdateModel(const float & dt)
+void CModelManager::UpdateModel(const float & dt, Camera& camera)
 {
+	XMFLOAT3 campos, charpos, camLook, charlook, camRight;
+
 	for (int i = 0; i < mSkinnedModelInstance.size(); ++i)
 	{
+		mSkinnedModelInstance[3].mClipnameAndTotalCount = mClipnameAndTotalCounts[mSkinnedModelInstance[3].mAnimstate];
 		mSkinnedModelInstance[i].Update(dt);
+	}
+
+
+	if (GetAsyncKeyState(VK_UP) & 0x8000)
+	{
+		charpos.x = mSkinnedModelInstance[5].World._41;
+		charpos.y = mSkinnedModelInstance[5].World._42;
+		charpos.z = mSkinnedModelInstance[5].World._43;
+
+		campos = camera.GetPosition();
+
+		cs_packet_player_move* move = reinterpret_cast<cs_packet_player_move*>(&send_buf);
+		move->size = sizeof(cs_packet_player_move);
+		move->type = CS_UP;
+		move->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mId;
+		move->camlook = camera.GetLook();
+		move->campos = campos;
+		send_wsa_buf.len = sizeof(cs_packet_player_move);
+
+		DWORD io_byte;
+
+		int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf, 1, &io_byte, 0, NULL, NULL);
+		if (ret_val == SOCKET_ERROR)
+			std::cout << " [error] WSASend() " << std::endl;
+
+		if (!mOneCheck)
+		{
+			cs_packet_player_anmation_start* anim = reinterpret_cast<cs_packet_player_anmation_start*>(&send_buf);
+			anim->size = sizeof(cs_packet_player_anmation_start);
+			anim->type = CS_PACKET_START_ANIMATION;
+			anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mId;
+			anim->animationState = 1;
+			send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
+
+			DWORD io_byte2;
+
+			int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf, 1, &io_byte2, 0, NULL, NULL);
+			if (ret_val == SOCKET_ERROR)
+				std::cout << " [error] WSASend() " << std::endl;
+
+			mSkinnedModelInstance[5].mClipnameAndTotalCount = mClipnameAndTotalCounts[1];
+			mOneCheck = true;
+		}
+
+		camLook.x = charpos.x - campos.x;
+		camLook.y = charpos.y - campos.y;
+		camLook.z = charpos.z - campos.z;
+
+		XMVECTOR s = XMVectorReplicate(0.5f*SPEED);
+		XMVECTOR l = XMLoadFloat3(&camera.GetLook());
+		XMVECTOR p = XMLoadFloat3(&charpos);
+		XMStoreFloat3(&charpos, XMVectorMultiplyAdd(s, l, p));
+		if (!mSkinnedModelInstance[5].mCollision)
+		{
+			campos.x += charpos.x - mSkinnedModelInstance[5].World._41;
+			campos.z += charpos.z - mSkinnedModelInstance[5].World._43;
+		}
+		else
+		{
+			campos.x += 0;
+			campos.z -= 0.5;
+		}
+
+		camera.SetPosition(campos);
+	}
+	else if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+	{
+		charpos.x = mSkinnedModelInstance[5].World._41;
+		charpos.y = mSkinnedModelInstance[5].World._42;
+		charpos.z = mSkinnedModelInstance[5].World._43;
+
+		campos = camera.GetPosition();
+
+		cs_packet_player_move* move = reinterpret_cast<cs_packet_player_move*>(&send_buf);
+		move->size = sizeof(cs_packet_player_move);
+		move->type = CS_DOWN;
+		move->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mId;
+		move->camlook = camera.GetLook();
+		move->campos = campos;
+		send_wsa_buf.len = sizeof(cs_packet_player_move);
+
+		DWORD io_byte;
+
+		int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf, 1, &io_byte, 0, NULL, NULL);
+		if (ret_val == SOCKET_ERROR)
+			std::cout << " [error] WSASend() " << std::endl;
+
+		if (!mOneCheck)
+		{
+			cs_packet_player_anmation_start* anim = reinterpret_cast<cs_packet_player_anmation_start*>(&send_buf);
+			anim->size = sizeof(cs_packet_player_anmation_start);
+			anim->type = CS_PACKET_START_ANIMATION;
+			anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mId;
+			anim->animationState = 1;
+			send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
+
+			DWORD io_byte2;
+
+			int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf, 1, &io_byte2, 0, NULL, NULL);
+			if (ret_val == SOCKET_ERROR)
+				std::cout << " [error] WSASend() " << std::endl;
+
+			mSkinnedModelInstance[5].mClipnameAndTotalCount = mClipnameAndTotalCounts[1];
+			mOneCheck = true;
+
+		}
+
+		camLook.x = charpos.x - campos.x;
+		camLook.y = charpos.y - campos.y;
+		camLook.z = charpos.z - campos.z;
+
+		XMVECTOR s = XMVectorReplicate(0.5f*SPEED);
+		XMVECTOR l = XMLoadFloat3(&camLook);
+		XMVECTOR p = XMLoadFloat3(&charpos);
+		XMStoreFloat3(&charpos, XMVectorMultiplyAdd(s, -l, p));
+		if (!mSkinnedModelInstance[5].mCollision)
+		{
+			campos.x += charpos.x - mSkinnedModelInstance[5].World._41;
+			campos.z += charpos.z - mSkinnedModelInstance[5].World._43;
+		}
+		else
+		{
+			campos.x += 0;
+			campos.z += 0;
+		}
+
+		camera.SetPosition(campos);
+
+	}
+	else if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+	{
+
+		charpos.x = mSkinnedModelInstance[5].World._41;
+		charpos.y = mSkinnedModelInstance[5].World._42;
+		charpos.z = mSkinnedModelInstance[5].World._43;
+
+		campos = camera.GetPosition();
+
+		cs_packet_player_move* move = reinterpret_cast<cs_packet_player_move*>(&send_buf);
+		move->size = sizeof(cs_packet_player_move);
+		move->type = CS_LEFT;
+		move->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mId;
+		move->camlook = camera.GetRight();
+		move->campos = campos;
+		send_wsa_buf.len = sizeof(cs_packet_player_move);
+
+		DWORD io_byte;
+
+		int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf, 1, &io_byte, 0, NULL, NULL);
+		if (ret_val == SOCKET_ERROR)
+			std::cout << " [error] WSASend() " << std::endl;
+
+		if (!mOneCheck)
+		{
+			cs_packet_player_anmation_start* anim = reinterpret_cast<cs_packet_player_anmation_start*>(&send_buf);
+			anim->size = sizeof(cs_packet_player_anmation_start);
+			anim->type = CS_PACKET_START_ANIMATION;
+			anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mId;
+			anim->animationState = 1;
+			send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
+
+			DWORD io_byte2;
+
+			int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf, 1, &io_byte2, 0, NULL, NULL);
+			if (ret_val == SOCKET_ERROR)
+				std::cout << " [error] WSASend() " << std::endl;
+
+			mSkinnedModelInstance[5].mClipnameAndTotalCount = mClipnameAndTotalCounts[1];
+			mOneCheck = true;
+
+		}
+
+		camLook.x = charpos.x - campos.x;
+		camLook.y = charpos.y - campos.y;
+		camLook.z = charpos.z - campos.z;
+
+		XMVECTOR s = XMVectorReplicate(0.5f*SPEED);
+		XMVECTOR l = XMLoadFloat3(&camera.GetRight());
+		XMVECTOR p = XMLoadFloat3(&charpos);
+		XMStoreFloat3(&charpos, XMVectorMultiplyAdd(s, -l, p));
+		if (!mSkinnedModelInstance[5].mCollision)
+		{
+			campos.x += charpos.x - mSkinnedModelInstance[5].World._41;
+			campos.z += charpos.z - mSkinnedModelInstance[5].World._43;
+		}
+		else
+		{
+			campos.x += 0;
+			campos.z += 0;
+		}
+
+		camera.SetPosition(campos);
+
+	}
+
+	else if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+	{
+
+		charpos.x = mSkinnedModelInstance[5].World._41;
+		charpos.y = mSkinnedModelInstance[5].World._42;
+		charpos.z = mSkinnedModelInstance[5].World._43;
+
+		campos = camera.GetPosition();
+
+		cs_packet_player_move* move = reinterpret_cast<cs_packet_player_move*>(&send_buf);
+		move->size = sizeof(cs_packet_player_move);
+		move->type = CS_RIGHT;
+		move->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mId;
+		move->camlook = camera.GetRight();
+		move->campos = campos;
+		send_wsa_buf.len = sizeof(cs_packet_player_move);
+
+		DWORD io_byte;
+
+		int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf, 1, &io_byte, 0, NULL, NULL);
+		if (ret_val == SOCKET_ERROR)
+			std::cout << " [error] WSASend() " << std::endl;
+
+		if (!mOneCheck)
+		{
+			cs_packet_player_anmation_start* anim = reinterpret_cast<cs_packet_player_anmation_start*>(&send_buf);
+			anim->size = sizeof(cs_packet_player_anmation_start);
+			anim->type = CS_PACKET_START_ANIMATION;
+			anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mId;
+			anim->animationState = 1;
+			send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
+
+			DWORD io_byte2;
+
+			int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf, 1, &io_byte2, 0, NULL, NULL);
+			if (ret_val == SOCKET_ERROR)
+				std::cout << " [error] WSASend() " << std::endl;
+
+			mSkinnedModelInstance[5].mClipnameAndTotalCount = mClipnameAndTotalCounts[1];
+			mOneCheck = true;
+
+		}
+
+		camLook.x = charpos.x - campos.x;
+		camLook.y = charpos.y - campos.y;
+		camLook.z = charpos.z - campos.z;
+
+		XMVECTOR s = XMVectorReplicate(0.5f*SPEED);
+		XMVECTOR l = XMLoadFloat3(&camera.GetRight());
+		XMVECTOR p = XMLoadFloat3(&charpos);
+		XMStoreFloat3(&charpos, XMVectorMultiplyAdd(s, l, p));
+		if (!mSkinnedModelInstance[5].mCollision)
+		{
+			campos.x += charpos.x - mSkinnedModelInstance[5].World._41;
+			campos.z += charpos.z - mSkinnedModelInstance[5].World._43;
+		}
+		else
+		{
+			campos.x += 0;
+			campos.z += 0;
+		}
+
+		camera.SetPosition(campos);
+
+	}
+	else
+	{
+		if (mOneCheck)
+		{
+			cs_packet_player_anmation_start* anim = reinterpret_cast<cs_packet_player_anmation_start*>(&send_buf);
+			anim->size = sizeof(cs_packet_player_anmation_start);
+			anim->type = CS_PACKET_START_ANIMATION;
+			anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mId;
+			anim->animationState = 0;
+			send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
+
+			DWORD io_byte2;
+
+			int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf, 1, &io_byte2, 0, NULL, NULL);
+			if (ret_val == SOCKET_ERROR)
+				std::cout << " [error] WSASend() " << std::endl;
+
+			mSkinnedModelInstance[5].mAnimCnt = 0;
+			mSkinnedModelInstance[5].mClipnameAndTotalCount = mClipnameAndTotalCounts[0];
+		}
+		mOneCheck = false;
 	}
 }
 
@@ -1037,7 +1321,6 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera* cam)
 				"Building_e"
 			));
 		}
-		
 		else if (!strcmp(objectName, "Well"))
 		{
 			XMVECTOR S = XMLoadFloat3(&scale);
@@ -1333,6 +1616,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera* cam)
 	tempInstanceModelWall.SetSRV(texMgr.CreateTexture(L"Textures\\bricks_albedo.png"));
 	tempInstanceModelWall.BuildInstanceBuffer(mDevice);
 	mInstanceModels.push_back(tempInstanceModelWall);
+
 	ifs >> cIgnore;
 	for (int i = 0; i < skinnedObjectCount; ++i)
 	{
@@ -1365,6 +1649,9 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera* cam)
 
 			tempSkinnedModelInstanced.camPos = XMFLOAT3(position.x, position.y, position.z);
 			mSkinnedModelInstance.push_back(tempSkinnedModelInstanced);
+
+			cam.SetPosition(position);
+
 		}
 	}
 	// 	int randomIndex = rand() % mSkinnedModelInstance.size();

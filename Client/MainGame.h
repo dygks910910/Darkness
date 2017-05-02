@@ -1,7 +1,7 @@
 #pragma once
-
+#include "SceneManager.h"
 #include "d3dApp.h"
-#include"d3dUtil.h"
+#include "d3dUtil.h"
 #include "d3dx11Effect.h"
 #include "GeometryGenerator.h"
 #include "MathHelper.h"
@@ -13,7 +13,9 @@
 #include "Sky.h"
 #include "Terrain.h"
 #include "ParticleSystem.h"
-#include "SceneManager.h"
+
+#pragma comment(lib, "ws2_32.lib")
+
 class CMainGame : public D3DApp
 {
 public:
@@ -22,14 +24,15 @@ public:
 
 	bool Init();
 	void OnResize();
-	void UpdateScene(float dt);
+	void UpdateScene(float dt, MSG& msg);
 	void DrawScene();
 	virtual void OnMouseDown(WPARAM btnState, int x, int y);
 	virtual void OnMouseUp(WPARAM btnState, int x, int y);
 	virtual void OnMouseMove(WPARAM btnState, int x, int y);
 	virtual void OnKeyboardButtonDown(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam);
+	virtual void Packet(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 private:
 	CSceneManager* mSceneManager;
-	
+
 };

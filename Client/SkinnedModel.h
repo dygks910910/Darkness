@@ -41,6 +41,12 @@ struct SkinnedModelInstance
 	std::map < std::string, std::vector<XMFLOAT4X4>*>* mClipAnimbuf;
 	std::pair<std::string, int> mClipnameAndTotalCount;
 	int mAnimCnt;
+	float mRotateAngle;
+	XMVECTOR mLook;
+	XMFLOAT3 mCharCamPos;
+	int mAnimstate = 0;
+	int mId;
+	bool mCollision = false;
 	void Update(float dt);
 };
 #endif // SKINNEDMODEL_H
