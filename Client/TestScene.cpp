@@ -53,7 +53,7 @@ bool CTestScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 // <<<<<<< HEAD
 // 	mModelMgr.Init(mTexMgr, &mCam, device);
 // =======
-	CModelManager::GetInstance()->Init(mTexMgr, mCam, device);
+	CModelManager::GetInstance()->Init(mTexMgr, &mCam, device);
 // >>>>>>> SpotLight
 
 

@@ -92,8 +92,6 @@
     </Filter>
     <Filter Include="FW1FontWrapper">
       <UniqueIdentifier>{2c66c34f-e010-4e48-a801-6be0e341b7fa}</UniqueIdentifier>
-    <Filter Include="souce\Network">
-      <UniqueIdentifier>{c5b9bec0-6c29-4cb7-9550-6bdf2afced58}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -216,14 +214,9 @@
     <ClCompile Include="Ssao.cpp">
       <Filter>souce\EffectMap</Filter>
     </ClCompile>
-
     <ClCompile Include="StaticModels.cpp" />
     <ClCompile Include="DrawText.cpp" />
-
-    <ClCompile Include="NetworkMgr.cpp">
-      <Filter>souce\Network</Filter>
-    </ClCompile>
-
+    <ClCompile Include="NetworkMgr.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common\Camera.h">
@@ -343,16 +336,11 @@
     <ClInclude Include="Ssao.h">
       <Filter>souce\EffectMap</Filter>
     </ClInclude>
-
     <ClInclude Include="StaticModel.h" />
     <ClInclude Include="FW1FontWrapper.h">
       <Filter>FW1FontWrapper</Filter>
     </ClInclude>
     <ClInclude Include="DrawText.h" />
-
-    <ClInclude Include="NetworkMgr.h">
-      <Filter>souce\Network</Filter>
-    </ClInclude>
-
+    <ClInclude Include="NetworkMgr.h" />
   </ItemGroup>
 </Project>

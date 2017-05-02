@@ -78,7 +78,7 @@ void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device)
 
 	BuildBasicGeometryBuffer();
 	BuildShapeGeometryBuffers();
-	ReadMapData(texMgr, cam);
+	ReadMapData(texMgr,*cam);
 	send_wsa_buf.buf = reinterpret_cast<char*>(send_buf);
 	send_wsa_buf.len = MAX_BUF_SIZE;
 
@@ -1146,7 +1146,7 @@ void CModelManager::BuildBasicGeometryBuffer()
 
 }
 
-void CModelManager::ReadMapData(TextureMgr& texMgr, Camera* cam)
+void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 {
 	std::ifstream ifs;
 	ifs.open("NewMapData.txt");
