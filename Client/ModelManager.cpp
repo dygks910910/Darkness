@@ -43,7 +43,6 @@ void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device)
 	int animTotalCounts[4];
 	std::string clipname[4] = { "Idle", "Walk", "Attack1", "Run" };
 
-
 	mCharacterModel = new SkinnedModel(mDevice, texMgr, "Models/Clown.txt", L"Textures\\");
 	std::ifstream fin("Models/ClownAnimationData.txt");
 	std::vector<std::vector<XMFLOAT4X4>> testfinalTransform;
