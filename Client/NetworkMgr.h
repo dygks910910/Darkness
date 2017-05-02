@@ -16,6 +16,7 @@ const int SC_PACKET_PUT_USER = 0;
 const int SC_PACKET_PLAYGAME_INIT_POS = 1;
 const int SC_PACKET_PLAYGAME_PLAYER_POS = 2;
 const int SC_PACKET_PLAYGAME_START_ANMATION = 3;
+const int SC_PACKET_PLAYGAME_COLLISION_TRUE = 4;
 
 
 #pragma pack(push, 1)   
@@ -55,6 +56,15 @@ struct sc_packet_player_anmation_start
 	UINT animationState;
 };
 
+
+
+struct sc_packet_collision_true
+{
+	BYTE size;
+	BYTE type;
+	WORD id;
+	bool check;
+};
 #pragma pack(pop)  
 
 

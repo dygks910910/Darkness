@@ -1,10 +1,9 @@
 #include "ModelManager.h"
 
-#define SPEED 0.0008
+#define SPEED 0.008
 CModelManager* CModelManager::model = nullptr;
 
 CModelManager::CModelManager()
-
 {
 
 
@@ -26,7 +25,6 @@ CModelManager::~CModelManager()
 	{
 		delete[](p->second);
 	}
-
 }
 
 void CModelManager::Init(TextureMgr & texMgr, Camera & cam, ID3D11Device* device)
@@ -277,7 +275,6 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 
 	if (GetAsyncKeyState(VK_UP) & 0x8000)
 	{
-
 		charpos.x = mSkinnedModelInstance[5].World._41;
 		charpos.y = mSkinnedModelInstance[5].World._42;
 		charpos.z = mSkinnedModelInstance[5].World._43;
@@ -322,17 +319,24 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 		camLook.z = charpos.z - campos.z;
 
 		XMVECTOR s = XMVectorReplicate(0.5f*SPEED);
-		XMVECTOR l = XMLoadFloat3(&camLook);
+		XMVECTOR l = XMLoadFloat3(&camera.GetLook());
 		XMVECTOR p = XMLoadFloat3(&charpos);
 		XMStoreFloat3(&charpos, XMVectorMultiplyAdd(s, l, p));
-		campos.x += charpos.x - mSkinnedModelInstance[5].World._41;
-		campos.z += charpos.z - mSkinnedModelInstance[5].World._43;
+		if (!mSkinnedModelInstance[5].mCollision)
+		{
+			campos.x += charpos.x - mSkinnedModelInstance[5].World._41;
+			campos.z += charpos.z - mSkinnedModelInstance[5].World._43;
+		}
+		else
+		{
+			campos.x += 0;
+			campos.z -= 0.5;
+		}
 
 		camera.SetPosition(campos);
 	}
 	else if (GetAsyncKeyState(VK_DOWN) & 0x8000)
 	{
-
 		charpos.x = mSkinnedModelInstance[5].World._41;
 		charpos.y = mSkinnedModelInstance[5].World._42;
 		charpos.z = mSkinnedModelInstance[5].World._43;
@@ -381,8 +385,16 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 		XMVECTOR l = XMLoadFloat3(&camLook);
 		XMVECTOR p = XMLoadFloat3(&charpos);
 		XMStoreFloat3(&charpos, XMVectorMultiplyAdd(s, -l, p));
-		campos.x += charpos.x - mSkinnedModelInstance[5].World._41;
-		campos.z += charpos.z - mSkinnedModelInstance[5].World._43;
+		if (!mSkinnedModelInstance[5].mCollision)
+		{
+			campos.x += charpos.x - mSkinnedModelInstance[5].World._41;
+			campos.z += charpos.z - mSkinnedModelInstance[5].World._43;
+		}
+		else
+		{
+			campos.x += 0;
+			campos.z += 0;
+		}
 
 		camera.SetPosition(campos);
 
@@ -438,8 +450,16 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 		XMVECTOR l = XMLoadFloat3(&camera.GetRight());
 		XMVECTOR p = XMLoadFloat3(&charpos);
 		XMStoreFloat3(&charpos, XMVectorMultiplyAdd(s, -l, p));
-		campos.x += charpos.x - mSkinnedModelInstance[5].World._41;
-		campos.z += charpos.z - mSkinnedModelInstance[5].World._43;
+		if (!mSkinnedModelInstance[5].mCollision)
+		{
+			campos.x += charpos.x - mSkinnedModelInstance[5].World._41;
+			campos.z += charpos.z - mSkinnedModelInstance[5].World._43;
+		}
+		else
+		{
+			campos.x += 0;
+			campos.z += 0;
+		}
 
 		camera.SetPosition(campos);
 
@@ -496,8 +516,16 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 		XMVECTOR l = XMLoadFloat3(&camera.GetRight());
 		XMVECTOR p = XMLoadFloat3(&charpos);
 		XMStoreFloat3(&charpos, XMVectorMultiplyAdd(s, l, p));
-		campos.x += charpos.x - mSkinnedModelInstance[5].World._41;
-		campos.z += charpos.z - mSkinnedModelInstance[5].World._43;
+		if (!mSkinnedModelInstance[5].mCollision)
+		{
+			campos.x += charpos.x - mSkinnedModelInstance[5].World._41;
+			campos.z += charpos.z - mSkinnedModelInstance[5].World._43;
+		}
+		else
+		{
+			campos.x += 0;
+			campos.z += 0;
+		}
 
 		camera.SetPosition(campos);
 

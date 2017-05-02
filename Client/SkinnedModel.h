@@ -42,6 +42,7 @@ struct SkinnedModelInstance
 	XMFLOAT3 mCharCamPos;
 	int mAnimstate = 0;
 	int mId;
+	bool mCollision = false;
 	void Update(float dt);
 };
 #endif // SKINNEDMODEL_H

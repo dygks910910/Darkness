@@ -3,6 +3,7 @@
 
 NetworkMgr* NetworkMgr::instance = nullptr;
 extern XMFLOAT3 camtest;
+
 NetworkMgr::NetworkMgr()
 {
 }
@@ -154,6 +155,14 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 		memcpy(&player_anim, packet, packet[0]);
 		CModelManager::GetInstance()->GetSkinnedInstanceModels()[3].mAnimstate = player_anim.animationState;
 		CModelManager::GetInstance()->GetSkinnedInstanceModels()[3].mAnimCnt = 0;
+	}
+	break;
+
+	case SC_PACKET_PLAYGAME_COLLISION_TRUE:
+	{
+		sc_packet_collision_true player_coll;
+		memcpy(&player_coll, packet, packet[0]);
+		CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mCollision = player_coll.check;
 	}
 	break;
 
