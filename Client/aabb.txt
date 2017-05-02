@@ -1,0 +1,176 @@
+Name: Darkness fbx\angelStatue.fbx
+extent 2.288 2.38085 2.14019
+center 0.695256 2.36672 -0.547449
+
+Name: Darkness fbx\wall.fbx
+extent 1.00787 1.01575 2.94258
+center -0.0078724 -0.0157453 2.94258
+
+Name: Darkness fbx\tower_corner.fbx
+extent 2.24475 2.24466 4.75
+center -0.000312924 -0.00258231 4.75
+
+Name: Darkness fbx\tower_round.fbx
+extent 3.2136 3.2136 5.57824
+center 1.19209e-07 3.57628e-07 5.57824
+
+Name: Darkness fbx\Building_b.fbx
+extent 629.915 518.352 349.02
+center 9.16092 478.352 308.022
+
+Name: Darkness fbx\Building_c.fbx
+extent 629.915 523.619 349.02
+center -421.161 483.619 308.022
+
+Name: Darkness fbx\Building_d.fbx
+extent 200 192 320.499
+center 0 160 279.501
+
+Name: Darkness fbx\Building_e.fbx
+extent 1251.35 843.962 474.858
+center 4.9483 803.962 433.861
+
+Name: Darkness fbx\Well.FBX
+extent 145.6 175.882 203.625
+center -7.62939e-06 -0.280563 198.625
+
+Name: Darkness fbx\Food_a.FBX
+extent 25.6649 40 10.444
+center 0 0 10.444
+
+Name: Darkness fbx\Food_b.FBX
+extent 25.6649 40 10.444
+center 0 0 10.444
+
+Name: Darkness fbx\Hay_a.FBX
+extent 134.704 134.704 37.6733
+center 0 1.52588e-05 37.6733
+
+Name: Darkness fbx\Hay_b.FBX
+extent 134.704 134.704 90.0624
+center 0 1.52588e-05 90.0624
+
+Name: Darkness fbx\Hay_c.FBX
+extent 128 128 21.6062
+center 0 0 21.6062
+
+Name: Darkness fbx\Hay_d.FBX
+extent 256 256 0
+center 0 0 0
+
+Name: Darkness fbx\Sack_a.FBX
+extent 98.9062 112.44 49.1906
+center 13.7517 5.31195 48.2545
+
+Name: Darkness fbx\Sack_b.FBX
+extent 31.2 54 16.36
+center 0 0 15.6125
+
+Name: Darkness fbx\Sewers_entrance.FBX
+extent 165.404 145.6 20.4338
+center 0 1.52588e-05 15.3441
+
+Name: Darkness fbx\Tent.FBX
+extent 159.977 88.5558 141.723
+center 0 66.1761 117.313
+
+Name: Darkness fbx\Crate.FBX
+extent 40 40 40
+center 0 0 40
+
+Name: Darkness fbx\Building_f.FBX
+extent 91.9126 88.2361 196.781
+center 0 73.53 170.699
+
+Name: Darkness fbx\Barrel.FBX
+extent 50 50 55
+center 0 0 55
+
+Name: Darkness fbx\angelStatue.fbx
+extent 2.288 2.38085 2.14019
+center 0.695256 2.36672 -0.547449
+
+Name: Darkness fbx\wall.fbx
+extent 1.00787 1.01575 2.94258
+center -0.0078724 -0.0157453 2.94258
+
+Name: Darkness fbx\tower_corner.fbx
+extent 2.24475 2.24466 4.75
+center -0.000312924 -0.00258231 4.75
+
+Name: Darkness fbx\tower_round.fbx
+extent 3.2136 3.2136 5.57824
+center 1.19209e-07 3.57628e-07 5.57824
+
+Name: Darkness fbx\Building_b.fbx
+extent 629.915 518.352 349.02
+center 9.16092 478.352 308.022
+
+Name: Darkness fbx\Building_c.fbx
+extent 629.915 523.619 349.02
+center -421.161 483.619 308.022
+
+Name: Darkness fbx\Building_d.fbx
+extent 200 192 320.499
+center 0 160 279.501
+
+Name: Darkness fbx\Building_e.fbx
+extent 1251.35 843.962 474.858
+center 4.9483 803.962 433.861
+
+Name: Darkness fbx\Well.FBX
+extent 145.6 175.882 203.625
+center -7.62939e-06 -0.280563 198.625
+
+Name: Darkness fbx\Food_a.FBX
+extent 25.6649 40 10.444
+center 0 0 10.444
+
+Name: Darkness fbx\Food_b.FBX
+extent 25.6649 40 10.444
+center 0 0 10.444
+
+Name: Darkness fbx\Hay_a.FBX
+extent 134.704 134.704 37.6733
+center 0 1.52588e-05 37.6733
+
+Name: Darkness fbx\Hay_b.FBX
+extent 134.704 134.704 90.0624
+center 0 1.52588e-05 90.0624
+
+Name: Darkness fbx\Hay_c.FBX
+extent 128 128 21.6062
+center 0 0 21.6062
+
+Name: Darkness fbx\Hay_d.FBX
+extent 256 256 0
+center 0 0 0
+
+Name: Darkness fbx\Sack_a.FBX
+extent 98.9062 112.44 49.1906
+center 13.7517 5.31195 48.2545
+
+Name: Darkness fbx\Sack_b.FBX
+extent 31.2 54 16.36
+center 0 0 15.6125
+
+Name: Darkness fbx\Sewers_entrance.FBX
+extent 165.404 145.6 20.4338
+center 0 1.52588e-05 15.3441
+
+Name: Darkness fbx\Tent.FBX
+extent 159.977 88.5558 141.723
+center 0 66.1761 117.313
+
+Name: Darkness fbx\Crate.FBX
+extent 40 40 40
+center 0 0 40
+
+Name: Darkness fbx\Building_f.FBX
+extent 91.9126 88.2361 196.781
+center 0 73.53 170.699
+
+Name: Darkness fbx\Barrel.FBX
+extent 50 50 55
+center 0 0 55
+

@@ -337,10 +337,10 @@
       <Filter>souce\EffectMap</Filter>
     </ClInclude>
     <ClInclude Include="StaticModel.h" />
+    <ClInclude Include="DrawText.h" />
+    <ClInclude Include="NetworkMgr.h" />
     <ClInclude Include="FW1FontWrapper.h">
       <Filter>FW1FontWrapper</Filter>
     </ClInclude>
-    <ClInclude Include="DrawText.h" />
-    <ClInclude Include="NetworkMgr.h" />
   </ItemGroup>
 </Project>
