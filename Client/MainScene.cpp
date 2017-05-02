@@ -1,7 +1,6 @@
 #include "MainScene.h"
 
 
-
 CMainScene::CMainScene()
 {
 }
@@ -17,7 +16,7 @@ CMainScene::~CMainScene()
 	mInputIP.Shutdown();
 	mInputPort.Shutdown();
 	mInputNickname.Shutdown();
-
+	mMainLogo.Shutdown();
 }
 
 bool CMainScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
@@ -34,6 +33,9 @@ bool CMainScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	XMStoreFloat4x4(&mWorldMtx, XMMatrixTranslation(0, 0, 7));
 
 	D3D11_DEPTH_STENCIL_DESC depthDisabledStencilDesc;
+	//////////////////////////////////////////////////////////////////////////
+	//로고화면 초기화.
+	mMainLogo.Initialize(mDevice, mClientWidth, mClientHeight, L"UITextures/DarknessLogo.PNG", mClientWidth, mClientHeight);
 
 	//////////////////////////////////////////////////////////////////////////
 	//메인화면 초기화.
@@ -114,18 +116,29 @@ bool CMainScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	mIpString = L"";
 	ZeroMemory(&Text, sizeof(Text));
 	ZeroMemory(&Cstr, sizeof(Cstr));
+	mTimeForLogo.Start();
+	mTimeForLogo.Reset();
 
+	//std::cout << "StartTime:" << mTimeForLogo.TotalTime() << std::endl;
 	OnResize();
 	return true;
 }
 
-void CMainScene::UpdateScene(const float & dt)
+void CMainScene::UpdateScene(const float dt, MSG& msg)
 {
+	//////////////////////////////////////////////////////////////////////////
+	//로고를 비추는 창을 켜주는 시간을 계산.
+	mTimeForLogo.Tick();
+	if (mTimeForLogo.TotalTime() > 3)
+	{
+		m_bLogoTime = false;
+	}
+
 	if (bActivedInputBoard)
 	{
-		
 		if (mLobbyConnectButton.isClicked)
 		{
+			//NetworkMgr::GetInstance()->Initialize();
 			//////////////////////////////////////////////////////////////////////////
 			//방생성창으로  이동.
 		}
@@ -203,6 +216,12 @@ void CMainScene::Draw(ID3D11RenderTargetView * rtv, ID3D11DepthStencilView * dsv
 	}
 
 	//////////////////////////////////////////////////////////////////////////
+ 	//std::cout << mTimeForLogo.TotalTime() << std::endl;
+ 	if (m_bLogoTime)
+ 	{
+ 		mMainLogo.Render(mDc, 0, 0);
+ 	}
+
 	mDc->OMSetDepthStencilState(mDepthStencilState, 1);
 	// restore default states.
 	mDc->RSSetState(0);

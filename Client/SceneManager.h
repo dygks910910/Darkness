@@ -2,7 +2,6 @@
 #include"TestScene.h"
 #include<map>
 #include<string.h>
-#include "LogoScene.h"
 #include "MainScene.h"
 
 class CSceneManager
@@ -42,6 +41,7 @@ public:
 		ID3D11Device* device, ID3D11DeviceContext* dc);
 	void SetSceneKey(const std::string& sceneName) { mSceneKey = sceneName; }
 	void OnKeyBoardButtonDown(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam);
+	std::string GetSceneKey()const { return mSceneKey; }
 private:
 
 };
@@ -49,5 +49,4 @@ namespace SceneName
 {
 	const std::string MainScene = "MainGameScene";
 	const std::string test = "test";
-	const std::string LoadingScene = "LoadingScene";
 }

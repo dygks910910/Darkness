@@ -1,10 +1,11 @@
 #pragma once
+#include "NetworkMgr.h"
 #include<conio.h>
 #include "Scene.h"
 #include "ButtonClass.h"
 #include "xnacollision.h"
 #include "DrawText.h"
-
+#include "GameTimer.h"
 class CMainScene :
 	public CScene
 {
@@ -12,6 +13,10 @@ class CMainScene :
 	XMFLOAT4X4 mWorldMtx;
 	ID3D11DepthStencilState* mDepthDisableState;
 	ID3D11DepthStencilState* mDepthStencilState;
+	//////////////////////////////////////////////////////////////////////////
+	//로고화면
+	CBitMap mMainLogo;
+	GameTimer mTimeForLogo;
 	//////////////////////////////////////////////////////////////////////////
 	//메인 화면
 	CButtonClass mConnectButton;
@@ -67,6 +72,9 @@ class CMainScene :
 	const int INPUT_NICKNAME_Y = 450;
 
 	const int FONT_SIZE = 40;
+	//////////////////////////////////////////////////////////////////////////
+	//LogoFullScreen
+	bool m_bLogoTime;
 
 	//////////////////////////////////////////////////////////////////////////
 	//Lobby
@@ -77,7 +85,7 @@ public:
 	virtual ~CMainScene();
 	virtual bool Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 		IDXGISwapChain* swapChain, const D3D11_VIEWPORT& viewPort, const int& clientWidth, const int& clientHeight);
-	virtual void UpdateScene(const float& dt);
+	virtual void UpdateScene(const float dt, MSG& msg);
 	virtual void Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, D3D11_VIEWPORT* viewPort);
 	virtual void OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWnd);
 	virtual void OnMouseUp(WPARAM btnState, int x, int y) ;

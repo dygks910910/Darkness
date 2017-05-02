@@ -163,9 +163,6 @@
     <ClCompile Include="Effects.cpp">
       <Filter>souce\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="LogoScene.cpp">
-      <Filter>souce\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="Cordinate.cpp">
       <Filter>souce\3DObject</Filter>
     </ClCompile>
@@ -287,9 +284,6 @@
     </ClInclude>
     <ClInclude Include="Effects.h">
       <Filter>souce\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="LogoScene.h">
-      <Filter>souce\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Cordinate.h">
       <Filter>souce\3DObject</Filter>

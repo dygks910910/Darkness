@@ -6,7 +6,6 @@
 #include "TextureMgr.h"
 #include "Camera.h"
 #include "RenderStates.h"
-#include"LogoScene.h"
 #include "SkinnedModel.h"
 
 const int MAX_BUF_SIZE = 4000;

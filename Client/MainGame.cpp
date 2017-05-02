@@ -45,7 +45,7 @@ bool CMainGame::Init()
 	// Must init Effects first since InputLayouts depend on shader signatures.
 
 	NetworkMgr::GetInstance()->SetWindowHandle(D3DApp::MainWnd());
-	NetworkMgr::GetInstance()->Initialize();
+
 	Effects::InitAll(md3dDevice);
 	InputLayouts::InitAll(md3dDevice);
 	RenderStates::InitAll(md3dDevice);
@@ -98,21 +98,24 @@ void CMainGame::DrawScene()
 
 void CMainGame::Packet(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	if (WSAGETSELECTERROR(lParam))
+	if (mSceneManager->GetSceneKey() == SceneName::test)
 	{
-		closesocket((SOCKET)wParam);
-		exit(-1);
-	}
+		if (WSAGETSELECTERROR(lParam))
+		{
+			closesocket((SOCKET)wParam);
+			exit(-1);
+		}
 
-	switch (WSAGETSELECTEVENT(lParam)) {
-	case FD_READ:
-		NetworkMgr::GetInstance()->ReadPacket((SOCKET)wParam);
-		break;
+		switch (WSAGETSELECTEVENT(lParam)) {
+		case FD_READ:
+			NetworkMgr::GetInstance()->ReadPacket((SOCKET)wParam);
+			break;
 
-	case FD_CLOSE:
-		closesocket((SOCKET)wParam);
-		exit(-1);
-		break;
+		case FD_CLOSE:
+			closesocket((SOCKET)wParam);
+			exit(-1);
+			break;
+		}
 	}
 }
 
