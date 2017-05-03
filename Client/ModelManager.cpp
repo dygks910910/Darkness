@@ -2,13 +2,15 @@
 
 #define SPEED 0.008
 CModelManager* CModelManager::model = nullptr;
+XMFLOAT3 bextent;
+XMFLOAT3 bcenter;
+bool check;
 
 CModelManager::CModelManager()
 {
 
 
 }
-
 
 CModelManager::~CModelManager()
 {
@@ -29,6 +31,7 @@ CModelManager::~CModelManager()
 
 void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device)
 {
+	check = false;
 	mDevice = device;
 	mGridMat.Ambient = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
 	mGridMat.Diffuse = XMFLOAT4(0.6f, 0.6f, 0.6f, 1.0f);
@@ -204,6 +207,29 @@ void CModelManager::DrawStaticBasicModels(ID3D11DeviceContext* dc, ID3DX11Effect
 	{
 		p.Draw(dc, tech, shadowTransform, cam);
 	}
+
+	dc->IASetInputLayout(InputLayouts::Line);
+	//dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
+	D3DX11_TECHNIQUE_DESC techDesc;
+	ID3DX11EffectTechnique* lineTech;
+	lineTech = Effects::LineFX->mTech;
+	UINT stride2 = sizeof(Vertex::Line);
+	UINT offset2 = 0;
+	lineTech->GetDesc(&techDesc);
+	for (UINT p = 0; p < techDesc.Passes; ++p)
+	{
+		dc->IASetVertexBuffers(0, 1, &mboundVB, &stride2, &offset2);
+		dc->IASetIndexBuffer(mboundIB, DXGI_FORMAT_R32_UINT, 0);
+
+		// Set per object constants.
+		XMMATRIX world = XMLoadFloat4x4(&boundworld);
+		XMMATRIX worldViewProj = world*cam.View()*cam.Proj();
+
+		Effects::LineFX->SetWorldViewProj(worldViewProj);
+
+		lineTech->GetPassByIndex(p)->Apply(0, dc);
+		dc->DrawIndexed(24, 0, 0);
+	}
 }
 
 void CModelManager::DrawToShadowMap(ID3D11DeviceContext * dc, ID3DX11EffectTechnique * tech, 
@@ -310,9 +336,15 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 		mSkinnedModelInstance[3].mClipnameAndTotalCount = mClipnameAndTotalCounts[mSkinnedModelInstance[3].mAnimstate];
 		mSkinnedModelInstance[i].Update(dt);
 	}
-
-
-	if (GetAsyncKeyState(VK_UP) & 0x8000)
+	if (GetAsyncKeyState('F') & 0x8000)
+	{
+		if (!mOneCheck)
+		{
+			mSkinnedModelInstance[5].mAnimCnt = 0;
+			mSkinnedModelInstance[5].mClipnameAndTotalCount = mClipnameAndTotalCounts[2];
+		}
+	}
+	if (GetAsyncKeyState('W') & 0x8000)
 	{
 		charpos.x = mSkinnedModelInstance[5].World._41;
 		charpos.y = mSkinnedModelInstance[5].World._42;
@@ -368,13 +400,14 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 		}
 		else
 		{
-			campos.x += 0;
-			campos.z -= 0.5;
+
+			//campos.x += 0;
+			//campos.z -= 0.5;
 		}
 
 		camera.SetPosition(campos);
 	}
-	else if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+	else if (GetAsyncKeyState('S') & 0x8000)
 	{
 		charpos.x = mSkinnedModelInstance[5].World._41;
 		charpos.y = mSkinnedModelInstance[5].World._42;
@@ -421,7 +454,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 		camLook.z = charpos.z - campos.z;
 
 		XMVECTOR s = XMVectorReplicate(0.5f*SPEED);
-		XMVECTOR l = XMLoadFloat3(&camLook);
+		XMVECTOR l = XMLoadFloat3(&camera.GetLook());
 		XMVECTOR p = XMLoadFloat3(&charpos);
 		XMStoreFloat3(&charpos, XMVectorMultiplyAdd(s, -l, p));
 		if (!mSkinnedModelInstance[5].mCollision)
@@ -436,9 +469,8 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 		}
 
 		camera.SetPosition(campos);
-
 	}
-	else if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+	else if (GetAsyncKeyState('A') & 0x8000)
 	{
 
 		charpos.x = mSkinnedModelInstance[5].World._41;
@@ -504,7 +536,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 
 	}
 
-	else if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+	else if (GetAsyncKeyState('D') & 0x8000)
 	{
 
 		charpos.x = mSkinnedModelInstance[5].World._41;
@@ -690,7 +722,6 @@ void CModelManager::BuildShapeGeometryBuffers()
 	*/
 	//indices.insert(indices.end(), clown.Indices.rbegin(), clown.Indices.rend());
 
-
 	D3D11_BUFFER_DESC ibd;
 	ibd.Usage = D3D11_USAGE_IMMUTABLE;
 	ibd.ByteWidth = sizeof(UINT) * totalIndexCount;
@@ -711,7 +742,6 @@ void CModelManager::BuildShapeGeometryBuffers()
 
 
 }
-
 void CModelManager::BuildBasicGeometryBuffer()
 {
 	GeometryGenerator::MeshData fence, house1, house2, house3, house4, house5,
@@ -720,6 +750,136 @@ void CModelManager::BuildBasicGeometryBuffer()
 		well,food_a,food_b,hay_a,hay_b,hay_c,hay_d,sack_a,sack_b,sewers_entrance,tent,crate;
 	CFbxLoader loader;
 
+	if (bextent.z != 0)
+	{
+		Vertex::Line boundver[24];
+		UINT boundind[24];
+		for (int i = 0; i < 24; ++i)
+			boundind[i] = i;
+		//À§//
+		boundver[0].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y -bextent.y, bcenter.z -bextent.z);
+		boundver[0].color = XMFLOAT4(255, 0, 0, 0);
+		boundver[1].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y -bextent.y, bcenter.z +bextent.z);
+		boundver[1].color = XMFLOAT4(255, 0, 0, 0);
+		boundver[2].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.y -bextent.y, bcenter.z +bextent.z);
+		boundver[2].color = XMFLOAT4(255, 0, 0, 0);
+		boundver[3].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.y -bextent.y, bcenter.z -bextent.z);
+		boundver[3].color = XMFLOAT4(255, 0, 0, 0);
+		
+		//¿Þ//
+		boundver[4].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y -bextent.y, bcenter.z -bextent.z);
+		boundver[4].color = XMFLOAT4(255, 0, 0, 0);
+		boundver[5].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y -bextent.y, bcenter.z +bextent.z);
+		boundver[5].color = XMFLOAT4(255, 0, 0, 0);
+		boundver[6].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y +bextent.y, bcenter.z +bextent.z);
+		boundver[6].color = XMFLOAT4(255, 0, 0, 0);
+		boundver[7].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y +bextent.y, bcenter.z -bextent.z);
+		boundver[7].color = XMFLOAT4(255, 0, 0, 0);
+
+		//¿À//
+		boundver[8].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.x -bextent.y, bcenter.x -bextent.z);
+		boundver[8].color = XMFLOAT4(255, 0, 0, 0);
+		boundver[9].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.x -bextent.y, bcenter.x +bextent.z);
+		boundver[9].color = XMFLOAT4(255, 0, 0, 0);
+		boundver[10].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.x +bextent.y, bcenter.x +bextent.z);
+		boundver[10].color = XMFLOAT4(255, 0, 0, 0);
+		boundver[11].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.x +bextent.y, bcenter.x -bextent.z);
+		boundver[11].color = XMFLOAT4(255, 0, 0, 0);
+
+		//¹Ø//
+		boundver[12].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.y +bextent.y, bcenter.z -bextent.z);
+		boundver[12].color = XMFLOAT4(255, 0, 0, 0);
+		boundver[13].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y +bextent.y, bcenter.z -bextent.z);
+		boundver[13].color = XMFLOAT4(255, 0, 0, 0);
+		boundver[14].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y +bextent.y, bcenter.z +bextent.z);
+		boundver[14].color = XMFLOAT4(255, 0, 0, 0);
+		boundver[15].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.y +bextent.y, bcenter.z +bextent.z);
+		boundver[15].color = XMFLOAT4(255, 0, 0, 0);
+		
+		//¾Õ//
+		boundver[16].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y -bextent.y, bcenter.z -bextent.z);
+		boundver[16].color = XMFLOAT4(255, 0, 0, 0);
+		boundver[17].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y +bextent.y, bcenter.z -bextent.z);
+		boundver[17].color = XMFLOAT4(255, 0, 0, 0);
+		boundver[18].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.y +bextent.y, bcenter.z -bextent.z);
+		boundver[18].color = XMFLOAT4(255, 0, 0, 0);
+		boundver[19].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.y -bextent.y, bcenter.z -bextent.z);
+		boundver[19].color = XMFLOAT4(255, 0, 0, 0);
+
+		//µÚ//
+		boundver[20].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y -bextent.y, bcenter.z +bextent.z);
+		boundver[20].color = XMFLOAT4(255, 0, 0, 0);
+		boundver[21].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y +bextent.y, bcenter.z +bextent.z);
+		boundver[21].color = XMFLOAT4(255, 0, 0, 0);
+		boundver[22].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.y +bextent.y, bcenter.z +bextent.z);
+		boundver[22].color = XMFLOAT4(255, 0, 0, 0);
+		boundver[23].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.y -bextent.y, bcenter.z +bextent.z);
+		boundver[23].color = XMFLOAT4(255, 0, 0, 0);
+		///////boundingbox/////////
+		D3D11_BUFFER_DESC boundvbd;
+		boundvbd.Usage = D3D11_USAGE_IMMUTABLE;
+		boundvbd.ByteWidth = sizeof(Vertex::Line) * 24;
+		boundvbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+		boundvbd.CPUAccessFlags = 0;
+		boundvbd.MiscFlags = 0;
+		D3D11_SUBRESOURCE_DATA boundinitData;
+		boundinitData.pSysMem = boundver;
+		HR(mDevice->CreateBuffer(&boundvbd, &boundinitData, &mboundVB));
+
+		D3D11_BUFFER_DESC boundib;
+		boundib.Usage = D3D11_USAGE_IMMUTABLE;
+		boundib.ByteWidth = sizeof(UINT) * 24;
+		boundib.BindFlags = D3D11_BIND_INDEX_BUFFER;
+		boundib.CPUAccessFlags = 0;
+		boundib.MiscFlags = 0;
+		D3D11_SUBRESOURCE_DATA boundinit;
+		boundinit.pSysMem = boundind;
+		HR(mDevice->CreateBuffer(&boundib, &boundinit, &mboundIB));
+
+		XMFLOAT3 scale;
+		scale.x = 0.01;
+		scale.y = 0.01;
+		scale.z = 0.01;
+
+		XMFLOAT3 position;
+		position.x = 21.5;
+		position.y = 0.4565048;
+		position.z = 16.10033;
+		/*position.x = 0;
+		position.y = 0;
+		position.z = 0;
+*/
+		XMFLOAT4 rotation;
+		rotation.x = -0.4992557;
+		rotation.y = 0.5009;
+		rotation.z = 0.5007431;
+		rotation.w = 0.4990985;
+		//////buildingc////
+	/*rotation.x = -0.4992557f;
+	rotation.y = 0.5009f;
+	rotation.z = 0.5007431f;
+	rotation.w = 0.4990985f;*/
+
+		XMVECTOR S = XMLoadFloat3(&scale);
+		XMVECTOR P = XMLoadFloat3(&position);
+		XMVECTOR Q = XMLoadFloat4(&rotation);
+		XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+		XMFLOAT4X4 M;
+		XMStoreFloat4x4(&boundworld, XMMatrixAffineTransformation(S, zero, Q, P));
+		
+		/*XMMATRIX modelScale = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+		XMMATRIX modelRot = XMMatrixRotationY(MathHelper::Pi);
+		XMMATRIX modelOffset = XMMatrixTranslation(3.45f, 0.444f, -39.659f);
+		XMStoreFloat4x4(&boundworld, modelScale*modelRot*modelOffset);*/
+		/*boundworld._41 += bcenter.y*0.01;
+		boundworld._42 += bcenter.z*0.01;
+		boundworld._43 += bcenter.x*0.01;*/
+
+		std::cout << boundworld._41 << ' ' << boundworld._42 << ' ' << boundworld._43 << std::endl;
+
+		///////////////////////////
+	}
 	// 	loader.LoadFBX("Darkness fbx\\fence1.FBX", fence);
 	// 	loader.LoadFBX("Darkness fbx\\house 1.fbx", house1);
 	// 	loader.LoadFBX("Darkness fbx\\house 2.fbx", house2);
@@ -732,7 +892,9 @@ void CModelManager::BuildBasicGeometryBuffer()
 	loader.LoadFBX("Darkness fbx\\tower_corner.fbx", tower_corner);
 	loader.LoadFBX("Darkness fbx\\tower_round.fbx", tower_round);
 	loader.LoadFBX("Darkness fbx\\Building_b.fbx", building_b);
+	check = true;
 	loader.LoadFBX("Darkness fbx\\Building_c.fbx", building_c);
+	check = false;
 	loader.LoadFBX("Darkness fbx\\Building_d.fbx", building_d);
 	loader.LoadFBX("Darkness fbx\\Building_e.fbx", building_e);
 	loader.LoadFBX("Darkness fbx\\Well.FBX", well);

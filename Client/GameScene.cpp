@@ -121,16 +121,16 @@ std::string CGameScene::UpdateScene(const float dt, MSG& msg)
 	// Control the camera.
 	//
 
-	if (GetAsyncKeyState('W') & 0x8000)
+	if (GetAsyncKeyState(VK_UP) & 0x8000)
 		mCam.Walk(20.0f*dt);
 
-	if (GetAsyncKeyState('S') & 0x8000)
+	if (GetAsyncKeyState(VK_DOWN) & 0x8000)
 		mCam.Walk(-20.0f*dt);
 
-	if (GetAsyncKeyState('A') & 0x8000)
+	if (GetAsyncKeyState(VK_LEFT) & 0x8000)
 		mCam.Strafe(-20.0f*dt);
 
-	if (GetAsyncKeyState('D') & 0x8000)
+	if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
 		mCam.Strafe(20.0f*dt);
 
 	if (GetAsyncKeyState('Z') & 0x8000)

@@ -52,6 +52,8 @@ class CModelManager
 	ID3D11Buffer* mStaticBasicObjectVB;
 	ID3D11Buffer* mStaticBasicObjectIB;
 
+	ID3D11Buffer* mboundVB;
+	ID3D11Buffer* mboundIB;
 	//ID3D11Buffer* mInstanceBuffer;
 
 	std::vector<CStaticNomalModel> mStaticNormalModels;
@@ -172,6 +174,8 @@ public:
 
 	BYTE   send_buf[MAX_BUF_SIZE];
 	WSABUF   send_wsa_buf;
+
+	XMFLOAT4X4 boundworld;
 
 private:
 	void BuildShapeGeometryBuffers();

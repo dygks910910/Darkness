@@ -6,6 +6,7 @@
 #include <WindowsX.h>
 #include <sstream>
 const int WM_SOCKET = WM_USER + 1;
+
 namespace
 {
 	// This is just used to forward Windows messages from a global window

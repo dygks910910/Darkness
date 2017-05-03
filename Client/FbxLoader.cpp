@@ -1,6 +1,9 @@
 
 #include "FbxLoader.h"
-
+extern XMFLOAT3 bextent;
+extern XMFLOAT3 bcenter;
+extern bool check;
+std::ofstream fout("aabb.txt");
 
 CFbxLoader::CFbxLoader() :
 	mpManager(nullptr), mpScene(nullptr), mpImporter(nullptr), mRootNode(0),
@@ -274,6 +277,35 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh,GeometryGenerator::MeshData& m
 	FbxVector4 lCurrentNormal;
 	FbxVector2 lCurrentUV;
 
+	XMFLOAT3 vMinf3(+MathHelper::Infinity, +MathHelper::Infinity, +MathHelper::Infinity);
+	XMFLOAT3 vMaxf3(-MathHelper::Infinity, -MathHelper::Infinity, -MathHelper::Infinity);
+
+	////////////최대 xyz 구하기////////////////
+	XMVECTOR resultmax, resultmin;
+
+	XMFLOAT3 vMinfx3(+MathHelper::Infinity, +MathHelper::Infinity, +MathHelper::Infinity);
+	XMFLOAT3 vMaxfx3(-MathHelper::Infinity, -MathHelper::Infinity, -MathHelper::Infinity);
+	XMFLOAT3 vMinfy3(+MathHelper::Infinity, +MathHelper::Infinity, +MathHelper::Infinity);
+	XMFLOAT3 vMaxfy3(-MathHelper::Infinity, -MathHelper::Infinity, -MathHelper::Infinity);
+	XMFLOAT3 vMinfz3(+MathHelper::Infinity, +MathHelper::Infinity, +MathHelper::Infinity);
+	XMFLOAT3 vMaxfz3(-MathHelper::Infinity, -MathHelper::Infinity, -MathHelper::Infinity);
+
+	XMVECTOR vMinx = XMLoadFloat3(&vMinfx3);
+	XMVECTOR vMaxx = XMLoadFloat3(&vMaxfx3);
+	XMVECTOR vMiny = XMLoadFloat3(&vMinfy3);
+	XMVECTOR vMaxy = XMLoadFloat3(&vMaxfy3);
+	XMVECTOR vMinz = XMLoadFloat3(&vMinfz3);
+	XMVECTOR vMaxz = XMLoadFloat3(&vMaxfz3);
+	XMFLOAT3 x, y, z;
+	x.y = 0;
+	x.z = 0;
+	y.x = 0;
+	y.z = 0;
+	z.x = 0;
+	z.y = 0;
+	///////////////////////////////////////////
+	XMVECTOR vMin = XMLoadFloat3(&vMinf3);
+	XMVECTOR vMax = XMLoadFloat3(&vMaxf3);
 
 	int lVertexCount = 0;
 	for (int lPolygonIndex = 0; lPolygonIndex < lPolygonCount; ++lPolygonIndex)
@@ -308,7 +340,32 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh,GeometryGenerator::MeshData& m
 				tempVertex.y = static_cast<float>(lCurrentVertex[1] );
 				tempVertex.z = static_cast<float>(lCurrentVertex[2]);
 
+				x.x = tempVertex.x;
+				y.y = tempVertex.y;
+				z.z = tempVertex.z;
 
+				XMVECTOR p = XMLoadFloat3(&tempVertex);
+				vMin = XMVectorMin(vMin, p);
+				vMax = XMVectorMax(vMax, p);
+
+				//////////////////////////최대 xyz//////////////////
+				XMVECTOR vx = XMLoadFloat3(&x);
+				XMVECTOR vy = XMLoadFloat3(&y);
+				XMVECTOR vz = XMLoadFloat3(&z);
+
+				////x 최대 최소////
+				vMinx = XMVectorMin(vMinx, vx);
+				vMaxx = XMVectorMax(vMaxx, vx);
+				////y 최대 최소////
+				vMiny = XMVectorMin(vMiny, vy);
+				vMaxy = XMVectorMax(vMaxy, vy);
+				////z 최대 최소////
+				vMinz = XMVectorMin(vMinz, vz);
+				vMaxz = XMVectorMax(vMaxz, vz);
+				////최종 최대 최소////
+				resultmin = vMinx + vMiny + vMinz;
+				resultmax = vMaxx + vMaxy + vMaxz;
+				/////////////////////////////////////////////////////
 				if (mHasNormal)
 				{
 					pMesh->GetPolygonVertexNormal(lPolygonIndex, lVerticeIndex, lCurrentNormal);
@@ -358,6 +415,21 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh,GeometryGenerator::MeshData& m
 		}
 		//mSubMeshes[lMaterialIndex]->TriangleCount += 1;
 	}
+	XMFLOAT3 testextent;
+	XMFLOAT3 testcenter;
+	if (check)
+	{
+		XMStoreFloat3(&bcenter, 0.5*(resultmax + resultmin));
+		XMStoreFloat3(&bextent, 0.5*(resultmax - resultmin));
+
+
+		/*XMStoreFloat3(&bcenter, 0.5*(vMax + vMin));
+		XMStoreFloat3(&bextent, 0.5*(vMax - vMin));*/
+		std::cout << "extent " << bextent.x << ' ' << bextent.y << ' ' << bextent.z << std::endl;
+		std::cout << "center " << bcenter.x << ' ' << bcenter.y << ' ' << bcenter.z << std::endl;
+	}
+	/*std::cout << "extent" << bextent.x << " " << bextent.y << " " << bextent.z << std::endl;
+	std::cout << "center" << bcenter.x << " " << bcenter.y << " " << bcenter.z << std::endl;*/
 	GetUVName();
 }
 
@@ -621,7 +693,7 @@ void CFbxLoader::Destroy()
 void CFbxLoader::LoadFBX(const char* pFileName, GeometryGenerator::MeshData& mesh)
 {
 	Init(pFileName);
-
+	fout << "Name: " << pFileName << std::endl;
 	mRootNode = mpScene->GetRootNode();
 	if (mRootNode)
 	{
