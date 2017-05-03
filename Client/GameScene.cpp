@@ -1,6 +1,6 @@
 #include "GameScene.h"
 #define Animnum 10
-
+bool camset = false;
 XMFLOAT3 camtest;
 CGameScene::CGameScene()
 {
@@ -104,9 +104,8 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	raindrops.push_back(L"Textures\\raindrop.dds");
 	mRainTexSRV = d3dHelper::CreateTexture2DArraySRV(mDevice, mDc, raindrops);
 	mRain.Init(mDevice, Effects::RainFX, mRainTexSRV, mRandomTexSRV, 10000);
-
 	mTimer.Start();
-
+		
 	return true;
 }
 // <<<<<<< HEAD
@@ -116,6 +115,11 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 bool testcamera = true;
 std::string CGameScene::UpdateScene(const float dt, MSG& msg)
 {
+	if (!camset)
+	{
+		mCam.SetPosition(camtest);
+		camset = true;
+	}
 	mTimer.Tick();
 	//
 	// Control the camera.
@@ -194,15 +198,10 @@ std::string CGameScene::UpdateScene(const float dt, MSG& msg)
 	return "";
 }
 
-bool camset = false;
 void CGameScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, D3D11_VIEWPORT* viewPort)
 {
 
-	if (!camset)
-	{
-		mCam.SetPosition(camtest);
-		camset = true;
-	}
+	
 
 	mSmap->BindDsvAndSetNullRenderTarget(mDc);
 
@@ -345,6 +344,11 @@ void CGameScene::OnMouseUp(WPARAM btnState, int x, int y)
 float sumdx = 0;
 void CGameScene::OnMouseMove(WPARAM btnState, int x, int y)
 {
+	if (!camset)
+	{
+		mCam.SetPosition(camtest);
+		camset = true;
+	}
 	if ((btnState & MK_LBUTTON) != 0)
 	{
 		if (testcamera)

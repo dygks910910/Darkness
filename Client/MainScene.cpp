@@ -39,7 +39,7 @@ bool CMainScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	//////////////////////////////////////////////////////////////////////////
 	//메인화면 초기화.
 	mBackgroundPicture.Initialize(device, mClientWidth, mClientHeight, L"UITextures/testBack.jpg", mClientWidth, mClientHeight);
-	mLogo.Initialize(device, mClientWidth/2, mClientHeight/1.5f, L"UITextures/Logo.png", 400, 100);
+	mLogo.Initialize(device, mClientWidth/2, mClientHeight/1.5f, L"UITextures/Logo.png", 800, 200);
 	mConnectButton.Init(device, BUTTON_SIZE_X, BUTTON_SIZE_Y, L"UITextures/connect.png", CONNECT_BUTTON_X, CONNECT_BUTTON_Y, mClientWidth, mClientHeight);
 	mExitButton.Init(device, BUTTON_SIZE_X, BUTTON_SIZE_Y, L"UITextures/exit.png", CONNECT_BUTTON_X, EXIT_BUTTON_Y, mClientWidth, mClientHeight);
 	//////////////////////////////////////////////////////////////////////////
@@ -199,7 +199,7 @@ void CMainScene::Draw(ID3D11RenderTargetView * rtv, ID3D11DepthStencilView * dsv
 	//////////////////////////////////////////////////////////////////////////
 	//기본메인화면.
 	mBackgroundPicture.Render(mDc, 0, 0);
-	mLogo.Render(mDc, 250, 100);
+	mLogo.Render(mDc, 130, 10);
 	mConnectButton.Draw(mDc);
 	mExitButton.Draw(mDc);
 	//////////////////////////////////////////////////////////////////////////

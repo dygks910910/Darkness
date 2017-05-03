@@ -47,29 +47,29 @@ class CMainScene :
 	wchar_t Text[255];     // 텍스트를 저장하기위한 변수
 	wchar_t Cstr[10];      // 조합중인 문자!!
 	const int CONNECT_BUTTON_X = 1000;
-	const int CONNECT_BUTTON_Y = 300;
+	const int CONNECT_BUTTON_Y = 400;
 
 	const int BUTTON_SIZE_X = 200;
 	const int BUTTON_SIZE_Y = 100;
 
 	const int EXIT_BUTTON_Y = 500;
-	const int RETURN_BUTTON_X = 800;
+	const int RETURN_BUTTON_X = 870;
 	const int RETURN_BUTTON_Y = 600;
 
-	const int LOBBY_CONNECT_BUTTON_X = 450;
+	const int LOBBY_CONNECT_BUTTON_X = 520;
 	const int LOBBY_CONNECT_BUTTON_Y = 600;
 
-	const int INPUT_BOARD_X = 350;
+	const int INPUT_BOARD_X = 420;
 	const int INPUT_BOARD_Y = 100;
 
-	const int INPUT_IP_X = 350;
+	const int INPUT_IP_X = 420;
 	const int INPUT_IP_Y = 150;
 	const int INPUT_BAR_WIDTH = 700;
 	const int INPUT_BAR_HEIGHT = 150;
-	const int INPUT_PORT_X = 350;
+	const int INPUT_PORT_X = 420;
 	const int INPUT_PORT_Y = 300;
 
-	const int INPUT_NICKNAME_X = 350;
+	const int INPUT_NICKNAME_X = 420;
 	const int INPUT_NICKNAME_Y = 450;
 
 	const int FONT_SIZE = 40;

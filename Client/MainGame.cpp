@@ -99,8 +99,8 @@ void CMainGame::DrawScene()
 
 void CMainGame::Packet(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	if (mSceneManager->GetSceneKey() == SceneName::gameScene)
-	{
+// 	if (mSceneManager->GetSceneKey() == SceneName::gameScene)
+// 	{
 		if (WSAGETSELECTERROR(lParam))
 		{
 			closesocket((SOCKET)wParam);
@@ -117,7 +117,7 @@ void CMainGame::Packet(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			exit(-1);
 			break;
 		}
-	}
+	//}
 }
 
 void CMainGame::OnMouseDown(WPARAM btnState, int x, int y)
