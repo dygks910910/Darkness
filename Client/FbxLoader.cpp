@@ -417,18 +417,19 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh,GeometryGenerator::MeshData& m
 	}
 	XMFLOAT3 testextent;
 	XMFLOAT3 testcenter;
-	XMStoreFloat3(&bcenter, 0.5*(resultmax + resultmin));
-	XMStoreFloat3(&bextent, 0.5*(resultmax - resultmin));
+	if (check)
+	{
+		XMStoreFloat3(&bcenter, 0.5*(resultmax + resultmin));
+		XMStoreFloat3(&bextent, 0.5*(resultmax - resultmin));
 
 
 		/*XMStoreFloat3(&bcenter, 0.5*(vMax + vMin));
 		XMStoreFloat3(&bextent, 0.5*(vMax - vMin));*/
-	fout << "extent " << bextent.x << ' ' << bextent.y << ' ' << bextent.z << std::endl;
-	fout << "center " << bcenter.x << ' ' << bcenter.y << ' ' << bcenter.z << std::endl;
-	fout << std::endl;
-
-	std::cout << "extent" << bextent.x << " " << bextent.y << " " << bextent.z << std::endl;
-	std::cout << "center" << bcenter.x << " " << bcenter.y << " " << bcenter.z << std::endl;
+		std::cout << "extent " << bextent.x << ' ' << bextent.y << ' ' << bextent.z << std::endl;
+		std::cout << "center " << bcenter.x << ' ' << bcenter.y << ' ' << bcenter.z << std::endl;
+	}
+	/*std::cout << "extent" << bextent.x << " " << bextent.y << " " << bextent.z << std::endl;
+	std::cout << "center" << bcenter.x << " " << bcenter.y << " " << bcenter.z << std::endl;*/
 	GetUVName();
 }
 
