@@ -32,6 +32,7 @@ CMainGame::~CMainGame()
 	Effects::DestroyAll();
 	InputLayouts::DestroyAll();
 	RenderStates::DestroyAll();
+	NetworkMgr::GetInstance()->DestroyInstance();
 }
 
 bool CMainGame::Init()
