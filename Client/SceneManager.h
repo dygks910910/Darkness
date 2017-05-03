@@ -1,5 +1,5 @@
 #pragma once
-#include"TestScene.h"
+#include"GameScene.h"
 #include<map>
 #include<string.h>
 #include "MainScene.h"

@@ -151,9 +151,6 @@
     <ClCompile Include="SceneManager.cpp">
       <Filter>souce\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="TestScene.cpp">
-      <Filter>souce\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="ButtonClass.cpp">
       <Filter>souce\2D</Filter>
     </ClCompile>
@@ -170,9 +167,6 @@
       <Filter>souce\SkinnedClass</Filter>
     </ClCompile>
     <ClCompile Include="SkinnedData.cpp">
-      <Filter>souce\SkinnedClass</Filter>
-    </ClCompile>
-    <ClCompile Include="SkinnedModel.cpp">
       <Filter>souce\SkinnedClass</Filter>
     </ClCompile>
     <ClCompile Include="ParticleSystem.cpp">
@@ -211,9 +205,14 @@
     <ClCompile Include="Ssao.cpp">
       <Filter>souce\EffectMap</Filter>
     </ClCompile>
-    <ClCompile Include="StaticModels.cpp" />
     <ClCompile Include="DrawText.cpp" />
     <ClCompile Include="NetworkMgr.cpp" />
+    <ClCompile Include="GameScene.cpp">
+      <Filter>souce\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinnedModel.cpp">
+      <Filter>souce\Models</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common\Camera.h">
@@ -273,9 +272,6 @@
     <ClInclude Include="SceneManager.h">
       <Filter>souce\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="TestScene.h">
-      <Filter>souce\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="ButtonClass.h">
       <Filter>souce\2D</Filter>
     </ClInclude>
@@ -292,9 +288,6 @@
       <Filter>souce\SkinnedClass</Filter>
     </ClInclude>
     <ClInclude Include="SkinnedData.h">
-      <Filter>souce\SkinnedClass</Filter>
-    </ClInclude>
-    <ClInclude Include="SkinnedModel.h">
       <Filter>souce\SkinnedClass</Filter>
     </ClInclude>
     <ClInclude Include="ParticleSystem.h">
@@ -330,11 +323,16 @@
     <ClInclude Include="Ssao.h">
       <Filter>souce\EffectMap</Filter>
     </ClInclude>
-    <ClInclude Include="StaticModel.h" />
     <ClInclude Include="FW1FontWrapper.h">
       <Filter>FW1FontWrapper</Filter>
     </ClInclude>
     <ClInclude Include="DrawText.h" />
     <ClInclude Include="NetworkMgr.h" />
+    <ClInclude Include="GameScene.h">
+      <Filter>souce\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinnedModel.h">
+      <Filter>souce\Models</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

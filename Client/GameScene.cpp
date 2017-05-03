@@ -1,34 +1,24 @@
-#include "TestScene.h"
+#include "GameScene.h"
 #define Animnum 10
 
 XMFLOAT3 camtest;
-CTestScene::CTestScene()
+CGameScene::CGameScene()
 {
 }
 
 
-CTestScene::~CTestScene()
+CGameScene::~CGameScene()
 {
-	// 	for (auto p = mvDynamicObject.begin(); p != mvDynamicObject.end();)
-	// 	{
-	// 		delete *p;
-	// 		p=mvDynamicObject.erase(p);
-	// 	}
-	// 	for (auto p = mvStaticObject.begin(); p != mvStaticObject.end();)
-	// 	{
-	// 		delete *p;
-	// 		p = mvStaticObject.erase(p);
-	// 	}
-	//SafeDelete(mCharacterModel);
+
 	SafeDelete(mSky);
 	SafeDelete(mSmap);
-	SafeDelete(mSsao);
+ 	SafeDelete(mSsao);
 	ReleaseCOM(mRainTexSRV);
 	ReleaseCOM(mRandomTexSRV);
 
 }
 
-bool CTestScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
+bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	IDXGISwapChain* swapChain,
 	const D3D11_VIEWPORT& viewPort, const int& clientWidth, const int& clientHeight)
 {
@@ -97,12 +87,12 @@ bool CTestScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	mSsao = new Ssao(device, dc, mClientWidth, mClientHeight, mCam.GetFovY(), mCam.GetFarZ());
 
 
-	mSky = new Sky(device, L"Textures/desertcube1024.dds", 5000.0f);
+	mSky = new Sky(device, L"Darkness fbx/Skybox/Day Sun Twilight Clear.png", 1000.0f);
 
 	Effects::BasicFX->SetDirLights(mDirLights);
 	Effects::BasicFX->SetFogColor(Colors::Silver);
-	Effects::BasicFX->SetFogStart(15.0f);
-	Effects::BasicFX->SetFogRange(175.0f);
+	Effects::BasicFX->SetFogStart(2.0f);
+	Effects::BasicFX->SetFogRange(15.0f);
 
 	//월드좌표계 그려주기.
 	XMFLOAT4X4 temp4x4;
@@ -124,7 +114,7 @@ bool CTestScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 // void CTestScene::UpdateScene(const float& dt)
 // =======
 bool testcamera = true;
-std::string CTestScene::UpdateScene(const float dt, MSG& msg)
+std::string CGameScene::UpdateScene(const float dt, MSG& msg)
 {
 	mTimer.Tick();
 	//
@@ -205,7 +195,7 @@ std::string CTestScene::UpdateScene(const float dt, MSG& msg)
 }
 
 bool camset = false;
-void CTestScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, D3D11_VIEWPORT* viewPort)
+void CGameScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, D3D11_VIEWPORT* viewPort)
 {
 
 	if (!camset)
@@ -224,21 +214,17 @@ void CTestScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 	//////////////////////////////////////////////////////////////
 	//ID3DX11EffectTechnique* animatedTech = Effects::SsaoNormalDepthFX->NormalDepthSkinnedTech;
 	//ID3DX11EffectTechnique* activeSkinnedTech = Effects::NormalMapFX->Light3TexSkinnedTech;
-
-
-
 	XMMATRIX shadowTransform = XMLoadFloat4x4(&mShadowTransform);
-
 	//
 	// Restore the back and depth buffer to the OM stage.
 	//
 	mDc->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-	mDc->RSSetViewports(1, viewPort);
-	//mSsao->SetNormalDepthRenderTarget(dsv);
+	//mDc->RSSetViewports(1, viewPort);
+	mSsao->SetNormalDepthRenderTarget(dsv);
 
 	//DrawSceneToSsaoNormalDepthMap();
 
-	mSsao->ComputeSsao(mCam);
+ 	mSsao->ComputeSsao(mCam);
 	//mSsao->BlurAmbientMap(2);
 
 	ID3D11RenderTargetView* renderTargets[1] = { rtv };
@@ -268,15 +254,15 @@ void CTestScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 	Effects::NormalMapFX->SetEyePosW(mCam.GetPosition());
 	Effects::NormalMapFX->SetCubeMap(mSky->CubeMapSRV());
 	Effects::NormalMapFX->SetShadowMap(mSmap->DepthMapSRV());
-	Effects::NormalMapFX->SetSsaoMap(mSsao->AmbientSRV());
+ 	Effects::NormalMapFX->SetSsaoMap(mSsao->AmbientSRV());
 
 	Effects::InstancedBasicFX->SetDirLights(mDirLights);
 	Effects::InstancedBasicFX->SetEyePosW(mCam.GetPosition());
 	//Effects::InstancedBasicFX->SetSsaoMap(mSsao->AmbientSRV());
 	Effects::InstancedBasicFX->SetEyePosW(mCam.GetPosition());
 
-	ID3DX11EffectTechnique* activeNormalMappingTech = Effects::NormalMapFX->Light3TexTech;
-	ID3DX11EffectTechnique* activeBasicTech = Effects::BasicFX->Light3TexAlphaClipTech;
+	ID3DX11EffectTechnique* activeNormalMappingTech = Effects::NormalMapFX->Light1TexTech;
+	ID3DX11EffectTechnique* activeBasicTech = Effects::BasicFX->Light1TexAlphaClipTech;
 	ID3DX11EffectTechnique* activeInstanceTech = Effects::InstancedBasicFX->Light1TexTech;
 	ID3DX11EffectTechnique* activeSkinnedTech = Effects::NormalMapFX->Light3TexSkinnedTech;
 
@@ -299,89 +285,26 @@ void CTestScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 	//
 	// Draw the spheres with cubemap reflection.
 	//
-
-
 	CModelManager::GetInstance()->DrawStaticBasicModels(mDc, activeBasicTech,
-		XMLoadFloat4x4(&mShadowTransform), mCam);
+		mShadowTransform, mCam);
 	CModelManager::GetInstance()->DrawStaticNormalModels(mDc, activeNormalMappingTech,
-		XMLoadFloat4x4(&mShadowTransform), mCam);
-	CModelManager::GetInstance()->DrawInstancedModel(mDc, activeInstanceTech, XMLoadFloat4x4(&mShadowTransform), mCam);
-
+		mShadowTransform, mCam);
+	CModelManager::GetInstance()->DrawInstancedModel(mDc, activeInstanceTech,
+		mShadowTransform, mCam);
 	//////////////////////////////////////////////////////////////////////////
 	//draw Animation
-
-	mDc->IASetInputLayout(InputLayouts::PosNormalTexTanSkinned);
-// <<<<<<< HEAD
-// 	mModelMgr.DrawSkinnedModels(mDc, activeSkinnedTech, XMLoadFloat4x4(&mShadowTransform), mCam);
-// 
-// =======
-	CModelManager::GetInstance()->DrawSkinnedModels(mDc, activeSkinnedTech, XMLoadFloat4x4(&mShadowTransform), mCam);
+	CModelManager::GetInstance()->DrawSkinnedModels(mDc, activeSkinnedTech,mShadowTransform, mCam);
 
 	// FX sets tessellation stages, but it does not disable them.  So do that here
 	// to turn off tessellation.
 	mDc->HSSetShader(0, 0, 0);
 	mDc->DSSetShader(0, 0, 0);
 
-	mDc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-
-
-	//////////////////////////////////////////////////////////////////////////
-	//인스턴스버퍼 출력
-	//mDc->IASetInputLayout(InputLayouts::InstancedBasic32);
-
-
-
-
-
-	//////////////////////////////////////////////////////////////////////
-	//mDc->IASetInputLayout(InputLayouts::PosNormalTexTanSkinned);
-
-	//animatedTech->GetDesc(&techDesc);
-
-	//for (UINT p = 0; p < techDesc.Passes; ++p)
-	//{
-	//	// Instance 1
-
-	//	world = XMLoadFloat4x4(&mCharacterInstance1.World);
-	//	worldInvTranspose = MathHelper::InverseTranspose(world);
-	//	worldView = world*view;
-	//	worldInvTransposeView = worldInvTranspose*view;
-	//	worldViewProj = world*view*proj;
-
-	//	Effects::SsaoNormalDepthFX->SetWorldView(worldView);
-	//	Effects::SsaoNormalDepthFX->SetWorldInvTransposeView(worldInvTransposeView);
-	//	Effects::SsaoNormalDepthFX->SetWorldViewProj(worldViewProj);
-	//	Effects::SsaoNormalDepthFX->SetTexTransform(XMMatrixIdentity());
-	//	Effects::SsaoNormalDepthFX->SetBoneTransforms(
-	//		&mCharacterInstance1.FinalTransforms[0],
-	//		mCharacterInstance1.FinalTransforms.size());
-
-	//	animatedTech->GetPassByIndex(p)->Apply(0, mDc);
-
-	//	for (UINT subset = 0; subset < mCharacterInstance1.Model->SubsetCount; ++subset)
-	//	{
-	//		mCharacterInstance1.Model->ModelMesh.Draw(mDc, subset);
-	//	}
-
-
-	//}
-
-
-
-
-
-
-	// Debug view depth buffer.
-	//	if( GetAsyncKeyState('Z') & 0x8000 )
-	{
-		//DrawSceneQuard();
-	}
 	mCordWorld.Draw(mDc, mCam);
 
 	mSky->Draw(mDc, mCam);
 
-	CModelManager::GetInstance()->DrawInstancedModel(mDc, activeInstanceTech, XMLoadFloat4x4(&mShadowTransform), mCam);
+	CModelManager::GetInstance()->DrawInstancedModel(mDc, activeInstanceTech, mShadowTransform, mCam);
 	mDc->OMSetBlendState(0, blendFactor, 0xffffffff); // restore default
 	mDc->IASetInputLayout(InputLayouts::Particle);
 	mDc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
@@ -407,7 +330,7 @@ void CTestScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 //////////////////////0406/////////////////////////
 
 
-void CTestScene::OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWnd)
+void CGameScene::OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWnd)
 {
 	mLastMousePos.x = x;
 	mLastMousePos.y = y;
@@ -415,12 +338,12 @@ void CTestScene::OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWn
 	SetCapture(mhMainWnd);
 }
 
-void CTestScene::OnMouseUp(WPARAM btnState, int x, int y)
+void CGameScene::OnMouseUp(WPARAM btnState, int x, int y)
 {
 	ReleaseCapture();
 }
 float sumdx = 0;
-void CTestScene::OnMouseMove(WPARAM btnState, int x, int y)
+void CGameScene::OnMouseMove(WPARAM btnState, int x, int y)
 {
 	if ((btnState & MK_LBUTTON) != 0)
 	{
@@ -483,7 +406,7 @@ void CTestScene::OnMouseMove(WPARAM btnState, int x, int y)
 	mLastMousePos.y = y;
 }
 
-void CTestScene::OnResize()
+void CGameScene::OnResize()
 {
 	mCam.SetLens(0.36f*MathHelper::Pi, AspectRatio(), 0.01f, 3000.0f);
 	//XNA::ComputeFrustumFromProjection(&mCamFrustum, &mCam.Proj());
@@ -493,7 +416,7 @@ void CTestScene::OnResize()
 	// 	}
 }
 
-void CTestScene::DrawSceneToShadowMap()
+void CGameScene::DrawSceneToShadowMap()
 {
 	D3DX11_TECHNIQUE_DESC techDesc;
 
@@ -553,7 +476,7 @@ void CTestScene::DrawSceneToShadowMap()
 	//}
 
 }
-void CTestScene::BuildShadowTransform()
+void CGameScene::BuildShadowTransform()
 {
 	// Only the first "main" light casts a shadow.
 	XMVECTOR lightDir = XMLoadFloat3(&mDirLights[0].Direction);

@@ -6,8 +6,8 @@
 #include "Terrain.h"
 namespace SceneName
 {
-	const std::string MainScene = "MainGameScene";
-	const std::string test = "test";
+	const std::string mainScene = "MainScene";
+	const std::string gameScene = "GameScene";
 }
 /*
 2017 / 1 / 10 / 6:03

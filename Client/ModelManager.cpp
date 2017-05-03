@@ -30,15 +30,15 @@ CModelManager::~CModelManager()
 void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device)
 {
 	mDevice = device;
-	mGridMat.Ambient = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
+	mGridMat.Ambient = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
 	mGridMat.Diffuse = XMFLOAT4(0.6f, 0.6f, 0.6f, 1.0f);
-	mGridMat.Specular = XMFLOAT4(0.4f, 0.4f, 0.4f, 16.0f);
+	mGridMat.Specular = XMFLOAT4(0.0f, 0.0f, 0.0f, 16.0f);
 	mGridMat.Reflect = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
 
-	mBoxMat.Ambient = XMFLOAT4(0.8f, 0.8f, 0.8f, 1.0f);
-	mBoxMat.Diffuse = XMFLOAT4(0.4f, 0.4f, 0.4f, 1.0f);
-	mBoxMat.Specular = XMFLOAT4(0.8f, 0.8f, 0.8f, 16.0f);
-	mBoxMat.Reflect = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
+	mObjectMaterial.Ambient = XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
+	mObjectMaterial.Diffuse = XMFLOAT4(0.4f, 0.4f, 0.4f, 1.0f);
+	mObjectMaterial.Specular = XMFLOAT4(0.3f, 0.3f, 0.3f, 16.0f);
+	mObjectMaterial.Reflect = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
 	int animTotalCounts[4];
 	std::string clipname[4] = { "Idle", "Walk", "Attack1", "Run" };
 
@@ -84,7 +84,7 @@ void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device)
 
 }
 
-void CModelManager::DrawStaticNormalModels(ID3D11DeviceContext * dc, ID3DX11EffectTechnique * tech, const XMMATRIX & shadowTransform, const Camera & cam)
+void CModelManager::DrawStaticNormalModels(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMFLOAT4X4& shadowTransform, const Camera& cam)
 {
 	UINT stride = sizeof(Vertex::PosNormalTexTan);
 	UINT  offset = 0;
@@ -146,8 +146,10 @@ void CModelManager::DrawStaticSsaoNormalModels(ID3D11DeviceContext * dc, ID3DX11
 
 }
 
-void CModelManager::DrawSkinnedModels(ID3D11DeviceContext * dc, ID3DX11EffectTechnique * tech, const XMMATRIX & shadowTransform, const Camera & cam)
+void CModelManager::DrawSkinnedModels(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMFLOAT4X4& shadowTransform, const Camera& cam)
 {
+	dc->IASetInputLayout(InputLayouts::PosNormalTexTanSkinned);
+
 	XMMATRIX toTexSpace(
 		0.5f, 0.0f, 0.0f, 0.0f,
 		0.0f, -0.5f, 0.0f, 0.0f,
@@ -172,7 +174,7 @@ void CModelManager::DrawSkinnedModels(ID3D11DeviceContext * dc, ID3DX11EffectTec
 			Effects::NormalMapFX->SetWorldInvTranspose(worldInvTranspose);
 			Effects::NormalMapFX->SetWorldViewProj(worldViewProj);
 			Effects::NormalMapFX->SetWorldViewProjTex(worldViewProj*toTexSpace);
-			Effects::NormalMapFX->SetShadowTransform(world*shadowTransform);
+			Effects::NormalMapFX->SetShadowTransform(world*XMLoadFloat4x4(&shadowTransform) );
 			Effects::NormalMapFX->SetTexTransform(XMMatrixScaling(1.0f, 1.0f, 1.0f));
 			Effects::NormalMapFX->SetBoneTransforms(
 				&mSkinnedModelInstance[i].FinalTransforms[0],
@@ -181,7 +183,7 @@ void CModelManager::DrawSkinnedModels(ID3D11DeviceContext * dc, ID3DX11EffectTec
 			for (UINT subset = 0; subset < mSkinnedModelInstance[i].Model->SubsetCount; ++subset)
 			{
 				Effects::NormalMapFX->SetMaterial(mSkinnedModelInstance[i].Model->Mat[subset]);
-				Effects::NormalMapFX->SetDiffuseMap(mSkinnedModelInstance[i].Model->DiffuseMapSRV[subset]);
+				Effects::NormalMapFX->SetDiffuseMap(mSkinnedModelInstance[i].Model->DiffuseMapSRV[mSkinnedModelInstance[i].selectedDiffuseMapIndex]);
 				Effects::NormalMapFX->SetNormalMap(mSkinnedModelInstance[i].Model->NormalMapSRV[subset]);
 
 				tech->GetPassByIndex(p)->Apply(0, dc);
@@ -191,7 +193,7 @@ void CModelManager::DrawSkinnedModels(ID3D11DeviceContext * dc, ID3DX11EffectTec
 	}
 }
 
-void CModelManager::DrawStaticBasicModels(ID3D11DeviceContext * dc, ID3DX11EffectTechnique * tech, const XMMATRIX & shadowTransform, const Camera & cam)
+void CModelManager::DrawStaticBasicModels(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMFLOAT4X4& shadowTransform, const Camera& cam)
 {
 	UINT stride = sizeof(Vertex::Basic32);
 	UINT  offset = 0;
@@ -278,7 +280,7 @@ void CModelManager::DrawToShadowMap(ID3D11DeviceContext * dc, ID3DX11EffectTechn
 
 }
 
-void CModelManager::DrawInstancedModel(ID3D11DeviceContext * dc, ID3DX11EffectTechnique * tech, const XMMATRIX & shadowTransform, const Camera & cam)
+void CModelManager::DrawInstancedModel(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMFLOAT4X4& shadowTransform, const Camera& cam)
 {
 	dc->IASetInputLayout(InputLayouts::InstancedBasic32);
 
@@ -908,54 +910,7 @@ void CModelManager::BuildBasicGeometryBuffer()
 	std::vector<Vertex::Basic32> vertices(totalVertexCount);
 
 	UINT k = 0;
-// 	for (size_t i = 0; i < house1.Vertices.size(); ++i, ++k)
-// 	{
-// 		vertices[k].Pos = house1.Vertices[i].Position;
-// 		vertices[k].Normal = house1.Vertices[i].Normal;
-// 		vertices[k].Tex = house1.Vertices[i].TexC;
-// 
-// 	}
-// 	for (size_t i = 0; i < house2.Vertices.size(); ++i, ++k)
-// 	{
-// 		vertices[k].Pos = house2.Vertices[i].Position;
-// 		vertices[k].Normal = house2.Vertices[i].Normal;
-// 		vertices[k].Tex = house2.Vertices[i].TexC;
-// 
-// 	}
-// 	for (size_t i = 0; i < house3.Vertices.size(); ++i, ++k)
-// 	{
-// 		vertices[k].Pos = house3.Vertices[i].Position;
-// 		vertices[k].Normal = house3.Vertices[i].Normal;
-// 		vertices[k].Tex = house3.Vertices[i].TexC;
-// 
-// 	}
-// 	for (size_t i = 0; i < house4.Vertices.size(); ++i, ++k)
-// 	{
-// 		vertices[k].Pos = house4.Vertices[i].Position;
-// 		vertices[k].Normal = house4.Vertices[i].Normal;
-// 		vertices[k].Tex = house4.Vertices[i].TexC;
-// 
-// 	}
-// 	for (size_t i = 0; i < house5.Vertices.size(); ++i, ++k)
-// 	{
-// 		vertices[k].Pos = house5.Vertices[i].Position;
-// 		vertices[k].Normal = house5.Vertices[i].Normal;
-// 		vertices[k].Tex = house5.Vertices[i].TexC;
-// 
-// 	}
-// 	for (size_t i = 0; i < house6.Vertices.size(); ++i, ++k)
-// 	{
-// 		vertices[k].Pos = house6.Vertices[i].Position;
-// 		vertices[k].Normal = house6.Vertices[i].Normal;
-// 		vertices[k].Tex = house6.Vertices[i].TexC;
-// 
-// 	}
-// 	for (size_t i = 0; i < fence.Vertices.size(); ++i, ++k)
-// 	{
-// 		vertices[k].Pos = fence.Vertices[i].Position;
-// 		vertices[k].Normal = fence.Vertices[i].Normal;
-// 		vertices[k].Tex = fence.Vertices[i].TexC;
-// 	}
+
 	for (size_t i = 0; i < angelStatue.Vertices.size(); ++i, ++k)
 	{
 		vertices[k].Pos = angelStatue.Vertices[i].Position;
@@ -1204,7 +1159,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 			XMFLOAT4X4 M;
 			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
 			mStaticBasicModels.push_back(CStaticBasicModel(M,
-				mBoxMat,
+				mObjectMaterial,
 				angelStatueIndexCount,
 				angelStatueVertexOffset,
 				angelStatueIndexOffset,
@@ -1222,7 +1177,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 			XMFLOAT4X4 M;
 			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
 			mStaticBasicModels.push_back(CStaticBasicModel(M,
-				mBoxMat,
+				mObjectMaterial,
 				tower_conerIndexCount,
 				tower_conerVertexOffset,
 				tower_conerIndexOffset,
@@ -1240,7 +1195,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 			XMFLOAT4X4 M;
 			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
 			mStaticBasicModels.push_back(CStaticBasicModel(M,
-				mBoxMat,
+				mObjectMaterial,
 				tower_roundIndexCount,
 				tower_roundVertexOffset,
 				tower_roundIndexOffset,
@@ -1258,7 +1213,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 			XMFLOAT4X4 M;
 			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
 			mStaticBasicModels.push_back(CStaticBasicModel(M,
-				mBoxMat,
+				mObjectMaterial,
 				building_b_IndexCount,
 				building_b_VertexOffset,
 				building_b_IndexOffset,
@@ -1276,7 +1231,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 			XMFLOAT4X4 M;
 			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
 			mStaticBasicModels.push_back(CStaticBasicModel(M,
-				mBoxMat,
+				mObjectMaterial,
 				building_c_IndexCount,
 				building_c_VertexOffset,
 				building_c_IndexOffset,
@@ -1295,7 +1250,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 			XMFLOAT4X4 M;
 			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
 			mStaticBasicModels.push_back(CStaticBasicModel(M,
-				mBoxMat,
+				mObjectMaterial,
 				building_d_IndexCount,
 				building_d_VertexOffset,
 				building_d_IndexOffset,
@@ -1313,7 +1268,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 			XMFLOAT4X4 M;
 			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
 			mStaticBasicModels.push_back(CStaticBasicModel(M,
-				mBoxMat,
+				mObjectMaterial,
 				building_e_IndexCount,
 				building_e_VertexOffset,
 				building_e_IndexOffset,
@@ -1331,7 +1286,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 			XMFLOAT4X4 M;
 			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
 			mStaticBasicModels.push_back(CStaticBasicModel(M,
-				mBoxMat,
+				mObjectMaterial,
 				well_IndexCount,
 				well_VertexOffset,
 				well_IndexOffset,
@@ -1349,7 +1304,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 			XMFLOAT4X4 M;
 			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
 			mStaticBasicModels.push_back(CStaticBasicModel(M,
-				mBoxMat,
+				mObjectMaterial,
 				food_a_IndexCount,
 				food_a_VertexOffset,
 				food_a_IndexOffset,
@@ -1367,7 +1322,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 			XMFLOAT4X4 M;
 			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
 			mStaticBasicModels.push_back(CStaticBasicModel(M,
-				mBoxMat,
+				mObjectMaterial,
 				food_b_IndexCount,
 				food_b_VertexOffset,
 				food_b_IndexOffset,
@@ -1385,7 +1340,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 			XMFLOAT4X4 M;
 			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
 			mStaticBasicModels.push_back(CStaticBasicModel(M,
-				mBoxMat,
+				mObjectMaterial,
 				hay_a_IndexCount,
 				hay_a_VertexOffset,
 				hay_a_IndexOffset,
@@ -1403,7 +1358,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 			XMFLOAT4X4 M;
 			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
 			mStaticBasicModels.push_back(CStaticBasicModel(M,
-				mBoxMat,
+				mObjectMaterial,
 				hay_b_IndexCount,
 				hay_b_VertexOffset,
 				hay_b_IndexOffset,
@@ -1421,7 +1376,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 			XMFLOAT4X4 M;
 			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
 			mStaticBasicModels.push_back(CStaticBasicModel(M,
-				mBoxMat,
+				mObjectMaterial,
 				hay_c_IndexCount,
 				hay_c_VertexOffset,
 				hay_c_IndexOffset,
@@ -1439,7 +1394,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 			XMFLOAT4X4 M;
 			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
 			mStaticBasicModels.push_back(CStaticBasicModel(M,
-				mBoxMat,
+				mObjectMaterial,
 				hay_d_IndexCount,
 				hay_d_VertexOffset,
 				hay_d_IndexOffset,
@@ -1457,7 +1412,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 			XMFLOAT4X4 M;
 			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
 			mStaticBasicModels.push_back(CStaticBasicModel(M,
-				mBoxMat,
+				mObjectMaterial,
 				sack_a_IndexCount,
 				sack_a_VertexOffset,
 				sack_a_IndexOffset,
@@ -1475,7 +1430,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 			XMFLOAT4X4 M;
 			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
 			mStaticBasicModels.push_back(CStaticBasicModel(M,
-				mBoxMat,
+				mObjectMaterial,
 				sack_b_IndexCount,
 				sack_b_VertexOffset,
 				sack_b_IndexOffset,
@@ -1493,7 +1448,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 			XMFLOAT4X4 M;
 			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
 			mStaticBasicModels.push_back(CStaticBasicModel(M,
-				mBoxMat,
+				mObjectMaterial,
 				sewers_entrance_IndexCount,
 				sewers_entrance_VertexOffset,
 				sewers_entrance_IndexOffset,
@@ -1511,7 +1466,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 			XMFLOAT4X4 M;
 			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
 			mStaticBasicModels.push_back(CStaticBasicModel(M,
-				mBoxMat,
+				mObjectMaterial,
 				tent_indexCount,
 				tent_VertexOffset,
 				tent_indexOffset,
@@ -1529,7 +1484,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 			XMFLOAT4X4 M;
 			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
 			mStaticBasicModels.push_back(CStaticBasicModel(M,
-				mBoxMat,
+				mObjectMaterial,
 				crate_indexCount,
 				crate_VertexOffset,
 				crate_indexOffset,
@@ -1547,7 +1502,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 			XMFLOAT4X4 M;
 			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
 			mStaticBasicModels.push_back(CStaticBasicModel(M,
-				mBoxMat,
+				mObjectMaterial,
 				building_f_IndexCount,
 				building_f_VertexOffset,
 				building_f_IndexOffset,
@@ -1565,7 +1520,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 			XMFLOAT4X4 M;
 			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(S, zero, Q, P));
 			mStaticBasicModels.push_back(CStaticBasicModel(M,
-				mBoxMat,
+				mObjectMaterial,
 				barrel_IndexCount,
 				barrel_VertexOffset,
 				barrel_IndexOffset,
@@ -1612,7 +1567,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 	}
 	//	ÀÎ½ºÅÏ½ÌÇÒ °´Ã¼¸¦ Setting
 	tempInstanceModelWall.SetDrawInfomation(wallIndexCount, wallVertexOffset, wallIndexOffset);
-	tempInstanceModelWall.SetMatrial(mBoxMat);
+	tempInstanceModelWall.SetMatrial(mObjectMaterial);
 	tempInstanceModelWall.SetSRV(texMgr.CreateTexture(L"Textures\\bricks_albedo.png"));
 	tempInstanceModelWall.BuildInstanceBuffer(mDevice);
 	mInstanceModels.push_back(tempInstanceModelWall);
@@ -1643,7 +1598,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 			tempSkinnedModelInstanced.mClipnameAndTotalCount = mClipnameAndTotalCounts[0];//idle;
 			tempSkinnedModelInstanced.mAnimCnt = 0;
 			tempSkinnedModelInstanced.isPlayer = false;
-
+			tempSkinnedModelInstanced.selectedDiffuseMapIndex = rand() % 3;
 			ifs >> objectName;
 			ifs >> cIgnore >> position.x >> position.y >> position.z;
 

@@ -19,6 +19,10 @@ SkinnedModel::SkinnedModel(ID3D11Device* device, TextureMgr& texMgr,
 		Mat.push_back(mats[i].Mat);
 		ID3D11ShaderResourceView* diffuseMapSRV = texMgr.CreateTexture(texturePath + mats[i].DiffuseMapName);
 		DiffuseMapSRV.push_back(diffuseMapSRV);
+		diffuseMapSRV = texMgr.CreateTexture(texturePath + L"true_clown_diffuse2.png");
+		DiffuseMapSRV.push_back(diffuseMapSRV);
+		diffuseMapSRV = texMgr.CreateTexture(texturePath + L"true_clown_diffuse3.png");
+		DiffuseMapSRV.push_back(diffuseMapSRV);
 
 		ID3D11ShaderResourceView* normalMapSRV = texMgr.CreateTexture(texturePath + mats[i].NormalMapName);
 		NormalMapSRV.push_back(normalMapSRV);

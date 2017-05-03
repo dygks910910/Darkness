@@ -21,7 +21,7 @@ CStaticNomalModel::~CStaticNomalModel()
 }
 
 void CStaticNomalModel::Draw(ID3D11DeviceContext* dc,
-	ID3DX11EffectTechnique* tech, const XMMATRIX& shadowTransform, const Camera& cam)
+	ID3DX11EffectTechnique* tech, const XMFLOAT4X4& shadowTransform, const Camera& cam)
 {
 	XMMATRIX world;
 	XMMATRIX worldInvTranspose;
@@ -46,7 +46,7 @@ void CStaticNomalModel::Draw(ID3D11DeviceContext* dc,
 		Effects::NormalMapFX->SetWorldInvTranspose(worldInvTranspose);
 		Effects::NormalMapFX->SetWorldViewProj(worldViewProj);
 		Effects::NormalMapFX->SetWorldViewProjTex(worldViewProj*toTexSpace);
-		Effects::NormalMapFX->SetShadowTransform(world*shadowTransform);
+		Effects::NormalMapFX->SetShadowTransform(world*XMLoadFloat4x4(&shadowTransform));
 		if (mObjName == "grid")
 			Effects::NormalMapFX->SetTexTransform(XMMatrixScaling(40, 40,0));
 		else
@@ -154,7 +154,7 @@ CStaticBasicModel::~CStaticBasicModel()
 {
 }
 
-void CStaticBasicModel::Draw(ID3D11DeviceContext * dc, ID3DX11EffectTechnique * tech, const XMMATRIX & shadowTransform, const Camera & cam)
+void CStaticBasicModel::Draw(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMFLOAT4X4& shadowTransform, const Camera& cam)
 {
 	XMMATRIX world;
 	XMMATRIX worldInvTranspose;
@@ -184,7 +184,7 @@ void CStaticBasicModel::Draw(ID3D11DeviceContext * dc, ID3DX11EffectTechnique * 
 		
 		Effects::BasicFX->SetMaterial(mObjMatrial);
 		Effects::BasicFX->SetTexTransform(XMMatrixIdentity());
-		Effects::BasicFX->SetShadowTransform(world*shadowTransform);
+		Effects::BasicFX->SetShadowTransform(world*XMLoadFloat4x4(&shadowTransform));
 		
 		tech->GetPassByIndex(p)->Apply(0, dc);
 		dc->DrawIndexed(mIndexCount, mIndexOffset, mVertexOffset);
@@ -243,7 +243,7 @@ CInstanceBasicModel::~CInstanceBasicModel()
 {
 }
 
-void CInstanceBasicModel::Draw(ID3D11DeviceContext * dc, ID3DX11EffectTechnique * tech, const XMMATRIX & shadowTransform, const Camera & cam)
+void CInstanceBasicModel::Draw(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMFLOAT4X4& shadowTransform, const Camera& cam)
 {
 	XMMATRIX view = cam.View();
 	XMMATRIX proj = cam.Proj();

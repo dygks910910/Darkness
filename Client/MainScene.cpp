@@ -142,7 +142,7 @@ std::string CMainScene::UpdateScene(const float dt, MSG& msg)
 			str.assign(mIpString.begin(), mIpString.end());
 			NetworkMgr::GetInstance()->SetIPAndPort(str);
 			NetworkMgr::GetInstance()->Initialize();
-			return SceneName::test;
+			return SceneName::gameScene;
 			//////////////////////////////////////////////////////////////////////////
 			//방생성창으로  이동.
 		}

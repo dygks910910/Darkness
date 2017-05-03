@@ -30,8 +30,8 @@ bool CSceneManager::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	mViewport = viewport;
 	mDsv = dsv;
 
-	mSceneKey = SceneName::MainScene;
-	mScenes.insert(make_pair(SceneName::MainScene, new CMainScene));
+	mSceneKey = SceneName::gameScene;
+	mScenes.insert(make_pair(SceneName::gameScene, new CGameScene));
 	mScenes[mSceneKey]->Init(device, dc, swapChain,
 		*viewport, clientWidth, clientHeight);
 	/*
@@ -105,7 +105,7 @@ void CSceneManager::ChangeScene(std::string sceneName, const float& dt)
 	}
 	else
 	{
-		mScenes.insert(make_pair(sceneName, new CTestScene));
+		mScenes.insert(make_pair(sceneName, new CGameScene));
 		mScenes[sceneName]->Init(mDevice, mDc, mSwapChain, *mViewport, mClientWidth, mClientHeight);
 	}
 }

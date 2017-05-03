@@ -99,7 +99,7 @@ void CMainGame::DrawScene()
 
 void CMainGame::Packet(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	if (mSceneManager->GetSceneKey() == SceneName::test)
+	if (mSceneManager->GetSceneKey() == SceneName::gameScene)
 	{
 		if (WSAGETSELECTERROR(lParam))
 		{

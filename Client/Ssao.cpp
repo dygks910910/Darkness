@@ -70,11 +70,14 @@ void Ssao::ComputeSsao(const Camera& camera)
 	// Bind the ambient map as the render target.  Observe that this pass does not bind 
 	// a depth/stencil buffer--it does not need it, and without one, no depth test is
 	// performed, which is what we want.
+
+	//제대로 그려주지 않아 임시적으로 a의 색을 받게끔만 만듬.
+	XMVECTORF32 a = { 0.4f,0.4f,0.4f,1 };
+
 	ID3D11RenderTargetView* renderTargets[1] = {mAmbientRTV0};
 	mDC->OMSetRenderTargets(1, renderTargets, 0);
-	mDC->ClearRenderTargetView(mAmbientRTV0, reinterpret_cast<const float*>(&Colors::Black));
+	mDC->ClearRenderTargetView(mAmbientRTV0, reinterpret_cast<const float*>(&a));
 	mDC->RSSetViewports(1, &mAmbientMapViewport);
-
 	// Transform NDC space [-1,+1]^2 to texture space [0,1]^2
 	static const XMMATRIX T(
 		0.5f, 0.0f, 0.0f, 0.0f,
@@ -91,23 +94,23 @@ void Ssao::ComputeSsao(const Camera& camera)
 	Effects::SsaoFX->SetNormalDepthMap(mNormalDepthSRV);
 	Effects::SsaoFX->SetRandomVecMap(mRandomVectorSRV);
 
-	UINT stride = sizeof(Vertex::Basic32);
-    UINT offset = 0;
+// 	UINT stride = sizeof(Vertex::Basic32);
+//     UINT offset = 0;
 
-	mDC->IASetInputLayout(InputLayouts::Basic32);
-    mDC->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	mDC->IASetVertexBuffers(0, 1, &mScreenQuadVB, &stride, &offset);
-	mDC->IASetIndexBuffer(mScreenQuadIB, DXGI_FORMAT_R16_UINT, 0);
-	
-	ID3DX11EffectTechnique* tech = Effects::SsaoFX->SsaoTech;
-	D3DX11_TECHNIQUE_DESC techDesc;
-
-	tech->GetDesc( &techDesc );
-	for(UINT p = 0; p < techDesc.Passes; ++p)
-    {
-		tech->GetPassByIndex(p)->Apply(0, mDC);
-		mDC->DrawIndexed(6, 0, 0);
-    }
+// 	mDC->IASetInputLayout(InputLayouts::Basic32);
+//     mDC->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+// 	mDC->IASetVertexBuffers(0, 1, &mScreenQuadVB, &stride, &offset);
+// 	mDC->IASetIndexBuffer(mScreenQuadIB, DXGI_FORMAT_R16_UINT, 0);
+// 	
+// 	ID3DX11EffectTechnique* tech = Effects::SsaoFX->SsaoTech;
+// 	D3DX11_TECHNIQUE_DESC techDesc;
+// 
+// 	tech->GetDesc( &techDesc );
+// 	for(UINT p = 0; p < techDesc.Passes; ++p)
+//     {
+// 		tech->GetPassByIndex(p)->Apply(0, mDC);
+// 		mDC->DrawIndexed(6, 0, 0);
+//     }
 }
 
 void Ssao::BlurAmbientMap(int blurCount)

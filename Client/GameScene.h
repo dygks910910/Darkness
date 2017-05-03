@@ -16,11 +16,7 @@
 #include "ParticleSystem.h"
 #include "SkinnedModel.h"
 #include "Ssao.h"
-// <<<<<<< HEAD
-// #include "StaticModel.h"
-// =======
 
-/*>>>>>>> SpotLight*/
 struct BoundingSphere
 {
 	BoundingSphere() : Center(0.0f, 0.0f, 0.0f), Radius(0.0f) {}
@@ -28,7 +24,7 @@ struct BoundingSphere
 	float Radius;
 };
 
-class CTestScene :
+class CGameScene :
 	public CScene
 {
 	/*
@@ -41,7 +37,6 @@ class CTestScene :
 	int mClientWidth;
 	//////////////////////////////////////////////////////////////////////////
 	TextureMgr mTexMgr;
-	//CModelManager mModelMgr;
 	GameTimer mTimer;
 	//RainParticle
 	ID3D11ShaderResourceView* mRainTexSRV;
@@ -75,8 +70,8 @@ class CTestScene :
 	ShadowMap* mSmap;
 	Ssao* mSsao;
 public:
-	CTestScene();
-	virtual ~CTestScene();
+	CGameScene();
+	virtual ~CGameScene();
 	virtual bool Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 		IDXGISwapChain* swapChain, const D3D11_VIEWPORT& viewPort, const int& clientWidth, const int& clientHeight);
 // <<<<<<< HEAD
