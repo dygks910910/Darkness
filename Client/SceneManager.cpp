@@ -22,8 +22,13 @@ bool CSceneManager::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	설명:메인씬 생성.
 	*/
 	mClientWidth = clientWidth;
-
 	mClientHeight = clientHeight;
+	mDevice = device;
+	mDc = dc;
+	mSwapChain = swapChain;
+	mRenderTargetView = renderTargetView;
+	mViewport = viewport;
+	mDsv = dsv;
 
 	mSceneKey = SceneName::MainScene;
 	mScenes.insert(make_pair(SceneName::MainScene, new CMainScene));
@@ -43,6 +48,7 @@ bool CSceneManager::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 }
 void CSceneManager::UpdateScene(const float dt, MSG& msg)
 {
+
 	/*
 	2017 / 1 / 12 / 22:06
 	작성자:박요한(dygks910910@daum.net)
@@ -55,14 +61,18 @@ void CSceneManager::UpdateScene(const float dt, MSG& msg)
 // <<<<<<< HEAD
 // 	mScenes[mSceneKey]->UpdateScene(dt);
 // =======
-
-	mScenes[mSceneKey]->UpdateScene(dt, msg);
+	std::string changeSceneName = mScenes[mSceneKey]->UpdateScene(dt, msg); 
+	if (changeSceneName != "")
+	{
+		ChangeScene(changeSceneName, dt);
+	}
 // >>>>>>> SpotLight
 }
 void CSceneManager::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	IDXGISwapChain* swapChain, ID3D11RenderTargetView* renderTargetView,
 	ID3D11DepthStencilView* depthStencilView, D3D11_VIEWPORT* viewport)
 {
+	if(mScenes[mSceneKey] != nullptr)
 	mScenes[mSceneKey]->Draw(renderTargetView, depthStencilView, viewport);
 }
 
@@ -85,10 +95,19 @@ void CSceneManager::OnResize()
 		mScenes[mSceneKey]->OnResize();
 }
 
-void CSceneManager::ChangeScene(std::string sceneName, const float & dt, ID3D11Device * device, ID3D11DeviceContext * dc)
+void CSceneManager::ChangeScene(std::string sceneName, const float& dt)
 {
-	//mSceneKey = sceneName;
-	//mScenes[mSceneKey]->UpdateScene(dt);
+	mSceneKey = sceneName;
+	if (mScenes.find(mSceneKey) != mScenes.end())
+	{
+		//mScenes.insert(make_pair(sceneName, new CTestScene));
+		mScenes[sceneName]->Init(mDevice,mDc,mSwapChain,*mViewport,mClientWidth,mClientHeight);
+	}
+	else
+	{
+		mScenes.insert(make_pair(sceneName, new CTestScene));
+		mScenes[sceneName]->Init(mDevice, mDc, mSwapChain, *mViewport, mClientWidth, mClientHeight);
+	}
 }
 
 void CSceneManager::OnKeyBoardButtonDown(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)

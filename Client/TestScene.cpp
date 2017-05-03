@@ -124,7 +124,7 @@ bool CTestScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 // void CTestScene::UpdateScene(const float& dt)
 // =======
 bool testcamera = true;
-void CTestScene::UpdateScene(const float dt, MSG& msg)
+std::string CTestScene::UpdateScene(const float dt, MSG& msg)
 {
 	mTimer.Tick();
 	//
@@ -201,6 +201,7 @@ void CTestScene::UpdateScene(const float dt, MSG& msg)
 	// 		mCharacterInstances[i].Update(dt);
 
 	mCam.UpdateViewMatrix();
+	return "";
 }
 
 bool camset = false;

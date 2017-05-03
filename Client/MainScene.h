@@ -6,6 +6,7 @@
 #include "xnacollision.h"
 #include "DrawText.h"
 #include "GameTimer.h"
+
 class CMainScene :
 	public CScene
 {
@@ -85,7 +86,7 @@ public:
 	virtual ~CMainScene();
 	virtual bool Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 		IDXGISwapChain* swapChain, const D3D11_VIEWPORT& viewPort, const int& clientWidth, const int& clientHeight);
-	virtual void UpdateScene(const float dt, MSG& msg);
+	virtual std::string UpdateScene(const float dt, MSG& msg);
 	virtual void Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, D3D11_VIEWPORT* viewPort);
 	virtual void OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWnd);
 	virtual void OnMouseUp(WPARAM btnState, int x, int y) ;

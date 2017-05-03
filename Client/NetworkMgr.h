@@ -4,7 +4,14 @@
 #include <xnamath.h>
 #include "ModelManager.h"
 #pragma comment(lib, "ws2_32.lib")
+#include<string.h>
+#ifndef _DEBUG | DEBUG
+#include<iostream>
+#endif // !_DEBUG | DEBUG
 
+
+#include<string>
+#include<iostream>
 const int MY_SERVER_PORT = 9000;
 
 const int MAX_PACKET_SIZE = 255;
@@ -81,7 +88,8 @@ class NetworkMgr
 	HWND mHandle;
 	int recv_size;
 	int   saved_size;
-
+	std::string m_strIp;
+	
 
 private:
 	static NetworkMgr* instance;
@@ -119,7 +127,8 @@ public:
 
 public:
 	void SetWindowHandle(HWND h) { mHandle = h; };
-
+	void SetIPAndPort(std::string ip, std::wstring port = L"9000") { this->m_strIp = ip;
+	std::cout << this->m_strIp << std::endl; };
 private:
 	NetworkMgr();
 public:

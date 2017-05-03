@@ -85,7 +85,7 @@ public:
 // 	virtual void OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWnd) ;
 // 	virtual void OnMouseUp(WPARAM btnState, int x, int y) ;
 // =======
-	virtual void UpdateScene(const float dt, MSG& msg);
+	virtual std::string UpdateScene(const float dt, MSG& msg);
 	virtual void Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, D3D11_VIEWPORT* viewPort);
 	virtual void OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWnd);
 	virtual void OnMouseUp(WPARAM btnState, int x, int y);

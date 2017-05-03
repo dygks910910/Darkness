@@ -28,7 +28,7 @@ void NetworkMgr::Initialize()
 
 		/*cout << " 서버 IP 입력 : ";
 		cin >> ip;*/
-		strcpy(ip, "192.168.0.4");
+		strcpy(ip, &m_strIp[0]);
 
 		SOCKADDR_IN serverAddr;
 		ZeroMemory(&serverAddr, sizeof(SOCKADDR_IN));

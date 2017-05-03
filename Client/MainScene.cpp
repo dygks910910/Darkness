@@ -36,7 +36,6 @@ bool CMainScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	//////////////////////////////////////////////////////////////////////////
 	//로고화면 초기화.
 	mMainLogo.Initialize(mDevice, mClientWidth, mClientHeight, L"UITextures/DarknessLogo.PNG", mClientWidth, mClientHeight);
-
 	//////////////////////////////////////////////////////////////////////////
 	//메인화면 초기화.
 	mBackgroundPicture.Initialize(device, mClientWidth, mClientHeight, L"UITextures/testBack.jpg", mClientWidth, mClientHeight);
@@ -124,7 +123,7 @@ bool CMainScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	return true;
 }
 
-void CMainScene::UpdateScene(const float dt, MSG& msg)
+std::string CMainScene::UpdateScene(const float dt, MSG& msg)
 {
 	//////////////////////////////////////////////////////////////////////////
 	//로고를 비추는 창을 켜주는 시간을 계산.
@@ -138,7 +137,12 @@ void CMainScene::UpdateScene(const float dt, MSG& msg)
 	{
 		if (mLobbyConnectButton.isClicked)
 		{
-			//NetworkMgr::GetInstance()->Initialize();
+			//ip와 포트를 넘겨줘야함.
+			std::string str;
+			str.assign(mIpString.begin(), mIpString.end());
+			NetworkMgr::GetInstance()->SetIPAndPort(str);
+			NetworkMgr::GetInstance()->Initialize();
+			return SceneName::test;
 			//////////////////////////////////////////////////////////////////////////
 			//방생성창으로  이동.
 		}
@@ -171,6 +175,7 @@ void CMainScene::UpdateScene(const float dt, MSG& msg)
 		}
 	}
 	//mCam.UpdateViewMatrix();
+	return "";
 }
 
 void CMainScene::Draw(ID3D11RenderTargetView * rtv, ID3D11DepthStencilView * dsv, D3D11_VIEWPORT * viewPort)
