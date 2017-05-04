@@ -33,14 +33,14 @@ void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device)
 {
 	check = false;
 	mDevice = device;
-	mGridMat.Ambient = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
+	mGridMat.Ambient = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
 	mGridMat.Diffuse = XMFLOAT4(0.6f, 0.6f, 0.6f, 1.0f);
 	mGridMat.Specular = XMFLOAT4(0.0f, 0.0f, 0.0f, 16.0f);
 	mGridMat.Reflect = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
 
-	mObjectMaterial.Ambient = XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
+	mObjectMaterial.Ambient = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
 	mObjectMaterial.Diffuse = XMFLOAT4(0.4f, 0.4f, 0.4f, 1.0f);
-	mObjectMaterial.Specular = XMFLOAT4(0.3f, 0.3f, 0.3f, 16.0f);
+	mObjectMaterial.Specular = XMFLOAT4(0.0f, 0.0f, 0.0f, 16.0f);
 	mObjectMaterial.Reflect = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
 	int animTotalCounts[4];
 	std::string clipname[4] = { "Idle", "Walk", "Attack1", "Run" };

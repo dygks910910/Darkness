@@ -72,7 +72,7 @@ void Ssao::ComputeSsao(const Camera& camera)
 	// performed, which is what we want.
 
 	//제대로 그려주지 않아 임시적으로 a의 색을 받게끔만 만듬.
-	XMVECTORF32 a = { 0.4f,0.4f,0.4f,1 };
+	XMVECTORF32 a = { 0.7f,0.7f,0.7f,1 };
 
 	ID3D11RenderTargetView* renderTargets[1] = {mAmbientRTV0};
 	mDC->OMSetRenderTargets(1, renderTargets, 0);
