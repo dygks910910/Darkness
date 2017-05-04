@@ -1,6 +1,7 @@
 #include "ModelManager.h"
 
-#define SPEED 0.008
+#define SPEED 0.03
+#define ANIMCNT 5
 CModelManager* CModelManager::model = nullptr;
 XMFLOAT3 bextent;
 XMFLOAT3 bcenter;
@@ -42,15 +43,15 @@ void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device)
 	mBoxMat.Diffuse = XMFLOAT4(0.4f, 0.4f, 0.4f, 1.0f);
 	mBoxMat.Specular = XMFLOAT4(0.8f, 0.8f, 0.8f, 16.0f);
 	mBoxMat.Reflect = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
-	int animTotalCounts[4];
-	std::string clipname[4] = { "Idle", "Walk", "Attack1", "Run" };
+	int animTotalCounts[ANIMCNT];
+	std::string clipname[ANIMCNT] = { "Idle", "Walk", "Attack1", "Run", "Death" };
 
 	mCharacterModel = new SkinnedModel(mDevice, texMgr, "Models/Clown.txt", L"Textures\\");
-	std::ifstream fin("Models/ClownAnimationData.txt");
+	std::ifstream fin("Models/testanim.txt");
 	std::vector<std::vector<XMFLOAT4X4>> testfinalTransform;
 	int total = 0;
 
-	for (int k = 0; k < 4; ++k)
+	for (int k = 0; k < ANIMCNT; ++k)
 	{
 		fin >> total;
 		animTotalCounts[k] = total;
@@ -73,7 +74,7 @@ void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device)
 	}
 	fin.close();
 
-	for (int i = 0; i < 4; ++i)
+	for (int i = 0; i < ANIMCNT; ++i)
 	{
 		mClipnameAndTotalCounts[i] = std::make_pair(clipname[i], animTotalCounts[i]);
 	}
@@ -339,7 +340,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 		if (!mOneCheck)
 		{
 			mSkinnedModelInstance[5].mAnimCnt = 0;
-			mSkinnedModelInstance[5].mClipnameAndTotalCount = mClipnameAndTotalCounts[2];
+			mSkinnedModelInstance[5].mClipnameAndTotalCount = mClipnameAndTotalCounts[4];
 		}
 	}
 	if (GetAsyncKeyState('W') & 0x8000)
@@ -807,11 +808,11 @@ void CModelManager::BuildBasicGeometryBuffer()
 		//µÚ//
 		boundver[20].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y -bextent.y, bcenter.z +bextent.z);
 		boundver[20].color = XMFLOAT4(255, 0, 0, 0);
-		boundver[21].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y +bextent.y, bcenter.z +bextent.z);
+		boundver[21].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.y -bextent.y, bcenter.z +bextent.z);
 		boundver[21].color = XMFLOAT4(255, 0, 0, 0);
 		boundver[22].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.y +bextent.y, bcenter.z +bextent.z);
 		boundver[22].color = XMFLOAT4(255, 0, 0, 0);
-		boundver[23].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.y -bextent.y, bcenter.z +bextent.z);
+		boundver[23].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y +bextent.y, bcenter.z +bextent.z);
 		boundver[23].color = XMFLOAT4(255, 0, 0, 0);
 		///////boundingbox/////////
 		D3D11_BUFFER_DESC boundvbd;

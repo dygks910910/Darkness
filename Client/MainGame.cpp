@@ -61,7 +61,6 @@ void CMainGame::OnResize()
 {
 	D3DApp::OnResize();
 	mSceneManager->OnResize();
-
 }
 
 void CMainGame::UpdateScene(float dt, MSG& msg)

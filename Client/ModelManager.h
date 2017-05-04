@@ -63,7 +63,7 @@ class CModelManager
 	std::vector<SkinnedModelInstance> mSkinnedModelInstance;
 
 	std::map < std::string, std::vector<XMFLOAT4X4>*> mclipAnimbuf;
-	std::pair<std::string, int> mClipnameAndTotalCounts[4];
+	std::pair<std::string, int> mClipnameAndTotalCounts[5];
 
 	Material mGridMat;
 	Material mBoxMat;
