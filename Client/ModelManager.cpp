@@ -329,32 +329,32 @@ void CModelManager::DrawInstancedModel(ID3D11DeviceContext * dc, ID3DX11EffectTe
 void CModelManager::UpdateModel(const float & dt, Camera& camera)
 {
 	XMFLOAT3 campos, charpos, camLook, charlook, camRight;
-
+	mMyId = NetworkMgr::GetInstance()->getId();
 	for (int i = 0; i < mSkinnedModelInstance.size(); ++i)
 	{
-		mSkinnedModelInstance[3].mClipnameAndTotalCount = mClipnameAndTotalCounts[mSkinnedModelInstance[3].mAnimstate];
+		//mSkinnedModelInstance[i].mClipnameAndTotalCount = mClipnameAndTotalCounts[mSkinnedModelInstance[i].mAnimstate];
 		mSkinnedModelInstance[i].Update(dt);
 	}
 	if (GetAsyncKeyState('F') & 0x8000)
 	{
 		if (!mOneCheck)
 		{
-			mSkinnedModelInstance[5].mAnimCnt = 0;
-			mSkinnedModelInstance[5].mClipnameAndTotalCount = mClipnameAndTotalCounts[4];
+			mSkinnedModelInstance[mMyId].mAnimCnt = 0;
+			mSkinnedModelInstance[mMyId].mClipnameAndTotalCount = mClipnameAndTotalCounts[4];
 		}
 	}
 	if (GetAsyncKeyState('W') & 0x8000)
 	{
-		charpos.x = mSkinnedModelInstance[5].World._41;
-		charpos.y = mSkinnedModelInstance[5].World._42;
-		charpos.z = mSkinnedModelInstance[5].World._43;
+		charpos.x = mSkinnedModelInstance[mMyId].World._41;
+		charpos.y = mSkinnedModelInstance[mMyId].World._42;
+		charpos.z = mSkinnedModelInstance[mMyId].World._43;
 
 		campos = camera.GetPosition();
 
 		cs_packet_player_move* move = reinterpret_cast<cs_packet_player_move*>(&send_buf);
 		move->size = sizeof(cs_packet_player_move);
 		move->type = CS_UP;
-		move->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mId;
+		move->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
 		move->camlook = camera.GetLook();
 		move->campos = campos;
 		send_wsa_buf.len = sizeof(cs_packet_player_move);
@@ -370,17 +370,16 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 			cs_packet_player_anmation_start* anim = reinterpret_cast<cs_packet_player_anmation_start*>(&send_buf);
 			anim->size = sizeof(cs_packet_player_anmation_start);
 			anim->type = CS_PACKET_START_ANIMATION;
-			anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mId;
+			anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
 			anim->animationState = 1;
 			send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
-
 			DWORD io_byte2;
 
 			int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf, 1, &io_byte2, 0, NULL, NULL);
 			if (ret_val == SOCKET_ERROR)
 				std::cout << " [error] WSASend() " << std::endl;
 
-			mSkinnedModelInstance[5].mClipnameAndTotalCount = mClipnameAndTotalCounts[1];
+			mSkinnedModelInstance[mMyId].mClipnameAndTotalCount = mClipnameAndTotalCounts[1];
 			mOneCheck = true;
 		}
 
@@ -388,37 +387,24 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 		camLook.y = charpos.y - campos.y;
 		camLook.z = charpos.z - campos.z;
 
-		XMVECTOR s = XMVectorReplicate(0.5f*SPEED);
-		XMVECTOR l = XMLoadFloat3(&camera.GetLook());
-		XMVECTOR p = XMLoadFloat3(&charpos);
-		XMStoreFloat3(&charpos, XMVectorMultiplyAdd(s, l, p));
-		if (!mSkinnedModelInstance[5].mCollision)
-		{
-			campos.x += charpos.x - mSkinnedModelInstance[5].World._41;
-			campos.z += charpos.z - mSkinnedModelInstance[5].World._43;
-		}
-		else
-		{
-			if (mSkinnedModelInstance[5].mAxis == Axis::x)
-				campos.x += charpos.x - mSkinnedModelInstance[5].World._41;
-			else if (mSkinnedModelInstance[5].mAxis == Axis::z)
-				campos.z += charpos.z - mSkinnedModelInstance[5].World._43;
-		}
 
+		campos.x = mSkinnedModelInstance[mMyId].mCharCamPos.x + mSkinnedModelInstance[mMyId].World._41;
+		campos.z = mSkinnedModelInstance[mMyId].mCharCamPos.z + mSkinnedModelInstance[mMyId].World._43;
+		
 		camera.SetPosition(campos);
 	}
 	else if (GetAsyncKeyState('S') & 0x8000)
 	{
-		charpos.x = mSkinnedModelInstance[5].World._41;
-		charpos.y = mSkinnedModelInstance[5].World._42;
-		charpos.z = mSkinnedModelInstance[5].World._43;
+		charpos.x = mSkinnedModelInstance[mMyId].World._41;
+		charpos.y = mSkinnedModelInstance[mMyId].World._42;
+		charpos.z = mSkinnedModelInstance[mMyId].World._43;
 
 		campos = camera.GetPosition();
 
 		cs_packet_player_move* move = reinterpret_cast<cs_packet_player_move*>(&send_buf);
 		move->size = sizeof(cs_packet_player_move);
 		move->type = CS_DOWN;
-		move->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mId;
+		move->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
 		move->camlook = camera.GetLook();
 		move->campos = campos;
 		send_wsa_buf.len = sizeof(cs_packet_player_move);
@@ -434,7 +420,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 			cs_packet_player_anmation_start* anim = reinterpret_cast<cs_packet_player_anmation_start*>(&send_buf);
 			anim->size = sizeof(cs_packet_player_anmation_start);
 			anim->type = CS_PACKET_START_ANIMATION;
-			anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mId;
+			anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
 			anim->animationState = 1;
 			send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
 
@@ -444,7 +430,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 			if (ret_val == SOCKET_ERROR)
 				std::cout << " [error] WSASend() " << std::endl;
 
-			mSkinnedModelInstance[5].mClipnameAndTotalCount = mClipnameAndTotalCounts[1];
+			mSkinnedModelInstance[mMyId].mClipnameAndTotalCount = mClipnameAndTotalCounts[1];
 			mOneCheck = true;
 
 		}
@@ -453,39 +439,27 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 		camLook.y = charpos.y - campos.y;
 		camLook.z = charpos.z - campos.z;
 
-		XMVECTOR s = XMVectorReplicate(0.5f*SPEED);
-		XMVECTOR l = XMLoadFloat3(&camera.GetLook());
-		XMVECTOR p = XMLoadFloat3(&charpos);
-		XMStoreFloat3(&charpos, XMVectorMultiplyAdd(s, -l, p));
-		if (!mSkinnedModelInstance[5].mCollision)
-		{
-			campos.x += charpos.x - mSkinnedModelInstance[5].World._41;
-			campos.z += charpos.z - mSkinnedModelInstance[5].World._43;
-		}
-		else
-		{
-			if(mSkinnedModelInstance[5].mAxis == Axis::x)
-				campos.x += charpos.x - mSkinnedModelInstance[5].World._41;
-			else if(mSkinnedModelInstance[5].mAxis == Axis::z)
-				campos.z += charpos.z - mSkinnedModelInstance[5].World._43;
 
-		}
+		campos.x = mSkinnedModelInstance[mMyId].mCharCamPos.x + mSkinnedModelInstance[mMyId].World._41;
+		campos.z = mSkinnedModelInstance[mMyId].mCharCamPos.z + mSkinnedModelInstance[mMyId].World._43;
+
+		
 
 		camera.SetPosition(campos);
 	}
 	else if (GetAsyncKeyState('A') & 0x8000)
 	{
 
-		charpos.x = mSkinnedModelInstance[5].World._41;
-		charpos.y = mSkinnedModelInstance[5].World._42;
-		charpos.z = mSkinnedModelInstance[5].World._43;
+		charpos.x = mSkinnedModelInstance[mMyId].World._41;
+		charpos.y = mSkinnedModelInstance[mMyId].World._42;
+		charpos.z = mSkinnedModelInstance[mMyId].World._43;
 
 		campos = camera.GetPosition();
 
 		cs_packet_player_move* move = reinterpret_cast<cs_packet_player_move*>(&send_buf);
 		move->size = sizeof(cs_packet_player_move);
 		move->type = CS_LEFT;
-		move->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mId;
+		move->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
 		move->camlook = camera.GetRight();
 		move->campos = campos;
 		send_wsa_buf.len = sizeof(cs_packet_player_move);
@@ -501,7 +475,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 			cs_packet_player_anmation_start* anim = reinterpret_cast<cs_packet_player_anmation_start*>(&send_buf);
 			anim->size = sizeof(cs_packet_player_anmation_start);
 			anim->type = CS_PACKET_START_ANIMATION;
-			anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mId;
+			anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
 			anim->animationState = 1;
 			send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
 
@@ -511,7 +485,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 			if (ret_val == SOCKET_ERROR)
 				std::cout << " [error] WSASend() " << std::endl;
 
-			mSkinnedModelInstance[5].mClipnameAndTotalCount = mClipnameAndTotalCounts[1];
+			mSkinnedModelInstance[mMyId].mClipnameAndTotalCount = mClipnameAndTotalCounts[1];
 			mOneCheck = true;
 
 		}
@@ -520,23 +494,9 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 		camLook.y = charpos.y - campos.y;
 		camLook.z = charpos.z - campos.z;
 
-		XMVECTOR s = XMVectorReplicate(0.5f*SPEED);
-		XMVECTOR l = XMLoadFloat3(&camera.GetRight());
-		XMVECTOR p = XMLoadFloat3(&charpos);
-		XMStoreFloat3(&charpos, XMVectorMultiplyAdd(s, -l, p));
-		if (!mSkinnedModelInstance[5].mCollision)
-		{
-			campos.x += charpos.x - mSkinnedModelInstance[5].World._41;
-			campos.z += charpos.z - mSkinnedModelInstance[5].World._43;
-		}
-		else
-		{
-			if (mSkinnedModelInstance[5].mAxis == Axis::x)
-				campos.x += charpos.x - mSkinnedModelInstance[5].World._41;
-			else if (mSkinnedModelInstance[5].mAxis == Axis::z)
-				campos.z += charpos.z - mSkinnedModelInstance[5].World._43;
-			
-		}
+		campos.x = mSkinnedModelInstance[mMyId].mCharCamPos.x + mSkinnedModelInstance[mMyId].World._41;
+		campos.z = mSkinnedModelInstance[mMyId].mCharCamPos.z + mSkinnedModelInstance[mMyId].World._43;
+		
 
 		camera.SetPosition(campos);
 
@@ -545,16 +505,16 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 	else if (GetAsyncKeyState('D') & 0x8000)
 	{
 
-		charpos.x = mSkinnedModelInstance[5].World._41;
-		charpos.y = mSkinnedModelInstance[5].World._42;
-		charpos.z = mSkinnedModelInstance[5].World._43;
+		charpos.x = mSkinnedModelInstance[mMyId].World._41;
+		charpos.y = mSkinnedModelInstance[mMyId].World._42;
+		charpos.z = mSkinnedModelInstance[mMyId].World._43;
 
 		campos = camera.GetPosition();
 
 		cs_packet_player_move* move = reinterpret_cast<cs_packet_player_move*>(&send_buf);
 		move->size = sizeof(cs_packet_player_move);
 		move->type = CS_RIGHT;
-		move->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mId;
+		move->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
 		move->camlook = camera.GetRight();
 		move->campos = campos;
 		send_wsa_buf.len = sizeof(cs_packet_player_move);
@@ -570,7 +530,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 			cs_packet_player_anmation_start* anim = reinterpret_cast<cs_packet_player_anmation_start*>(&send_buf);
 			anim->size = sizeof(cs_packet_player_anmation_start);
 			anim->type = CS_PACKET_START_ANIMATION;
-			anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mId;
+			anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
 			anim->animationState = 1;
 			send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
 
@@ -580,7 +540,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 			if (ret_val == SOCKET_ERROR)
 				std::cout << " [error] WSASend() " << std::endl;
 
-			mSkinnedModelInstance[5].mClipnameAndTotalCount = mClipnameAndTotalCounts[1];
+			mSkinnedModelInstance[mMyId].mClipnameAndTotalCount = mClipnameAndTotalCounts[1];
 			mOneCheck = true;
 
 		}
@@ -589,23 +549,10 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 		camLook.y = charpos.y - campos.y;
 		camLook.z = charpos.z - campos.z;
 
-		XMVECTOR s = XMVectorReplicate(0.5f*SPEED);
-		XMVECTOR l = XMLoadFloat3(&camera.GetRight());
-		XMVECTOR p = XMLoadFloat3(&charpos);
-		XMStoreFloat3(&charpos, XMVectorMultiplyAdd(s, l, p));
-		if (!mSkinnedModelInstance[5].mCollision)
-		{
-			campos.x += charpos.x - mSkinnedModelInstance[5].World._41;
-			campos.z += charpos.z - mSkinnedModelInstance[5].World._43;
-		}
-		else
-		{
-			if (mSkinnedModelInstance[5].mAxis == Axis::x)
-				campos.x += charpos.x - mSkinnedModelInstance[5].World._41;
-			else if (mSkinnedModelInstance[5].mAxis == Axis::z)
-				campos.z += charpos.z - mSkinnedModelInstance[5].World._43;
 
-		}
+		campos.x = mSkinnedModelInstance[mMyId].mCharCamPos.x + mSkinnedModelInstance[mMyId].World._41;
+		campos.z = mSkinnedModelInstance[mMyId].mCharCamPos.z + mSkinnedModelInstance[mMyId].World._43;
+
 
 		camera.SetPosition(campos);
 
@@ -617,7 +564,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 			cs_packet_player_anmation_start* anim = reinterpret_cast<cs_packet_player_anmation_start*>(&send_buf);
 			anim->size = sizeof(cs_packet_player_anmation_start);
 			anim->type = CS_PACKET_START_ANIMATION;
-			anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mId;
+			anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
 			anim->animationState = 0;
 			send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
 
@@ -627,8 +574,8 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 			if (ret_val == SOCKET_ERROR)
 				std::cout << " [error] WSASend() " << std::endl;
 
-			mSkinnedModelInstance[5].mAnimCnt = 0;
-			mSkinnedModelInstance[5].mClipnameAndTotalCount = mClipnameAndTotalCounts[0];
+			mSkinnedModelInstance[mMyId].mAnimCnt = 0;
+			mSkinnedModelInstance[mMyId].mClipnameAndTotalCount = mClipnameAndTotalCounts[0];
 		}
 		mOneCheck = false;
 	}
@@ -1322,7 +1269,7 @@ void CModelManager::BuildBasicGeometryBuffer()
 void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 {
 	std::ifstream ifs;
-	ifs.open("NewMapData.txt");
+	ifs.open("NewMapData1.txt");
 	XMFLOAT3 scale;
 	XMFLOAT4 rotation;
 	XMFLOAT3 position;

@@ -433,9 +433,9 @@ void CTestScene::OnMouseMove(WPARAM btnState, int x, int y)
 			up.y = 1;
 			up.z = 0;
 			///////////////오브젝트 위치 얻기/////////////////
-			objectpos.x = CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].World._41;
-			objectpos.y = CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].World._42 + 1;
-			objectpos.z = CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].World._43;
+			objectpos.x = CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._41;
+			objectpos.y = CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._42 + 1;
+			objectpos.z = CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._43;
 
 			//////////////카메라 위치 얻기////////////////////
 			campos = mCam.GetPosition();
@@ -447,13 +447,13 @@ void CTestScene::OnMouseMove(WPARAM btnState, int x, int y)
 			dist.y = campos.y - objectpos.y;
 			dist.z = campos.z - objectpos.z;
 
-			if (CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mRotateAngle == 0)
+			if (CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].mRotateAngle == 0)
 				sumdx = 0;
 
 			sumdx += dx;
 			//std::cout << "sum" << sumdx << std::endl;
 
-			CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mRotateAngle = sumdx;
+			CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].mRotateAngle = sumdx;
 
 			matRot = XMMatrixRotationY(dx);
 			eye = XMVector3TransformCoord(XMLoadFloat3(&dist), matRot);
@@ -462,6 +462,7 @@ void CTestScene::OnMouseMove(WPARAM btnState, int x, int y)
 			XMStoreFloat3(&dist, eye);
 			XMStoreFloat3(&up, upper);
 
+			CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].mCharCamPos = dist;
 			campos.x = dist.x + objectpos.x;
 			campos.y = dist.y + objectpos.y;
 			campos.z = dist.z + objectpos.z;

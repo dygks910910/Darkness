@@ -2,7 +2,6 @@
 #include "NetworkMgr.h"
 
 NetworkMgr* NetworkMgr::instance = nullptr;
-extern XMFLOAT3 camtest;
 
 NetworkMgr::NetworkMgr()
 {
@@ -27,7 +26,7 @@ void NetworkMgr::Initialize()
 
 		/*cout << " 서버 IP 입력 : ";
 		cin >> ip;*/
-		strcpy(ip, "127.0.0.1");
+		strcpy(ip, "192.168.0.4");
 
 		SOCKADDR_IN serverAddr;
 		ZeroMemory(&serverAddr, sizeof(SOCKADDR_IN));
@@ -107,7 +106,8 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 	{
 		sc_packet_put_user put_user;
 		memcpy(&put_user, packet, packet[0]);
-		CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mId = put_user.id;
+		setId(put_user.id);
+		CModelManager::GetInstance()->GetSkinnedInstanceModels()[getId()].mId = put_user.id;
 		break;
 	}
 	case SC_PACKET_PLAYGAME_INIT_POS:
@@ -117,22 +117,23 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 
 		// 내 아이디와 패킷으로 온 ID가 같으면 내걸 set
 		// 아니면. 다른 애걸 set
-
-		if (CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mId == init_pos.id)
+		if (CModelManager::GetInstance()->GetSkinnedInstanceModels()[getId()].mId == init_pos.id)
 		{
-			CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].World = init_pos.worldMatrix;
-			CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mId = init_pos.id;
-			camtest.x = CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].World._41 + (-3.731);
-			camtest.y = 2.332356;
-			camtest.z = CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].World._43 + (-0.001785517);
+			CModelManager::GetInstance()->GetSkinnedInstanceModels()[getId()].World = init_pos.worldMatrix;
+			
 
-			std::cout << "아이디는" << CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mId << std::endl;
+
+			camtest.x = init_pos.campos.x;
+			camtest.y = 2.332356;
+			camtest.z = init_pos.campos.z;
+			std::cout << camtest.x << " " << camtest.y << " " << camtest.z << std::endl;
+			std::cout << "아이디는" << CModelManager::GetInstance()->GetSkinnedInstanceModels()[getId()].mId << std::endl;
 		}
 		else
 		{
-			CModelManager::GetInstance()->GetSkinnedInstanceModels()[3].World = init_pos.worldMatrix;
-			CModelManager::GetInstance()->GetSkinnedInstanceModels()[3].mId = init_pos.id;
-			std::cout << "아이디는" << CModelManager::GetInstance()->GetSkinnedInstanceModels()[3].mId << std::endl;
+			CModelManager::GetInstance()->GetSkinnedInstanceModels()[init_pos.id].mId = init_pos.id;
+			CModelManager::GetInstance()->GetSkinnedInstanceModels()[init_pos.id].World = init_pos.worldMatrix;
+			std::cout << "아이디는" << CModelManager::GetInstance()->GetSkinnedInstanceModels()[init_pos.id].mId << std::endl;
 		}
 		break;
 	}
@@ -140,10 +141,10 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 	{
 		sc_packet_playgame_player_pos player_pos;
 		memcpy(&player_pos, packet, packet[0]);
-		if (CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mId == player_pos.id)
-			CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].World = player_pos.worldMatrix;
+		if (CModelManager::GetInstance()->GetSkinnedInstanceModels()[getId()].mId == player_pos.id)
+			CModelManager::GetInstance()->GetSkinnedInstanceModels()[getId()].World = player_pos.worldMatrix;
 		else
-			CModelManager::GetInstance()->GetSkinnedInstanceModels()[3].World = player_pos.worldMatrix;
+			CModelManager::GetInstance()->GetSkinnedInstanceModels()[player_pos.id].World = player_pos.worldMatrix;
 
 	}
 	break;
@@ -152,19 +153,11 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 	{
 		sc_packet_player_anmation_start player_anim;
 		memcpy(&player_anim, packet, packet[0]);
-		CModelManager::GetInstance()->GetSkinnedInstanceModels()[3].mAnimstate = player_anim.animationState;
-		CModelManager::GetInstance()->GetSkinnedInstanceModels()[3].mAnimCnt = 0;
+		CModelManager::GetInstance()->GetSkinnedInstanceModels()[player_anim.id].mAnimstate = player_anim.animationState;
+		CModelManager::GetInstance()->GetSkinnedInstanceModels()[player_anim.id].mAnimCnt = 0;
 	}
 	break;
 
-	case SC_PACKET_PLAYGAME_COLLISION_TRUE:
-	{
-		sc_packet_collision_true player_coll;
-		memcpy(&player_coll, packet, packet[0]);
-		CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mCollision = player_coll.check;
-		CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mAxis = player_coll.axis;
-	}
-	break;
 
 	default:
 		break;

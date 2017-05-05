@@ -184,6 +184,8 @@ public:
 
 	XMFLOAT4X4 boundworld;
 
+	int mMyId;
+
 private:
 	void BuildShapeGeometryBuffers();
 	void BuildBasicGeometryBuffer();

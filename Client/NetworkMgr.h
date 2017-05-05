@@ -3,6 +3,7 @@
 #include <xnamath.h>
 #include "ModelManager.h"
 #pragma comment(lib, "ws2_32.lib")
+extern XMFLOAT3 camtest;
 
 const int MY_SERVER_PORT = 9000;
 
@@ -36,6 +37,7 @@ struct sc_packet_playgame_init_pos
 	BYTE type;
 	WORD id;
 	XMFLOAT4X4    worldMatrix;
+	XMFLOAT3 campos;
 };
 
 
@@ -58,14 +60,7 @@ struct sc_packet_player_anmation_start
 
 
 
-struct sc_packet_collision_true
-{
-	BYTE size;
-	BYTE type;
-	WORD id;
-	bool check;
-	UINT axis;
-};
+
 #pragma pack(pop)  
 
 
@@ -82,6 +77,7 @@ class NetworkMgr
 	int recv_size;
 	int   saved_size;
 
+	int mId;
 
 private:
 	static NetworkMgr* instance;
@@ -116,6 +112,10 @@ public:
 			instance = nullptr;
 		}
 	}
+
+public:
+	void setId(int id){mId = id;}
+	int getId() { return mId; }
 
 public:
 	void SetWindowHandle(HWND h) { mHandle = h; };
