@@ -32,7 +32,6 @@ bool CMainScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	mCam.SetPosition(0, 0, 0);
 	XMStoreFloat4x4(&mWorldMtx, XMMatrixTranslation(0, 0, 7));
 
-	D3D11_DEPTH_STENCIL_DESC depthDisabledStencilDesc;
 	//////////////////////////////////////////////////////////////////////////
 	//로고화면 초기화.
 	mMainLogo.Initialize(mDevice, mClientWidth, mClientHeight, L"UITextures/DarknessLogo.PNG", mClientWidth, mClientHeight);
@@ -54,6 +53,7 @@ bool CMainScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	// Clear the second depth stencil state before setting the parameters.
 	
 	
+	D3D11_DEPTH_STENCIL_DESC depthDisabledStencilDesc;
 	ZeroMemory(&depthDisabledStencilDesc, sizeof(depthDisabledStencilDesc));
 
 	// Now create a second depth stencil state which turns off the Z buffer for 2D rendering.  The only difference is 
@@ -184,8 +184,10 @@ void CMainScene::Draw(ID3D11RenderTargetView * rtv, ID3D11DepthStencilView * dsv
 	mDc->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	//zBuffer off
 	mDc->IASetInputLayout(InputLayouts::Basic32);
-	mDc->OMSetDepthStencilState(mDepthDisableState, 1);
+// 	mDc->OMSetDepthStencilState(mDepthDisableState, 1);
+	ZbufferOff();
 	bool result;
+
 	// center Sky about eye in world space
 	XMFLOAT3 eyePos = mCam.GetPosition();
 	XMMATRIX world = XMLoadFloat4x4(&mWorldMtx);
@@ -227,8 +229,9 @@ void CMainScene::Draw(ID3D11RenderTargetView * rtv, ID3D11DepthStencilView * dsv
  		mMainLogo.Render(mDc, 0, 0);
  	}
 
-	mDc->OMSetDepthStencilState(mDepthStencilState, 1);
-	// restore default states.
+// 	mDc->OMSetDepthStencilState(mDepthStencilState, 1);
+	//ZbufferOn();
+// restore default states.
 	mDc->RSSetState(0);
 	mDc->OMSetDepthStencilState(0, 0);
 

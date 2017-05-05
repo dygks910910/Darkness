@@ -22,7 +22,10 @@ private:
 	int m_mapLocationX, m_mapLocationY, m_pointLocationX, m_pointLocationY;
 	float m_mapSizeX, m_mapSizeY, m_terrainWidth, m_terrainHeight;
 	XMMATRIX m_viewMatrix;
-	CBitMap *m_MiniMapBitmap, *m_Border, *m_Point;
+	CBitMap *m_MiniMapBitmap,/* *m_Border, */*m_Point;
 	XMMATRIX m_worldMtx;
+	const int& MINIMAP_WIDTH = 200;
+	const int& MINIMAP_HEIGHT = 200;
+
 };
 

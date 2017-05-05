@@ -25,9 +25,9 @@ void NetworkMgr::Initialize()
 	{
 		char ip[128] = { 0 };
 
-
 		/*cout << " 서버 IP 입력 : ";
 		cin >> ip;*/
+
 		strcpy(ip, &m_strIp[0]);
 
 		SOCKADDR_IN serverAddr;

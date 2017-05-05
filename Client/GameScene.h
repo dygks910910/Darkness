@@ -16,7 +16,8 @@
 #include "ParticleSystem.h"
 #include "SkinnedModel.h"
 #include "Ssao.h"
-
+#include "MiniMap.h"
+#include "DrawText.h"
 struct BoundingSphere
 {
 	BoundingSphere() : Center(0.0f, 0.0f, 0.0f), Radius(0.0f) {}
@@ -43,11 +44,11 @@ class CGameScene :
 	ID3D11ShaderResourceView* mRandomTexSRV;
 	ParticleSystem mRain;
 	//////////////////////////////////////////////////////////////////////////
-	CCordinate mCordWorld;
+// 	CCordinate mCordWorld;
 	Camera	 mCam;
 	DirectionalLight mDirLights[3];
 	XMFLOAT3 mOriginalLightDir[3];
-
+	CMiniMap mMinimap;
 	///////////////////////////////Skined Model////////////////////////////////
 	// 	SkinnedModel* mCharacterModel;
 	// 	SkinnedModelInstance mCharacterInstance1;
@@ -59,7 +60,7 @@ class CGameScene :
 
 	Sky* mSky;
 
-
+	CDrawText mDrawText;
 	BoundingSphere mSceneBounds;
 
 	float mLightRotationAngle;
@@ -74,17 +75,10 @@ public:
 	virtual ~CGameScene();
 	virtual bool Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 		IDXGISwapChain* swapChain, const D3D11_VIEWPORT& viewPort, const int& clientWidth, const int& clientHeight);
-// <<<<<<< HEAD
-// 	virtual void UpdateScene(const float& dt) ;
-// 	virtual void Draw(ID3D11RenderTargetView* rtv,ID3D11DepthStencilView* dsv, D3D11_VIEWPORT* viewPort) ;
-// 	virtual void OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWnd) ;
-// 	virtual void OnMouseUp(WPARAM btnState, int x, int y) ;
-// =======
 	virtual std::string UpdateScene(const float dt, MSG& msg);
 	virtual void Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, D3D11_VIEWPORT* viewPort);
 	virtual void OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWnd);
 	virtual void OnMouseUp(WPARAM btnState, int x, int y);
-/*>>>>>>> SpotLight*/
 	virtual void OnMouseMove(WPARAM btnState, int x, int y);
 
 	virtual void OnResize();

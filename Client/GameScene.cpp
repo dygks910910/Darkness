@@ -15,6 +15,7 @@ CGameScene::~CGameScene()
  	SafeDelete(mSsao);
 	ReleaseCOM(mRainTexSRV);
 	ReleaseCOM(mRandomTexSRV);
+	mMinimap.Shutdown();
 
 }
 
@@ -40,12 +41,61 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	//////////////////////////////////////////////////////////////////////////
 	//재질,텍스처불러오기.
 	mTexMgr.Init(mDevice);
-// <<<<<<< HEAD
-// 	mModelMgr.Init(mTexMgr, &mCam, device);
-// =======
 	CModelManager::GetInstance()->Init(mTexMgr, &mCam, device);
-// >>>>>>> SpotLight
+	//////////////////////////////////////////////////////////////////////////
+	//zbufferOff를 위한 세팅
 
+	D3D11_DEPTH_STENCIL_DESC depthDisabledStencilDesc;
+	ZeroMemory(&depthDisabledStencilDesc, sizeof(depthDisabledStencilDesc));
+
+	// Now create a second depth stencil state which turns off the Z buffer for 2D rendering.  The only difference is 
+	// that DepthEnable is set to false, all other parameters are the same as the other depth stencil state.
+	depthDisabledStencilDesc.DepthEnable = false;
+	depthDisabledStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	depthDisabledStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
+	depthDisabledStencilDesc.StencilEnable = true;
+	depthDisabledStencilDesc.StencilReadMask = 0xFF;
+	depthDisabledStencilDesc.StencilWriteMask = 0xFF;
+	depthDisabledStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	depthDisabledStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+	depthDisabledStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	depthDisabledStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+	depthDisabledStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	depthDisabledStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+	depthDisabledStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	depthDisabledStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+	HR(device->CreateDepthStencilState(&depthDisabledStencilDesc, &mDepthDisableState));
+	depthDisabledStencilDesc.DepthEnable = true;
+
+	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
+	// Initialize the description of the stencil state.
+	ZeroMemory(&depthStencilDesc, sizeof(depthStencilDesc));
+
+	// Set up the description of the stencil state.
+	depthStencilDesc.DepthEnable = true;
+	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
+
+	depthStencilDesc.StencilEnable = true;
+	depthStencilDesc.StencilReadMask = 0xFF;
+	depthStencilDesc.StencilWriteMask = 0xFF;
+
+	// Stencil operations if pixel is front-facing.
+	depthStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	depthStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+	depthStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	depthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+	// Stencil operations if pixel is back-facing.
+	depthStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	depthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+	depthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	depthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+	// Create the depth stencil state.
+	HR(device->CreateDepthStencilState(&depthStencilDesc, &mDepthStencilState));
+	dc->OMSetDepthStencilState(mDepthStencilState, 1);
 
 	//버퍼 빌드
 	//BuildShapeGeometryBuffers();
@@ -97,7 +147,7 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	//월드좌표계 그려주기.
 	XMFLOAT4X4 temp4x4;
 	XMStoreFloat4x4(&temp4x4, XMMatrixIdentity());
-	mCordWorld.Init(device, temp4x4, 5000);
+// 	mCordWorld.Init(device, temp4x4, 5000);
 
 	mRandomTexSRV = d3dHelper::CreateRandomTexture1DSRV(mDevice);
 	std::vector<std::wstring> raindrops;
@@ -105,16 +155,20 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	mRainTexSRV = d3dHelper::CreateTexture2DArraySRV(mDevice, mDc, raindrops);
 	mRain.Init(mDevice, Effects::RainFX, mRainTexSRV, mRandomTexSRV, 10000);
 	mTimer.Start();
-		
+
+	mMinimap.Initialize(mDevice, mClientWidth, mClientHeight, mCam.othMtx(), 100, 100);
+	mDrawText.Init(mDevice, mDc);
+	OnResize();
 	return true;
 }
-// <<<<<<< HEAD
-// 
-// void CTestScene::UpdateScene(const float& dt)
-// =======
 bool testcamera = true;
 std::string CGameScene::UpdateScene(const float dt, MSG& msg)
 {
+	//미니맵 위치 없데이트.
+	//임시로 사용하는 스키니드모델배열의 5번째 모델.즉 플레이어임.
+  	mMinimap.PositionUpdate(CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].World._41,
+  		CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].World._43);
+	//mMinimap.PositionUpdate(0,0);
 	if (!camset)
 	{
 		mCam.SetPosition(camtest);
@@ -279,8 +333,6 @@ void CGameScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 
 	if (GetAsyncKeyState('1') & 0x8000)
 		mDc->RSSetState(RenderStates::WireframeRS);
-
-
 	//
 	// Draw the spheres with cubemap reflection.
 	//
@@ -299,11 +351,21 @@ void CGameScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 	mDc->HSSetShader(0, 0, 0);
 	mDc->DSSetShader(0, 0, 0);
 
-	mCordWorld.Draw(mDc, mCam);
+// 	mCordWorld.Draw(mDc, mCam);
 
 	mSky->Draw(mDc, mCam);
 
 	CModelManager::GetInstance()->DrawInstancedModel(mDc, activeInstanceTech, mShadowTransform, mCam);
+ 	ZbufferOff();
+	wchar_t a[50];
+	wsprintf(a,L"%d,%d,%d", (int)CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].World._41,
+		(int)CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].World._42,
+		(int)CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].World._43);
+	std::wstring tempWstr = a;
+	mDrawText(tempWstr,30,100.0f,100.0f);
+ 	mMinimap.Render(mDc, mCam);
+ 	ZbufferOn();
+	
 	mDc->OMSetBlendState(0, blendFactor, 0xffffffff); // restore default
 	mDc->IASetInputLayout(InputLayouts::Particle);
 	mDc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
@@ -311,9 +373,7 @@ void CGameScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 	mRain.SetEmitPos(mCam.GetPosition());
 	mRain.Draw(mDc, mCam);
 
-
 	// restore default states, as the SkyFX changes them in the effect file.
-
 
 	mDc->RSSetState(0);
 	mDc->OMSetDepthStencilState(0, 0);
@@ -326,8 +386,6 @@ void CGameScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 
 	HR(mSwapChain->Present(0, 0));
 }
-//////////////////////0406/////////////////////////
-
 
 void CGameScene::OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWnd)
 {

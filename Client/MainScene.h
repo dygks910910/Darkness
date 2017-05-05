@@ -12,8 +12,8 @@ class CMainScene :
 {
 	Camera mCam;
 	XMFLOAT4X4 mWorldMtx;
-	ID3D11DepthStencilState* mDepthDisableState;
-	ID3D11DepthStencilState* mDepthStencilState;
+// 	ID3D11DepthStencilState* mDepthDisableState;
+// 	ID3D11DepthStencilState* mDepthStencilState;
 	//////////////////////////////////////////////////////////////////////////
 	//로고화면
 	CBitMap mMainLogo;
