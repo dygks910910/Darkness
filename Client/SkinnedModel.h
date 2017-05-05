@@ -47,6 +47,7 @@ struct SkinnedModelInstance
 	int mAnimstate = 0;
 	int mId;
 	bool mCollision = false;
+	int mAxis = 0;
 	void Update(float dt);
 };
 #endif // SKINNEDMODEL_H

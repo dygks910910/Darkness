@@ -162,6 +162,7 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 		sc_packet_collision_true player_coll;
 		memcpy(&player_coll, packet, packet[0]);
 		CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mCollision = player_coll.check;
+		CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].mAxis = player_coll.axis;
 	}
 	break;
 

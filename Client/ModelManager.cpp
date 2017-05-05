@@ -1,6 +1,6 @@
 #include "ModelManager.h"
 
-#define SPEED 0.03
+#define SPEED 0.009
 #define ANIMCNT 5
 CModelManager* CModelManager::model = nullptr;
 XMFLOAT3 bextent;
@@ -399,9 +399,10 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 		}
 		else
 		{
-
-			//campos.x += 0;
-			//campos.z -= 0.5;
+			if (mSkinnedModelInstance[5].mAxis == Axis::x)
+				campos.x += charpos.x - mSkinnedModelInstance[5].World._41;
+			else if (mSkinnedModelInstance[5].mAxis == Axis::z)
+				campos.z += charpos.z - mSkinnedModelInstance[5].World._43;
 		}
 
 		camera.SetPosition(campos);
@@ -463,8 +464,11 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 		}
 		else
 		{
-			campos.x += 0;
-			campos.z += 0;
+			if(mSkinnedModelInstance[5].mAxis == Axis::x)
+				campos.x += charpos.x - mSkinnedModelInstance[5].World._41;
+			else if(mSkinnedModelInstance[5].mAxis == Axis::z)
+				campos.z += charpos.z - mSkinnedModelInstance[5].World._43;
+
 		}
 
 		camera.SetPosition(campos);
@@ -527,8 +531,11 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 		}
 		else
 		{
-			campos.x += 0;
-			campos.z += 0;
+			if (mSkinnedModelInstance[5].mAxis == Axis::x)
+				campos.x += charpos.x - mSkinnedModelInstance[5].World._41;
+			else if (mSkinnedModelInstance[5].mAxis == Axis::z)
+				campos.z += charpos.z - mSkinnedModelInstance[5].World._43;
+			
 		}
 
 		camera.SetPosition(campos);
@@ -593,8 +600,11 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 		}
 		else
 		{
-			campos.x += 0;
-			campos.z += 0;
+			if (mSkinnedModelInstance[5].mAxis == Axis::x)
+				campos.x += charpos.x - mSkinnedModelInstance[5].World._41;
+			else if (mSkinnedModelInstance[5].mAxis == Axis::z)
+				campos.z += charpos.z - mSkinnedModelInstance[5].World._43;
+
 		}
 
 		camera.SetPosition(campos);

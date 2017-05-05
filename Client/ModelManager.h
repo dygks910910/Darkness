@@ -9,6 +9,12 @@
 #include"LogoScene.h"
 #include "SkinnedModel.h"
 
+enum Axis
+{
+	x = 0,
+	z = 1
+};
+
 const int MAX_BUF_SIZE = 4000;
 
 const int CS_UP = 1;

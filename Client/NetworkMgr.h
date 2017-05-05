@@ -64,6 +64,7 @@ struct sc_packet_collision_true
 	BYTE type;
 	WORD id;
 	bool check;
+	UINT axis;
 };
 #pragma pack(pop)  
 
