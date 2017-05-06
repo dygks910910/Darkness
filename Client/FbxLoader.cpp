@@ -419,8 +419,8 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh,GeometryGenerator::MeshData& m
 	XMFLOAT3 testcenter;
 	if (check)
 	{
-		XMStoreFloat3(&bcenter, 0.5*(resultmax + resultmin));
-		XMStoreFloat3(&bextent, 0.5*(resultmax - resultmin));
+		XMStoreFloat3(&bcenter, 0.5f*(resultmax + resultmin));
+		XMStoreFloat3(&bextent, 0.5f*(resultmax - resultmin));
 
 
 		/*XMStoreFloat3(&bcenter, 0.5*(vMax + vMin));

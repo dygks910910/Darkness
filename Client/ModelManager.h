@@ -7,7 +7,7 @@
 #include "Camera.h"
 #include "RenderStates.h"
 #include "SkinnedModel.h"
-
+#include "xnacollision.h"
 const int MAX_BUF_SIZE = 4000;
 
 const int CS_UP = 1;
@@ -52,8 +52,8 @@ class CModelManager
 	ID3D11Buffer* mStaticBasicObjectVB;
 	ID3D11Buffer* mStaticBasicObjectIB;
 
-	ID3D11Buffer* mboundVB;
-	ID3D11Buffer* mboundIB;
+// 	ID3D11Buffer* mboundVB;
+// 	ID3D11Buffer* mboundIB;
 	//ID3D11Buffer* mInstanceBuffer;
 
 	std::vector<CStaticNomalModel> mStaticNormalModels;
@@ -115,12 +115,12 @@ class CModelManager
 	int sewers_entrance_IndexOffset, sewers_entrance_VertexOffset, sewers_entrance_IndexCount;
 	int tent_indexOffset, tent_VertexOffset, tent_indexCount;
 	int crate_indexOffset, crate_VertexOffset, crate_indexCount;
-	
 
-
-
-
-
+	XNA::OrientedBox angelStatueBox, wallBox, tower_cornerBox, tower_roundBox, building_bBox,
+		building_cBox,
+		building_dBox, building_eBox, building_fBox, barrelBox,
+		wellBox, food_aBox, food_bBox, hay_aBox, hay_bBox, hay_cBox, hay_dBox,
+		sack_aBox, sack_bBox, sewers_entranceBox, tentBox, crateBox;
 private:
 	static CModelManager* model;
 public:
@@ -153,7 +153,6 @@ public:
 	ID3D11Buffer* GetStaticNormalMappingObjectIB() { return mStaticNormalMappingObjectIB; }
 	ID3D11Buffer* GetStaticBasicObjectVB() { return mStaticBasicObjectVB; }
 	ID3D11Buffer* GetStaticBasicObjectIB() { return mStaticBasicObjectIB; }
-	//ID3D11Buffer* GetInstanceBuffer() { return mInstanceBuffer; }
 	std::vector<CStaticNomalModel>& GetStaticNormalModels() { return mStaticNormalModels; }
 	std::vector<CStaticBasicModel>& GetStaticBasicModels() { return mStaticBasicModels; }
 	std::vector<SkinnedModelInstance>& GetSkinnedInstanceModels() { return mSkinnedModelInstance; }

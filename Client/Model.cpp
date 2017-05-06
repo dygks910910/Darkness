@@ -18,6 +18,11 @@ CStaticNomalModel::CStaticNomalModel(const XMFLOAT4X4 & world,
 
 CStaticNomalModel::~CStaticNomalModel()
 {
+// #ifdef _DEBUG
+// 	ReleaseCOM(mBoxVB);
+// 	ReleaseCOM(mBoxIB);
+// #endif
+
 }
 
 void CStaticNomalModel::Draw(ID3D11DeviceContext* dc,
@@ -150,6 +155,91 @@ CStaticBasicModel::CStaticBasicModel(const XMFLOAT4X4 & world, const Material & 
 
 }
 
+CStaticBasicModel::CStaticBasicModel(const XMFLOAT4X4 & world, const Material & matrial, const int & indexCount, const int & vertexOffset, const int & indexOffset, ID3D11ShaderResourceView * texSRV, const char * name, const XNA::OrientedBox& box,
+	ID3D11Device* device)
+	: mObjName(name), mWorld(world), mObjMatrial(matrial), mIndexOffset(indexOffset), mVertexOffset(vertexOffset),
+	mIndexCount(indexCount), mTexSRV(texSRV),mBox(box)
+{
+
+	Vertex::Basic32 vertices[8];
+	vertices[0].Pos = XMFLOAT3(-mBox.Extents.x +mBox.Center.x, 
+		-mBox.Extents.y+mBox.Center.y,
+		-mBox.Extents.z + mBox.Center.z);
+	vertices[1].Pos = XMFLOAT3(-mBox.Extents.x + mBox.Center.x,
+		+mBox.Extents.y + mBox.Center.y,
+		-mBox.Extents.z + mBox.Center.z);
+	vertices[2].Pos = XMFLOAT3(+mBox.Extents.x + mBox.Center.x,
+		+mBox.Extents.y + mBox.Center.y,
+		-mBox.Extents.z + mBox.Center.z);
+	vertices[3].Pos = XMFLOAT3(+mBox.Extents.x + mBox.Center.x,
+		-mBox.Extents.y + mBox.Center.y,
+		-mBox.Extents.z + mBox.Center.z);
+
+	vertices[4].Pos = XMFLOAT3(-mBox.Extents.x + mBox.Center.x,
+		-mBox.Extents.y + mBox.Center.y,
+		+mBox.Extents.z + mBox.Center.z);
+	vertices[5].Pos = XMFLOAT3(-mBox.Extents.x + mBox.Center.x,
+		+mBox.Extents.y + mBox.Center.y,
+		+mBox.Extents.z + mBox.Center.z);
+	vertices[6].Pos = XMFLOAT3(+mBox.Extents.x + mBox.Center.x,
+		+mBox.Extents.y + mBox.Center.y,
+		+mBox.Extents.z + mBox.Center.z);
+	vertices[7].Pos = XMFLOAT3(+mBox.Extents.x + mBox.Center.x,
+		-mBox.Extents.y+ mBox.Center.y,
+		+mBox.Extents.z + mBox.Center.z);
+
+
+	D3D11_BUFFER_DESC vbd;
+	vbd.Usage = D3D11_USAGE_IMMUTABLE;
+	vbd.ByteWidth = sizeof(Vertex::Basic32) * 8;
+	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	vbd.CPUAccessFlags = 0;
+	vbd.MiscFlags = 0;
+	vbd.StructureByteStride = 0;
+	D3D11_SUBRESOURCE_DATA vinitData;
+	vinitData.pSysMem = vertices;
+	HR(device->CreateBuffer(&vbd, &vinitData, &mBoxVB));
+
+	UINT indices[] = {
+		// front face
+		0, 1, 2,
+		0, 2, 3,
+
+		// back face
+		4, 6, 5,
+		4, 7, 6,
+
+		// left face
+		4, 5, 1,
+		4, 1, 0,
+
+		// right face
+		3, 2, 6,
+		3, 6, 7,
+
+		// top face
+		1, 5, 6,
+		1, 6, 2,
+
+		// bottom face
+		4, 0, 3,
+		4, 3, 7
+	};
+	
+
+	
+	D3D11_BUFFER_DESC ibd;
+	ibd.Usage = D3D11_USAGE_IMMUTABLE;
+	ibd.ByteWidth = sizeof(UINT) *36;
+	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	ibd.CPUAccessFlags = 0;
+	ibd.MiscFlags = 0;
+	D3D11_SUBRESOURCE_DATA iinitData;
+	iinitData.pSysMem = indices;
+	HR(device->CreateBuffer(&ibd, &iinitData, &mBoxIB));
+
+}
+
 CStaticBasicModel::~CStaticBasicModel()
 {
 }
@@ -189,7 +279,43 @@ void CStaticBasicModel::Draw(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* te
 		tech->GetPassByIndex(p)->Apply(0, dc);
 		dc->DrawIndexed(mIndexCount, mIndexOffset, mVertexOffset);
 	}
+// 	if (mObjName == "angelStatue") {
+// #ifdef _DEBUG
+// 	
+// #endif
+// 	}
+}
 
+
+void CStaticBasicModel::DrawBox(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const Camera& cam)
+{
+	XMMATRIX world;
+	XMMATRIX worldInvTranspose;
+	XMMATRIX worldViewProj;
+
+	
+	UINT stride = sizeof(Vertex::Basic32);
+	UINT  offset = 0;
+	//dc->IASetInputLayout(InputLayouts::Basic32);
+	dc->IASetVertexBuffers(0, 1, &mBoxVB, &stride, &offset);
+	dc->IASetIndexBuffer(mBoxIB, DXGI_FORMAT_R32_UINT, 0);
+	D3DX11_TECHNIQUE_DESC techDesc;
+	tech->GetDesc(&techDesc);
+
+	for (UINT p = 0; p < techDesc.Passes; ++p)
+	{
+		// Draw the skull.
+		world = XMLoadFloat4x4(&mWorld);
+		worldInvTranspose = MathHelper::InverseTranspose(world);
+		worldViewProj = world*cam.View()*cam.Proj();
+
+		Effects::BasicFX->SetWorld(world);
+		Effects::BasicFX->SetWorldInvTranspose(worldInvTranspose);
+		Effects::BasicFX->SetWorldViewProj(worldViewProj);
+
+		tech->GetPassByIndex(p)->Apply(0, dc);
+		dc->DrawIndexed(36, 0, 0);
+	}
 }
 
 void CStaticBasicModel::DrawToShadowMap(ID3D11DeviceContext* dc,

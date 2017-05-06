@@ -1,20 +1,26 @@
 #pragma once
+//#include "ModelManager.h"
 #include "Vertex.h"
 #include "LightHelper.h"
 #include<string>
 #include"Effects.h"
 #include "Camera.h"
-
+#include "xnacollision.h"
+#include "GeometryGenerator.h"
+#include "RenderStates.h"
 class CStaticBasicModel
 {
 protected:
-	std::string mObjName;
 	XMFLOAT4X4 mWorld;
 	Material mObjMatrial;
 
 	int mIndexCount;
 	int mVertexOffset;
 	int mIndexOffset;
+	XNA::OrientedBox mBox;
+	
+	ID3D11Buffer* mBoxVB;
+	ID3D11Buffer* mBoxIB;
 
 	ID3D11ShaderResourceView* mTexSRV;
 
@@ -27,12 +33,29 @@ public:
 		ID3D11ShaderResourceView* texSRV,
 		const char* name
 	);
+	//orientedBox추가버전.
+	CStaticBasicModel(const XMFLOAT4X4& world,
+		const Material& matrial,
+		const int& indexCount,
+		const int& vertexOffset,
+		const int& indexOffset,
+		ID3D11ShaderResourceView* texSRV,
+		const char* name,
+		const XNA::OrientedBox& box,
+		ID3D11Device* device
+	);
 	~CStaticBasicModel();
 	virtual void Draw(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMFLOAT4X4& shadowTransform, const Camera& cam);
+
 	virtual void DrawToShadowMap(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMFLOAT4X4& lightView, const XMFLOAT4X4& lightProj);
 	void DrawSsao(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMMATRIX& shadowTransform, const Camera& cam);
+	void DrawBox(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const Camera& cam);
+	ID3D11Buffer* GetBoxVB() { return mBoxVB; }
+	ID3D11Buffer* GetBoxIB() { return mBoxIB; }
 
 public:
+	std::string mObjName;
+
 };
 
 class CStaticNomalModel : public CStaticBasicModel

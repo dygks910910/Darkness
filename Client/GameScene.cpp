@@ -34,7 +34,6 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	//////////////////////////////////////////////////////////////////////////
 	//월드세팅
 
-
 	mSceneBounds.Center = XMFLOAT3(0, 0, 0);
 	mSceneBounds.Radius = 110;
 	mLightRotationAngle = 0;

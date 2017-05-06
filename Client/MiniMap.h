@@ -25,7 +25,7 @@ private:
 	CBitMap *m_MiniMapBitmap,/* *m_Border, */*m_Point;
 	XMMATRIX m_worldMtx;
 	const int& MINIMAP_WIDTH = 200;
-	const int& MINIMAP_HEIGHT = 200;
+	const int& MINIMAP_HEIGHT = 250;
 
 };
 

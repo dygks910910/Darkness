@@ -27,6 +27,14 @@ CModelManager::~CModelManager()
 	{
 		delete[](p->second);
 	}
+	for (auto p : mStaticBasicModels)
+	{
+		ID3D11Buffer* tempVB = p.GetBoxIB();
+		ID3D11Buffer* tempIB =  p.GetBoxVB();
+		ReleaseCOM(tempVB);
+		ReleaseCOM(tempIB);
+
+	}
 }
 
 void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device)
@@ -118,7 +126,6 @@ void CModelManager::DrawStaticSsaoNormalModels(ID3D11DeviceContext * dc, ID3DX11
 		p.DrawSsao(dc, tech, shadowTransform, cam);
 		//p.Draw(dc, tech, shadowTransform, cam);
 	}
-
 	UINT stride2 = sizeof(Vertex::Basic32);
 	UINT  offset2 = 0;
 	dc->IASetInputLayout(InputLayouts::Basic32);
@@ -208,28 +215,15 @@ void CModelManager::DrawStaticBasicModels(ID3D11DeviceContext* dc, ID3DX11Effect
 		p.Draw(dc, tech, shadowTransform, cam);
 	}
 
-	dc->IASetInputLayout(InputLayouts::Line);
-	//dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
-	D3DX11_TECHNIQUE_DESC techDesc;
-	ID3DX11EffectTechnique* lineTech;
-	lineTech = Effects::LineFX->mTech;
-	UINT stride2 = sizeof(Vertex::Line);
-	UINT offset2 = 0;
-	lineTech->GetDesc(&techDesc);
-	for (UINT p = 0; p < techDesc.Passes; ++p)
-	{
-		dc->IASetVertexBuffers(0, 1, &mboundVB, &stride2, &offset2);
-		dc->IASetIndexBuffer(mboundIB, DXGI_FORMAT_R32_UINT, 0);
-
-		// Set per object constants.
-		XMMATRIX world = XMLoadFloat4x4(&boundworld);
-		XMMATRIX worldViewProj = world*cam.View()*cam.Proj();
-
-		Effects::LineFX->SetWorldViewProj(worldViewProj);
-
-		lineTech->GetPassByIndex(p)->Apply(0, dc);
-		dc->DrawIndexed(24, 0, 0);
+	if (GetAsyncKeyState('1') & 0x8000) {
+		dc->RSSetState(RenderStates::WireframeRS);
+		for (auto p : mStaticBasicModels)
+		{
+			p.DrawBox(dc, tech, cam);
+		}
+		dc->RSSetState(RenderStates::SolidRS);
 	}
+
 }
 
 void CModelManager::DrawToShadowMap(ID3D11DeviceContext * dc, ID3DX11EffectTechnique * tech, 
@@ -749,137 +743,140 @@ void CModelManager::BuildBasicGeometryBuffer()
 		building_d, building_e, building_f, barrel,
 		well,food_a,food_b,hay_a,hay_b,hay_c,hay_d,sack_a,sack_b,sewers_entrance,tent,crate;
 	CFbxLoader loader;
+	
 
-	if (bextent.z != 0)
-	{
-		Vertex::Line boundver[24];
-		UINT boundind[24];
-		for (int i = 0; i < 24; ++i)
-			boundind[i] = i;
-		//위//
-		boundver[0].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y -bextent.y, bcenter.z -bextent.z);
-		boundver[0].color = XMFLOAT4(255, 0, 0, 0);
-		boundver[1].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y -bextent.y, bcenter.z +bextent.z);
-		boundver[1].color = XMFLOAT4(255, 0, 0, 0);
-		boundver[2].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.y -bextent.y, bcenter.z +bextent.z);
-		boundver[2].color = XMFLOAT4(255, 0, 0, 0);
-		boundver[3].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.y -bextent.y, bcenter.z -bextent.z);
-		boundver[3].color = XMFLOAT4(255, 0, 0, 0);
-		
-		//왼//
-		boundver[4].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y -bextent.y, bcenter.z -bextent.z);
-		boundver[4].color = XMFLOAT4(255, 0, 0, 0);
-		boundver[5].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y -bextent.y, bcenter.z +bextent.z);
-		boundver[5].color = XMFLOAT4(255, 0, 0, 0);
-		boundver[6].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y +bextent.y, bcenter.z +bextent.z);
-		boundver[6].color = XMFLOAT4(255, 0, 0, 0);
-		boundver[7].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y +bextent.y, bcenter.z -bextent.z);
-		boundver[7].color = XMFLOAT4(255, 0, 0, 0);
-
-		//오//
-		boundver[8].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.x -bextent.y, bcenter.x -bextent.z);
-		boundver[8].color = XMFLOAT4(255, 0, 0, 0);
-		boundver[9].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.x -bextent.y, bcenter.x +bextent.z);
-		boundver[9].color = XMFLOAT4(255, 0, 0, 0);
-		boundver[10].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.x +bextent.y, bcenter.x +bextent.z);
-		boundver[10].color = XMFLOAT4(255, 0, 0, 0);
-		boundver[11].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.x +bextent.y, bcenter.x -bextent.z);
-		boundver[11].color = XMFLOAT4(255, 0, 0, 0);
-
-		//밑//
-		boundver[12].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.y +bextent.y, bcenter.z -bextent.z);
-		boundver[12].color = XMFLOAT4(255, 0, 0, 0);
-		boundver[13].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y +bextent.y, bcenter.z -bextent.z);
-		boundver[13].color = XMFLOAT4(255, 0, 0, 0);
-		boundver[14].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y +bextent.y, bcenter.z +bextent.z);
-		boundver[14].color = XMFLOAT4(255, 0, 0, 0);
-		boundver[15].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.y +bextent.y, bcenter.z +bextent.z);
-		boundver[15].color = XMFLOAT4(255, 0, 0, 0);
-		
-		//앞//
-		boundver[16].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y -bextent.y, bcenter.z -bextent.z);
-		boundver[16].color = XMFLOAT4(255, 0, 0, 0);
-		boundver[17].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y +bextent.y, bcenter.z -bextent.z);
-		boundver[17].color = XMFLOAT4(255, 0, 0, 0);
-		boundver[18].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.y +bextent.y, bcenter.z -bextent.z);
-		boundver[18].color = XMFLOAT4(255, 0, 0, 0);
-		boundver[19].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.y -bextent.y, bcenter.z -bextent.z);
-		boundver[19].color = XMFLOAT4(255, 0, 0, 0);
-
-		//뒤//
-		boundver[20].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y -bextent.y, bcenter.z +bextent.z);
-		boundver[20].color = XMFLOAT4(255, 0, 0, 0);
-		boundver[21].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y +bextent.y, bcenter.z +bextent.z);
-		boundver[21].color = XMFLOAT4(255, 0, 0, 0);
-		boundver[22].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.y +bextent.y, bcenter.z +bextent.z);
-		boundver[22].color = XMFLOAT4(255, 0, 0, 0);
-		boundver[23].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.y -bextent.y, bcenter.z +bextent.z);
-		boundver[23].color = XMFLOAT4(255, 0, 0, 0);
-		///////boundingbox/////////
-		D3D11_BUFFER_DESC boundvbd;
-		boundvbd.Usage = D3D11_USAGE_IMMUTABLE;
-		boundvbd.ByteWidth = sizeof(Vertex::Line) * 24;
-		boundvbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		boundvbd.CPUAccessFlags = 0;
-		boundvbd.MiscFlags = 0;
-		D3D11_SUBRESOURCE_DATA boundinitData;
-		boundinitData.pSysMem = boundver;
-		HR(mDevice->CreateBuffer(&boundvbd, &boundinitData, &mboundVB));
-
-		D3D11_BUFFER_DESC boundib;
-		boundib.Usage = D3D11_USAGE_IMMUTABLE;
-		boundib.ByteWidth = sizeof(UINT) * 24;
-		boundib.BindFlags = D3D11_BIND_INDEX_BUFFER;
-		boundib.CPUAccessFlags = 0;
-		boundib.MiscFlags = 0;
-		D3D11_SUBRESOURCE_DATA boundinit;
-		boundinit.pSysMem = boundind;
-		HR(mDevice->CreateBuffer(&boundib, &boundinit, &mboundIB));
-
-		XMFLOAT3 scale;
-		scale.x = 0.01;
-		scale.y = 0.01;
-		scale.z = 0.01;
-
-		XMFLOAT3 position;
-		position.x = 21.5;
-		position.y = 0.4565048;
-		position.z = 16.10033;
-		/*position.x = 0;
-		position.y = 0;
-		position.z = 0;
-*/
-		XMFLOAT4 rotation;
-		rotation.x = -0.4992557;
-		rotation.y = 0.5009;
-		rotation.z = 0.5007431;
-		rotation.w = 0.4990985;
-		//////buildingc////
-	/*rotation.x = -0.4992557f;
-	rotation.y = 0.5009f;
-	rotation.z = 0.5007431f;
-	rotation.w = 0.4990985f;*/
-
-		XMVECTOR S = XMLoadFloat3(&scale);
-		XMVECTOR P = XMLoadFloat3(&position);
-		XMVECTOR Q = XMLoadFloat4(&rotation);
-		XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-
-		XMFLOAT4X4 M;
-		XMStoreFloat4x4(&boundworld, XMMatrixAffineTransformation(S, zero, Q, P));
-		
-		/*XMMATRIX modelScale = XMMatrixScaling(0.01f, 0.01f, 0.01f);
-		XMMATRIX modelRot = XMMatrixRotationY(MathHelper::Pi);
-		XMMATRIX modelOffset = XMMatrixTranslation(3.45f, 0.444f, -39.659f);
-		XMStoreFloat4x4(&boundworld, modelScale*modelRot*modelOffset);*/
-		/*boundworld._41 += bcenter.y*0.01;
-		boundworld._42 += bcenter.z*0.01;
-		boundworld._43 += bcenter.x*0.01;*/
-
-		std::cout << boundworld._41 << ' ' << boundworld._42 << ' ' << boundworld._43 << std::endl;
+//////////////////////////////////////////////////////////////////////////두홍이 코드
+// 	if (bextent.z != 0)
+// 	{
+// 		Vertex::Line boundver[24];
+// 		UINT boundind[24];
+// 		for (int i = 0; i < 24; ++i)
+// 			boundind[i] = i;
+// 		//위//
+// 		boundver[0].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y -bextent.y, bcenter.z -bextent.z);
+// 		boundver[0].color = XMFLOAT4(255, 0, 0, 0);
+// 		boundver[1].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y -bextent.y, bcenter.z +bextent.z);
+// 		boundver[1].color = XMFLOAT4(255, 0, 0, 0);
+// 		boundver[2].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.y -bextent.y, bcenter.z +bextent.z);
+// 		boundver[2].color = XMFLOAT4(255, 0, 0, 0);
+// 		boundver[3].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.y -bextent.y, bcenter.z -bextent.z);
+// 		boundver[3].color = XMFLOAT4(255, 0, 0, 0);
+// 		
+// 		//왼//
+// 		boundver[4].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y -bextent.y, bcenter.z -bextent.z);
+// 		boundver[4].color = XMFLOAT4(255, 0, 0, 0);
+// 		boundver[5].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y -bextent.y, bcenter.z +bextent.z);
+// 		boundver[5].color = XMFLOAT4(255, 0, 0, 0);
+// 		boundver[6].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y +bextent.y, bcenter.z +bextent.z);
+// 		boundver[6].color = XMFLOAT4(255, 0, 0, 0);
+// 		boundver[7].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y +bextent.y, bcenter.z -bextent.z);
+// 		boundver[7].color = XMFLOAT4(255, 0, 0, 0);
+// 
+// 		//오//
+// 		boundver[8].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.x -bextent.y, bcenter.x -bextent.z);
+// 		boundver[8].color = XMFLOAT4(255, 0, 0, 0);
+// 		boundver[9].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.x -bextent.y, bcenter.x +bextent.z);
+// 		boundver[9].color = XMFLOAT4(255, 0, 0, 0);
+// 		boundver[10].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.x +bextent.y, bcenter.x +bextent.z);
+// 		boundver[10].color = XMFLOAT4(255, 0, 0, 0);
+// 		boundver[11].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.x +bextent.y, bcenter.x -bextent.z);
+// 		boundver[11].color = XMFLOAT4(255, 0, 0, 0);
+// 
+// 		//밑//
+// 		boundver[12].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.y +bextent.y, bcenter.z -bextent.z);
+// 		boundver[12].color = XMFLOAT4(255, 0, 0, 0);
+// 		boundver[13].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y +bextent.y, bcenter.z -bextent.z);
+// 		boundver[13].color = XMFLOAT4(255, 0, 0, 0);
+// 		boundver[14].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y +bextent.y, bcenter.z +bextent.z);
+// 		boundver[14].color = XMFLOAT4(255, 0, 0, 0);
+// 		boundver[15].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.y +bextent.y, bcenter.z +bextent.z);
+// 		boundver[15].color = XMFLOAT4(255, 0, 0, 0);
+// 		
+// 		//앞//
+// 		boundver[16].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y -bextent.y, bcenter.z -bextent.z);
+// 		boundver[16].color = XMFLOAT4(255, 0, 0, 0);
+// 		boundver[17].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y +bextent.y, bcenter.z -bextent.z);
+// 		boundver[17].color = XMFLOAT4(255, 0, 0, 0);
+// 		boundver[18].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.y +bextent.y, bcenter.z -bextent.z);
+// 		boundver[18].color = XMFLOAT4(255, 0, 0, 0);
+// 		boundver[19].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.y -bextent.y, bcenter.z -bextent.z);
+// 		boundver[19].color = XMFLOAT4(255, 0, 0, 0);
+// 
+// 		//뒤//
+// 		boundver[20].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y -bextent.y, bcenter.z +bextent.z);
+// 		boundver[20].color = XMFLOAT4(255, 0, 0, 0);
+// 		boundver[21].Pos = XMFLOAT3(bcenter.x -bextent.x, bcenter.y +bextent.y, bcenter.z +bextent.z);
+// 		boundver[21].color = XMFLOAT4(255, 0, 0, 0);
+// 		boundver[22].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.y +bextent.y, bcenter.z +bextent.z);
+// 		boundver[22].color = XMFLOAT4(255, 0, 0, 0);
+// 		boundver[23].Pos = XMFLOAT3(bcenter.x +bextent.x, bcenter.y -bextent.y, bcenter.z +bextent.z);
+// 		boundver[23].color = XMFLOAT4(255, 0, 0, 0);
+// 		///////boundingbox/////////
+// 		D3D11_BUFFER_DESC boundvbd;
+// 		boundvbd.Usage = D3D11_USAGE_IMMUTABLE;
+// 		boundvbd.ByteWidth = sizeof(Vertex::Line) * 24;
+// 		boundvbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+// 		boundvbd.CPUAccessFlags = 0;
+// 		boundvbd.MiscFlags = 0;
+// 		D3D11_SUBRESOURCE_DATA boundinitData;
+// 		boundinitData.pSysMem = boundver;
+// 		HR(mDevice->CreateBuffer(&boundvbd, &boundinitData, &mboundVB));
+// 
+// 		D3D11_BUFFER_DESC boundib;
+// 		boundib.Usage = D3D11_USAGE_IMMUTABLE;
+// 		boundib.ByteWidth = sizeof(UINT) * 24;
+// 		boundib.BindFlags = D3D11_BIND_INDEX_BUFFER;
+// 		boundib.CPUAccessFlags = 0;
+// 		boundib.MiscFlags = 0;
+// 		D3D11_SUBRESOURCE_DATA boundinit;
+// 		boundinit.pSysMem = boundind;
+// 		HR(mDevice->CreateBuffer(&boundib, &boundinit, &mboundIB));
+// 
+// 		XMFLOAT3 scale;
+// 		scale.x = 0.01;
+// 		scale.y = 0.01;
+// 		scale.z = 0.01;
+// 
+// 		XMFLOAT3 position;
+// 		position.x = 21.5;
+// 		position.y = 0.4565048;
+// 		position.z = 16.10033;
+// 		/*position.x = 0;
+// 		position.y = 0;
+// 		position.z = 0;
+// */
+// 		XMFLOAT4 rotation;
+// 		rotation.x = -0.4992557;
+// 		rotation.y = 0.5009;
+// 		rotation.z = 0.5007431;
+// 		rotation.w = 0.4990985;
+// 		//////buildingc////
+// 	/*rotation.x = -0.4992557f;
+// 	rotation.y = 0.5009f;
+// 	rotation.z = 0.5007431f;
+// 	rotation.w = 0.4990985f;*/
+// 
+// 		XMVECTOR S = XMLoadFloat3(&scale);
+// 		XMVECTOR P = XMLoadFloat3(&position);
+// 		XMVECTOR Q = XMLoadFloat4(&rotation);
+// 		XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+// 
+// 		XMFLOAT4X4 M;
+// 		XMStoreFloat4x4(&boundworld, XMMatrixAffineTransformation(S, zero, Q, P));
+// 		
+// 		/*XMMATRIX modelScale = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+// 		XMMATRIX modelRot = XMMatrixRotationY(MathHelper::Pi);
+// 		XMMATRIX modelOffset = XMMatrixTranslation(3.45f, 0.444f, -39.659f);
+// 		XMStoreFloat4x4(&boundworld, modelScale*modelRot*modelOffset);*/
+// 		/*boundworld._41 += bcenter.y*0.01;
+// 		boundworld._42 += bcenter.z*0.01;
+// 		boundworld._43 += bcenter.x*0.01;*/
+// 
+// 		std::cout << boundworld._41 << ' ' << boundworld._42 << ' ' << boundworld._43 << std::endl;
 
 		///////////////////////////
-	}
+	//}
+//////////////////////////////////////////////////////////////////////////여기까지 지움
 	// 	loader.LoadFBX("Darkness fbx\\fence1.FBX", fence);
 	// 	loader.LoadFBX("Darkness fbx\\house 1.fbx", house1);
 	// 	loader.LoadFBX("Darkness fbx\\house 2.fbx", house2);
@@ -887,30 +884,28 @@ void CModelManager::BuildBasicGeometryBuffer()
 	// 	loader.LoadFBX("Darkness fbx\\house 4.fbx", house4);
 	// 	loader.LoadFBX("Darkness fbx\\house 5.fbx", house5);
 	// 	loader.LoadFBX("Darkness fbx\\house 6.fbx", house6);
-	loader.LoadFBX("Darkness fbx\\angelStatue.fbx", angelStatue);
-	loader.LoadFBX("Darkness fbx\\wall.fbx", wall);
-	loader.LoadFBX("Darkness fbx\\tower_corner.fbx", tower_corner);
-	loader.LoadFBX("Darkness fbx\\tower_round.fbx", tower_round);
-	loader.LoadFBX("Darkness fbx\\Building_b.fbx", building_b);
-	check = true;
-	loader.LoadFBX("Darkness fbx\\Building_c.fbx", building_c);
-	check = false;
-	loader.LoadFBX("Darkness fbx\\Building_d.fbx", building_d);
-	loader.LoadFBX("Darkness fbx\\Building_e.fbx", building_e);
-	loader.LoadFBX("Darkness fbx\\Well.FBX", well);
-	loader.LoadFBX("Darkness fbx\\Food_a.FBX", food_a);
-	loader.LoadFBX("Darkness fbx\\Food_b.FBX", food_b);
-	loader.LoadFBX("Darkness fbx\\Hay_a.FBX", hay_a);
-	loader.LoadFBX("Darkness fbx\\Hay_b.FBX", hay_b);
-	loader.LoadFBX("Darkness fbx\\Hay_c.FBX", hay_c);
-	loader.LoadFBX("Darkness fbx\\Hay_d.FBX", hay_d);
-	loader.LoadFBX("Darkness fbx\\Sack_a.FBX", sack_a);
-	loader.LoadFBX("Darkness fbx\\Sack_b.FBX", sack_b);
-	loader.LoadFBX("Darkness fbx\\Sewers_entrance.FBX", sewers_entrance);
-	loader.LoadFBX("Darkness fbx\\Tent.FBX", tent);
-	loader.LoadFBX("Darkness fbx\\Crate.FBX", crate);
-	loader.LoadFBX("Darkness fbx\\Building_f.FBX", building_f);
-	loader.LoadFBX("Darkness fbx\\Barrel.FBX", barrel);
+	loader.LoadFBX("Darkness fbx\\angelStatue.fbx", angelStatue,angelStatueBox);
+	loader.LoadFBX("Darkness fbx\\wall.fbx", wall,wallBox);
+	loader.LoadFBX("Darkness fbx\\tower_corner.fbx", tower_corner,tower_cornerBox);
+	loader.LoadFBX("Darkness fbx\\tower_round.fbx", tower_round,tower_roundBox);
+	loader.LoadFBX("Darkness fbx\\Building_b.fbx", building_b, building_bBox);
+	loader.LoadFBX("Darkness fbx\\Building_c.fbx", building_c, building_cBox);
+	loader.LoadFBX("Darkness fbx\\Building_d.fbx", building_d,building_dBox);
+	loader.LoadFBX("Darkness fbx\\Building_e.fbx", building_e, building_eBox);
+	loader.LoadFBX("Darkness fbx\\Well.FBX", well,wellBox);
+	loader.LoadFBX("Darkness fbx\\Food_a.FBX", food_a,food_aBox);
+	loader.LoadFBX("Darkness fbx\\Food_b.FBX", food_b,food_bBox);
+	loader.LoadFBX("Darkness fbx\\Hay_a.FBX", hay_a, hay_aBox);
+	loader.LoadFBX("Darkness fbx\\Hay_b.FBX", hay_b, hay_bBox);
+	loader.LoadFBX("Darkness fbx\\Hay_c.FBX", hay_c, hay_cBox);
+	loader.LoadFBX("Darkness fbx\\Hay_d.FBX", hay_d,hay_dBox);
+	loader.LoadFBX("Darkness fbx\\Sack_a.FBX", sack_a, sack_aBox);
+	loader.LoadFBX("Darkness fbx\\Sack_b.FBX", sack_b, sack_bBox);
+	loader.LoadFBX("Darkness fbx\\Sewers_entrance.FBX", sewers_entrance,sewers_entranceBox);
+	loader.LoadFBX("Darkness fbx\\Tent.FBX", tent,tentBox);
+	loader.LoadFBX("Darkness fbx\\Crate.FBX", crate,crateBox);
+	loader.LoadFBX("Darkness fbx\\Building_f.FBX", building_f,building_fBox);
+	loader.LoadFBX("Darkness fbx\\Barrel.FBX", barrel,barrelBox);
 
 	//////////////////////////////////////////////////////////////////////////
 		//VertexOffset설정
@@ -1326,7 +1321,9 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				angelStatueVertexOffset,
 				angelStatueIndexOffset,
 				texMgr.CreateTexture(L"Textures\\angelStatue.png"),
-				"angelStatue"
+				"angelStatue",
+				angelStatueBox,
+				mDevice
 			));
 		}
 		else if (!strcmp(objectName, "tower_corner"))
@@ -1344,7 +1341,9 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				tower_conerVertexOffset,
 				tower_conerIndexOffset,
 				texMgr.CreateTexture(L"Textures\\bricks_albedo.png"),
-				"tower_coner"
+				"tower_coner",
+				tower_cornerBox,
+				mDevice
 			));
 		}
 		else if (!strcmp(objectName, "tower_round"))
@@ -1362,7 +1361,9 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				tower_roundVertexOffset,
 				tower_roundIndexOffset,
 				texMgr.CreateTexture(L"Textures\\bricks_albedo.png"),
-				"tower_round"
+				"tower_round",
+				tower_roundBox,
+				mDevice
 			));
 		}
 		else if (!strcmp(objectName, "Building_b"))
@@ -1380,7 +1381,9 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				building_b_VertexOffset,
 				building_b_IndexOffset,
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
-				"Building_b"
+				"Building_b",
+				building_bBox,
+				mDevice
 			));
 		}
 		else if (!strcmp(objectName, "Building_c"))
@@ -1398,7 +1401,9 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				building_c_VertexOffset,
 				building_c_IndexOffset,
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
-				"Building_c"
+				"Building_c",
+				building_cBox,
+				mDevice
 			));
 		}
 
@@ -1417,7 +1422,9 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				building_d_VertexOffset,
 				building_d_IndexOffset,
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
-				"Building_b"
+				"Building_d",
+				building_dBox,
+				mDevice
 			));
 		}
 		else if (!strcmp(objectName, "Building_e"))
@@ -1435,7 +1442,9 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				building_e_VertexOffset,
 				building_e_IndexOffset,
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
-				"Building_e"
+				"Building_e",
+				building_eBox,
+				mDevice
 			));
 		}
 		else if (!strcmp(objectName, "Well"))
@@ -1453,7 +1462,9 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				well_VertexOffset,
 				well_IndexOffset,
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
-				"Well"
+				"Well",
+				wellBox,
+				mDevice	
 			));
 		}
 		else if (!strcmp(objectName, "Food_a"))
@@ -1471,7 +1482,9 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				food_a_VertexOffset,
 				food_a_IndexOffset,
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
-				"Food_a"
+				"Food_a",
+				food_aBox,
+				mDevice
 			));
 		}
 		else if (!strcmp(objectName, "Food_b"))
@@ -1489,7 +1502,9 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				food_b_VertexOffset,
 				food_b_IndexOffset,
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
-				"Food_b"
+				"Food_b",
+				food_bBox,
+				mDevice
 			));
 		}
 		else if (!strcmp(objectName, "Hay_a"))
@@ -1507,7 +1522,9 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				hay_a_VertexOffset,
 				hay_a_IndexOffset,
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
-				"Hay_a"
+				"Hay_a",
+				hay_aBox,
+				mDevice
 			));
 		}
 		else if (!strcmp(objectName, "Hay_b"))
@@ -1525,7 +1542,9 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				hay_b_VertexOffset,
 				hay_b_IndexOffset,
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
-				"Hay_b"
+				"Hay_b",
+				hay_bBox,
+				mDevice
 			));
 		}
 		else if (!strcmp(objectName, "Hay_c"))
@@ -1543,7 +1562,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				hay_c_VertexOffset,
 				hay_c_IndexOffset,
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
-				"Hay_c"
+				"Hay_c",hay_cBox,mDevice
 			));
 		}
 		else if (!strcmp(objectName, "Hay_d"))
@@ -1561,7 +1580,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				hay_d_VertexOffset,
 				hay_d_IndexOffset,
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
-				"Hay_d"
+				"Hay_d",hay_dBox,mDevice
 			));
 		}
 		else if (!strcmp(objectName, "Sack_a"))
@@ -1579,7 +1598,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				sack_a_VertexOffset,
 				sack_a_IndexOffset,
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
-				"Sack_a"
+				"Sack_a",sack_aBox,mDevice
 			));
 		}
 		else if (!strcmp(objectName, "Sack_b"))
@@ -1597,7 +1616,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				sack_b_VertexOffset,
 				sack_b_IndexOffset,
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
-				"Sack_b"
+				"Sack_b",sack_bBox,mDevice
 			));
 		}
 		else if (!strcmp(objectName, "Sewers_entrance"))
@@ -1615,7 +1634,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				sewers_entrance_VertexOffset,
 				sewers_entrance_IndexOffset,
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
-				"Sewers_entrance"
+				"Sewers_entrance",sewers_entranceBox,mDevice
 			));
 		}
 		else if (!strcmp(objectName, "Tent"))
@@ -1633,7 +1652,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				tent_VertexOffset,
 				tent_indexOffset,
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
-				"Tent"
+				"Tent",tentBox,mDevice
 			));
 		}
 		else if (!strcmp(objectName, "Crate"))
@@ -1651,7 +1670,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				crate_VertexOffset,
 				crate_indexOffset,
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
-				"Crate"
+				"Crate",crateBox,mDevice
 			));
 		}
 		else if (!strcmp(objectName, "Building_f"))
@@ -1669,7 +1688,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				building_f_VertexOffset,
 				building_f_IndexOffset,
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
-				"Building_f"
+				"Building_f",building_fBox,mDevice
 			));
 		}
 		else if (!strcmp(objectName, "Barrel"))
@@ -1687,7 +1706,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				barrel_VertexOffset,
 				barrel_IndexOffset,
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
-				"Barrel"
+				"Barrel",barrelBox,mDevice
 			));
 		}
 		//////////////////////////////////////////////////////////////////////////아직 추가 안함.

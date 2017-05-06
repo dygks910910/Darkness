@@ -48,7 +48,7 @@ bool CMiniMap::Initialize(ID3D11Device * device, int screenWidth, int screenHeig
 
 	// Initialize the mini-map bitmap object.
 	result = m_MiniMapBitmap->Initialize(device, screenWidth, screenHeight,
- L"Textures/minimapImage.PNG", 200, 250);
+ L"Textures/minimapImage.PNG", 200, 200);
 	if (!result)
 	{
 		MessageBox(0, L"Could not initialize the mini-map object.", L"Error", MB_OK);
@@ -77,7 +77,7 @@ bool CMiniMap::Initialize(ID3D11Device * device, int screenWidth, int screenHeig
 		return false;
 	}
 	// Initialize the point bitmap object.
-	result = m_Point->Initialize(device, screenWidth, screenHeight, L"Textures/point01.dds", 3, 3);
+	result = m_Point->Initialize(device, screenWidth, screenHeight, L"Textures/point01.dds", 7, 7);
 	if (!result)
 	{
 		MessageBox(0, L"Could not initialize the point object.", L"Error", MB_OK);

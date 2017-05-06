@@ -1,9 +1,7 @@
 #pragma once
 #include "BitMap.h"
 #include<string>
-#ifdef _DEBUG | DEBUG
 #include<iostream>
-#endif
 /*
 2017 / 4 / 6 / 17:42
 작성자:박요한(dygks910910@daum.net)
