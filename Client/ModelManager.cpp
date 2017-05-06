@@ -542,17 +542,14 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 
 			mSkinnedModelInstance[mMyId].mClipnameAndTotalCount = mClipnameAndTotalCounts[1];
 			mOneCheck = true;
-
 		}
 
 		camLook.x = charpos.x - campos.x;
 		camLook.y = charpos.y - campos.y;
 		camLook.z = charpos.z - campos.z;
 
-
 		campos.x = mSkinnedModelInstance[mMyId].mCharCamPos.x + mSkinnedModelInstance[mMyId].World._41;
 		campos.z = mSkinnedModelInstance[mMyId].mCharCamPos.z + mSkinnedModelInstance[mMyId].World._43;
-
 
 		camera.SetPosition(campos);
 

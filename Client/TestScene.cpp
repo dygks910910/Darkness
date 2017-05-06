@@ -447,11 +447,11 @@ void CTestScene::OnMouseMove(WPARAM btnState, int x, int y)
 			dist.y = campos.y - objectpos.y;
 			dist.z = campos.z - objectpos.z;
 
-			if (CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].mRotateAngle == 0)
-				sumdx = 0;
+			/*if (CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].mRotateAngle == 0)
+				sumdx = 0;*/
 
 			sumdx += dx;
-			//std::cout << "sum" << sumdx << std::endl;
+			std::cout << "sum" << dx << std::endl;
 
 			CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].mRotateAngle = sumdx;
 

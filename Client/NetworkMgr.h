@@ -107,6 +107,7 @@ public:
 	void DestroyInstance()
 	{
 		if (instance)
+
 		{
 			delete instance;
 			instance = nullptr;

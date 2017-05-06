@@ -19,14 +19,13 @@ void NetworkMgr::Initialize()
 
 
 	socket = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, 0, 0);
-
 	while (true)
 	{
 		char ip[128] = { 0 };
 
 		/*cout << " 서버 IP 입력 : ";
 		cin >> ip;*/
-		strcpy(ip, "192.168.0.4");
+		strcpy(ip, "127.0.0.1");
 
 		SOCKADDR_IN serverAddr;
 		ZeroMemory(&serverAddr, sizeof(SOCKADDR_IN));
