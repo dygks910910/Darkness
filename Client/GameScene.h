@@ -18,6 +18,13 @@
 #include "Ssao.h"
 #include "MiniMap.h"
 #include "DrawText.h"
+// <<<<<<< HEAD
+// #include "StaticModel.h"
+// =======
+
+/*>>>>>>> SpotLight*/
+
+
 struct BoundingSphere
 {
 	BoundingSphere() : Center(0.0f, 0.0f, 0.0f), Radius(0.0f) {}

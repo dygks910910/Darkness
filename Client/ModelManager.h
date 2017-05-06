@@ -8,6 +8,13 @@
 #include "RenderStates.h"
 #include "SkinnedModel.h"
 #include "xnacollision.h"
+
+enum Axis
+{
+	x = 0,
+	z = 1
+};
+
 const int MAX_BUF_SIZE = 4000;
 
 const int CS_UP = 1;
@@ -62,7 +69,7 @@ class CModelManager
 	std::vector<SkinnedModelInstance> mSkinnedModelInstance;
 
 	std::map < std::string, std::vector<XMFLOAT4X4>*> mclipAnimbuf;
-	std::pair<std::string, int> mClipnameAndTotalCounts[4];
+	std::pair<std::string, int> mClipnameAndTotalCounts[5];
 
 	Material mGridMat;
 	Material mObjectMaterial;
@@ -175,6 +182,8 @@ public:
 	WSABUF   send_wsa_buf;
 
 	XMFLOAT4X4 boundworld;
+
+	int mMyId;
 
 private:
 	void BuildShapeGeometryBuffers();

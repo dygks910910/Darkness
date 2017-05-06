@@ -53,8 +53,16 @@ void SkinnedModelInstance::Update(float dt)
 	if (TimePos >= 0.003)
 	{
 		FinalTransforms = ((*mClipAnimbuf)[mClipnameAndTotalCount.first])[mAnimCnt];
-		mAnimCnt++;
-
+		if (mClipnameAndTotalCount.first == "Death")
+		{
+			if (mAnimCnt == 287)
+				mAnimCnt = 287;
+			else
+				mAnimCnt++;
+		}
+		else
+			mAnimCnt++;
+		//std::cout << mAnimCnt << std::endl;
 		// Loop animation
 		if (mAnimCnt > mClipnameAndTotalCount.second - 1)//TimePos > Model->SkinnedData.GetClipEndTime(ClipName))
 		{

@@ -9,6 +9,7 @@
 #include<iostream>
 #endif // !_DEBUG | DEBUG
 
+extern XMFLOAT3 camtest;
 
 #include<string>
 #include<iostream>
@@ -44,6 +45,7 @@ struct sc_packet_playgame_init_pos
 	BYTE type;
 	WORD id;
 	XMFLOAT4X4    worldMatrix;
+	XMFLOAT3 campos;
 };
 
 
@@ -66,13 +68,7 @@ struct sc_packet_player_anmation_start
 
 
 
-struct sc_packet_collision_true
-{
-	BYTE size;
-	BYTE type;
-	WORD id;
-	bool check;
-};
+
 #pragma pack(pop)  
 
 
@@ -89,7 +85,7 @@ class NetworkMgr
 	int recv_size;
 	int   saved_size;
 	std::string m_strIp;
-	
+	int mId;
 
 private:
 	static NetworkMgr* instance;
@@ -119,11 +115,16 @@ public:
 	void DestroyInstance()
 	{
 		if (instance)
+
 		{
 			delete instance;
 			instance = nullptr;
 		}
 	}
+
+public:
+	void setId(int id){mId = id;}
+	int getId() { return mId; }
 
 public:
 	void SetWindowHandle(HWND h) { mHandle = h; };

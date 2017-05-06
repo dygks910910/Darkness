@@ -48,6 +48,7 @@ struct SkinnedModelInstance
 	int mId;
 	bool mCollision = false;
 	int selectedDiffuseMapIndex;
+	int mAxis = 0;
 	void Update(float dt);
 };
 #endif // SKINNEDMODEL_H
