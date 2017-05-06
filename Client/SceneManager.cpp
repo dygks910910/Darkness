@@ -75,7 +75,7 @@ void CSceneManager::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	ID3D11DepthStencilView* depthStencilView, D3D11_VIEWPORT* viewport)
 {
 	if(mScenes[mSceneKey] != nullptr)
-	mScenes[mSceneKey]->Draw(renderTargetView, depthStencilView, viewport);
+	mScenes[mSceneKey]->Draw(device,dc,swapChain,renderTargetView, depthStencilView, viewport);
 }
 
 

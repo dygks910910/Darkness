@@ -26,9 +26,9 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	const D3D11_VIEWPORT& viewPort, const int& clientWidth, const int& clientHeight)
 {
 	mSmap = new ShadowMap(device, clientWidth, clientHeight);
-	mDevice = device;
-	mDc = dc;
-	mSwapChain = swapChain;
+// 	mDevice = device;
+// 	mDc = dc;
+// 	mSwapChain = swapChain;
 	mClientHeight = clientHeight;
 	mClientWidth = clientWidth;
 	//////////////////////////////////////////////////////////////////////////
@@ -41,62 +41,62 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 	//////////////////////////////////////////////////////////////////////////
 	//재질,텍스처불러오기.
-	mTexMgr.Init(mDevice);
+	mTexMgr.Init(device);
 	CModelManager::GetInstance()->Init(mTexMgr, &mCam, device);
 	//////////////////////////////////////////////////////////////////////////
 	//zbufferOff를 위한 세팅
 
-	D3D11_DEPTH_STENCIL_DESC depthDisabledStencilDesc;
-	ZeroMemory(&depthDisabledStencilDesc, sizeof(depthDisabledStencilDesc));
-
-	// Now create a second depth stencil state which turns off the Z buffer for 2D rendering.  The only difference is 
-	// that DepthEnable is set to false, all other parameters are the same as the other depth stencil state.
-	depthDisabledStencilDesc.DepthEnable = false;
-	depthDisabledStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-	depthDisabledStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
-	depthDisabledStencilDesc.StencilEnable = true;
-	depthDisabledStencilDesc.StencilReadMask = 0xFF;
-	depthDisabledStencilDesc.StencilWriteMask = 0xFF;
-	depthDisabledStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-	depthDisabledStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
-	depthDisabledStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-	depthDisabledStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-	depthDisabledStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-	depthDisabledStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
-	depthDisabledStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-	depthDisabledStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-
-	HR(device->CreateDepthStencilState(&depthDisabledStencilDesc, &mDepthDisableState));
-	depthDisabledStencilDesc.DepthEnable = true;
-
-	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
-	// Initialize the description of the stencil state.
-	ZeroMemory(&depthStencilDesc, sizeof(depthStencilDesc));
-
-	// Set up the description of the stencil state.
-	depthStencilDesc.DepthEnable = true;
-	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-	depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
-
-	depthStencilDesc.StencilEnable = true;
-	depthStencilDesc.StencilReadMask = 0xFF;
-	depthStencilDesc.StencilWriteMask = 0xFF;
-
-	// Stencil operations if pixel is front-facing.
-	depthStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-	depthStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
-	depthStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-	depthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-
-	// Stencil operations if pixel is back-facing.
-	depthStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-	depthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
-	depthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-	depthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-
-	// Create the depth stencil state.
-	HR(device->CreateDepthStencilState(&depthStencilDesc, &mDepthStencilState));
-	dc->OMSetDepthStencilState(mDepthStencilState, 1);
+// 	D3D11_DEPTH_STENCIL_DESC depthDisabledStencilDesc;
+// 	ZeroMemory(&depthDisabledStencilDesc, sizeof(depthDisabledStencilDesc));
+// 
+// 	// Now create a second depth stencil state which turns off the Z buffer for 2D rendering.  The only difference is 
+// 	// that DepthEnable is set to false, all other parameters are the same as the other depth stencil state.
+// 	depthDisabledStencilDesc.DepthEnable = false;
+// 	depthDisabledStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+// 	depthDisabledStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
+// 	depthDisabledStencilDesc.StencilEnable = true;
+// 	depthDisabledStencilDesc.StencilReadMask = 0xFF;
+// 	depthDisabledStencilDesc.StencilWriteMask = 0xFF;
+// 	depthDisabledStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+// 	depthDisabledStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+// 	depthDisabledStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+// 	depthDisabledStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+// 	depthDisabledStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+// 	depthDisabledStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+// 	depthDisabledStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+// 	depthDisabledStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+// 
+// 	HR(device->CreateDepthStencilState(&depthDisabledStencilDesc, &ds));
+// 	depthDisabledStencilDesc.DepthEnable = true;
+// 
+// 	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
+// 	// Initialize the description of the stencil state.
+// 	ZeroMemory(&depthStencilDesc, sizeof(depthStencilDesc));
+// 
+// 	// Set up the description of the stencil state.
+// 	depthStencilDesc.DepthEnable = true;
+// 	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+// 	depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
+// 
+// 	depthStencilDesc.StencilEnable = true;
+// 	depthStencilDesc.StencilReadMask = 0xFF;
+// 	depthStencilDesc.StencilWriteMask = 0xFF;
+// 
+// 	// Stencil operations if pixel is front-facing.
+// 	depthStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+// 	depthStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+// 	depthStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+// 	depthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+// 
+// 	// Stencil operations if pixel is back-facing.
+// 	depthStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+// 	depthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+// 	depthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+// 	depthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+// 
+// 	// Create the depth stencil state.
+// 	HR(device->CreateDepthStencilState(&depthStencilDesc, &mDepthStencilState));
+// 	dc->OMSetDepthStencilState(mDepthStencilState, 1);
 
 	//버퍼 빌드
 	//BuildShapeGeometryBuffers();
@@ -150,15 +150,15 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	XMStoreFloat4x4(&temp4x4, XMMatrixIdentity());
 // 	mCordWorld.Init(device, temp4x4, 5000);
 
-	mRandomTexSRV = d3dHelper::CreateRandomTexture1DSRV(mDevice);
+	mRandomTexSRV = d3dHelper::CreateRandomTexture1DSRV(device);
 	std::vector<std::wstring> raindrops;
 	raindrops.push_back(L"Textures\\raindrop.dds");
-	mRainTexSRV = d3dHelper::CreateTexture2DArraySRV(mDevice, mDc, raindrops);
-	mRain.Init(mDevice, Effects::RainFX, mRainTexSRV, mRandomTexSRV, 10000);
+	mRainTexSRV = d3dHelper::CreateTexture2DArraySRV(device, dc	, raindrops);
+	mRain.Init(device, Effects::RainFX, mRainTexSRV, mRandomTexSRV, 10000);
 	mTimer.Start();
 
-	mMinimap.Initialize(mDevice, mClientWidth, mClientHeight, mCam.othMtx(), 100, 100);
-	mDrawText.Init(mDevice, mDc);
+	mMinimap.Initialize(device, mClientWidth, mClientHeight, mCam.othMtx(), 100, 100);
+	mDrawText.Init(device, dc);
 	OnResize();
 	return true;
 }
@@ -253,18 +253,20 @@ std::string CGameScene::UpdateScene(const float dt, MSG& msg)
 	return "";
 }
 
-void CGameScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, D3D11_VIEWPORT* viewPort)
+void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
+	IDXGISwapChain* swapChain, ID3D11RenderTargetView* rtv,
+	ID3D11DepthStencilView* dsv, D3D11_VIEWPORT* viewPort)
 {
 
 	
 
-	mSmap->BindDsvAndSetNullRenderTarget(mDc);
+	mSmap->BindDsvAndSetNullRenderTarget(dc);
 
-	DrawSceneToShadowMap();
+	DrawSceneToShadowMap(dc);
 	//DrawSceneToSsaoNormalDepthMap();
 
 
-	mDc->RSSetState(0);
+	dc->RSSetState(0);
 	//////////////////////////////////////////////////////////////
 	//ID3DX11EffectTechnique* animatedTech = Effects::SsaoNormalDepthFX->NormalDepthSkinnedTech;
 	//ID3DX11EffectTechnique* activeSkinnedTech = Effects::NormalMapFX->Light3TexSkinnedTech;
@@ -272,7 +274,7 @@ void CGameScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 	//
 	// Restore the back and depth buffer to the OM stage.
 	//
-	mDc->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	dc->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	//mDc->RSSetViewports(1, viewPort);
 	mSsao->SetNormalDepthRenderTarget(dsv);
 
@@ -282,11 +284,11 @@ void CGameScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 	//mSsao->BlurAmbientMap(2);
 
 	ID3D11RenderTargetView* renderTargets[1] = { rtv };
-	mDc->OMSetRenderTargets(1, renderTargets, dsv);
-	mDc->RSSetViewports(1, viewPort);
+	dc->OMSetRenderTargets(1, renderTargets, dsv);
+	dc->RSSetViewports(1, viewPort);
 
 
-	mDc->ClearRenderTargetView(rtv, reinterpret_cast<const float*>(&Colors::Silver));
+	dc->ClearRenderTargetView(rtv, reinterpret_cast<const float*>(&Colors::Silver));
 
 	//mDc->OMSetDepthStencilState(RenderStates::EqualsDSS, 0);
 
@@ -320,7 +322,7 @@ void CGameScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 	ID3DX11EffectTechnique* activeInstanceTech = Effects::InstancedBasicFX->Light1TexTech;
 	ID3DX11EffectTechnique* activeSkinnedTech = Effects::NormalMapFX->Light3TexSkinnedTech;
 
-	mDc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	// Figure out which technique to use for different geometry.
 
@@ -333,59 +335,59 @@ void CGameScene::Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, 
 
 
 	if (GetAsyncKeyState('1') & 0x8000)
-		mDc->RSSetState(RenderStates::WireframeRS);
+		dc->RSSetState(RenderStates::WireframeRS);
 	//
 	// Draw the spheres with cubemap reflection.
 	//
-	CModelManager::GetInstance()->DrawStaticBasicModels(mDc, activeBasicTech,
+	CModelManager::GetInstance()->DrawStaticBasicModels(dc, activeBasicTech,
 		mShadowTransform, mCam);
-	CModelManager::GetInstance()->DrawStaticNormalModels(mDc, activeNormalMappingTech,
+	CModelManager::GetInstance()->DrawStaticNormalModels(dc, activeNormalMappingTech,
 		mShadowTransform, mCam);
-	CModelManager::GetInstance()->DrawInstancedModel(mDc, activeInstanceTech,
+	CModelManager::GetInstance()->DrawInstancedModel(dc, activeInstanceTech,
 		mShadowTransform, mCam);
 	//////////////////////////////////////////////////////////////////////////
 	//draw Animation
-	CModelManager::GetInstance()->DrawSkinnedModels(mDc, activeSkinnedTech,mShadowTransform, mCam);
+	CModelManager::GetInstance()->DrawSkinnedModels(dc, activeSkinnedTech,mShadowTransform, mCam);
 
 	// FX sets tessellation stages, but it does not disable them.  So do that here
 	// to turn off tessellation.
-	mDc->HSSetShader(0, 0, 0);
-	mDc->DSSetShader(0, 0, 0);
+	dc->HSSetShader(0, 0, 0);
+	dc->DSSetShader(0, 0, 0);
 
 // 	mCordWorld.Draw(mDc, mCam);
 
-	mSky->Draw(mDc, mCam);
+	mSky->Draw(dc, mCam);
 
-	CModelManager::GetInstance()->DrawInstancedModel(mDc, activeInstanceTech, mShadowTransform, mCam);
- 	ZbufferOff();
+	CModelManager::GetInstance()->DrawInstancedModel(dc, activeInstanceTech, mShadowTransform, mCam);
+ 	//ZbufferOff();
 	wchar_t a[50];
 	wsprintf(a,L"%d,%d,%d", (int)CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].World._41,
 		(int)CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].World._42,
 		(int)CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].World._43);
 	std::wstring tempWstr = a;
 	mDrawText(tempWstr,30,100.0f,100.0f);
- 	mMinimap.Render(mDc, mCam);
- 	ZbufferOn();
+ 	mMinimap.Render(dc, mCam);
+ 	//ZbufferOn();
 	
-	mDc->OMSetBlendState(0, blendFactor, 0xffffffff); // restore default
-	mDc->IASetInputLayout(InputLayouts::Particle);
-	mDc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+	dc->OMSetBlendState(0, blendFactor, 0xffffffff); // restore default
+	dc->IASetInputLayout(InputLayouts::Particle);
+	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 	mRain.SetEyePos(mCam.GetPosition());
 	mRain.SetEmitPos(mCam.GetPosition());
-	mRain.Draw(mDc, mCam);
+	mRain.Draw(dc, mCam);
 
 	// restore default states, as the SkyFX changes them in the effect file.
 
-	mDc->RSSetState(0);
-	mDc->OMSetDepthStencilState(0, 0);
+	dc->RSSetState(0);
+	dc->OMSetDepthStencilState(0, 0);
 
 	// Unbind shadow map as a shader input because we are going to render to it next frame.
 	// The shadow might might be at any slot, so clear all slots.
 	ID3D11ShaderResourceView* nullSRV[16] = { 0 };
-	mDc->PSSetShaderResources(0, 16, nullSRV);
-	mDc->OMSetBlendState(0, blendFactor, 0xffffffff);
+	dc->PSSetShaderResources(0, 16, nullSRV);
+	dc->OMSetBlendState(0, blendFactor, 0xffffffff);
 
-	HR(mSwapChain->Present(0, 0));
+	HR(swapChain->Present(0, 0));
 }
 
 void CGameScene::OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWnd)
@@ -471,6 +473,7 @@ void CGameScene::OnMouseMove(WPARAM btnState, int x, int y)
 
 void CGameScene::OnResize()
 {
+	float a = AspectRatio();
 	mCam.SetLens(0.36f*MathHelper::Pi, AspectRatio(), 0.01f, 3000.0f);
 	//XNA::ComputeFrustumFromProjection(&mCamFrustum, &mCam.Proj());
 	// 	if (mSsao)
@@ -479,7 +482,7 @@ void CGameScene::OnResize()
 	// 	}
 }
 
-void CGameScene::DrawSceneToShadowMap()
+void CGameScene::DrawSceneToShadowMap(ID3D11DeviceContext* dc)
 {
 	D3DX11_TECHNIQUE_DESC techDesc;
 
@@ -500,13 +503,13 @@ void CGameScene::DrawSceneToShadowMap()
 	ID3DX11EffectTechnique* smapTech = Effects::BuildShadowMapFX->BuildShadowMapTech;
 	ID3DX11EffectTechnique* animatedSmapTech = Effects::BuildShadowMapFX->BuildShadowMapSkinnedTech;
 
-	mDc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	//mDc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	XMMATRIX world;
 	XMMATRIX worldInvTranspose;
 	XMMATRIX worldViewProj;
 
-	CModelManager::GetInstance()->DrawToShadowMap(mDc, smapTech, mLightView, mLightProj);
+	CModelManager::GetInstance()->DrawToShadowMap(dc, smapTech, mLightView, mLightProj);
 
 
 	//mDc->IASetInputLayout(InputLayouts::PosNormalTexTanSkinned);

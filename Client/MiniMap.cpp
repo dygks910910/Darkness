@@ -28,8 +28,8 @@ bool CMiniMap::Initialize(ID3D11Device * device, int screenWidth, int screenHeig
 	m_mapSizeY = 200;
 
 	// Initialize the location of the mini-map on the screen.
-	m_mapLocationX = screenWidth- MINIMAP_WIDTH *2;
-	m_mapLocationY = screenHeight- MINIMAP_HEIGHT /2;
+	m_mapLocationX = 1500;
+	m_mapLocationY = 800;
 
 	
 	// Store the base view matrix.

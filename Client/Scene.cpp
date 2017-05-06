@@ -2,19 +2,19 @@
 
 CScene::~CScene()
 {
-	ReleaseCOM(mDepthDisableState);
-	ReleaseCOM(mDepthStencilState);
+// 	ReleaseCOM(mDepthDisableState);
+// 	ReleaseCOM(mDepthStencilState);
 }
-
-void CScene::ZbufferOn()
-{
-	mDc->OMSetDepthStencilState(mDepthStencilState, 1);
-}
-
-void CScene::ZbufferOff()
-{
-	mDc->OMSetDepthStencilState(mDepthDisableState, 1);
-}
+// 
+// void CScene::ZbufferOn()
+// {
+// 	mDc->OMSetDepthStencilState(mDepthStencilState, 1);
+// }
+// 
+// void CScene::ZbufferOff()
+// {
+// 	mDc->OMSetDepthStencilState(mDepthDisableState, 1);
+// }
 
 float CScene::AspectRatio() const
 {

@@ -34,8 +34,7 @@ class CGameScene :
 	설명:기본적인 dx11 인터페이스 변수들.여기서 Release해주면 안된다.프로그램 종료시 release하도록
 	세팅해놨음.
 	*/
-	int mClientHeight;
-	int mClientWidth;
+
 	//////////////////////////////////////////////////////////////////////////
 	TextureMgr mTexMgr;
 	GameTimer mTimer;
@@ -77,7 +76,9 @@ public:
 	virtual bool Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 		IDXGISwapChain* swapChain, const D3D11_VIEWPORT& viewPort, const int& clientWidth, const int& clientHeight);
 	virtual std::string UpdateScene(const float dt, MSG& msg);
-	virtual void Draw(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, D3D11_VIEWPORT* viewPort);
+	virtual void Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
+		IDXGISwapChain* swapChain, ID3D11RenderTargetView* rtv,
+		ID3D11DepthStencilView* dsv, D3D11_VIEWPORT* viewPort);
 	virtual void OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWnd);
 	virtual void OnMouseUp(WPARAM btnState, int x, int y);
 	virtual void OnMouseMove(WPARAM btnState, int x, int y);
@@ -85,7 +86,7 @@ public:
 	virtual void OnResize();
 	virtual void OnKeyboardButtonDown(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam) {};
 
-	void DrawSceneToShadowMap();
+	void DrawSceneToShadowMap(ID3D11DeviceContext* dc);
 	void BuildShadowTransform();
 
 
