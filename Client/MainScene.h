@@ -43,9 +43,13 @@ class CMainScene :
 	bool m_bFocusOnPort;
 	bool m_bFocusOnNickName;
 
+	ID3D11DepthStencilState* mDepthDisableState;
+	ID3D11DepthStencilState* mDepthStencilState;
+
 
 	wchar_t Text[255];     // 텍스트를 저장하기위한 변수
 	wchar_t Cstr[10];      // 조합중인 문자!!
+
 	const int CONNECT_BUTTON_X = 1000;
 	const int CONNECT_BUTTON_Y = 400;
 

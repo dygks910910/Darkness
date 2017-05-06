@@ -47,6 +47,7 @@ bool CBitMap::Initialize(ID3D11Device * device, int screenWidth, int screenHeigh
 	result = LoadTexture(device, textureFilename);
 	if (!result)
 	{
+		MessageBox(0, TEXT("bitmapLoadFail"), 0, 0);
 		return false;
 	}
 

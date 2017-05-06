@@ -32,8 +32,8 @@ bool CSceneManager::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	mViewport = viewport;
 	mDsv = dsv;
 
-	mSceneKey = SceneName::gameScene;
-	mScenes.insert(make_pair(SceneName::gameScene, new CGameScene));
+	mSceneKey = SceneName::mainScene;
+	mScenes.insert(make_pair(SceneName::mainScene, new CMainScene));
 	mScenes[mSceneKey]->Init(device, dc, swapChain,
 		*viewport, clientWidth, clientHeight);
 	/*
@@ -116,6 +116,19 @@ void CSceneManager::OnKeyBoardButtonDown(HWND hWnd, UINT msg, WPARAM wparam, LPA
 {
 	if(mSceneKey!= "")
 	mScenes[mSceneKey]->OnKeyboardButtonDown(hWnd, msg,wparam, lparam);
+}
+
+void CSceneManager::UpdateD3DValue(ID3D11Device * device, ID3D11DeviceContext * dc,
+	IDXGISwapChain * swapChain, ID3D11RenderTargetView * renderTargetView, 
+	D3D11_VIEWPORT * viewport, ID3D11DepthStencilView * dsv)
+{
+	mDevice = device;
+	mDc = dc;
+	mSwapChain = swapChain;
+	mRenderTargetView = renderTargetView;
+	mViewport = viewport;
+	mDsv = dsv;
+
 }
 
 

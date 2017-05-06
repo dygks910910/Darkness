@@ -50,6 +50,9 @@ public:
 	void SetSceneKey(const std::string& sceneName) { mSceneKey = sceneName; }
 	void OnKeyBoardButtonDown(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam);
 	std::string GetSceneKey()const { return mSceneKey; }
+	void UpdateD3DValue(ID3D11Device* device, ID3D11DeviceContext* dc,
+		IDXGISwapChain* swapChain, ID3D11RenderTargetView* renderTargetView,
+		D3D11_VIEWPORT* viewport, ID3D11DepthStencilView* dsv);
 private:
 
 };

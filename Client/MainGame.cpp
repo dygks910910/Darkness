@@ -62,6 +62,9 @@ void CMainGame::OnResize()
 {
 	D3DApp::OnResize();
 	mSceneManager->OnResize();
+	mSceneManager->UpdateD3DValue(md3dDevice, md3dImmediateContext,
+		mSwapChain, mRenderTargetView,
+		&mScreenViewport, mDepthStencilView);
 
 }
 
