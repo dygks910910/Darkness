@@ -70,6 +70,7 @@ class CGameScene :
 	XMFLOAT4X4 mShadowTransform;
 	ShadowMap* mSmap;
 	Ssao* mSsao;
+
 public:
 	CGameScene();
 	virtual ~CGameScene();

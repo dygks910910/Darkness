@@ -22,7 +22,7 @@ CMainGame::CMainGame(HINSTANCE hInstance)
 	mSceneManager = new CSceneManager;
 
 }
-
+#include "ModelManager.h"
 CMainGame::~CMainGame()
 {
 	md3dImmediateContext->ClearState();

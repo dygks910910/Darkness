@@ -16,6 +16,8 @@ CGameScene::~CGameScene()
 	ReleaseCOM(mRainTexSRV);
 	ReleaseCOM(mRandomTexSRV);
 	mMinimap.Shutdown();
+	CModelManager::GetInstance()->DestroyInstance();
+
 
 }
 

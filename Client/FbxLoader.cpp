@@ -3,7 +3,7 @@
 extern XMFLOAT3 bextent;
 extern XMFLOAT3 bcenter;
 extern bool check;
-std::ofstream fout("aabb.txt");
+//std::ofstream fout("aabb.txt");
 
 CFbxLoader::CFbxLoader() :
 	mpManager(nullptr), mpScene(nullptr), mpImporter(nullptr), mRootNode(0),
@@ -693,7 +693,7 @@ void CFbxLoader::Destroy()
 void CFbxLoader::LoadFBX(const char* pFileName, GeometryGenerator::MeshData& mesh)
 {
 	Init(pFileName);
-	fout << "Name: " << pFileName << std::endl;
+	//fout << "Name: " << pFileName << std::endl;
 	mRootNode = mpScene->GetRootNode();
 	if (mRootNode)
 	{
