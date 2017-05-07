@@ -8,7 +8,6 @@ class CMiniMap
 public:
 	CMiniMap();
 	CMiniMap(const CMiniMap& other);
-
 	~CMiniMap();
 
 	bool Initialize(ID3D11Device* device,

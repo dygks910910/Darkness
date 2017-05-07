@@ -83,7 +83,6 @@ bool CMiniMap::Initialize(ID3D11Device * device, int screenWidth, int screenHeig
 		MessageBox(0, L"Could not initialize the point object.", L"Error", MB_OK);
 		return false;
 	}
-
 	return true;
 }
 

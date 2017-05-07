@@ -138,7 +138,7 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	mSsao = new Ssao(device, dc, mClientWidth, mClientHeight, mCam.GetFovY(), mCam.GetFarZ());
 
 
-	mSky = new Sky(device, L"Darkness fbx/Skybox/Day Sun Twilight Clear.png", 1000.0f);
+	mSky = new Sky(device, L"Textures/Skybox/StarSky.dds", 512.0f);
 
 	Effects::BasicFX->SetDirLights(mDirLights);
 	Effects::BasicFX->SetFogColor(Colors::Silver);
@@ -167,8 +167,8 @@ std::string CGameScene::UpdateScene(const float dt, MSG& msg)
 {
 	//미니맵 위치 없데이트.
 	//임시로 사용하는 스키니드모델배열의 5번째 모델.즉 플레이어임.
-  	mMinimap.PositionUpdate(CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].World._41,
-  		CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].World._43);
+  	mMinimap.PositionUpdate(CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._41,
+  		CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._43);
 	//mMinimap.PositionUpdate(0,0);
 	if (!camset)
 	{
@@ -361,9 +361,9 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	CModelManager::GetInstance()->DrawInstancedModel(dc, activeInstanceTech, mShadowTransform, mCam);
  	//ZbufferOff();
 	wchar_t a[50];
-	wsprintf(a,L"%d,%d,%d", (int)CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].World._41,
-		(int)CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].World._42,
-		(int)CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].World._43);
+	wsprintf(a,L"%d,%d,%d", (int)CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._41,
+		(int)CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._42,
+		(int)CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._43);
 	std::wstring tempWstr = a;
 	mDrawText(tempWstr,30,100.0f,100.0f);
  	mMinimap.Render(dc, mCam);
