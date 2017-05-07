@@ -60,9 +60,19 @@ void SkinnedModelInstance::Update(float dt)
 			else
 				mAnimCnt++;
 		}
+		else if (mClipnameAndTotalCount.first == "Attack1")
+		{
+			if (mAnimCnt == 168)
+			{
+				mAnimCnt = 168;
+				mAttack = false;
+				mAnimOneCheck = false;
+			}
+			else
+				mAnimCnt++;
+		}
 		else
 			mAnimCnt++;
-		//std::cout << mAnimCnt << std::endl;
 		// Loop animation
 		if (mAnimCnt > mClipnameAndTotalCount.second - 1)//TimePos > Model->SkinnedData.GetClipEndTime(ClipName))
 		{

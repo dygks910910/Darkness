@@ -56,6 +56,7 @@ struct sc_packet_playgame_player_pos
 	BYTE type;
 	WORD id;
 	XMFLOAT4X4 worldMatrix;
+	XMFLOAT3 cammove;
 };
 
 struct sc_packet_player_anmation_start

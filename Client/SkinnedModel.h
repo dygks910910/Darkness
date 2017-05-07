@@ -49,6 +49,9 @@ struct SkinnedModelInstance
 	bool mCollision = false;
 	int selectedDiffuseMapIndex;
 	int mAxis = 0;
+	XMFLOAT3 mcammove = XMFLOAT3(0,0,0);
+	bool mAttack = false;
+	bool mAnimOneCheck = true;
 	void Update(float dt);
 };
 #endif // SKINNEDMODEL_H

@@ -392,6 +392,12 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 void CGameScene::OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWnd)
 {
+	if ((btnState & MK_LBUTTON) != 0)
+	{
+		CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].mAnimOneCheck = false;
+		CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].mAttack = true;
+
+	}
 	mLastMousePos.x = x;
 	mLastMousePos.y = y;
 
@@ -400,6 +406,9 @@ void CGameScene::OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWn
 
 void CGameScene::OnMouseUp(WPARAM btnState, int x, int y)
 {
+
+	//CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].mAttack = false;
+
 	ReleaseCapture();
 }
 float sumdx = 0;
@@ -410,7 +419,7 @@ void CGameScene::OnMouseMove(WPARAM btnState, int x, int y)
 		mCam.SetPosition(camtest);
 		camset = true;
 	}
-	if ((btnState & MK_LBUTTON) != 0)
+	if ((btnState & MK_RBUTTON) != 0)
 	{
 		if (testcamera)
 		{
@@ -422,29 +431,33 @@ void CGameScene::OnMouseMove(WPARAM btnState, int x, int y)
 			up.y = 1;
 			up.z = 0;
 			///////////////오브젝트 위치 얻기/////////////////
-			objectpos.x = CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._41;
-			objectpos.y = CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._42 + 1;
-			objectpos.z = CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._43;
+			
 
 			//////////////카메라 위치 얻기////////////////////
-			campos = mCam.GetPosition();
 			// Make each pixel correspond to a quarter of a degree.
 			float dx = XMConvertToRadians(0.25f*static_cast<float>(x - mLastMousePos.x));
 			float dy = XMConvertToRadians(0.25f*static_cast<float>(y - mLastMousePos.y));
 			//////////////카메라와 객체 거리 구하기///////////
-			dist.x = campos.x - objectpos.x;
-			dist.y = campos.y - objectpos.y;
-			dist.z = campos.z - objectpos.z;
+			
 
 			/*if (CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].mRotateAngle == 0)
 				sumdx = 0;*/
 
 			sumdx += dx;
-			std::cout << "sum" << dx << std::endl;
 
 			CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].mRotateAngle = sumdx;
 
 			matRot = XMMatrixRotationY(dx);
+			objectpos.x = CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._41;
+			objectpos.y = CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._42 + 1;
+			objectpos.z = CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._43;
+
+			campos = mCam.GetPosition();
+
+			dist.x = campos.x - objectpos.x;
+			dist.y = campos.y - objectpos.y;
+			dist.z = campos.z - objectpos.z;
+
 			eye = XMVector3TransformCoord(XMLoadFloat3(&dist), matRot);
 			upper = XMVector3TransformCoord(XMLoadFloat3(&up), matRot);
 
@@ -452,6 +465,7 @@ void CGameScene::OnMouseMove(WPARAM btnState, int x, int y)
 			XMStoreFloat3(&up, upper);
 
 			CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].mCharCamPos = dist;
+
 			campos.x = dist.x + objectpos.x;
 			campos.y = dist.y + objectpos.y;
 			campos.z = dist.z + objectpos.z;
