@@ -26,9 +26,6 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	const D3D11_VIEWPORT& viewPort, const int& clientWidth, const int& clientHeight)
 {
 	mSmap = new ShadowMap(device, clientWidth, clientHeight);
-// 	mDevice = device;
-// 	mDc = dc;
-// 	mSwapChain = swapChain;
 	mClientHeight = clientHeight;
 	mClientWidth = clientWidth;
 	//////////////////////////////////////////////////////////////////////////
@@ -37,7 +34,6 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	mSceneBounds.Center = XMFLOAT3(0, 0, 0);
 	mSceneBounds.Radius = 110;
 	mLightRotationAngle = 0;
-
 
 	//////////////////////////////////////////////////////////////////////////
 	//재질,텍스처불러오기.
