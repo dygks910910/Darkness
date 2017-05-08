@@ -470,6 +470,7 @@ void CGameScene::OnMouseMove(WPARAM btnState, int x, int y)
 			campos.y = dist.y + objectpos.y;
 			campos.z = dist.z + objectpos.z;
 			mCam.LookAt(campos, objectpos, up);
+			std::cout << mCam.GetLook().x << ' ' << mCam.GetLook().y << ' ' << mCam.GetLook().z << std::endl;
 			///////////////////////////////////////////
 		}
 		else
