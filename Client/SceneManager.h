@@ -3,7 +3,7 @@
 #include<map>
 #include<string.h>
 #include "MainScene.h"
-
+#include "EndingScene.h"
 class CSceneManager
 {
 private:

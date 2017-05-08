@@ -8,6 +8,7 @@ namespace SceneName
 {
 	const std::string mainScene = "MainScene";
 	const std::string gameScene = "GameScene";
+	const std::string endingScene = "EndingScene";
 }
 /*
 2017 / 1 / 10 / 6:03

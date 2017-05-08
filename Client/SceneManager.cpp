@@ -12,6 +12,7 @@ CSceneManager::~CSceneManager()
 	}
 // 	NetworkMgr::DestroyInstance();
 // 	NetworkMgr::Release();
+	
 }
 bool CSceneManager::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	IDXGISwapChain* swapChain, ID3D11RenderTargetView* renderTargetView,

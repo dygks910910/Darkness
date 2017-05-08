@@ -154,7 +154,7 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	std::vector<std::wstring> raindrops;
 	raindrops.push_back(L"Textures\\raindrop.dds");
 	mRainTexSRV = d3dHelper::CreateTexture2DArraySRV(device, dc	, raindrops);
-	mRain.Init(device, Effects::RainFX, mRainTexSRV, mRandomTexSRV, 10000);
+	mRain.Init(device, Effects::RainFX, mRainTexSRV, mRandomTexSRV,10000);
 	mTimer.Start();
 
 	mMinimap.Initialize(device, mClientWidth, mClientHeight, mCam.othMtx(), 100, 100);

@@ -402,7 +402,7 @@ bool D3DApp::InitDirect3D()
 		MessageBox(0, L"Direct3D Feature Level 11 unsupported.", 0, 0);
 		return false;
 	}
-
+	//factory->MakeWindowAssociation(mhMainWnd, 0);
 	// Check 4X MSAA quality support for our back buffer format.
 	// All Direct3D 11 capable devices support 4X MSAA for all render 
 	// target formats, so we only need to check quality support.
