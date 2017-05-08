@@ -121,7 +121,6 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 		if (CModelManager::GetInstance()->GetSkinnedInstanceModels()[getId()].mId == init_pos.id)
 		{
 			CModelManager::GetInstance()->GetSkinnedInstanceModels()[getId()].World = init_pos.worldMatrix;
-			
 
 
 			camtest.x = init_pos.campos.x;
