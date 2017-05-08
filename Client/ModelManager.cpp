@@ -95,6 +95,7 @@ void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device)
 	send_wsa_buf.buf = reinterpret_cast<char*>(send_buf);
 	send_wsa_buf.len = MAX_BUF_SIZE;
 
+
 }
 
 void CModelManager::DrawStaticNormalModels(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMFLOAT4X4& shadowTransform, const Camera& cam)
