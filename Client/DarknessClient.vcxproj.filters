@@ -213,6 +213,9 @@
     <ClCompile Include="SkinnedModel.cpp">
       <Filter>souce\Models</Filter>
     </ClCompile>
+    <ClCompile Include="EndingScene.cpp">
+      <Filter>souce\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common\Camera.h">
@@ -333,6 +336,9 @@
     </ClInclude>
     <ClInclude Include="SkinnedModel.h">
       <Filter>souce\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="EndingScene.h">
+      <Filter>souce\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -360,12 +360,13 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 	CModelManager::GetInstance()->DrawInstancedModel(dc, activeInstanceTech, mShadowTransform, mCam);
  	//ZbufferOff();
-	wchar_t a[50];
-	wsprintf(a,L"%d,%d,%d", (int)CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._41,
-		(int)CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._42,
-		(int)CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._43);
-	std::wstring tempWstr = a;
-	mDrawText(tempWstr,30,100.0f,100.0f);
+// 	wchar_t a[50];
+// 	ZeroMemory(&a, sizeof(wchar_t) * 50);
+// 	wsprintf(a,L"%d,%d,%d", (int)CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._41,
+// 		(int)CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._42,
+// 		(int)CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._43);
+// 	std::wstring tempWstr = a;
+// 	mDrawText(tempWstr,30,100.0f,100.0f);
  	mMinimap.Render(dc, mCam);
  	//ZbufferOn();
 	

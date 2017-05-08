@@ -112,6 +112,7 @@ bool CMainScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	m_bFocusOnIP = false;
 	m_bFocusOnNickName = false;
 	m_bFocusOnPort = false;
+	m_bLogoTime = true;
 	//함수객체 초기화
 	DrawText.Init(device, dc);
 	//mMinimap.Initialize(device, 800, 600, mCam.View(), 1000, 1000);
@@ -120,8 +121,6 @@ bool CMainScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	ZeroMemory(&Cstr, sizeof(Cstr));
 	mTimeForLogo.Start();
 	mTimeForLogo.Reset();
-
-	//std::cout << "StartTime:" << mTimeForLogo.TotalTime() << std::endl;
 	OnResize();
 	return true;
 }
@@ -141,9 +140,29 @@ std::string CMainScene::UpdateScene(const float dt, MSG& msg)
 		if (mLobbyConnectButton.isClicked)
 		{
 			//ip와 포트를 넘겨줘야함.
+			if (mIpString == L"")
+			{
+				MessageBox(0, L"IP주소를 입력해주세요", L"error", 0);
+				mLobbyConnectButton.isClicked = false;
+				return "";
+			}
+			if (mPortString == L"")
+			{
+				MessageBox(0, L"포트번호를 입력해주세요", L"error", 0);
+				mLobbyConnectButton.isClicked = false;
+				return "";
+			}
+			if (mNicknameString == L"")
+			{
+				MessageBox(0, L"닉네임를 입력해주세요", L"error", 0);
+				mLobbyConnectButton.isClicked = false;
+				return "";
+			}
 			std::string str;
 			str.assign(mIpString.begin(), mIpString.end());
-			NetworkMgr::GetInstance()->SetIPAndPort(str);
+			std::string port;
+			port.assign(mPortString.begin(), mPortString.end());
+			NetworkMgr::GetInstance()->SetIPAndPortAndNickName(str,mNicknameString);
 			NetworkMgr::GetInstance()->Initialize();
 			return SceneName::gameScene;
 			//////////////////////////////////////////////////////////////////////////
@@ -321,7 +340,6 @@ void CMainScene::OnKeyboardButtonDown(HWND hWnd, UINT msg, WPARAM wparam, LPARAM
 		}
 	}
 }
-
 int CMainScene::GetText(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
 	int len;
@@ -341,15 +359,7 @@ int CMainScene::GetText(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
 					// 완성된 글자가 있다.
 					ImmGetCompositionString(m_hIMC, GCS_RESULTSTR, Cstr, len);
 					Cstr[len] = 0;
-					wcscpy(Text + wcslen(Text), Cstr);
-					memset(Cstr, 0, 10);
-					{
-						WCHAR szTemp[256] = _T("");
-						wsprintf(szTemp, L"%s", Text);
-						mIpString = szTemp;
-						//std::wcout << szTemp;
-						//OutputDebugString(_T(szTemp));
-					}
+					mNicknameString += Cstr;
 				}
 
 			}
@@ -358,17 +368,10 @@ int CMainScene::GetText(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
 				// 현재 글자를 조합 중이다.
 
 				// 조합중인 길이를 얻는다.
-				// str에  조합중인 문자를 얻는다.
 				len = ImmGetCompositionString(m_hIMC, GCS_COMPSTR, NULL, 0);
+				// str에  조합중인 문자를 얻는다.
 				ImmGetCompositionString(m_hIMC, GCS_COMPSTR, Cstr, len);
 				Cstr[len] = 0;
-				{
-					wchar_t szTemp[256] = L"";
-					wsprintf(szTemp, L"%s", Cstr);
-					//mIpString += szTemp;
-					//std::wcout << szTemp;
-					//OutputDebugString(_T(szTemp));
-				}
 			}
 
 			ImmReleaseContext(hWnd, m_hIMC);	// IME 핸들 반환!!
@@ -409,7 +412,7 @@ int CMainScene::GetText(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
 			}
 			else
 			{
-				mNicknameString += (wchar_t)wparam;
+				//mNicknameString += (wchar_t)wparam;
 			}
 		}
 		/*Text[wcslen(Text)] = (wchar_t)wparam;*/

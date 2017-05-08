@@ -227,6 +227,7 @@
     <ClCompile Include="Cordinate.cpp" />
     <ClCompile Include="DrawText.cpp" />
     <ClCompile Include="Effects.cpp" />
+    <ClCompile Include="EndingScene.cpp" />
     <ClCompile Include="FbxLoader.cpp" />
     <ClCompile Include="LoadM3d.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -270,6 +271,7 @@
     <ClInclude Include="Cordinate.h" />
     <ClInclude Include="DrawText.h" />
     <ClInclude Include="Effects.h" />
+    <ClInclude Include="EndingScene.h" />
     <ClInclude Include="FbxLoader.h" />
     <ClInclude Include="FW1FontWrapper.h" />
     <ClInclude Include="LoadM3d.h" />

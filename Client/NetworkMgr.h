@@ -85,15 +85,14 @@ class NetworkMgr
 	int recv_size;
 	int   saved_size;
 	std::string m_strIp;
+	std::string m_portNum;
+	std::wstring mNickName;
 	int mId;
 
 private:
 	static NetworkMgr* instance;
-
-
 public:
 	const SOCKET& GetSock() const { return socket; }
-
 public:
 	void Initialize();
 	void Release();
@@ -128,8 +127,19 @@ public:
 
 public:
 	void SetWindowHandle(HWND h) { mHandle = h; };
-	void SetIPAndPort(std::string ip, std::wstring port = L"9000") { this->m_strIp = ip;
-	std::cout << this->m_strIp << std::endl; };
+	void SetIPAndPort(std::string ip, std::string port = "9000") { 
+		this->m_strIp = ip;
+		std::cout << this->m_strIp << std::endl; };
+	void SetIPAndPortAndNickName(std::string ip, std::wstring nickName, std::string port = "9000")
+	{
+		this->m_strIp = ip;
+		this->m_portNum = port;
+		this->mNickName = nickName;
+		std::cout << this->m_strIp << std::endl;
+		std::cout << this->m_portNum << std::endl;
+		std::wcout << this->mNickName << std::endl;
+
+	}
 private:
 	NetworkMgr();
 public:
