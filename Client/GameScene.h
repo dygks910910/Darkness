@@ -45,6 +45,10 @@ class CGameScene :
 	//////////////////////////////////////////////////////////////////////////
 	TextureMgr mTexMgr;
 	GameTimer mTimer;
+
+	float countDownMin =8;
+	float countDownSec = 0;
+	std::wstring timerString;
 	//RainParticle
 	ID3D11ShaderResourceView* mRainTexSRV;
 	ID3D11ShaderResourceView* mRandomTexSRV;
@@ -76,7 +80,7 @@ class CGameScene :
 	XMFLOAT4X4 mShadowTransform;
 	ShadowMap* mSmap;
 	Ssao* mSsao;
-
+	bool mbTimeOver = false;
 public:
 	CGameScene();
 	virtual ~CGameScene();

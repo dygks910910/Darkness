@@ -151,6 +151,7 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	raindrops.push_back(L"Textures\\raindrop.dds");
 	mRainTexSRV = d3dHelper::CreateTexture2DArraySRV(device, dc	, raindrops);
 	mRain.Init(device, Effects::RainFX, mRainTexSRV, mRandomTexSRV,10000);
+	mTimer.Reset();
 	mTimer.Start();
 
 	mMinimap.Initialize(device, mClientWidth, mClientHeight, mCam.othMtx(), 100, 100);
@@ -239,6 +240,27 @@ std::string CGameScene::UpdateScene(const float dt, MSG& msg)
 	BuildShadowTransform();
 	mRain.Update(dt, mTimer.TotalTime());
 
+	if (!mbTimeOver) {
+		countDownSec -= mTimer.DeltaTime();
+		
+		//남은시간이 0이하가 되면?
+		if (countDownMin < 0)
+		{
+			std::cout << "gameOver" << std::endl;
+			countDownMin = 0;
+			countDownSec = 0;
+			mbTimeOver = true;
+		}
+		//초가 0이하가 되면?
+		else if (countDownSec - mTimer.DeltaTime() <= 0)
+		{
+			countDownSec = 60;
+			countDownMin -= 1;
+		}
+		wchar_t tempString[10];
+		wsprintf(tempString, TEXT("%d:%d"), (int)countDownMin, (int)countDownSec);
+		timerString = tempString;
+	}
 	CModelManager::GetInstance()->UpdateModel(dt, mCam);
 	// 	mCharacterInstance1.Update(dt);
 	// 
@@ -355,16 +377,9 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	mSky->Draw(dc, mCam);
 
 	CModelManager::GetInstance()->DrawInstancedModel(dc, activeInstanceTech, mShadowTransform, mCam);
- 	//ZbufferOff();
-// 	wchar_t a[50];
-// 	ZeroMemory(&a, sizeof(wchar_t) * 50);
-// 	wsprintf(a,L"%d,%d,%d", (int)CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._41,
-// 		(int)CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._42,
-// 		(int)CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._43);
-// 	std::wstring tempWstr = a;
-// 	mDrawText(tempWstr,30,100.0f,100.0f);
+
+	mDrawText(timerString, 75, mClientWidth / 2, 150, FontColorForFW::RED);
  	mMinimap.Render(dc, mCam);
- 	//ZbufferOn();
 	
 	dc->OMSetBlendState(0, blendFactor, 0xffffffff); // restore default
 	dc->IASetInputLayout(InputLayouts::Particle);
