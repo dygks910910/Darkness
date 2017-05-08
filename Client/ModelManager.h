@@ -15,6 +15,14 @@ enum Axis
 	z = 1
 };
 
+enum Keystate
+{
+	up = 1,
+	down = 2,
+	left = 3,
+	right = 4
+};
+
 const int MAX_BUF_SIZE = 4000;
 
 const int CS_UP = 1;

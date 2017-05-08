@@ -121,7 +121,6 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 		if (CModelManager::GetInstance()->GetSkinnedInstanceModels()[getId()].mId == init_pos.id)
 		{
 			CModelManager::GetInstance()->GetSkinnedInstanceModels()[getId()].World = init_pos.worldMatrix;
-			
 
 
 			camtest.x = init_pos.campos.x;
@@ -143,7 +142,11 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 		sc_packet_playgame_player_pos player_pos;
 		memcpy(&player_pos, packet, packet[0]);
 		if (CModelManager::GetInstance()->GetSkinnedInstanceModels()[getId()].mId == player_pos.id)
+		{
+			//std::cout << player_pos.cammove.x << ' ' << player_pos.cammove.z << std::endl;
+			CModelManager::GetInstance()->GetSkinnedInstanceModels()[getId()].mcammove = player_pos.cammove;
 			CModelManager::GetInstance()->GetSkinnedInstanceModels()[getId()].World = player_pos.worldMatrix;
+		}
 		else
 			CModelManager::GetInstance()->GetSkinnedInstanceModels()[player_pos.id].World = player_pos.worldMatrix;
 
