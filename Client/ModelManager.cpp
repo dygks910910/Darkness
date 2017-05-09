@@ -394,9 +394,10 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 					mSkinnedModelInstance[mMyId].mAnimCnt = 0;
 					mSkinnedModelInstance[mMyId].mClipnameAndTotalCount = mClipnameAndTotalCounts[3];
 
-					mSkinnedModelInstance[mMyId].mAnimOneCheck = true;
+					mSkinnedModelInstance[mMyId].mAnimOneCheck = false;
 					mSkinnedModelInstance[mMyId].mWalkCheck = false;
 				}
+				mSkinnedModelInstance[mMyId].mKeyState = Keystate::run;
 
 				/*campos.x += mSkinnedModelInstance[mMyId].mcammove.x;
 				campos.y += 0;
@@ -407,7 +408,6 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 
 			if (GetAsyncKeyState('W') & 0x8000)
 			{
-				mSkinnedModelInstance[mMyId].mKeyState = Keystate::up;
 				charpos.x = mSkinnedModelInstance[mMyId].World._41;
 				charpos.y = mSkinnedModelInstance[mMyId].World._42;
 				charpos.z = mSkinnedModelInstance[mMyId].World._43;
@@ -428,7 +428,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 				if (ret_val == SOCKET_ERROR)
 					std::cout << " [error] WSASend() " << std::endl;
 
-				if (!mSkinnedModelInstance[mMyId].mAnimOneCheck)
+				if (!mSkinnedModelInstance[mMyId].mAnimOneCheck && mSkinnedModelInstance[mMyId].mKeyState != Keystate::run)
 				{
 					cs_packet_player_anmation_start* anim = reinterpret_cast<cs_packet_player_anmation_start*>(&send_buf);
 					anim->size = sizeof(cs_packet_player_anmation_start);
@@ -456,12 +456,13 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 				campos.y += 0;
 				campos.z += mSkinnedModelInstance[mMyId].mcammove.z;
 
+				mSkinnedModelInstance[mMyId].mKeyState = Keystate::up;
+
 				camera.SetPosition(campos);
 			}
 
 			else if (GetAsyncKeyState('S') & 0x8000)
 			{
-				mSkinnedModelInstance[mMyId].mKeyState = Keystate::down;
 
 				charpos.x = mSkinnedModelInstance[mMyId].World._41;
 				charpos.y = mSkinnedModelInstance[mMyId].World._42;
@@ -483,7 +484,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 				if (ret_val == SOCKET_ERROR)
 					std::cout << " [error] WSASend() " << std::endl;
 
-				if (!mSkinnedModelInstance[mMyId].mAnimOneCheck)
+				if (!mSkinnedModelInstance[mMyId].mAnimOneCheck && mSkinnedModelInstance[mMyId].mKeyState != Keystate::run)
 				{
 					cs_packet_player_anmation_start* anim = reinterpret_cast<cs_packet_player_anmation_start*>(&send_buf);
 					anim->size = sizeof(cs_packet_player_anmation_start);
@@ -509,11 +510,12 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 				campos.y += 0;
 				campos.z += mSkinnedModelInstance[mMyId].mcammove.z;
 
+				mSkinnedModelInstance[mMyId].mKeyState = Keystate::down;
+
 				camera.SetPosition(campos);
 			}
 			else if (GetAsyncKeyState('A') & 0x8000)
 			{
-				mSkinnedModelInstance[mMyId].mKeyState = Keystate::left;
 
 				charpos.x = mSkinnedModelInstance[mMyId].World._41;
 				charpos.y = mSkinnedModelInstance[mMyId].World._42;
@@ -535,7 +537,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 				if (ret_val == SOCKET_ERROR)
 					std::cout << " [error] WSASend() " << std::endl;
 
-				if (!mSkinnedModelInstance[mMyId].mAnimOneCheck)
+				if (!mSkinnedModelInstance[mMyId].mAnimOneCheck && mSkinnedModelInstance[mMyId].mKeyState != Keystate::run)
 				{
 					cs_packet_player_anmation_start* anim = reinterpret_cast<cs_packet_player_anmation_start*>(&send_buf);
 					anim->size = sizeof(cs_packet_player_anmation_start);
@@ -559,15 +561,15 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 				campos.x += mSkinnedModelInstance[mMyId].mcammove.x;
 				campos.y += 0;
 				campos.z += mSkinnedModelInstance[mMyId].mcammove.z;
-				/*campos.x = mSkinnedModelInstance[mMyId].mCharCamPos.x + mSkinnedModelInstance[mMyId].World._41;
-				campos.z = mSkinnedModelInstance[mMyId].mCharCamPos.z + mSkinnedModelInstance[mMyId].World._43;*/
+				
+				mSkinnedModelInstance[mMyId].mKeyState = Keystate::left;
+
 
 				camera.SetPosition(campos);
 			}
 
 			else if (GetAsyncKeyState('D') & 0x8000)
 			{
-				mSkinnedModelInstance[mMyId].mKeyState = Keystate::right;
 
 				charpos.x = mSkinnedModelInstance[mMyId].World._41;
 				charpos.y = mSkinnedModelInstance[mMyId].World._42;
@@ -589,7 +591,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 				if (ret_val == SOCKET_ERROR)
 					std::cout << " [error] WSASend() " << std::endl;
 
-				if (!mSkinnedModelInstance[mMyId].mAnimOneCheck)
+				if (!mSkinnedModelInstance[mMyId].mAnimOneCheck && mSkinnedModelInstance[mMyId].mKeyState != Keystate::run)
 				{
 					cs_packet_player_anmation_start* anim = reinterpret_cast<cs_packet_player_anmation_start*>(&send_buf);
 					anim->size = sizeof(cs_packet_player_anmation_start);
@@ -612,8 +614,9 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 				campos.x += mSkinnedModelInstance[mMyId].mcammove.x;
 				campos.y += 0;
 				campos.z += mSkinnedModelInstance[mMyId].mcammove.z;
-				/*campos.x = mSkinnedModelInstance[mMyId].mCharCamPos.x + mSkinnedModelInstance[mMyId].World._41;
-				campos.z = mSkinnedModelInstance[mMyId].mCharCamPos.z + mSkinnedModelInstance[mMyId].World._43;*/
+			
+				mSkinnedModelInstance[mMyId].mKeyState = Keystate::right;
+
 
 				camera.SetPosition(campos);
 			}
