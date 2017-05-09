@@ -55,6 +55,7 @@ struct SkinnedModelInstance
 	bool mWalkCheck = false;
 	/////위아래왼쪽오른쪽 어떤게 눌렸는지 체크/////
 	int mKeyState = 0;
+	bool mAlive = true;
 	void Update(float dt);
 };
 #endif // SKINNEDMODEL_H

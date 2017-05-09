@@ -20,7 +20,10 @@ enum Keystate
 	up = 1,
 	down = 2,
 	left = 3,
-	right = 4
+	right = 4,
+	die = 5,
+	run = 6
+
 };
 
 const int MAX_BUF_SIZE = 4000;

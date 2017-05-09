@@ -2,6 +2,7 @@
 #include "NetworkMgr.h"
 
 NetworkMgr* NetworkMgr::instance = nullptr;
+extern XMFLOAT3 camtest;
 
 NetworkMgr::NetworkMgr()
 {
@@ -162,6 +163,13 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 	}
 	break;
 
+	case SC_PACKET_PLAYGAME_PLAYER_DIE:
+	{
+		sc_packet_player_anmation_start player_die;
+		memcpy(&player_die, packet, packet[0]);
+		CModelManager::GetInstance()->GetSkinnedInstanceModels()[player_die.id].mAlive = false;
+	}
+	break;
 
 	default:
 		break;
