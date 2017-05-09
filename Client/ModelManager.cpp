@@ -95,6 +95,7 @@ void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device)
 	send_wsa_buf.buf = reinterpret_cast<char*>(send_buf);
 	send_wsa_buf.len = MAX_BUF_SIZE;
 
+
 }
 
 void CModelManager::DrawStaticNormalModels(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMFLOAT4X4& shadowTransform, const Camera& cam)
@@ -335,48 +336,32 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 		}
 		mSkinnedModelInstance[i].Update(dt);
 	}
-	if (mSkinnedModelInstance[mMyId].mAttack)
+	/////////////죽을경우 맨 밖의 if 문////////////////////
+	if (!mSkinnedModelInstance[mMyId].mAlive)
 	{
-		if (!mSkinnedModelInstance[mMyId].mAnimOneCheck)
+		if (mSkinnedModelInstance[mMyId].mKeyState != Keystate::die )
 		{
 			mSkinnedModelInstance[mMyId].mAnimCnt = 0;
-			mSkinnedModelInstance[mMyId].mClipnameAndTotalCount = mClipnameAndTotalCounts[2];
-
-			cs_packet_player_anmation_start* anim = reinterpret_cast<cs_packet_player_anmation_start*>(&send_buf);
-			anim->size = sizeof(cs_packet_player_anmation_start);
-			anim->type = CS_PACKET_START_ANIMATION;
-			anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
-			anim->animationState = 2;
-			send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
-			DWORD io_byte2;
-
-			int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf, 1, &io_byte2, 0, NULL, NULL);
-			if (ret_val == SOCKET_ERROR)
-				std::cout << " [error] WSASend() " << std::endl;
-
-			mSkinnedModelInstance[mMyId].mAnimOneCheck = true;
+			mSkinnedModelInstance[mMyId].mClipnameAndTotalCount = mClipnameAndTotalCounts[4];
+			mSkinnedModelInstance[mMyId].mKeyState = Keystate::die;
 		}
 	}
+
 	else
 	{
-		if (GetAsyncKeyState('F') & 0x8000)
+		////////////////////공격시 if문///////////////////////
+		if (mSkinnedModelInstance[mMyId].mAttack)
 		{
 			if (!mSkinnedModelInstance[mMyId].mAnimOneCheck)
 			{
 				mSkinnedModelInstance[mMyId].mAnimCnt = 0;
-				mSkinnedModelInstance[mMyId].mClipnameAndTotalCount = mClipnameAndTotalCounts[4];
-			}
-		}
-		if (mSkinnedModelInstance[mMyId].mKeyState != 0 && GetAsyncKeyState(VK_LSHIFT) & 0x8000)
-		{
+				mSkinnedModelInstance[mMyId].mClipnameAndTotalCount = mClipnameAndTotalCounts[2];
 
-			if (mSkinnedModelInstance[mMyId].mWalkCheck)
-			{
 				cs_packet_player_anmation_start* anim = reinterpret_cast<cs_packet_player_anmation_start*>(&send_buf);
 				anim->size = sizeof(cs_packet_player_anmation_start);
 				anim->type = CS_PACKET_START_ANIMATION;
 				anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
-				anim->animationState = 3;
+				anim->animationState = 2;
 				send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
 				DWORD io_byte2;
 
@@ -384,253 +369,277 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 				if (ret_val == SOCKET_ERROR)
 					std::cout << " [error] WSASend() " << std::endl;
 
-				mSkinnedModelInstance[mMyId].mAnimCnt = 0;
-				mSkinnedModelInstance[mMyId].mClipnameAndTotalCount = mClipnameAndTotalCounts[3];
-
-				mSkinnedModelInstance[mMyId].mAnimOneCheck = true;
-				mSkinnedModelInstance[mMyId].mWalkCheck = false;
-			}
-
-			/*campos.x += mSkinnedModelInstance[mMyId].mcammove.x;
-			campos.y += 0;
-			campos.z += mSkinnedModelInstance[mMyId].mcammove.z;
-
-			camera.SetPosition(campos);*/
-		}
-
-		if (GetAsyncKeyState('W') & 0x8000)
-		{
-			mSkinnedModelInstance[mMyId].mKeyState = Keystate::up;
-			charpos.x = mSkinnedModelInstance[mMyId].World._41;
-			charpos.y = mSkinnedModelInstance[mMyId].World._42;
-			charpos.z = mSkinnedModelInstance[mMyId].World._43;
-
-			campos = camera.GetPosition();
-			
-			cs_packet_player_move* move = reinterpret_cast<cs_packet_player_move*>(&send_buf);
-			move->size = sizeof(cs_packet_player_move);
-			move->type = CS_UP;
-			move->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
-			move->camlook = camera.GetLook();
-			move->campos = campos;
-			send_wsa_buf.len = sizeof(cs_packet_player_move);
-
-			DWORD io_byte;
-
-			int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf, 1, &io_byte, 0, NULL, NULL);
-			if (ret_val == SOCKET_ERROR)
-				std::cout << " [error] WSASend() " << std::endl;
-
-			if (!mSkinnedModelInstance[mMyId].mAnimOneCheck)
-			{
-				cs_packet_player_anmation_start* anim = reinterpret_cast<cs_packet_player_anmation_start*>(&send_buf);
-				anim->size = sizeof(cs_packet_player_anmation_start);
-				anim->type = CS_PACKET_START_ANIMATION;
-				anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
-				anim->animationState = 1;
-				send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
-				DWORD io_byte2;
-
-				int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf, 1, &io_byte2, 0, NULL, NULL);
-				if (ret_val == SOCKET_ERROR)
-					std::cout << " [error] WSASend() " << std::endl;
-
-				mSkinnedModelInstance[mMyId].mAnimCnt = 0;
-
-				mSkinnedModelInstance[mMyId].mClipnameAndTotalCount = mClipnameAndTotalCounts[1];
-
-				mSkinnedModelInstance[mMyId].mAnimOneCheck = true;
-
-				mSkinnedModelInstance[mMyId].mWalkCheck = true;
-
-			}
-
-			campos.x += mSkinnedModelInstance[mMyId].mcammove.x;
-			campos.y += 0;
-			campos.z += mSkinnedModelInstance[mMyId].mcammove.z;
-
-			camera.SetPosition(campos);
-		}
-
-		else if (GetAsyncKeyState('S') & 0x8000)
-		{
-			mSkinnedModelInstance[mMyId].mKeyState = Keystate::down;
-
-			charpos.x = mSkinnedModelInstance[mMyId].World._41;
-			charpos.y = mSkinnedModelInstance[mMyId].World._42;
-			charpos.z = mSkinnedModelInstance[mMyId].World._43;
-
-			campos = camera.GetPosition();
-
-			cs_packet_player_move* move = reinterpret_cast<cs_packet_player_move*>(&send_buf);
-			move->size = sizeof(cs_packet_player_move);
-			move->type = CS_DOWN;
-			move->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
-			move->camlook = camera.GetLook();
-			move->campos = campos;
-			send_wsa_buf.len = sizeof(cs_packet_player_move);
-
-			DWORD io_byte;
-
-			int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf, 1, &io_byte, 0, NULL, NULL);
-			if (ret_val == SOCKET_ERROR)
-				std::cout << " [error] WSASend() " << std::endl;
-
-			if (!mSkinnedModelInstance[mMyId].mAnimOneCheck)
-			{
-				cs_packet_player_anmation_start* anim = reinterpret_cast<cs_packet_player_anmation_start*>(&send_buf);
-				anim->size = sizeof(cs_packet_player_anmation_start);
-				anim->type = CS_PACKET_START_ANIMATION;
-				anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
-				anim->animationState = 1;
-				send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
-
-				DWORD io_byte2;
-
-				int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf, 1, &io_byte2, 0, NULL, NULL);
-				if (ret_val == SOCKET_ERROR)
-					std::cout << " [error] WSASend() " << std::endl;
-
-				mSkinnedModelInstance[mMyId].mClipnameAndTotalCount = mClipnameAndTotalCounts[1];
-
-				mSkinnedModelInstance[mMyId].mAnimOneCheck = true;
-				mSkinnedModelInstance[mMyId].mWalkCheck = true;
-
-			}
-
-			campos.x += mSkinnedModelInstance[mMyId].mcammove.x;
-			campos.y += 0;
-			campos.z += mSkinnedModelInstance[mMyId].mcammove.z;
-
-			camera.SetPosition(campos);
-		}
-		else if (GetAsyncKeyState('A') & 0x8000)
-		{
-			mSkinnedModelInstance[mMyId].mKeyState = Keystate::left;
-
-			charpos.x = mSkinnedModelInstance[mMyId].World._41;
-			charpos.y = mSkinnedModelInstance[mMyId].World._42;
-			charpos.z = mSkinnedModelInstance[mMyId].World._43;
-
-			campos = camera.GetPosition();
-
-			cs_packet_player_move* move = reinterpret_cast<cs_packet_player_move*>(&send_buf);
-			move->size = sizeof(cs_packet_player_move);
-			move->type = CS_LEFT;
-			move->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
-			move->camlook = camera.GetRight();
-			move->campos = campos;
-			send_wsa_buf.len = sizeof(cs_packet_player_move);
-
-			DWORD io_byte;
-
-			int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf, 1, &io_byte, 0, NULL, NULL);
-			if (ret_val == SOCKET_ERROR)
-				std::cout << " [error] WSASend() " << std::endl;
-
-			if (!mSkinnedModelInstance[mMyId].mAnimOneCheck)
-			{
-				cs_packet_player_anmation_start* anim = reinterpret_cast<cs_packet_player_anmation_start*>(&send_buf);
-				anim->size = sizeof(cs_packet_player_anmation_start);
-				anim->type = CS_PACKET_START_ANIMATION;
-				anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
-				anim->animationState = 1;
-				send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
-
-				DWORD io_byte2;
-
-				int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf, 1, &io_byte2, 0, NULL, NULL);
-				if (ret_val == SOCKET_ERROR)
-					std::cout << " [error] WSASend() " << std::endl;
-
-				mSkinnedModelInstance[mMyId].mClipnameAndTotalCount = mClipnameAndTotalCounts[1];
-				mSkinnedModelInstance[mMyId].mAnimOneCheck = true;
-				mSkinnedModelInstance[mMyId].mWalkCheck = true;
-
-			}
-
-			campos.x += mSkinnedModelInstance[mMyId].mcammove.x;
-			campos.y += 0;
-			campos.z += mSkinnedModelInstance[mMyId].mcammove.z;
-			/*campos.x = mSkinnedModelInstance[mMyId].mCharCamPos.x + mSkinnedModelInstance[mMyId].World._41;
-			campos.z = mSkinnedModelInstance[mMyId].mCharCamPos.z + mSkinnedModelInstance[mMyId].World._43;*/
-
-			camera.SetPosition(campos);
-		}
-
-		else if (GetAsyncKeyState('D') & 0x8000)
-		{
-			mSkinnedModelInstance[mMyId].mKeyState = Keystate::right;
-
-			charpos.x = mSkinnedModelInstance[mMyId].World._41;
-			charpos.y = mSkinnedModelInstance[mMyId].World._42;
-			charpos.z = mSkinnedModelInstance[mMyId].World._43;
-
-			campos = camera.GetPosition();
-
-			cs_packet_player_move* move = reinterpret_cast<cs_packet_player_move*>(&send_buf);
-			move->size = sizeof(cs_packet_player_move);
-			move->type = CS_RIGHT;
-			move->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
-			move->camlook = camera.GetRight();
-			move->campos = campos;
-			send_wsa_buf.len = sizeof(cs_packet_player_move);
-
-			DWORD io_byte;
-
-			int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf, 1, &io_byte, 0, NULL, NULL);
-			if (ret_val == SOCKET_ERROR)
-				std::cout << " [error] WSASend() " << std::endl;
-
-			if (!mSkinnedModelInstance[mMyId].mAnimOneCheck)
-			{
-				cs_packet_player_anmation_start* anim = reinterpret_cast<cs_packet_player_anmation_start*>(&send_buf);
-				anim->size = sizeof(cs_packet_player_anmation_start);
-				anim->type = CS_PACKET_START_ANIMATION;
-				anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
-				anim->animationState = 1;
-				send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
-
-				DWORD io_byte2;
-
-				int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf, 1, &io_byte2, 0, NULL, NULL);
-				if (ret_val == SOCKET_ERROR)
-					std::cout << " [error] WSASend() " << std::endl;
-
-				mSkinnedModelInstance[mMyId].mClipnameAndTotalCount = mClipnameAndTotalCounts[1];
 				mSkinnedModelInstance[mMyId].mAnimOneCheck = true;
 			}
-
-			campos.x += mSkinnedModelInstance[mMyId].mcammove.x;
-			campos.y += 0;
-			campos.z += mSkinnedModelInstance[mMyId].mcammove.z;
-			/*campos.x = mSkinnedModelInstance[mMyId].mCharCamPos.x + mSkinnedModelInstance[mMyId].World._41;
-			campos.z = mSkinnedModelInstance[mMyId].mCharCamPos.z + mSkinnedModelInstance[mMyId].World._43;*/
-
-			camera.SetPosition(campos);
 		}
 		else
 		{
-			mSkinnedModelInstance[mMyId].mKeyState = 0;
-			if (mSkinnedModelInstance[mMyId].mAnimOneCheck)
+			if (mSkinnedModelInstance[mMyId].mKeyState != 0 && GetAsyncKeyState(VK_LSHIFT) & 0x8000)
 			{
-				cs_packet_player_anmation_start* anim = reinterpret_cast<cs_packet_player_anmation_start*>(&send_buf);
-				anim->size = sizeof(cs_packet_player_anmation_start);
-				anim->type = CS_PACKET_START_ANIMATION;
-				anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
-				anim->animationState = 0;
-				send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
 
-				DWORD io_byte2;
+				if (mSkinnedModelInstance[mMyId].mWalkCheck)
+				{
+					cs_packet_player_anmation_start* anim = reinterpret_cast<cs_packet_player_anmation_start*>(&send_buf);
+					anim->size = sizeof(cs_packet_player_anmation_start);
+					anim->type = CS_PACKET_START_ANIMATION;
+					anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
+					anim->animationState = 3;
+					send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
+					DWORD io_byte2;
 
-				int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf, 1, &io_byte2, 0, NULL, NULL);
+					int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf, 1, &io_byte2, 0, NULL, NULL);
+					if (ret_val == SOCKET_ERROR)
+						std::cout << " [error] WSASend() " << std::endl;
+
+					mSkinnedModelInstance[mMyId].mAnimCnt = 0;
+					mSkinnedModelInstance[mMyId].mClipnameAndTotalCount = mClipnameAndTotalCounts[3];
+
+					mSkinnedModelInstance[mMyId].mAnimOneCheck = true;
+					mSkinnedModelInstance[mMyId].mWalkCheck = false;
+				}
+
+				/*campos.x += mSkinnedModelInstance[mMyId].mcammove.x;
+				campos.y += 0;
+				campos.z += mSkinnedModelInstance[mMyId].mcammove.z;
+
+				camera.SetPosition(campos);*/
+			}
+
+			if (GetAsyncKeyState('W') & 0x8000)
+			{
+				mSkinnedModelInstance[mMyId].mKeyState = Keystate::up;
+				charpos.x = mSkinnedModelInstance[mMyId].World._41;
+				charpos.y = mSkinnedModelInstance[mMyId].World._42;
+				charpos.z = mSkinnedModelInstance[mMyId].World._43;
+
+				campos = camera.GetPosition();
+
+				cs_packet_player_move* move = reinterpret_cast<cs_packet_player_move*>(&send_buf);
+				move->size = sizeof(cs_packet_player_move);
+				move->type = CS_UP;
+				move->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
+				move->camlook = camera.GetLook();
+				move->campos = campos;
+				send_wsa_buf.len = sizeof(cs_packet_player_move);
+
+				DWORD io_byte;
+
+				int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf, 1, &io_byte, 0, NULL, NULL);
 				if (ret_val == SOCKET_ERROR)
 					std::cout << " [error] WSASend() " << std::endl;
 
-				mSkinnedModelInstance[mMyId].mAnimCnt = 0;
-				mSkinnedModelInstance[mMyId].mClipnameAndTotalCount = mClipnameAndTotalCounts[0];
+				if (!mSkinnedModelInstance[mMyId].mAnimOneCheck)
+				{
+					cs_packet_player_anmation_start* anim = reinterpret_cast<cs_packet_player_anmation_start*>(&send_buf);
+					anim->size = sizeof(cs_packet_player_anmation_start);
+					anim->type = CS_PACKET_START_ANIMATION;
+					anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
+					anim->animationState = 1;
+					send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
+					DWORD io_byte2;
+
+					int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf, 1, &io_byte2, 0, NULL, NULL);
+					if (ret_val == SOCKET_ERROR)
+						std::cout << " [error] WSASend() " << std::endl;
+
+					mSkinnedModelInstance[mMyId].mAnimCnt = 0;
+
+					mSkinnedModelInstance[mMyId].mClipnameAndTotalCount = mClipnameAndTotalCounts[1];
+
+					mSkinnedModelInstance[mMyId].mAnimOneCheck = true;
+
+					mSkinnedModelInstance[mMyId].mWalkCheck = true;
+
+				}
+
+				campos.x += mSkinnedModelInstance[mMyId].mcammove.x;
+				campos.y += 0;
+				campos.z += mSkinnedModelInstance[mMyId].mcammove.z;
+
+				camera.SetPosition(campos);
 			}
-			mSkinnedModelInstance[mMyId].mAnimOneCheck = false;
+
+			else if (GetAsyncKeyState('S') & 0x8000)
+			{
+				mSkinnedModelInstance[mMyId].mKeyState = Keystate::down;
+
+				charpos.x = mSkinnedModelInstance[mMyId].World._41;
+				charpos.y = mSkinnedModelInstance[mMyId].World._42;
+				charpos.z = mSkinnedModelInstance[mMyId].World._43;
+
+				campos = camera.GetPosition();
+
+				cs_packet_player_move* move = reinterpret_cast<cs_packet_player_move*>(&send_buf);
+				move->size = sizeof(cs_packet_player_move);
+				move->type = CS_DOWN;
+				move->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
+				move->camlook = camera.GetLook();
+				move->campos = campos;
+				send_wsa_buf.len = sizeof(cs_packet_player_move);
+
+				DWORD io_byte;
+
+				int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf, 1, &io_byte, 0, NULL, NULL);
+				if (ret_val == SOCKET_ERROR)
+					std::cout << " [error] WSASend() " << std::endl;
+
+				if (!mSkinnedModelInstance[mMyId].mAnimOneCheck)
+				{
+					cs_packet_player_anmation_start* anim = reinterpret_cast<cs_packet_player_anmation_start*>(&send_buf);
+					anim->size = sizeof(cs_packet_player_anmation_start);
+					anim->type = CS_PACKET_START_ANIMATION;
+					anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
+					anim->animationState = 1;
+					send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
+
+					DWORD io_byte2;
+
+					int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf, 1, &io_byte2, 0, NULL, NULL);
+					if (ret_val == SOCKET_ERROR)
+						std::cout << " [error] WSASend() " << std::endl;
+
+					mSkinnedModelInstance[mMyId].mClipnameAndTotalCount = mClipnameAndTotalCounts[1];
+
+					mSkinnedModelInstance[mMyId].mAnimOneCheck = true;
+					mSkinnedModelInstance[mMyId].mWalkCheck = true;
+
+				}
+
+				campos.x += mSkinnedModelInstance[mMyId].mcammove.x;
+				campos.y += 0;
+				campos.z += mSkinnedModelInstance[mMyId].mcammove.z;
+
+				camera.SetPosition(campos);
+			}
+			else if (GetAsyncKeyState('A') & 0x8000)
+			{
+				mSkinnedModelInstance[mMyId].mKeyState = Keystate::left;
+
+				charpos.x = mSkinnedModelInstance[mMyId].World._41;
+				charpos.y = mSkinnedModelInstance[mMyId].World._42;
+				charpos.z = mSkinnedModelInstance[mMyId].World._43;
+
+				campos = camera.GetPosition();
+
+				cs_packet_player_move* move = reinterpret_cast<cs_packet_player_move*>(&send_buf);
+				move->size = sizeof(cs_packet_player_move);
+				move->type = CS_LEFT;
+				move->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
+				move->camlook = camera.GetRight();
+				move->campos = campos;
+				send_wsa_buf.len = sizeof(cs_packet_player_move);
+
+				DWORD io_byte;
+
+				int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf, 1, &io_byte, 0, NULL, NULL);
+				if (ret_val == SOCKET_ERROR)
+					std::cout << " [error] WSASend() " << std::endl;
+
+				if (!mSkinnedModelInstance[mMyId].mAnimOneCheck)
+				{
+					cs_packet_player_anmation_start* anim = reinterpret_cast<cs_packet_player_anmation_start*>(&send_buf);
+					anim->size = sizeof(cs_packet_player_anmation_start);
+					anim->type = CS_PACKET_START_ANIMATION;
+					anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
+					anim->animationState = 1;
+					send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
+
+					DWORD io_byte2;
+
+					int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf, 1, &io_byte2, 0, NULL, NULL);
+					if (ret_val == SOCKET_ERROR)
+						std::cout << " [error] WSASend() " << std::endl;
+
+					mSkinnedModelInstance[mMyId].mClipnameAndTotalCount = mClipnameAndTotalCounts[1];
+					mSkinnedModelInstance[mMyId].mAnimOneCheck = true;
+					mSkinnedModelInstance[mMyId].mWalkCheck = true;
+
+				}
+
+				campos.x += mSkinnedModelInstance[mMyId].mcammove.x;
+				campos.y += 0;
+				campos.z += mSkinnedModelInstance[mMyId].mcammove.z;
+				/*campos.x = mSkinnedModelInstance[mMyId].mCharCamPos.x + mSkinnedModelInstance[mMyId].World._41;
+				campos.z = mSkinnedModelInstance[mMyId].mCharCamPos.z + mSkinnedModelInstance[mMyId].World._43;*/
+
+				camera.SetPosition(campos);
+			}
+
+			else if (GetAsyncKeyState('D') & 0x8000)
+			{
+				mSkinnedModelInstance[mMyId].mKeyState = Keystate::right;
+
+				charpos.x = mSkinnedModelInstance[mMyId].World._41;
+				charpos.y = mSkinnedModelInstance[mMyId].World._42;
+				charpos.z = mSkinnedModelInstance[mMyId].World._43;
+
+				campos = camera.GetPosition();
+
+				cs_packet_player_move* move = reinterpret_cast<cs_packet_player_move*>(&send_buf);
+				move->size = sizeof(cs_packet_player_move);
+				move->type = CS_RIGHT;
+				move->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
+				move->camlook = camera.GetRight();
+				move->campos = campos;
+				send_wsa_buf.len = sizeof(cs_packet_player_move);
+
+				DWORD io_byte;
+
+				int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf, 1, &io_byte, 0, NULL, NULL);
+				if (ret_val == SOCKET_ERROR)
+					std::cout << " [error] WSASend() " << std::endl;
+
+				if (!mSkinnedModelInstance[mMyId].mAnimOneCheck)
+				{
+					cs_packet_player_anmation_start* anim = reinterpret_cast<cs_packet_player_anmation_start*>(&send_buf);
+					anim->size = sizeof(cs_packet_player_anmation_start);
+					anim->type = CS_PACKET_START_ANIMATION;
+					anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
+					anim->animationState = 1;
+					send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
+
+					DWORD io_byte2;
+
+					int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf, 1, &io_byte2, 0, NULL, NULL);
+					if (ret_val == SOCKET_ERROR)
+						std::cout << " [error] WSASend() " << std::endl;
+
+					mSkinnedModelInstance[mMyId].mClipnameAndTotalCount = mClipnameAndTotalCounts[1];
+					mSkinnedModelInstance[mMyId].mAnimOneCheck = true;
+					mSkinnedModelInstance[mMyId].mWalkCheck = true;
+				}
+
+				campos.x += mSkinnedModelInstance[mMyId].mcammove.x;
+				campos.y += 0;
+				campos.z += mSkinnedModelInstance[mMyId].mcammove.z;
+				/*campos.x = mSkinnedModelInstance[mMyId].mCharCamPos.x + mSkinnedModelInstance[mMyId].World._41;
+				campos.z = mSkinnedModelInstance[mMyId].mCharCamPos.z + mSkinnedModelInstance[mMyId].World._43;*/
+
+				camera.SetPosition(campos);
+			}
+			else
+			{
+				mSkinnedModelInstance[mMyId].mKeyState = 0;
+				if (mSkinnedModelInstance[mMyId].mAnimOneCheck)
+				{
+					cs_packet_player_anmation_start* anim = reinterpret_cast<cs_packet_player_anmation_start*>(&send_buf);
+					anim->size = sizeof(cs_packet_player_anmation_start);
+					anim->type = CS_PACKET_START_ANIMATION;
+					anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
+					anim->animationState = 0;
+					send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
+
+					DWORD io_byte2;
+
+					int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf, 1, &io_byte2, 0, NULL, NULL);
+					if (ret_val == SOCKET_ERROR)
+						std::cout << " [error] WSASend() " << std::endl;
+
+					mSkinnedModelInstance[mMyId].mAnimCnt = 0;
+					mSkinnedModelInstance[mMyId].mClipnameAndTotalCount = mClipnameAndTotalCounts[0];
+				}
+				mSkinnedModelInstance[mMyId].mAnimOneCheck = false;
+			}
 		}
 	}
 }

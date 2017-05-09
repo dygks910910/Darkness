@@ -9,7 +9,6 @@
 #include<iostream>
 #endif // !_DEBUG | DEBUG
 
-extern XMFLOAT3 camtest;
 
 #include<string>
 #include<iostream>
@@ -25,8 +24,7 @@ const int SC_PACKET_PUT_USER = 0;
 const int SC_PACKET_PLAYGAME_INIT_POS = 1;
 const int SC_PACKET_PLAYGAME_PLAYER_POS = 2;
 const int SC_PACKET_PLAYGAME_START_ANMATION = 3;
-const int SC_PACKET_PLAYGAME_COLLISION_TRUE = 4;
-
+const int SC_PACKET_PLAYGAME_PLAYER_DIE = 4;
 
 #pragma pack(push, 1)   
 

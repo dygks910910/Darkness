@@ -170,11 +170,7 @@ std::string CGameScene::UpdateScene(const float dt, MSG& msg)
   	mMinimap.PositionUpdate(CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].World._41,
   		CModelManager::GetInstance()->GetSkinnedInstanceModels()[5].World._43);
 	//mMinimap.PositionUpdate(0,0);
-	if (!camset)
-	{
-		mCam.SetPosition(camtest);
-		camset = true;
-	}
+	
 	mTimer.Tick();
 	//
 	// Control the camera.
@@ -257,7 +253,23 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	IDXGISwapChain* swapChain, ID3D11RenderTargetView* rtv,
 	ID3D11DepthStencilView* dsv, D3D11_VIEWPORT* viewPort)
 {
+	std::cout << camtest.x << std::endl;
+	if (camtest.x !=0 && camset ==false)
+	{
+		XMFLOAT3 charpo, up;
+		up.x = 0;
+		up.y = 1;
+		up.z = 0;
 
+		charpo.x = CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._41;
+		charpo.y = CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._42+1;
+		charpo.z = CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._43;
+
+		mCam.SetPosition(camtest);
+		mCam.LookAt(camtest, charpo, up);
+
+		camset = true;
+	}
 	
 
 	mSmap->BindDsvAndSetNullRenderTarget(dc);
@@ -414,14 +426,14 @@ void CGameScene::OnMouseUp(WPARAM btnState, int x, int y)
 float sumdx = 0;
 void CGameScene::OnMouseMove(WPARAM btnState, int x, int y)
 {
-	if (!camset)
-	{
-		mCam.SetPosition(camtest);
-		camset = true;
-	}
+	//if (!camset)
+	//{
+	//	mCam.SetPosition(camtest);
+	//	camset = true;
+	//}
 	if ((btnState & MK_RBUTTON) != 0)
 	{
-		if (testcamera)
+		if (CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].mAlive)
 		{
 			XMMATRIX	matRot;
 			XMFLOAT3 objectpos, campos, dist, up;
@@ -470,7 +482,6 @@ void CGameScene::OnMouseMove(WPARAM btnState, int x, int y)
 			campos.y = dist.y + objectpos.y;
 			campos.z = dist.z + objectpos.z;
 			mCam.LookAt(campos, objectpos, up);
-			std::cout << mCam.GetLook().x << ' ' << mCam.GetLook().y << ' ' << mCam.GetLook().z << std::endl;
 			///////////////////////////////////////////
 		}
 		else
