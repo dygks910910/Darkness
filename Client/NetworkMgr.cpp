@@ -17,8 +17,7 @@ void NetworkMgr::Initialize()
 {
 	WSADATA   wsadata;
 	WSAStartup(MAKEWORD(2, 2), &wsadata);
-
-
+	isGameOver = false;
 	socket = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, 0, 0);
 	while (true)
 	{
@@ -63,7 +62,9 @@ void NetworkMgr::ReadPacket(const SOCKET& sock)
 
 	if (retval == SOCKET_ERROR)
 	{
+#ifdef _DEBUG	
 		std::cout << " RecvPacket() : WSARecv() -> SOCKET_ERROR " << std::endl;
+#endif
 		return;
 	}
 
@@ -110,6 +111,22 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 		memcpy(&put_user, packet, packet[0]);
 		setId(put_user.id);
 		CModelManager::GetInstance()->GetSkinnedInstanceModels()[getId()].mId = put_user.id;
+
+		cs_packet_player_nickname* nick
+			= reinterpret_cast<cs_packet_player_nickname*>(&CModelManager::GetInstance()->send_buf);
+		nick->size = sizeof(cs_packet_player_nickname);
+		nick->type = CS_PACKET_CLEINT_NICKNAME;
+		nick->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[put_user.id].mId;
+		wcscpy(nick->nickName,&mNickName[0]);
+
+		CModelManager::GetInstance()->send_wsa_buf.len = sizeof(cs_packet_player_nickname);
+		DWORD io_byte2;
+
+		int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), 
+			&CModelManager::GetInstance()->send_wsa_buf,
+			1, &io_byte2, 0, NULL, NULL);
+		if (ret_val == SOCKET_ERROR)
+			std::cout << " [error] WSASend() " << std::endl;
 		break;
 	}
 	case SC_PACKET_PLAYGAME_INIT_POS:
@@ -170,7 +187,13 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 		CModelManager::GetInstance()->GetSkinnedInstanceModels()[player_die.id].mAlive = false;
 	}
 	break;
-
+	case SC_PACKET_PLAYGAME_GAME_RESULT:
+	{
+		isGameOver = true;
+		//sc_packet_game_result player_result;
+		memcpy(&mGameResult, packet, packet[0]);
+	}
+	break;
 	default:
 		break;
 

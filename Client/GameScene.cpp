@@ -155,7 +155,7 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	mTimer.Start();
 
 	mMinimap.Initialize(device, mClientWidth, mClientHeight, mCam.othMtx(), 100, 100);
-	mDrawText.Init(device, dc);
+	DrawText.Init(device, dc);
 	OnResize();
 	return true;
 }
@@ -236,27 +236,31 @@ std::string CGameScene::UpdateScene(const float dt, MSG& msg)
 	BuildShadowTransform();
 	mRain.Update(dt, mTimer.TotalTime());
 
-	if (!mbTimeOver) {
-		countDownSec -= mTimer.DeltaTime();
-		
-		//남은시간이 0이하가 되면?
-		if (countDownMin < 0)
-		{
-			std::cout << "gameOver" << std::endl;
-			countDownMin = 0;
-			countDownSec = 0;
-			mbTimeOver = true;
-		}
-		//초가 0이하가 되면?
-		else if (countDownSec - mTimer.DeltaTime() <= 0)
-		{
-			countDownSec = 60;
-			countDownMin -= 1;
-		}
-		wchar_t tempString[10];
-		wsprintf(tempString, TEXT("%d:%d"), (int)countDownMin, (int)countDownSec);
-		timerString = tempString;
-	}
+ 	if (NetworkMgr::GetInstance()->isGameOver)
+ 	{
+ 		return SceneName::endingScene;
+ 	}
+ 	if (!mbTimeOver) {
+ 		countDownSec -= mTimer.DeltaTime();
+ 		
+ 		//남은시간이 0이하가 되면?
+ 		if (countDownMin < 0)
+ 		{
+ 			std::cout << "gameOver" << std::endl;
+ 			countDownMin = 0;
+ 			countDownSec = 0;
+ 			mbTimeOver = true;
+ 		}
+ 		//초가 0이하가 되면?
+ 		else if (countDownSec - mTimer.DeltaTime() <= 0)
+ 		{
+ 			countDownSec = 60;
+ 			countDownMin -= 1;
+ 		}
+ 		wchar_t tempString[10];
+ 		wsprintf(tempString, TEXT("%d:%d"), (int)countDownMin, (int)countDownSec);
+ 		timerString = tempString;
+ 	}
 	CModelManager::GetInstance()->UpdateModel(dt, mCam);
 	// 	mCharacterInstance1.Update(dt);
 	// 
@@ -390,7 +394,7 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 	CModelManager::GetInstance()->DrawInstancedModel(dc, activeInstanceTech, mShadowTransform, mCam);
 
-	mDrawText(timerString, 75, mClientWidth / 2, 150, FontColorForFW::RED);
+	DrawText(timerString, 75, mClientWidth / 2, 150, FontColorForFW::RED);
  	mMinimap.Render(dc, mCam);
 	
 	dc->OMSetBlendState(0, blendFactor, 0xffffffff); // restore default

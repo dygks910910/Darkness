@@ -239,7 +239,7 @@ void CMainScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 		DrawText(mPortString, FONT_SIZE, INPUT_PORT_X + 200, INPUT_PORT_Y+ 80);
 
 		mInputNickname.Render(dc, INPUT_NICKNAME_X, INPUT_NICKNAME_Y);
-		DrawText(mNicknameString, FONT_SIZE, INPUT_NICKNAME_X + 200, INPUT_NICKNAME_Y + 80);
+		DrawText(mNicknameString, FONT_SIZE, INPUT_NICKNAME_X + 200, INPUT_NICKNAME_Y + 50);
 
 		mLobbyConnectButton.Draw(dc);
 		mReturnButton.Draw(dc);

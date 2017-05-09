@@ -18,13 +18,14 @@ const int MAX_PACKET_SIZE = 255;
 const int MAX_BUF = 4000;
 
 const int WM_SOCKET = WM_USER + 1;
-
+const int MAX_CLIENT = 2;
 // S -> C packet
 const int SC_PACKET_PUT_USER = 0;
 const int SC_PACKET_PLAYGAME_INIT_POS = 1;
 const int SC_PACKET_PLAYGAME_PLAYER_POS = 2;
 const int SC_PACKET_PLAYGAME_START_ANMATION = 3;
 const int SC_PACKET_PLAYGAME_PLAYER_DIE = 4;
+const int SC_PACKET_PLAYGAME_GAME_RESULT = 5;
 
 #pragma pack(push, 1)   
 
@@ -36,6 +37,16 @@ struct sc_packet_put_user
 	WORD id;
 };
 
+const int CS_PACKET_CLEINT_NICKNAME = 6;
+   
+   struct cs_packet_player_nickname
+   {
+      BYTE size;
+      BYTE type;
+      WORD id;
+      WCHAR nickName[20];
+   };
+   
 
 struct sc_packet_playgame_init_pos
 {
@@ -66,6 +77,21 @@ struct sc_packet_player_anmation_start
 };
 
 
+// 게임 결과 구조체
+struct game_result
+{
+	UINT id;
+	UINT NPCKill;
+	UINT playerKill;
+	WCHAR nickName[20];
+};
+struct sc_packet_game_result
+{
+	BYTE size;
+	BYTE type;
+	UINT max_client;
+	game_result game_result[MAX_CLIENT];
+};
 
 
 #pragma pack(pop)  
@@ -87,7 +113,7 @@ class NetworkMgr
 	std::string m_portNum;
 	std::wstring mNickName;
 	int mId;
-
+	sc_packet_game_result mGameResult;
 private:
 	static NetworkMgr* instance;
 public:
@@ -123,6 +149,8 @@ public:
 public:
 	void setId(int id){mId = id;}
 	int getId() { return mId; }
+	sc_packet_game_result getGameResult() { return mGameResult; }
+	bool isGameOver=false;
 
 public:
 	void SetWindowHandle(HWND h) { mHandle = h; };

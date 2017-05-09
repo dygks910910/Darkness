@@ -7,37 +7,43 @@
 #include "DrawText.h"
 #include "GameTimer.h"
 
+struct playerScore;
+
 class CEndingScene :
 	public CScene
 {
+protected:
+	
 	Camera mCam;
 	XMFLOAT4X4 mWorldMtx;
-
+	std::vector<playerScore> mScores;
 
 	ID3D11DepthStencilState* mDepthDisableState;
 	ID3D11DepthStencilState* mDepthStencilState;
 
 	//////////////////////////////////////////////////////////////////////////
 	CBitMap mResultBoard;
-	wchar_t Text[255];     // 텍스트를 저장하기위한 변수
-	wchar_t Cstr[10];      // 조합중인 문자!!
+	CButtonClass mHomeButton;
 
 	//////////////////////////////////////////////////////////////////////////
 	//Lobby
-	CDrawText DrawText;
+	CDrawText mDrawText;
 
 	// 첫번쨰 닉네임 위치(431, 210)
 	// 두번쨰 (431,313)
 	const int OUTPUT_NICKNAME_LOCATION_X = 430;
-	const int OUTPUT_NICKNAME_LOCATION_Y = 210;
+	const int OUTPUT_NICKNAME_LOCATION_Y = 170;
 
 	const int OUTPUT_PLAYER_KILL_LOCATION_X = 921;
-	const int OUTPUT_PLAYER_KILL_LOCATION_Y = 210;
+	const int OUTPUT_PLAYER_KILL_LOCATION_Y = 170;
 
 	const int OUTPUT_MONSTER_KILL_LOCATION_X = 1397;
-	const int OUTPUT_MONSTER_KILL_LOCATION_Y = 210;
+	const int OUTPUT_MONSTER_KILL_LOCATION_Y = 170;
 
-	const int OUTPUT_Y_OFFSET = 100;
+	const int OUTPUT_Y_OFFSET = 80;
+
+	const int HOME_BUTTON_X = 1000;
+	const int HOME_BUTTON_Y = 10;
 
 	//플레이어 킬 위치
 	// 첫번째 (921,210)
@@ -59,8 +65,24 @@ public:
 	virtual void OnResize();
 	virtual void OnKeyboardButtonDown(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam);
 	int GetText(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam);
-	
+	void DrawAllScore();
 	
 	
 };
 
+struct playerScore
+{
+	std::wstring nickname;
+	UINT playerKill;
+	UINT monsterKill;
+	UINT NIckposX, NickposY;
+	UINT PKposX, PKposY;
+	UINT MKposX, MKkposY;
+
+	UINT32 fontColor;
+// 	playerScore(const std::wstring& nick,const UINT& playerK,const UINT& monsterK,
+// 		UINT xpos,UINT ypos,UINT32 fontcolr)
+// 		:nickname(nick),playerKill(playerK),monsterKill(monsterK),
+// 		posX(xpos),posY(ypos), fontColor(fontcolr)
+// 	{}
+};

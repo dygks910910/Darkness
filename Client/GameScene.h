@@ -70,7 +70,7 @@ class CGameScene :
 
 	Sky* mSky;
 
-	CDrawText mDrawText;
+	CDrawText DrawText;
 	BoundingSphere mSceneBounds;
 
 	float mLightRotationAngle;

@@ -106,9 +106,14 @@ void CSceneManager::ChangeScene(std::string sceneName, const float& dt)
 		//mScenes.insert(make_pair(sceneName, new CTestScene));
 		mScenes[sceneName]->Init(mDevice,mDc,mSwapChain,*mViewport,mClientWidth,mClientHeight);
 	}
-	else
+	else if(mSceneKey == SceneName::gameScene)
 	{
 		mScenes.insert(make_pair(sceneName, new CGameScene));
+		mScenes[sceneName]->Init(mDevice, mDc, mSwapChain, *mViewport, mClientWidth, mClientHeight);
+	}
+	else if (mSceneKey == SceneName::endingScene)
+	{
+		mScenes.insert(make_pair(sceneName, new CEndingScene));
 		mScenes[sceneName]->Init(mDevice, mDc, mSwapChain, *mViewport, mClientWidth, mClientHeight);
 	}
 }
