@@ -354,7 +354,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 		{
 			if (!mSkinnedModelInstance[mMyId].mAnimOneCheck )
 			{
-				if(mSkinnedModelInstance[mMyId].mAnimCnt >= 168)
+				if(mSkinnedModelInstance[mMyId].mAnimCnt >= 168 || mSkinnedModelInstance[mMyId].mClipnameAndTotalCount != mClipnameAndTotalCounts[2])
 					mSkinnedModelInstance[mMyId].mAnimCnt = 0;
 				mSkinnedModelInstance[mMyId].mClipnameAndTotalCount = mClipnameAndTotalCounts[2];
 
