@@ -43,6 +43,9 @@
     <Filter Include="소스 파일\Obstacle">
       <UniqueIdentifier>{d07e4ffb-e726-4cea-9915-54d8b762f9c2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Common">
+      <UniqueIdentifier>{a68297d7-64ce-4de6-930a-da69dda7c64c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -90,8 +93,8 @@
     <ClInclude Include="Obstacle.h">
       <Filter>소스 파일\Obstacle</Filter>
     </ClInclude>
-    <ClInclude Include="MathHelper.h">
-      <Filter>소스 파일</Filter>
+    <ClInclude Include="xnacollision.h">
+      <Filter>소스 파일\Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -128,8 +131,8 @@
     <ClCompile Include="Obstacle.cpp">
       <Filter>소스 파일\Obstacle</Filter>
     </ClCompile>
-    <ClCompile Include="MathHelper.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="xnacollision.cpp">
+      <Filter>소스 파일\Common</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

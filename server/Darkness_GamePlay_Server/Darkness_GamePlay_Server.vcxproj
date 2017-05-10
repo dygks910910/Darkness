@@ -79,8 +79,6 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -149,7 +147,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MathHelper.h" />
     <ClInclude Include="Myheader.h" />
     <ClInclude Include="Mynamespace.h" />
     <ClInclude Include="NPC.h" />
@@ -164,10 +161,10 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="ThreadFunctions.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="xnacollision.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Darkness_GamePlay_Server.cpp" />
-    <ClCompile Include="MathHelper.cpp" />
     <ClCompile Include="Mynamespace.cpp" />
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="Object.cpp" />
@@ -178,6 +175,7 @@
     <ClCompile Include="SyncObject.cpp" />
     <ClCompile Include="ThreadFunctions.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="xnacollision.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

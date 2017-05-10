@@ -12,6 +12,7 @@ void SendPlayerGamePlayerPosPacket(const UINT to, const UINT from);
 void SendPlayerAnimationStartBrodcast(const UINT from, const UINT stateNum);
 
 
+
 XMFLOAT3 operator-(XMFLOAT3& a, XMFLOAT3& b);
 XMFLOAT3 operator+(XMFLOAT3& a, XMFLOAT3& b);
 bool intersectAABBAABB(AABB* pAABB1, AABB* pAABB2);

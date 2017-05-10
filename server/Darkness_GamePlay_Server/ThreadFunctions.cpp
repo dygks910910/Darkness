@@ -5,7 +5,6 @@
 #include "Player.h"
 #include "NPC.h"
 #include "Timer.h"
-
 void AcceptThread()
 {
 	int retval;
@@ -42,7 +41,7 @@ void AcceptThread()
 		if (client_sock == SOCKET_ERROR)
 			break;
 		if (new_id == MAX_CLIENT) {
-			closesocket( client_sock );
+			closesocket(client_sock);
 			cout << "더이상 접속 할 수 없습니다." << endl;
 			while (true);
 		}
@@ -65,6 +64,9 @@ void AcceptThread()
 		// 클라이언트의 초기 위치를 Packet으로 전달.
 		SendPlayerGamePutPacket(new_id, new_id);
 
+
+
+
 		// 다른 클라이언트가 있다면.
 		// 나의 정보를 해당 클라에게 보내고
 		// 해당 클라의 정보를 나에게 보낸다.
@@ -80,8 +82,8 @@ void AcceptThread()
 
 		// 모든 NPC들의 정보를 접속한 클라이언트에게 보내준다.
 		for (int i = MAX_CLIENT; i < MAX_OBJECT; ++i) {
-				SendPlayerGamePutPacket(new_id, i);
-				cout << i << "에 대한 정보를  " << new_id << "에게 보냅니다" << endl;
+			SendPlayerGamePutPacket(new_id, i);
+			cout << i << "에 대한 정보를  " << new_id << "에게 보냅니다" << endl;
 		}
 
 
@@ -90,7 +92,44 @@ void AcceptThread()
 		CreateIoCompletionPort(reinterpret_cast<HANDLE>(client_sock), g_hIocp, new_id, 0);
 		player->RecvPacket();
 		++new_id;
+		++playingClient;
 
+		if (MAX_CLIENT == playingClient) {
+
+			// NPC들의 이벤트를 추가.
+			for (int i = MAX_CLIENT; i < MAX_OBJECT; ++i) {
+
+				int moveTime = rand() % 5 + 1;
+				int tickTime = (moveTime / deltaTime) / FPS;
+
+
+				// 실수로 난수 생성하여 NPC의 CamLook에 넣어주는 부분
+				int sign = rand() % 2;
+				double max = 32767;
+				double x;
+				double z;
+
+				if (0 == sign) {
+					x = (rand() / max);
+					z = (rand() / max);
+				}
+				else {
+					x = -(rand() / max);
+					z = -(rand() / max);
+				}
+
+				dynamic_cast<NPC*>(objects[i])->SetCamLook(XMFLOAT3(x, -0.289194, z));
+
+				dynamic_cast<NPC*>(objects[i])->SetMoveTickTime(tickTime);
+				dynamic_cast<NPC*>(objects[i])->SetMoveTime(moveTime * 1000);
+				Timer::GetInstance()->AddTimer(i, NPC_MOVE, tickTime);
+
+
+
+			}
+
+
+		}
 
 
 	}
@@ -125,15 +164,74 @@ void WorketThread()
 			continue;
 		}
 
-		if (over_ex->command == NPC_MOVE)
-		{
+		if (over_ex->command == NPC_MOVE) {
+
 			NPC* npc = dynamic_cast<NPC*>(objects[id]);
 
-			Timer::GetInstance()->AddTimer(id, NPC_MOVE, 1000);
+			if (true == objects[id]->GetIsAlive()) {
 
+				// 이동 및 충돌 연산 하는 함수
+				npc->HeartBeat();
+
+				if (npc->GetMoveTickCount() == 0)
+					SendPlayerAnimationStartBrodcast(id, ANIMATION_STATE_WORK);
+
+
+				npc->SetMoveTickCount(npc->GetMoveTickCount() + npc->GetMoveTickTime());
+
+
+				if (npc->GetMoveTime() <= npc->GetMoveTickCount()) {
+					int restTime = rand() % 5 + 1;
+					npc->SetRestTime(restTime * 1000);
+
+
+
+					Timer::GetInstance()->AddTimer(id, NPC_REST, restTime * 1000);
+					npc->SetMoveTickCount(0);
+
+					SendPlayerAnimationStartBrodcast(id, ANIMATION_STATE_IDLE);
+
+				}
+
+				else
+					Timer::GetInstance()->AddTimer(id, NPC_MOVE, npc->GetMoveTickTime());
+			}
 			continue;
 		}
+		else if (over_ex->command == NPC_REST) {
+			NPC* npc = dynamic_cast<NPC*>(objects[id]);
 
+			if (true == npc->GetIsAlive()) {
+
+
+				int moveTime = rand() % 5 + 1;
+				int tickTime = (moveTime / deltaTime) / FPS;
+
+				int sign = rand() % 2;
+				double max = 32767;
+				double x;
+				double z;
+
+				if (0 == sign) {
+					x = (rand() / max);
+					z = (rand() / max);
+				}
+				else {
+					x = -(rand() / max);
+					z = -(rand() / max);
+				}
+
+
+
+				dynamic_cast<NPC*>(objects[id])->SetCamLook(XMFLOAT3(x, -0.289194, z));
+
+				dynamic_cast<NPC*>(objects[id])->SetMoveTickTime(tickTime);
+				dynamic_cast<NPC*>(objects[id])->SetMoveTime(moveTime * 1000);
+				Timer::GetInstance()->AddTimer(id, NPC_MOVE, tickTime);
+
+			}
+			continue;
+		}
 		// recv일 경우 패킷을 읽어주고
 		// 처리를 해준다.
 		if (over_ex->operation == OP_RECV) {
@@ -153,7 +251,7 @@ void WorketThread()
 			cout << "Unknown GQCS event!" << endl;
 			while (true);
 		}
-		
+
 
 
 
@@ -171,8 +269,21 @@ void ReadPacket(const UINT& id, const DWORD& transferred)
 
 void PacketProcess(const UINT id, BYTE* packet)
 {
+	int packetNum = 0;
+
 	switch (packet[1])
 	{
+	case CS_PACKET_CLIENT_NICKNAME:
+	{
+		packetNum = CS_PACKET_CLIENT_NICKNAME;
+
+		cs_packet_player_nickname nick;
+		memcpy(&nick, packet, packet[0]);
+
+		dynamic_cast<Player*>(objects[nick.id])->SetNickName(nick.nickName);
+		wcout << nick.nickName << endl;
+		break;
+	}
 	case CS_UP:
 	{
 		dynamic_cast<Player*>(objects[id])->Move(CS_UP, id, packet);
@@ -199,25 +310,114 @@ void PacketProcess(const UINT id, BYTE* packet)
 
 		memcpy(&ani_start, packet, packet[0]);
 
-		SendPlayerAnimationStartBrodcast(ani_start.id, ani_start.animationState);
+		if (ANIMATION_STATE_RUN == ani_start.animationState)
+			objects[ani_start.id]->SetSpeed(objects[ani_start.id]->GetSpeedSave() * 1.8);
 
-	}
-	default:
-		break;
+		else if (ANIMATION_STATE_WORK == ani_start.animationState)
+			objects[ani_start.id]->SetSpeed(objects[ani_start.id]->GetSpeedSave());
 
-	}
+		else if (ANIMATION_STATE_ATTACK == ani_start.animationState) {
 
-	// 바뀐 값을 다른 Client에게 보낸다.
-	for (int i = 0; i < MAX_CLIENT; ++i) {
-		if (true == objects[i]->GetIsRender() && id != i) {
-			SendPlayerGamePlayerPosPacket(i, id);
-			//cout << id << "가 " << i << "에게 보냅니다" << endl;
+			for (int i = 0; i < MAX_OBJECT; ++i) {
+				if (true == IntersectSphereSphere(&objects[ani_start.id]->GetSphereForPlayer(), &objects[i]->GetSphereForPlayer())
+					&& ani_start.id != i && objects[i]->GetIsAlive() ) {
+
+
+					// 피격당한 오브젝트가 Client라면?
+					if (i < MAX_CLIENT) {
+
+						dynamic_cast<Player*>(objects[ani_start.id])->
+							SetPlayerKill(dynamic_cast<Player*>(objects[ani_start.id])->GetPlayerKill() + 1);
+
+
+						objects[i]->cs.lock();
+						objects[i]->SetIsAlive(false);
+						objects[i]->cs.unlock();
+
+						// 해당 클라이언트에게 죽었다고 알리는 패킷
+						sc_packet_player_die player_die;
+						player_die.size = sizeof(player_die);
+						player_die.type = SC_PACKET_PLAYGAME_PLAYER_DIE;
+						player_die.id = i;
+						SendPacket(i, reinterpret_cast<BYTE*>(&player_die));
+
+
+						SendPlayerAnimationStartBrodcast(i, ANIMATION_STATE_DIE);
+
+						int curPlayerCnt = 0;
+						// for문을 돌려 클라이언트의 갯수를 세어 1이면 게임 종료!
+						for (int j = 0; j < MAX_CLIENT; ++j) {
+							if (true == objects[j]->GetIsAlive())
+								++curPlayerCnt;
+						}
+						
+
+						// 게임 종료
+						if (1 == curPlayerCnt) {
+							
+							cout << "게임을 종료합니다." << endl;
+
+							sc_packet_game_result game_result;  
+							game_result.size = sizeof(game_result);
+							game_result.type = SC_PACKET_PLAYGAME_GAME_RESULT;
+							game_result.max_client = MAX_CLIENT;
+							
+							for (int n = 0; n < MAX_CLIENT; ++n) {
+								game_result.game_result[n].id = n;
+								wcscpy(game_result.game_result[n].nickName, dynamic_cast<Player*>(objects[n])->GetNickName() );
+								game_result.game_result[n].NPCKill = dynamic_cast<Player*>(objects[n])->GetNPCKill();
+								game_result.game_result[n].playerKill = dynamic_cast<Player*>(objects[n])->GetPlayerKill();
+							}
+
+							for (int m = 0; m < MAX_CLIENT; ++m) {
+								SendPacket(m, reinterpret_cast<BYTE*>(&game_result));
+							}
+
+						}
+
+					}
+					// 몬스터라면
+					else {
+						dynamic_cast<Player*>(objects[ani_start.id])->
+							SetNPCKill(dynamic_cast<Player*>(objects[ani_start.id])->GetNPCKill() + 1);
+
+						// NPC작업을 중지시키고
+
+						objects[i]->cs.lock();
+						objects[i]->SetIsAlive(false);
+						objects[i]->cs.unlock();
+
+						SendPlayerAnimationStartBrodcast(i, ANIMATION_STATE_DIE);
+
+						// 플레이어 1명만 살아있다면. 게임 끝나는 코드 일단 생략
+					}
+
+
+				}
+			}
+
+
+
 
 		}
+		objects[ani_start.id]->SetAnimationState(ani_start.animationState);
+		SendPlayerAnimationStartBrodcast(ani_start.id, ani_start.animationState);
+	}
+	break;
+
+
 	}
 
+	if (CS_PACKET_CLIENT_NICKNAME != packetNum) {
+		// 바뀐 값을 다른 Client에게 보낸다.
+		for (int i = 0; i < MAX_CLIENT; ++i) {
+			if (true == objects[i]->GetIsRender() && id != i) {
+				SendPlayerGamePlayerPosPacket(i, id);
+				//cout << id << "가 " << i << "에게 보냅니다" << endl;
+			}
+		}
+	}
 }
-
 void SendPlayerGamePutPacket(const UINT to, const UINT from)
 {
 	sc_packet_playgame_init_pos player_init;
@@ -225,7 +425,7 @@ void SendPlayerGamePutPacket(const UINT to, const UINT from)
 	player_init.type = SC_PACKET_PLAYGAME_INIT_POS;
 	player_init.id = from;
 
-	if( from < MAX_CLIENT )
+	if (from < MAX_CLIENT)
 		player_init.camPos = dynamic_cast<Player*>(objects[from])->GetCamPos();
 	player_init.worldMatrix = objects[from]->GetWorldMatrix();
 
@@ -235,32 +435,36 @@ void SendPlayerGamePutPacket(const UINT to, const UINT from)
 
 void SendPlayerGamePlayerPosPacket(const UINT to, const UINT from)
 {
-	sc_packet_playgame_init_pos player_init;
-	player_init.size = sizeof(player_init);
-	player_init.type = SC_PACKET_PLAYGAME_PLAYER_POS;
-	player_init.id = from;
-	player_init.worldMatrix = objects[from]->GetWorldMatrix();
+	sc_packet_playgame_player_pos player_pos;
+	player_pos.size = sizeof(player_pos);
+	player_pos.type = SC_PACKET_PLAYGAME_PLAYER_POS;
+	player_pos.id = from;
+	player_pos.camMove = XMFLOAT3(0, 0, 0);
+	player_pos.worldMatrix = objects[from]->GetWorldMatrix();
 
-	SendPacket(to, reinterpret_cast<BYTE*>(&player_init));
+	SendPacket(to, reinterpret_cast<BYTE*>(&player_pos));
 
 }
 
 void SendPlayerAnimationStartBrodcast(const UINT from, const UINT stateNum)
 {
-	sc_packet_player_anmation_start ani_start;
+	sc_packet_player_animation_start ani_start;
 	ani_start.size = sizeof(ani_start);
 	ani_start.type = SC_PACKET_PLAYGAME_START_ANMATION;
 	ani_start.id = from;
 	ani_start.animationState = stateNum;
 
+
 	for (int i = 0; i < MAX_CLIENT; ++i) {
 		if (true == objects[i]->GetIsRender() && from != i) {
 			SendPacket(i, reinterpret_cast<BYTE*>(&ani_start));
-			cout << from << "가 " << i << "에게 보냅니다" << endl;
+			//cout << from << "가 " << i << "에게 보냅니다" << endl;
 		}
 	}
 
 }
+
+
 
 void SendPacket(const UINT id, BYTE* packet)
 {
@@ -290,7 +494,7 @@ void SendPacket(const UINT id, BYTE* packet)
 XMFLOAT3 operator-(XMFLOAT3& a, XMFLOAT3& b)
 
 {
-	return XMFLOAT3(a.x - b.x, a.y- b.y, a.z - b.z);
+	return XMFLOAT3(a.x - b.x, a.y - b.y, a.z - b.z);
 }
 XMFLOAT3 operator+(XMFLOAT3& a, XMFLOAT3& b)
 
@@ -328,9 +532,17 @@ void ProcessEvent(const NPC_EVENT& e)
 		break;
 	}
 
+	case NPC_REST:
+	{
+		object->GetOverEx().command = NPC_REST;
+
+	}
+
 	default:
 		break;
 	}
 
 	PostQueuedCompletionStatus(g_hIocp, 1, object->GetID(), (LPOVERLAPPED)&object->GetOverEx());
 }
+
+

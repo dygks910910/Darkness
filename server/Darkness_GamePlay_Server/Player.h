@@ -7,7 +7,7 @@ class Player
 	: public Object
 {
 	SOCKET socket;
-	string nickName;
+	WCHAR nickName[20];
 	BYTE recv_buf[MAX_BUF_SIZE];
 	UINT id;
 
@@ -18,9 +18,11 @@ class Player
 	BYTE saved_size;
 
 	XMFLOAT3 camPos;
-	XMFLOAT3 mLook;
-public:
-	mutex cs;
+
+	UINT playerKill;
+	UINT NPCKill;
+
+
 
 public:
 	Player();
@@ -34,7 +36,14 @@ public:
 	void SetID(const UINT& _id) { id = _id; }
 	void SetSocket(const SOCKET& _socket) { socket = _socket; }
 	void SetCamPos(const XMFLOAT3& cP) { camPos = cP; }
-	void SetLook(XMFLOAT3 look) { mLook = look; }
+	
+	void SetPlayerKill(const UINT& k) { playerKill = k; }
+	void SetNPCKill(const UINT& k) { NPCKill = k; }
+	void SetNickName(const WCHAR* n) {
+		wcscpy(nickName, n);
+	}
+
+public:
 
 
 	//getter
@@ -43,11 +52,12 @@ public:
 	SOCKET& GetSocket() { return socket; }
 	int& GetState() { return cur_state; }
 	void ReadPacket(const UINT& id, const DWORD& transferred);
-	
+
+	UINT& GetPlayerKill() { return playerKill; }
+	UINT& GetNPCKill() { return NPCKill; }
+	WCHAR* GetNickName() { return nickName; }
+
+
     void Move(const int dir, const UINT id, BYTE* packet);
-
-	XMFLOAT3 GetLook() { return mLook; }
-
-	float mCheckangle = 0;
 };
 

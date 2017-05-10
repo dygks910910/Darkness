@@ -6,7 +6,6 @@
 #include "Object.h"
 #include "Timer.h"
 #include "Obstacle.h"
-#include "MathHelper.h"
 
 Server::Server()
 {
@@ -23,15 +22,14 @@ void Server::LoadObstacle()
 {
 	// 텍스트 파일로 부터 읽어 온다.
 	ifstream fin("obstacle.txt");
-	string ignore , name;
+	string ignore, name;
 	float cX, cY, cZ, eX, eY, eZ;
 	float sX, sY, sZ, tX, tY, tZ, rX, rY, rZ, rA;
-	
+
 
 
 	for (int i = 0; i < MAX_OBSTACLE; ++i) {
 		fin >> name;
-
 		fin >> ignore >> tX >> tY >> tZ;
 		fin >> ignore >> rX >> rY >> rZ >> rA;
 		fin >> ignore >> sX >> sY >> sZ;
@@ -41,29 +39,70 @@ void Server::LoadObstacle()
 		obstacles.push_back(new Obstacle);
 
 		// 장애물의 월드행렬과 center, extent를 set
-		obstacles[i]->InitWorldMatrix(XMFLOAT3(1, 1, 1), XMFLOAT3(tX, tY, tZ), XMFLOAT4(rX, rY, rZ, rA));
-		obstacles[i]->GetAABB().extent = XMFLOAT3(eX, eY, eZ);
-		obstacles[i]->GetAABB().center = XMFLOAT3(cX, cY, cZ);
+
+		if (name == "Building_b" || name == "Building_c" || name == "Building_d" || name == "tower_corner"
+			|| name == "Building_e" || name == "Tent" ) {
+
+			obstacles[i]->InitWorldMatrix(XMFLOAT3(1, 1, 1), XMFLOAT3(tX, tY, tZ), XMFLOAT4(rX, rY, rZ, rA));
 
 
-		XMFLOAT4X4* a = &obstacles[i]->GetWorldMatrix();
+			XMFLOAT4X4* a = &obstacles[i]->GetWorldMatrix();
+			obstacles[i]->SetName(name);
+			obstacles[i]->GetObb().Center = XMFLOAT3(cX, cY, cZ);
+			obstacles[i]->GetObb().Extents = XMFLOAT3(eX, eY, eZ);
+			obstacles[i]->GetObb().Orientation = XMFLOAT4(rX, rY, rZ, rA);
 
-		// min, max를 구하고 해당 값에 월드행렬을 곱해준다.
-		XMFLOAT3 vMin1 = obstacles[i]->GetAABB().center - obstacles[i]->GetAABB().extent;
-		XMFLOAT3 vMax1 = obstacles[i]->GetAABB().center + obstacles[i]->GetAABB().extent;
-		
-		XMVECTOR trasformV = XMVector3TransformCoord(XMLoadFloat3(&vMin1), XMLoadFloat4x4(&obstacles[i]->GetWorldMatrix()));
-		XMStoreFloat3(&vMin1, trasformV);
+			XMVECTOR trasformV = XMVector3TransformCoord(XMLoadFloat3(&obstacles[i]->GetObb().Center), XMLoadFloat4x4(&obstacles[i]->GetWorldMatrix()));
+			XMStoreFloat3(&obstacles[i]->GetObb().Center, trasformV);
+		}
 
-		trasformV = XMVector3TransformCoord(XMLoadFloat3(&vMax1), XMLoadFloat4x4(&obstacles[i]->GetWorldMatrix()));
-		XMStoreFloat3(&vMax1, trasformV);
+		else if (name == "Sewers_entrance" || name == "Hay_b" || name == "Hay_c" || name == "wall" || name == "Building_f" || name == "tower_round"
+			     || name == "Sack_a" || name == "Sack_b" || name == "Crate" || name == "Barrel" || name == "Well") {
+			obstacles[i]->InitWorldMatrix(XMFLOAT3(sX, sY, sZ), XMFLOAT3(tX, tY, tZ), XMFLOAT4(rX, rY, rZ, rA));
 
+			obstacles[i]->SetName(name);
 
-		// 다시 center로 되돌린다.
-		obstacles[i]->GetAABB().center.x = (vMin1.x + vMax1.x) / 2;
-		obstacles[i]->GetAABB().center.y = (vMin1.y + vMax1.y) / 2;
-		obstacles[i]->GetAABB().center.z = (vMin1.z + vMax1.z) / 2;
-		
+			XMFLOAT4X4* a = &obstacles[i]->GetWorldMatrix();
+
+			obstacles[i]->GetObb().Center = XMFLOAT3(cX, cY, cZ);
+			obstacles[i]->GetObb().Extents = XMFLOAT3(eX, eY, eZ);
+			obstacles[i]->GetObb().Orientation = XMFLOAT4(rX, rY, rZ, rA);
+
+			XMVECTOR trasformV = XMVector3TransformCoord(XMLoadFloat3(&obstacles[i]->GetObb().Center), XMLoadFloat4x4(&obstacles[i]->GetWorldMatrix()));
+			XMStoreFloat3(&obstacles[i]->GetObb().Center, trasformV);
+		}
+		else if( name == "angelStatue"){
+			obstacles[i]->InitWorldMatrix(XMFLOAT3(1, 1, 1), XMFLOAT3(tX, tY, tZ), XMFLOAT4(rX, rY, rZ, rA));
+
+			// 여기아니야 ------------------------------------
+			obstacles[i]->SetName(name);
+			// 여기아니야 ------------------------------------
+			XMFLOAT4X4* a = &obstacles[i]->GetWorldMatrix();
+
+			obstacles[i]->GetObb().Center = XMFLOAT3(cX, cY, cZ);
+			obstacles[i]->GetObb().Extents = XMFLOAT3(eX, eY, eZ);
+			obstacles[i]->GetObb().Orientation = XMFLOAT4(rX, rY, rZ, rA);
+
+			XMVECTOR trasformV = XMVector3TransformCoord(XMLoadFloat3(&obstacles[i]->GetObb().Center), XMLoadFloat4x4(&obstacles[i]->GetWorldMatrix()));
+			XMStoreFloat3(&obstacles[i]->GetObb().Center, trasformV);
+		}
+		else {
+			obstacles[i]->InitWorldMatrix(XMFLOAT3(1, 1, 1), XMFLOAT3(tX, tY, tZ), XMFLOAT4(rX, rY, rZ, rA));
+
+			// 여기아니야 ------------------------------------
+			obstacles[i]->SetName(name);
+			// 여기아니야 ------------------------------------
+			XMFLOAT4X4* a = &obstacles[i]->GetWorldMatrix();
+
+			obstacles[i]->GetObb().Center = XMFLOAT3(cX, cY, cZ);
+			obstacles[i]->GetObb().Extents = XMFLOAT3(eX, eY, eZ);
+			obstacles[i]->GetObb().Orientation = XMFLOAT4(rX, rY, rZ, rA);
+
+			//XMVECTOR trasformV = XMVector3TransformCoord(XMLoadFloat3(&obstacles[i]->GetObb().Center), XMLoadFloat4x4(&obstacles[i]->GetWorldMatrix()));
+			//XMStoreFloat3(&obstacles[i]->GetObb().Center, trasformV);
+
+		}
+
 	}
 
 
@@ -92,10 +131,10 @@ void  Server::CreateObjectPool()
 		fin >> ignore;
 		fin >> ignore >> ctX >> ctY >> ctZ;
 		// 바꿔
-		temp[i].InitWorldMatrix(XMFLOAT3(sX, sY, sZ), XMFLOAT3(tX, tY, tZ), XMFLOAT4(rX, rY, rZ, rA));
+		//temp[i].InitWorldMatrix(XMFLOAT3(sX, sY, sZ), XMFLOAT3(tX, tY, tZ), XMFLOAT4(rX, rY, rZ, rA));
+		temp[i].InitWorldMatrix(XMFLOAT3(sX, sY, sZ), XMFLOAT3(tX, tY, tZ), XMFLOAT4(-0.7009093, 0, 0, 0.7132505));
 		temp[i].SetCamPos(XMFLOAT3(ctX, ctY, ctZ));
 		temp[i].SetModel( rand()%2 );
-
 	}
 	// 섞어준다.
 	for (int i = 0 ; i < MAX_OBJECT; ++i) {
@@ -127,9 +166,10 @@ void  Server::CreateObjectPool()
 			objects[i]->SetWorldMatrix(temp[i].GetWorldMatrix());
 			dynamic_cast<Player*>(objects[i])->SetCamPos( temp[i].GetCamPos() );
 			objects[i]->SetModel( temp[i].GetModel() );
-			
-			objects[i]->UpdateCenter();
-			objects[i]->GetAABB().extent = XMFLOAT3(0.678452, 2.44222, 2.96222);
+
+
+			objects[i]->UpdateSphereForObstacle();
+			objects[i]->UpdateSphereForPlayer();
 		}
 		else if (i < MAX_CLIENT + MAX_NPC) {
 			// 33 ~ 95에 대한 NPC 초기화
@@ -139,10 +179,10 @@ void  Server::CreateObjectPool()
 			objects[i]->SetWorldMatrix(temp[i].GetWorldMatrix());
 			objects[i]->SetModel(temp[i].GetModel());
 
-			objects[i]->UpdateCenter();
-			objects[i]->GetAABB().extent = XMFLOAT3(0.678452, 2.44222, 2.96222);
+			objects[i]->UpdateSphereForObstacle();
+			objects[i]->UpdateSphereForPlayer();
 
-			Timer::GetInstance()->AddTimer(i, NPC_MOVE, 1000);
+			
 		}
 
 	}

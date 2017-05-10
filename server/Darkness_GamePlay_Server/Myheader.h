@@ -1,6 +1,5 @@
 #pragma once
 
-#define SPEED 0.009
 #define ROTATE 0.01
 
 
@@ -38,10 +37,17 @@ struct AABB
 	XMFLOAT3 extent;
 };
 
+struct ST_OBB // OBB구조체
+{
+	XMVECTOR vCenterPos; // 상자 중앙의 좌표
+	XMVECTOR vAxisDir[3]; //상자에 평행한 세 축의 단위벡터
+	float  fAxisLen[3]; // 상자의 평행한 세 축의 길이 fAxisLen[n]은 vAxisDir[n]에 각각 대응한다.
+};
 
 
 // NPC 이벤트 관련
 const int NPC_MOVE = 1;
+const int NPC_REST = 2;
 
 typedef struct Npc_Event
 {

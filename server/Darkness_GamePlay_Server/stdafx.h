@@ -40,6 +40,8 @@
 using namespace std;
 using namespace std::chrono;
 
+#include "xnacollision.h"
 #include "Myheader.h"
 #include "Mynamespace.h"
 #include "Protocol.h"
+using namespace XNA;
