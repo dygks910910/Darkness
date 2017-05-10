@@ -352,9 +352,10 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 		////////////////////공격시 if문///////////////////////
 		if (mSkinnedModelInstance[mMyId].mAttack)
 		{
-			if (!mSkinnedModelInstance[mMyId].mAnimOneCheck)
+			if (!mSkinnedModelInstance[mMyId].mAnimOneCheck )
 			{
-				mSkinnedModelInstance[mMyId].mAnimCnt = 0;
+				if(mSkinnedModelInstance[mMyId].mAnimCnt >= 168)
+					mSkinnedModelInstance[mMyId].mAnimCnt = 0;
 				mSkinnedModelInstance[mMyId].mClipnameAndTotalCount = mClipnameAndTotalCounts[2];
 
 				cs_packet_player_anmation_start* anim = reinterpret_cast<cs_packet_player_anmation_start*>(&send_buf);
