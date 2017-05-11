@@ -50,7 +50,7 @@ void SkinnedModelInstance::Update(float dt)
 
 
 	TimePos += dt;
-	if (TimePos >= 0.001)
+	if (TimePos <= 30)
 	{
 		FinalTransforms = ((*mClipAnimbuf)[mClipnameAndTotalCount.first])[mAnimCnt];
 		if (mClipnameAndTotalCount.first == "Death")

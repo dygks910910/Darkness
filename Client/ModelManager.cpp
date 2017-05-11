@@ -352,9 +352,10 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 		////////////////////공격시 if문///////////////////////
 		if (mSkinnedModelInstance[mMyId].mAttack)
 		{
-			if (!mSkinnedModelInstance[mMyId].mAnimOneCheck)
+			if (!mSkinnedModelInstance[mMyId].mAnimOneCheck )
 			{
-				mSkinnedModelInstance[mMyId].mAnimCnt = 0;
+				if(mSkinnedModelInstance[mMyId].mAnimCnt >= 168 || mSkinnedModelInstance[mMyId].mClipnameAndTotalCount != mClipnameAndTotalCounts[2])
+					mSkinnedModelInstance[mMyId].mAnimCnt = 0;
 				mSkinnedModelInstance[mMyId].mClipnameAndTotalCount = mClipnameAndTotalCounts[2];
 
 				cs_packet_player_anmation_start* anim = reinterpret_cast<cs_packet_player_anmation_start*>(&send_buf);
@@ -370,6 +371,8 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 					std::cout << " [error] WSASend() " << std::endl;
 
 				mSkinnedModelInstance[mMyId].mAnimOneCheck = true;
+				mSkinnedModelInstance[mMyId].mWalkCheck = true;
+
 			}
 		}
 		else
@@ -396,14 +399,11 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 
 					mSkinnedModelInstance[mMyId].mAnimOneCheck = false;
 					mSkinnedModelInstance[mMyId].mWalkCheck = false;
+					mSkinnedModelInstance[mMyId].mRunStop = true;
+
 				}
 				mSkinnedModelInstance[mMyId].mKeyState = Keystate::run;
 
-				/*campos.x += mSkinnedModelInstance[mMyId].mcammove.x;
-				campos.y += 0;
-				campos.z += mSkinnedModelInstance[mMyId].mcammove.z;
-
-				camera.SetPosition(campos);*/
 			}
 
 			if (GetAsyncKeyState('W') & 0x8000)
@@ -623,7 +623,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 			else
 			{
 				mSkinnedModelInstance[mMyId].mKeyState = 0;
-				if (mSkinnedModelInstance[mMyId].mAnimOneCheck)
+				if (mSkinnedModelInstance[mMyId].mAnimOneCheck || mSkinnedModelInstance[mMyId].mRunStop == true)
 				{
 					cs_packet_player_anmation_start* anim = reinterpret_cast<cs_packet_player_anmation_start*>(&send_buf);
 					anim->size = sizeof(cs_packet_player_anmation_start);
@@ -640,6 +640,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 
 					mSkinnedModelInstance[mMyId].mAnimCnt = 0;
 					mSkinnedModelInstance[mMyId].mClipnameAndTotalCount = mClipnameAndTotalCounts[0];
+					mSkinnedModelInstance[mMyId].mRunStop = false;
 				}
 				mSkinnedModelInstance[mMyId].mAnimOneCheck = false;
 			}
