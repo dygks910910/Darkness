@@ -71,8 +71,13 @@ void CFbxLoader::Init(const char * pFileName)
 		strWinMsg += "\nEsc to exit";
 	}
 	mpImporter->GetFileVersion(mlFileMajor, mlFileMinor, mlFileRevision);
+#ifdef _DEBUG
+
+
 	std::cout << strWinMsg << std::endl;
 	std::cout << "파일버전:" << mlFileMajor << "." << mlFileMinor << "." << mlFileRevision << std::endl;
+#endif // _DEBUG
+
 	mRootNode = mpScene->GetRootNode();
 	mpImporter->Import(mpScene);
 
@@ -86,7 +91,9 @@ void CFbxLoader::Print()
 	// Note that we are not printing the root node because it should
 	// not contain any attributes.
 	mRootNode = mpScene->GetRootNode();
+#ifdef _DEBUG
 	std::cout << mRootNode->GetChildCount() << std::endl;
+#endif // _DEBUG
 	if (mRootNode)
 	{
 		for (int i = 0; i < mRootNode->GetChildCount(); i++)
@@ -141,9 +148,10 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh,GeometryGenerator::MeshData& m
 	// pMesh가 NULL일 경우도 있기 때문에 NULL일 경우 return.
 	if (!pMesh)
 		return;
-	if (!pMesh->GetNode())
+	if (!pMesh->GetNode()) {
+		MessageBox(0, TEXT("메쉬오류"), TEXT("오류"), 0);
 		std::cout << "메쉬 오류" << std::endl;
-
+	}
 	const int lPolygonCount = pMesh->GetPolygonCount();
 
 
@@ -261,8 +269,10 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh,GeometryGenerator::MeshData& m
 	{
 		//lUVs = new float[lPolygonVertexCount * UV_STRIDE];
 		lUVName = lUVNames[0];
+#ifdef _DEBUG
 		std::cout << "텍스처들:";
 		std::cout << lUVName << std::endl;
+#endif // _DEBUG
 	}
 
 
@@ -425,8 +435,12 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh,GeometryGenerator::MeshData& m
 
 		/*XMStoreFloat3(&bcenter, 0.5*(vMax + vMin));
 		XMStoreFloat3(&bextent, 0.5*(vMax - vMin));*/
+#ifdef _DEBUG
+
+
 		std::cout << "extent " << bextent.x << ' ' << bextent.y << ' ' << bextent.z << std::endl;
 		std::cout << "center " << bcenter.x << ' ' << bcenter.y << ' ' << bcenter.z << std::endl;
+#endif // _DEBUG
 	}
 	/*std::cout << "extent" << bextent.x << " " << bextent.y << " " << bextent.z << std::endl;
 	std::cout << "center" << bcenter.x << " " << bcenter.y << " " << bcenter.z << std::endl;*/
@@ -564,7 +578,11 @@ void CFbxLoader::GetUVName()
 						FbxTexture* texture = FbxCast<FbxTexture>(layered_texture->GetSrcObject<FbxTexture>(k));
 						// Then, you can get all the properties of the texture, include its name
 						const char* texture_name = texture->GetName();
+#ifdef _DEBUG
+
+
 						std::cout << texture_name << std::endl;
+#endif // _DEBUG
 
 					}
 				}
@@ -578,7 +596,11 @@ void CFbxLoader::GetUVName()
 					const FbxTexture* texture = FbxCast<FbxTexture>(prop.GetSrcObject<FbxTexture>(j));
 					// Then, you can get all the properties of the texture, include its name
 					const char* texture_name = texture->GetName();
+#ifdef _DEBUG
+
+
 					std::cout << texture_name << std::endl;
+#endif // _DEBUG
 
 				}
 			}
@@ -699,7 +721,11 @@ void CFbxLoader::LoadFBX(const char* pFileName, GeometryGenerator::MeshData& mes
 	{
 		for (int i = 0; i < mRootNode->GetChildCount(); i++)
 			LoadElement(mRootNode->GetChild(i)->GetMesh(), mesh);
+#ifdef _DEBUG
+
+
 		std::cout << mesh.Vertices.size() << std::endl;
+#endif // _DEBUG
 
 	}
 	Destroy();

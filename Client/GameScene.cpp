@@ -246,7 +246,9 @@ std::string CGameScene::UpdateScene(const float dt, MSG& msg)
  		//남은시간이 0이하가 되면?
  		if (countDownMin < 0)
  		{
+#ifdef _DEBUG
  			std::cout << "gameOver" << std::endl;
+#endif
  			countDownMin = 0;
  			countDownSec = 0;
  			mbTimeOver = true;
@@ -275,7 +277,10 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	IDXGISwapChain* swapChain, ID3D11RenderTargetView* rtv,
 	ID3D11DepthStencilView* dsv, D3D11_VIEWPORT* viewPort)
 {
+#ifdef _DEBUG
 	std::cout << camtest.x << std::endl;
+#endif // _DEBUG
+
 	if (camtest.x !=0 && camset ==false)
 	{
 		XMFLOAT3 charpo, up;

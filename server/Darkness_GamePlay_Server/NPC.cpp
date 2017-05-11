@@ -52,8 +52,7 @@ void NPC::HeartBeat()
 		objoffset = finalm * objoffset;
 		XMStoreFloat4x4(&m, objoffset);
 		worldMatrix = m;
-
-
+		
 		temp.x = worldMatrix._11;
 		temp.y = worldMatrix._12;
 		temp.z = worldMatrix._13;
@@ -104,10 +103,13 @@ void NPC::HeartBeat()
 				if (worldMatrix._41 > (obstacles[i]->GetObb().Center.x - obstacles[i]->GetObb().Extents.x) &&
 					worldMatrix._41 < (obstacles[i]->GetObb().Center.x + obstacles[i]->GetObb().Extents.x))
 				{
-					XMVECTOR s = XMVectorReplicate(deltaTime * speed * speedSave);
+					//XMVECTOR s = XMVectorReplicate(deltaTime * speed * speedSave);
+
 					XMVECTOR l = XMLoadFloat3(&tempCamLook);
-					XMVECTOR p = XMLoadFloat3(&charpos);
-					XMStoreFloat3(&charpos, XMVectorMultiplyAdd(s, l, p));
+					//XMVECTOR p = XMLoadFloat3(&charpos);
+					XMVECTOR p = XMLoadFloat3(&charpos) + (XMVectorSet(camLook.x, camLook.y, camLook.z, 0) *speed*deltaTime);
+
+					XMStoreFloat3(&charpos, p);
 
 					cm.x = charpos.x - worldMatrix._41;
 					cm.y = 0;
@@ -133,10 +135,10 @@ void NPC::HeartBeat()
 
 				else
 				{
-					XMVECTOR s = XMVectorReplicate(deltaTime * speed * speedSave);
+					//XMVECTOR s = XMVectorReplicate(deltaTime * speed * speedSave);
 					XMVECTOR l = XMLoadFloat3(&tempCamLook);
-					XMVECTOR p = XMLoadFloat3(&charpos);
-					XMStoreFloat3(&charpos, XMVectorMultiplyAdd(s, l, p));
+					XMVECTOR p = XMLoadFloat3(&charpos) + (XMVectorSet(camLook.x,camLook.y,camLook.z,0) *speed*deltaTime) ;
+					XMStoreFloat3(&charpos, p);
 
 					cm.x = 0;
 					cm.y = 0;

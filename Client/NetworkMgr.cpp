@@ -126,7 +126,9 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 			&CModelManager::GetInstance()->send_wsa_buf,
 			1, &io_byte2, 0, NULL, NULL);
 		if (ret_val == SOCKET_ERROR)
+#ifdef _DEBUG
 			std::cout << " [error] WSASend() " << std::endl;
+#endif
 		break;
 	}
 	case SC_PACKET_PLAYGAME_INIT_POS:
@@ -144,14 +146,18 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 			camtest.x = init_pos.campos.x;
 			camtest.y = 2.332356;
 			camtest.z = init_pos.campos.z;
+#ifdef _DEBUG
 			std::cout << camtest.x << " " << camtest.y << " " << camtest.z << std::endl;
 			std::cout << "아이디는" << CModelManager::GetInstance()->GetSkinnedInstanceModels()[getId()].mId << std::endl;
+#endif
 		}
 		else
 		{
 			CModelManager::GetInstance()->GetSkinnedInstanceModels()[init_pos.id].mId = init_pos.id;
 			CModelManager::GetInstance()->GetSkinnedInstanceModels()[init_pos.id].World = init_pos.worldMatrix;
+#ifdef _DEBUG	
 			std::cout << "아이디는" << CModelManager::GetInstance()->GetSkinnedInstanceModels()[init_pos.id].mId << std::endl;
+#endif
 		}
 		break;
 	}

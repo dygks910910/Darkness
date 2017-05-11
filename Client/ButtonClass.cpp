@@ -32,18 +32,15 @@ void CButtonClass::Init(ID3D11Device* device, const int& bitmapWidth,
 	isMouseOnThisButton = false;
 	isClicked = false;
 }
-
 void CButtonClass::Draw(ID3D11DeviceContext* dc)
 {
 	Effects::BasicFX->SetDiffuseMap(mButton[mIndex].GetTexture());
 	mButton[mIndex].Render(dc, mLocationX, mLocationY);
 }
-
 void CButtonClass::Update()
 {
 
 }
-
 void CButtonClass::OnMouseDown(const int & x, const int & y)
 {
 	//std::cout << "down";
@@ -73,7 +70,6 @@ void CButtonClass::OnMouseMove(const int & x, const int & y)
 	{
 		mIndex = BUTTON_STATE::NORMAL_STATE;
 		isMouseOnThisButton = false;
-
 	}
 }
 
@@ -89,12 +85,9 @@ float CButtonClass::AspectRatio()
 {
 	return (float)mClientWidth / (float)mClientHeight;
 }
-
 CButtonClass::CButtonClass()
 {
 }
-
-
 CButtonClass::~CButtonClass()
 {
 	for (int i = 0; i < 3; ++i)
