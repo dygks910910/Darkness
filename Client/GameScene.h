@@ -18,12 +18,6 @@
 #include "Ssao.h"
 #include "MiniMap.h"
 #include "DrawText.h"
-// <<<<<<< HEAD
-// #include "StaticModel.h"
-// =======
-
-/*>>>>>>> SpotLight*/
-
 
 struct BoundingSphere
 {
@@ -35,13 +29,13 @@ struct BoundingSphere
 class CGameScene :
 	public CScene
 {
+
 	/*
 	2017 / 3 / 22 / 16:13
 	작성자:박요한(dygks910910@daum.net)
 	설명:기본적인 dx11 인터페이스 변수들.여기서 Release해주면 안된다.프로그램 종료시 release하도록
 	세팅해놨음.
 	*/
-
 	//////////////////////////////////////////////////////////////////////////
 	TextureMgr mTexMgr;
 	GameTimer mTimer;

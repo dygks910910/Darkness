@@ -147,7 +147,7 @@ void CEndingScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	IDXGISwapChain* swapChain, ID3D11RenderTargetView* rtv,
 	ID3D11DepthStencilView* dsv, D3D11_VIEWPORT* viewPort)
 {
-	dc->ClearRenderTargetView(rtv, reinterpret_cast<const float*>(&Colors::Silver));
+	dc->ClearRenderTargetView(rtv, reinterpret_cast<const float*>(&Colors::Black));
 	dc->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	dc->IASetInputLayout(InputLayouts::Basic32);
 	//ZbufferOff();
@@ -197,7 +197,7 @@ void CEndingScene::OnMouseMove(WPARAM btnState, int x, int y)
 
 void CEndingScene::OnResize()
 {
-	mCam.SetLens(0.36f*MathHelper::Pi, AspectRatio(), 0, 3000.0f);
+	mCam.SetLens(0.34f*MathHelper::Pi, AspectRatio(), 0, 3000.0f);
 }
 
 void CEndingScene::OnKeyboardButtonDown(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)

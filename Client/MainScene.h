@@ -46,35 +46,39 @@ class CMainScene :
 	ID3D11DepthStencilState* mDepthDisableState;
 	ID3D11DepthStencilState* mDepthStencilState;
 
+	const int LOGO_X = 100;
+	const int LOGO_Y = -70;
 
 	wchar_t Text[255];     // 텍스트를 저장하기위한 변수
 	wchar_t Cstr[10];      // 조합중인 문자!!
+	//x 0.8 , y 1.13
+	const int CONNECT_BUTTON_X = 1000 *0.8f;
+	const int CONNECT_BUTTON_Y = 400 * 1.13777f;
 
-	const int CONNECT_BUTTON_X = 1000;
-	const int CONNECT_BUTTON_Y = 400;
+	const int BUTTON_SIZE_X = 200 * 0.8f;
+	const int BUTTON_SIZE_Y = 100 * 1.13777f;
 
-	const int BUTTON_SIZE_X = 200;
-	const int BUTTON_SIZE_Y = 100;
+	const int EXIT_BUTTON_Y = 500 * 1.13777f;
+	const int RETURN_BUTTON_X = 860 * 0.8f;
+	const int RETURN_BUTTON_Y = 520 * 1.13777f;
 
-	const int EXIT_BUTTON_Y = 500;
-	const int RETURN_BUTTON_X = 870;
-	const int RETURN_BUTTON_Y = 600;
+	const int LOBBY_CONNECT_BUTTON_X = 510 * 0.8f;
+	const int LOBBY_CONNECT_BUTTON_Y = 520 * 1.13777f;
 
-	const int LOBBY_CONNECT_BUTTON_X = 520;
-	const int LOBBY_CONNECT_BUTTON_Y = 600;
+	const int INPUT_BOARD_X = 400 * 0.8f;
+	const int INPUT_BOARD_Y = 100 * 1.13777f;
 
-	const int INPUT_BOARD_X = 420;
-	const int INPUT_BOARD_Y = 100;
+	const int INPUT_IP_X = 400 * 0.8f;
+	const int INPUT_IP_Y = 150 * 1.13777f;
 
-	const int INPUT_IP_X = 420;
-	const int INPUT_IP_Y = 150;
-	const int INPUT_BAR_WIDTH = 700;
-	const int INPUT_BAR_HEIGHT = 150;
-	const int INPUT_PORT_X = 420;
-	const int INPUT_PORT_Y = 300;
+	const int INPUT_BAR_WIDTH = 700 * 0.8f;
+	const int INPUT_BAR_HEIGHT = 150 * 1.13777f;
 
-	const int INPUT_NICKNAME_X = 420;
-	const int INPUT_NICKNAME_Y = 450;
+	const int INPUT_PORT_X = 400 * 0.8f;
+	const int INPUT_PORT_Y = 270 * 1.13777f;
+
+	const int INPUT_NICKNAME_X = 400 * 0.8f;
+	const int INPUT_NICKNAME_Y = 390 * 1.13777f;
 
 	const int FONT_SIZE = 40;
 	//////////////////////////////////////////////////////////////////////////

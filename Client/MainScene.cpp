@@ -224,7 +224,7 @@ void CMainScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	//////////////////////////////////////////////////////////////////////////
 	//기본메인화면.
 	mBackgroundPicture.Render(dc, 0, 0);
-	mLogo.Render(dc, 130, -70);
+	mLogo.Render(dc, LOGO_X, LOGO_Y);
 	mConnectButton.Draw(dc);
 	mExitButton.Draw(dc);
 	//////////////////////////////////////////////////////////////////////////
@@ -239,7 +239,7 @@ void CMainScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 		DrawText(mPortString, FONT_SIZE, INPUT_PORT_X + 200, INPUT_PORT_Y+ 80);
 
 		mInputNickname.Render(dc, INPUT_NICKNAME_X, INPUT_NICKNAME_Y);
-		DrawText(mNicknameString, FONT_SIZE, INPUT_NICKNAME_X + 200, INPUT_NICKNAME_Y + 50);
+		DrawText(mNicknameString, FONT_SIZE, INPUT_NICKNAME_X + 200, INPUT_NICKNAME_Y + 80);
 
 		mLobbyConnectButton.Draw(dc);
 		mReturnButton.Draw(dc);
@@ -324,13 +324,11 @@ void CMainScene::OnMouseMove(WPARAM btnState, int x, int y)
 		mExitButton.OnMouseMove(x, y);
 	}
 }
-
 void CMainScene::OnResize()
 {
-	mCam.SetLens(0.36f*MathHelper::Pi, AspectRatio(), 0, 3000.0f);
+	mCam.SetLens(0.34f*MathHelper::Pi, AspectRatio(), 0, 3000.0f);
 	//std::cout << AspectRatio() << std::endl;
 }
-
 void CMainScene::OnKeyboardButtonDown(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
 	if (m_bFocusOnIP || m_bFocusOnNickName || m_bFocusOnPort) {
