@@ -50,15 +50,16 @@ void SkinnedModelInstance::Update(float dt)
 
 
 	TimePos += dt;
-	if (TimePos > 0.0006)
+
+	if (TimePos >= 0)
 	{
 		FinalTransforms = ((*mClipAnimbuf)[mClipnameAndTotalCount.first])[mAnimCnt];
 		if (mClipnameAndTotalCount.first == "Death")
 		{
-			if (mAnimCnt == 287)
+			if (mAnimCnt > 287)
 				mAnimCnt = 287;
 			else
-				mAnimCnt++;
+				mAnimCnt+=3;
 		}
 		else if (mClipnameAndTotalCount.first == "Attack1")
 		{
@@ -69,10 +70,10 @@ void SkinnedModelInstance::Update(float dt)
 				mAnimOneCheck = false;
 			}
 			else
-				mAnimCnt++;
+				mAnimCnt+=3;
 		}
 		else
-			mAnimCnt++;
+			mAnimCnt+=3;
 		// Loop animation
 		if (mAnimCnt > mClipnameAndTotalCount.second - 1)//TimePos > Model->SkinnedData.GetClipEndTime(ClipName))
 		{

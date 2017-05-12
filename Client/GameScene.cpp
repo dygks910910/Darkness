@@ -343,15 +343,12 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	dc->RSSetViewports(1, viewPort);
 
 
-	dc->ClearRenderTargetView(rtv, reinterpret_cast<const float*>(&Colors::Silver));
-
-	//mDc->OMSetDepthStencilState(RenderStates::EqualsDSS, 0);
+	dc->ClearRenderTargetView(rtv, reinterpret_cast<const float*>(&Colors::Black));
 
 
 	XMMATRIX view = mCam.View();
 	XMMATRIX proj = mCam.Proj();
 	XMMATRIX viewProj = mCam.ViewProj();
-
 	float blendFactor[] = { 0.0f, 0.0f, 0.0f, 0.0f };
 
 	// Set per frame constants.
@@ -408,14 +405,12 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	// to turn off tessellation.
 	dc->HSSetShader(0, 0, 0);
 	dc->DSSetShader(0, 0, 0);
-
 // 	mCordWorld.Draw(mDc, mCam);
-
 	mSky->Draw(dc, mCam);
 
 	CModelManager::GetInstance()->DrawInstancedModel(dc, activeInstanceTech, mShadowTransform, mCam);
 
-	DrawText(timerString, 75, mClientWidth / 2, 150, FontColorForFW::RED);
+	DrawText(timerString, 75, mClientWidth / 2-100, 0, FontColorForFW::RED);
  	mMinimap.Render(dc, mCam);
 	
 	dc->OMSetBlendState(0, blendFactor, 0xffffffff); // restore default

@@ -57,11 +57,8 @@ public:
 	UINT& GetNPCKill() { return NPCKill; }
 	WCHAR* GetNickName() { return nickName; }
 
-
     void Move(const int dir, const UINT id, BYTE* packet);
 	void MovetoDirection(XMFLOAT3 camlook, BYTE* packet);
 	
-	
-
 };
 
