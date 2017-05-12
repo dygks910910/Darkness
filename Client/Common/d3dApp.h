@@ -24,13 +24,14 @@ public:
 	HINSTANCE AppInst()const;
 	HWND      MainWnd()const;
 	float     AspectRatio()const;
-
+	
 	int Run()
 	{
 		MSG msg = { 0 };
-
+		float temp = 0;
 		mTimer.Reset();
-
+// 		mTimerForFPS.Reset();
+// 		mTimerForFPS.Start();
 		while (msg.message != WM_QUIT)
 		{
 			// If there are Window messages then process them.
@@ -41,19 +42,39 @@ public:
 			}
 			// Otherwise, do animation/game stuff.
 			else
-			{
+ 			{
 				mTimer.Tick();
+//  				mTimerForFPS.Tick();
 
-				if (!mAppPaused)
-				{
+				temp += mTimer.DeltaTime();
+				//std::cout << mTimerForFPS.TotalTime() << std::endl;
+				if(temp >= 0.015)
+  				//if (mTimerForFPS.TotalTime()*1000 >= 60/1000)
+  				{
 					CalculateFrameStats();
 					UpdateScene(mTimer.DeltaTime(), msg);
 					DrawScene();
-				}
-				else
+  					//MainGame.KeyboardInputProcessing(msg);
+// 					mTimerForFPS.Reset();
+// 					mTimerForFPS.Start();
+					temp = 0;
+  				}
+				/*else
 				{
-					Sleep(100);
-				}
+					Sleep(1000 / 60 - mTimerForFPS.TotalTime()*1000);
+				}*/
+				//mTimer.Tick();
+				
+// 				if (!mAppPaused)
+// 				{
+// 					CalculateFrameStats();
+// 					UpdateScene(mTimer.DeltaTime(), msg);
+// 					DrawScene();
+// 				}
+// 				else
+// 				{
+// 					Sleep(100);
+// 				}
 			}
 		}
 
@@ -100,7 +121,7 @@ protected:
 	UINT      m4xMsaaQuality;
 
 	GameTimer mTimer;
-
+// 	GameTimer mTimerForFPS;
 	ID3D11Device* md3dDevice;
 	ID3D11DeviceContext* md3dImmediateContext;
 	IDXGISwapChain* mSwapChain;

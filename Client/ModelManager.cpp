@@ -418,6 +418,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 				move->size = sizeof(cs_packet_player_move);
 				move->type = CS_UP;
 				move->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
+				//std::cout << camera.GetLook().x << " " << camera.GetLook.y << " " << camera.GetLook.GetFarZ( << std::endl;
 				move->camlook = camera.GetLook();
 				move->campos = campos;
 				send_wsa_buf.len = sizeof(cs_packet_player_move);

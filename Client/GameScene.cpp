@@ -278,7 +278,7 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	ID3D11DepthStencilView* dsv, D3D11_VIEWPORT* viewPort)
 {
 #ifdef _DEBUG
-	std::cout << camtest.x << std::endl;
+	//std::cout << camtest.x << std::endl;
 #endif // _DEBUG
 
 	if (camtest.x !=0 && camset ==false)

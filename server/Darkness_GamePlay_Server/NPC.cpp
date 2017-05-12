@@ -38,7 +38,6 @@ void NPC::HeartBeat()
 		// campos와 camlook을 패킷으로 받은 값으로 Set
 		tempCamLook = camLook;
 
-
 		XMMATRIX objoffset;
 		XMFLOAT4X4 m;
 		XMMATRIX modelScale = XMMatrixScaling(1, 1, 1);
