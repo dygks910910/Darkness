@@ -25,6 +25,10 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	IDXGISwapChain* swapChain,
 	const D3D11_VIEWPORT& viewPort, const int& clientWidth, const int& clientHeight)
 {
+
+	send_wsa_buf1.buf = reinterpret_cast<char*>(send_buf1);
+	send_wsa_buf1.len = MAX_BUF_SIZE;
+
 	mSmap = new ShadowMap(device, clientWidth, clientHeight);
 	mClientHeight = clientHeight;
 	mClientWidth = clientWidth;
@@ -278,7 +282,7 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	ID3D11DepthStencilView* dsv, D3D11_VIEWPORT* viewPort)
 {
 #ifdef _DEBUG
-	std::cout << camtest.x << std::endl;
+	//std::cout << camtest.x << std::endl;
 #endif // _DEBUG
 
 	if (camtest.x !=0 && camset ==false)
@@ -296,6 +300,18 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 		mCam.LookAt(camtest, charpo, up);
 
 		camset = true;
+
+		cs_packet_draw_start* draw = reinterpret_cast<cs_packet_draw_start*>(&send_buf1);
+		draw->size = sizeof(cs_packet_draw_start);
+		draw->type = CS_PACKET_CLIENT_DRAW_START;
+		send_wsa_buf1.len = sizeof(cs_packet_draw_start);
+		DWORD io_byte2;
+
+		int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf1, 1, &io_byte2, 0, NULL, NULL);
+		if (ret_val == SOCKET_ERROR)
+			std::cout << " [error] WSASend() " << std::endl;
+
+
 	}
 	
 
@@ -502,6 +518,7 @@ void CGameScene::OnMouseMove(WPARAM btnState, int x, int y)
 			campos.x = dist.x + objectpos.x;
 			campos.y = dist.y + objectpos.y;
 			campos.z = dist.z + objectpos.z;
+			std::cout << objectpos.x - campos.x << ' ' << objectpos.y - campos.y << ' ' << objectpos.z - campos.z << std::endl;
 			mCam.LookAt(campos, objectpos, up);
 			///////////////////////////////////////////
 		}

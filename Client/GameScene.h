@@ -25,6 +25,16 @@
 /*>>>>>>> SpotLight*/
 
 
+const int CS_PACKET_CLIENT_DRAW_START = 7;
+
+struct cs_packet_draw_start
+{
+	BYTE size;
+	BYTE type;
+};
+
+
+
 struct BoundingSphere
 {
 	BoundingSphere() : Center(0.0f, 0.0f, 0.0f), Radius(0.0f) {}
@@ -100,5 +110,6 @@ public:
 	void DrawSceneToShadowMap(ID3D11DeviceContext* dc);
 	void BuildShadowTransform();
 
-
+	BYTE   send_buf1[MAX_BUF_SIZE];
+	WSABUF   send_wsa_buf1;
 };

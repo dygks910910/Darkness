@@ -24,6 +24,7 @@ const int SC_PACKET_PLAYGAME_PLAYER_POS = 2;
 const int SC_PACKET_PLAYGAME_START_ANMATION = 3;
 const int SC_PACKET_PLAYGAME_PLAYER_DIE = 4;
 const int SC_PACKET_PLAYGAME_GAME_RESULT = 5;
+const int SC_PACKET_PLAYGAME_TIMER_START = 6;
 #pragma pack(push, 1)   
 // sc_packet
 struct sc_packet_put_user
@@ -33,7 +34,13 @@ struct sc_packet_put_user
 	WORD id;
 };
 const int CS_PACKET_CLEINT_NICKNAME = 6;
-   
+ 
+struct sc_packet_timer_start
+{
+	BYTE size;
+	BYTE type;
+};
+
    struct cs_packet_player_nickname
    {
       BYTE size;

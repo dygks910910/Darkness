@@ -200,6 +200,10 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 		memcpy(&mGameResult, packet, packet[0]);
 	}
 	break;
+	case SC_PACKET_PLAYGAME_TIMER_START:
+
+		
+		break;
 	default:
 		break;
 
