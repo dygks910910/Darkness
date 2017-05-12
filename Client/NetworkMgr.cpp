@@ -201,8 +201,7 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 	}
 	break;
 	case SC_PACKET_PLAYGAME_TIMER_START:
-
-		
+		isGameStart = true;
 		break;
 	default:
 		break;

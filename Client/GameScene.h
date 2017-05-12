@@ -49,7 +49,6 @@ class CGameScene :
 	//////////////////////////////////////////////////////////////////////////
 	TextureMgr mTexMgr;
 	GameTimer mTimer;
-
 	float countDownMin =8;
 	float countDownSec = 0;
 	std::wstring timerString;
@@ -74,7 +73,7 @@ class CGameScene :
 
 	Sky* mSky;
 
-	CDrawText DrawText;
+	CDrawText mDrawText;
 	BoundingSphere mSceneBounds;
 
 	float mLightRotationAngle;

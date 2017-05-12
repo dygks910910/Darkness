@@ -216,9 +216,6 @@
     <ClCompile Include="EndingScene.cpp">
       <Filter>souce\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>souce</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common\Camera.h">
@@ -342,9 +339,6 @@
     </ClInclude>
     <ClInclude Include="EndingScene.h">
       <Filter>souce\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>souce</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

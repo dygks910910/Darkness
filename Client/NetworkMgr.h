@@ -139,6 +139,7 @@ public:
 	int getId() { return mId; }
 	sc_packet_game_result getGameResult() { return mGameResult; }
 	bool isGameOver=false;
+	bool isGameStart = false;
 
 public:
 	void SetWindowHandle(HWND h) { mHandle = h; };

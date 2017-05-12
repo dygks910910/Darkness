@@ -155,11 +155,12 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	raindrops.push_back(L"Textures\\raindrop.dds");
 	mRainTexSRV = d3dHelper::CreateTexture2DArraySRV(device, dc	, raindrops);
 	mRain.Init(device, Effects::RainFX, mRainTexSRV, mRandomTexSRV,10000);
+
 	mTimer.Reset();
 	mTimer.Start();
 
 	mMinimap.Initialize(device, mClientWidth, mClientHeight, mCam.othMtx(), 100, 100);
-	DrawText.Init(device, dc);
+	mDrawText.Init(device, dc);
 	OnResize();
 	return true;
 }
@@ -171,7 +172,6 @@ std::string CGameScene::UpdateScene(const float dt, MSG& msg)
   	mMinimap.PositionUpdate(CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._41,
   		CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._43);
 	//mMinimap.PositionUpdate(0,0);
-	
 	mTimer.Tick();
 	//
 	// Control the camera.
@@ -197,42 +197,7 @@ std::string CGameScene::UpdateScene(const float dt, MSG& msg)
 	{
 		testcamera = true;
 	}
-	// 	if (GetAsyncKeyState('X') & 0x8000)
-	// 	{
-	// 		mCharacterInstance1.ClipName = "Attack1";
-	// 		mCharacterInstance1.mAnimTotalTime = mAnimTotalCnt[2];
-	// 		mCharacterInstance1.mAnimCnt = 0;
-	// 	}
-	// 	if (GetAsyncKeyState('V') & 0x8000)
-	// 	{
-	// 		mCharacterInstance1.ClipName = "Run";
-	// 		mCharacterInstance1.mAnimTotalTime = mAnimTotalCnt[3];
-	// 		mCharacterInstance1.mAnimCnt = 0;
-	// 	}
-	// 	if (GetAsyncKeyState('B') & 0x8000)
-	// 	{
-	// 		mCharacterInstance1.ClipName = "Walk";
-	// 		mCharacterInstance1.mAnimTotalTime = mAnimTotalCnt[1];
-	// 		mCharacterInstance1.mAnimCnt = 0;
-	// 	}
-	/*if (GetAsyncKeyState('N') & 0x8000)
-	mCharacterInstance1.ClipName = "Jump";
-	if (GetAsyncKeyState('M') & 0x8000)
-	mCharacterInstance1.ClipName = "Death";*/
-
-
-	//
-	// Walk/fly mode
-	//
-
-	// 	if (GetAsyncKeyState('R') & 0x8000)
-	// 	{
-	// 		// 		mFire.Reset();
-	// 		// 		mRain.Reset();
-	// 	}
-	// 
-	// Clamp camera to terrain surface in walk mode.
-	//
+	
 
 	//
 	// Reset particle systems.
@@ -313,7 +278,7 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 
 	}
-	
+
 
 	mSmap->BindDsvAndSetNullRenderTarget(dc);
 
@@ -410,9 +375,20 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 	CModelManager::GetInstance()->DrawInstancedModel(dc, activeInstanceTech, mShadowTransform, mCam);
 
-	DrawText(timerString, 75, mClientWidth / 2-100, 0, FontColorForFW::RED);
+	mDrawText(timerString, 75, mClientWidth / 2-100, 0, FontColorForFW::RED);
  	mMinimap.Render(dc, mCam);
-	
+	if (NetworkMgr::GetInstance()->isGameStart)
+	{
+		//std::cout << "게임이 시작됨.";
+		mTimer.Start();
+	}
+	else
+	{
+		mTimer.Stop();
+		mDrawText(L"다른 플레이어를 기다리는중...", 40, mClientWidth / 2 - 200, mClientHeight / 2, FontColorForFW::WHITE);
+	}
+
+
 	dc->OMSetBlendState(0, blendFactor, 0xffffffff); // restore default
 	dc->IASetInputLayout(InputLayouts::Particle);
 	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
