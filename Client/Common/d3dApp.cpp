@@ -415,7 +415,6 @@ bool D3DApp::InitDirect3D()
 	sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 	sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-
 	// Use 4X MSAA? 
 	if( mEnable4xMsaa )
 	{

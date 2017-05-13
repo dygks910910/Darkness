@@ -78,7 +78,7 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;D:\Project\Darkness\Client\Common;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64;D:\Project\Darkness\Client\Common;$(LibraryPath)</LibraryPath>
-    <ExecutablePath>$(ExecutablePath)</ExecutablePath>
+    <ExecutablePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Utilities\bin\x64;$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -203,7 +203,18 @@
     <FxCompile Include="FX\InstancedBasic.fx" />
     <FxCompile Include="FX\LightHelper.fx" />
     <FxCompile Include="FX\NormalMap.fx" />
-    <FxCompile Include="FX\Rain.fx" />
+    <CustomBuild Include="FX\Rain.fx">
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+ %(AdditionalOptions)</AdditionalOptions>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)%(Filename).fxo</ObjectFileOutput>
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">fxc /Fc /Od /Zi /T fx_5_0 /Fo "%(RelativeDir)\%(Filename).fxo" "%(FullPath)"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(RelativeDir)\%(Filename).fxo</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">fxc compile for debug: %(FullPath)</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">fxc /T fx_5_0 /Fo "%(RelativeDir)\%(Filename).fxo" "%(FullPath)"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">fxc compile for release: %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(RelativeDir)\%(Filename).fxo</Outputs>
+    </CustomBuild>
     <FxCompile Include="FX\Sky.fx" />
     <FxCompile Include="FX\Ssao.fx" />
     <FxCompile Include="FX\SsaoBlur.fx" />

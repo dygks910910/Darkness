@@ -71,7 +71,7 @@ void ParticleSystem::Update(float dt, float gameTime)
 {
 	mGameTime = gameTime;
 	mTimeStep = dt;
-
+	
 	mAge += dt;
 }
 

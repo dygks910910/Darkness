@@ -22,9 +22,6 @@
     <FxCompile Include="FX\NormalMap.fx">
       <Filter>FX</Filter>
     </FxCompile>
-    <FxCompile Include="FX\Rain.fx">
-      <Filter>FX</Filter>
-    </FxCompile>
     <FxCompile Include="FX\Sky.fx">
       <Filter>FX</Filter>
     </FxCompile>
@@ -96,6 +93,9 @@
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="FX\color.fx">
+      <Filter>FX</Filter>
+    </CustomBuild>
+    <CustomBuild Include="FX\Rain.fx">
       <Filter>FX</Filter>
     </CustomBuild>
   </ItemGroup>

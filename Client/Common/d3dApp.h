@@ -48,17 +48,21 @@ public:
 
 				temp += mTimer.DeltaTime();
 				//std::cout << mTimerForFPS.TotalTime() << std::endl;
-				if(temp >= 0.015)
+				if(temp >= 1.0f/60.0f)
   				//if (mTimerForFPS.TotalTime()*1000 >= 60/1000)
   				{
 					CalculateFrameStats();
-					UpdateScene(mTimer.DeltaTime(), msg);
+					UpdateScene(temp, msg);
 					DrawScene();
   					//MainGame.KeyboardInputProcessing(msg);
 // 					mTimerForFPS.Reset();
 // 					mTimerForFPS.Start();
 					temp = 0;
   				}
+				else
+				{
+					Sleep(1.0f / 60.f - temp);
+				}
 				/*else
 				{
 					Sleep(1000 / 60 - mTimerForFPS.TotalTime()*1000);
@@ -91,19 +95,14 @@ public:
 	virtual LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 	// Convenience overrides for handling mouse input.
-// <<<<<<< HEAD
-// 	virtual void OnMouseDown(WPARAM btnState, int x, int y){ }
-// 	virtual void OnMouseUp(WPARAM btnState, int x, int y)  { }
-// 	virtual void OnMouseMove(WPARAM btnState, int x, int y){ }
+
 	virtual void OnKeyboardButtonDown(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam) {};
-// =======
 	virtual void OnMouseDown(WPARAM btnState, int x, int y) { }
 	virtual void OnMouseUp(WPARAM btnState, int x, int y) { }
 	virtual void OnMouseMove(WPARAM btnState, int x, int y) { }
 
 	virtual void Packet(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {}
 
-/*>>>>>>> SpotLight*/
 protected:
 	bool InitMainWindow();
 	bool InitDirect3D();

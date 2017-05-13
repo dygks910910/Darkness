@@ -198,12 +198,11 @@ std::string CGameScene::UpdateScene(const float dt, MSG& msg)
 		testcamera = true;
 	}
 	
-
 	//
 	// Reset particle systems.
 	//
 	BuildShadowTransform();
-	mRain.Update(dt, mTimer.TotalTime());
+
 
  	if (NetworkMgr::GetInstance()->isGameOver)
  	{
@@ -237,7 +236,8 @@ std::string CGameScene::UpdateScene(const float dt, MSG& msg)
 	// 
 	// 	for (int i = 0; i < Animnum; ++i)
 	// 		mCharacterInstances[i].Update(dt);
-
+	
+	mRain.Update(dt, mTimer.TotalTime());
 	mCam.UpdateViewMatrix();
 	return "";
 }
@@ -371,9 +371,17 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	dc->HSSetShader(0, 0, 0);
 	dc->DSSetShader(0, 0, 0);
 // 	mCordWorld.Draw(mDc, mCam);
-	mSky->Draw(dc, mCam);
 
 	CModelManager::GetInstance()->DrawInstancedModel(dc, activeInstanceTech, mShadowTransform, mCam);
+	mSky->Draw(dc, mCam);
+
+
+	dc->OMSetBlendState(0, blendFactor, 0xffffffff); // restore default
+	dc->IASetInputLayout(InputLayouts::Particle);
+	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+	mRain.SetEyePos(mCam.GetPosition());
+	mRain.SetEmitPos(mCam.GetPosition());
+	mRain.Draw(dc, mCam);
 
 	mDrawText(timerString, 75, mClientWidth / 2-100, 0, FontColorForFW::RED);
  	mMinimap.Render(dc, mCam);
@@ -389,12 +397,7 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	}
 
 
-	dc->OMSetBlendState(0, blendFactor, 0xffffffff); // restore default
-	dc->IASetInputLayout(InputLayouts::Particle);
-	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
-	mRain.SetEyePos(mCam.GetPosition());
-	mRain.SetEmitPos(mCam.GetPosition());
-	mRain.Draw(dc, mCam);
+	
 
 	// restore default states, as the SkyFX changes them in the effect file.
 

@@ -121,7 +121,7 @@ void StreamOutGS(point Particle gin[1],
 			{
 				// Spread rain drops out above the camera.
 				float3 vRandom = 35.0f*RandVec3((float)i/5.0f);
-				vRandom.y = 20.0f;
+				vRandom.y = 10.0f;
 			
 				Particle p;
 				p.InitialPosW = gEmitPosW.xyz + vRandom;
