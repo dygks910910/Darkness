@@ -167,78 +167,80 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 bool testcamera = true;
 std::string CGameScene::UpdateScene(const float dt, MSG& msg)
 {
-	//미니맵 위치 없데이트.
-	//임시로 사용하는 스키니드모델배열의 5번째 모델.즉 플레이어임.
-  	mMinimap.PositionUpdate(CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._41,
-  		CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._43);
-	//mMinimap.PositionUpdate(0,0);
-	mTimer.Tick();
-	//
-	// Control the camera.
-	//
+	if (NetworkMgr::GetInstance()->isGameStart) {
 
-	if (GetAsyncKeyState(VK_UP) & 0x8000)
-		mCam.Walk(20.0f*dt);
+		//미니맵 위치 없데이트.
+		//임시로 사용하는 스키니드모델배열의 5번째 모델.즉 플레이어임.
+		mMinimap.PositionUpdate(CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._41,
+			CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._43);
+		//mMinimap.PositionUpdate(0,0);
+		mTimer.Tick();
+		//
+		// Control the camera.
+		//
 
-	if (GetAsyncKeyState(VK_DOWN) & 0x8000)
-		mCam.Walk(-20.0f*dt);
+		if (GetAsyncKeyState(VK_UP) & 0x8000)
+			mCam.Walk(20.0f*dt);
 
-	if (GetAsyncKeyState(VK_LEFT) & 0x8000)
-		mCam.Strafe(-20.0f*dt);
+		if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+			mCam.Walk(-20.0f*dt);
 
-	if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
-		mCam.Strafe(20.0f*dt);
+		if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+			mCam.Strafe(-20.0f*dt);
 
-	if (GetAsyncKeyState('Z') & 0x8000)
-	{
-		testcamera = false;
-	}
-	if (GetAsyncKeyState('X') & 0x8000)
-	{
-		testcamera = true;
-	}
-	
-	//
-	// Reset particle systems.
-	//
-	BuildShadowTransform();
+		if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+			mCam.Strafe(20.0f*dt);
+
+		if (GetAsyncKeyState('Z') & 0x8000)
+		{
+			testcamera = false;
+		}
+		if (GetAsyncKeyState('X') & 0x8000)
+		{
+			testcamera = true;
+		}
+
+		//
+		// Reset particle systems.
+		//
+		BuildShadowTransform();
 
 
- 	if (NetworkMgr::GetInstance()->isGameOver)
- 	{
- 		return SceneName::endingScene;
- 	}
- 	if (!mbTimeOver) {
- 		countDownSec -= mTimer.DeltaTime();
- 		
- 		//남은시간이 0이하가 되면?
- 		if (countDownMin < 0)
- 		{
+		if (NetworkMgr::GetInstance()->isGameOver)
+		{
+			return SceneName::endingScene;
+		}
+		if (!mbTimeOver) {
+			countDownSec -= mTimer.DeltaTime();
+
+			//남은시간이 0이하가 되면?
+			if (countDownMin < 0)
+			{
 #ifdef _DEBUG
- 			std::cout << "gameOver" << std::endl;
+				std::cout << "gameOver" << std::endl;
 #endif
- 			countDownMin = 0;
- 			countDownSec = 0;
- 			mbTimeOver = true;
- 		}
- 		//초가 0이하가 되면?
- 		else if (countDownSec - mTimer.DeltaTime() <= 0)
- 		{
- 			countDownSec = 60;
- 			countDownMin -= 1;
- 		}
- 		wchar_t tempString[10];
- 		wsprintf(tempString, TEXT("%d:%d"), (int)countDownMin, (int)countDownSec);
- 		timerString = tempString;
- 	}
-	CModelManager::GetInstance()->UpdateModel(dt, mCam);
-	// 	mCharacterInstance1.Update(dt);
-	// 
-	// 	for (int i = 0; i < Animnum; ++i)
-	// 		mCharacterInstances[i].Update(dt);
-	
-	mRain.Update(dt, mTimer.TotalTime());
-	mCam.UpdateViewMatrix();
+				countDownMin = 0;
+				countDownSec = 0;
+				mbTimeOver = true;
+			}
+			//초가 0이하가 되면?
+			else if (countDownSec - mTimer.DeltaTime() <= 0)
+			{
+				countDownSec = 60;
+				countDownMin -= 1;
+			}
+			wchar_t tempString[10];
+			wsprintf(tempString, TEXT("%d:%d"), (int)countDownMin, (int)countDownSec);
+			timerString = tempString;
+		}
+		CModelManager::GetInstance()->UpdateModel(dt, mCam);
+		// 	mCharacterInstance1.Update(dt);
+		// 
+		// 	for (int i = 0; i < Animnum; ++i)
+		// 		mCharacterInstances[i].Update(dt);
+		mRain.Update(dt, mTimer.TotalTime());
+		mCam.UpdateViewMatrix();
+	}
 	return "";
 }
 
@@ -395,10 +397,6 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 		mTimer.Stop();
 		mDrawText(L"다른 플레이어를 기다리는중...", 40, mClientWidth / 2 - 200, mClientHeight / 2, FontColorForFW::WHITE);
 	}
-
-
-	
-
 	// restore default states, as the SkyFX changes them in the effect file.
 
 	dc->RSSetState(0);

@@ -464,13 +464,10 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 
 			else if (GetAsyncKeyState('S') & 0x8000)
 			{
-
 				charpos.x = mSkinnedModelInstance[mMyId].World._41;
 				charpos.y = mSkinnedModelInstance[mMyId].World._42;
 				charpos.z = mSkinnedModelInstance[mMyId].World._43;
-
 				campos = camera.GetPosition();
-
 				cs_packet_player_move* move = reinterpret_cast<cs_packet_player_move*>(&send_buf);
 				move->size = sizeof(cs_packet_player_move);
 				move->type = CS_DOWN;
