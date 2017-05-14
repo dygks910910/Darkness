@@ -59,7 +59,7 @@ void SkinnedModelInstance::Update(float dt)
 			if (mAnimCnt > 287)
 				mAnimCnt = 287;
 			else
-				mAnimCnt+=3;
+				mAnimCnt += 3;
 		}
 		else if (mClipnameAndTotalCount.first == "Attack1")
 		{
@@ -70,8 +70,12 @@ void SkinnedModelInstance::Update(float dt)
 				mAnimOneCheck = false;
 			}
 			else
-				mAnimCnt+=3;
+				mAnimCnt += 3;
 		}
+		else if (mClipnameAndTotalCount.first == "Run")
+			mAnimCnt += 5;
+		else if (mClipnameAndTotalCount.first == "Walk")
+			mAnimCnt += 4;
 		else
 			mAnimCnt+=3;
 		// Loop animation
