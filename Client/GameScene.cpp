@@ -2,6 +2,12 @@
 #define Animnum 10
 bool camset = false;
 XMFLOAT3 camtest;
+
+ ID3D11RenderTargetView* trtv;
+ ID3D11DepthStencilView* tdsv;
+ ID3D11DepthStencilState* tDepthDisableState;
+
+
 CGameScene::CGameScene()
 {
 }
@@ -25,24 +31,50 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	IDXGISwapChain* swapChain,
 	const D3D11_VIEWPORT& viewPort, const int& clientWidth, const int& clientHeight)
 {
+	mCam.SetPosition(0, 0, 0);
 
+	XMStoreFloat4x4(&mWorldMtx, XMMatrixTranslation(0, 0, 7));
+
+	//////////////////////////////////////////////////////////////////////
+	//로딩화면 초기화
+	mLoadingScene.Initialize(device, 1280, 800, L"UITextures/loading1.png", 1280, 800);
+	mLoadingScene.Render(dc, 0, 0);
+	HR(swapChain->Present(0, 0));
+	
+	//dc->ClearRenderTargetView(trtv, reinterpret_cast<const float*>(&Colors::Silver));
+	//dc->ClearDepthStencilView(tdsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	dc->IASetInputLayout(InputLayouts::Basic32);
+	//ZbufferOff();
+	dc->OMSetDepthStencilState(tDepthDisableState, 1);
+
+	mLoadingScene.Initialize(device, 1280, 800, L"UITextures/loading2.png", 1280, 800);
+	mLoadingScene.Render(dc, 0, 0);
+	HR(swapChain->Present(0, 0));
+
+
+	//////////////////////////////////////////////
 	send_wsa_buf1.buf = reinterpret_cast<char*>(send_buf1);
 	send_wsa_buf1.len = MAX_BUF_SIZE;
 
 	mSmap = new ShadowMap(device, clientWidth, clientHeight);
 	mClientHeight = clientHeight;
 	mClientWidth = clientWidth;
+
 	//////////////////////////////////////////////////////////////////////////
 	//월드세팅
-
+	
 	mSceneBounds.Center = XMFLOAT3(0, 0, 0);
 	mSceneBounds.Radius = 110;
 	mLightRotationAngle = 0;
+
+
 
 	//////////////////////////////////////////////////////////////////////////
 	//재질,텍스처불러오기.
 	mTexMgr.Init(device);
 	CModelManager::GetInstance()->Init(mTexMgr, &mCam, device);
+	
+
 	//////////////////////////////////////////////////////////////////////////
 	//zbufferOff를 위한 세팅
 

@@ -1,5 +1,7 @@
 #include "MainScene.h"
-
+extern ID3D11RenderTargetView* trtv;
+extern ID3D11DepthStencilView* tdsv;
+extern ID3D11DepthStencilState* tDepthDisableState;
 
 CMainScene::CMainScene()
 {
@@ -204,6 +206,8 @@ void CMainScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	IDXGISwapChain* swapChain, ID3D11RenderTargetView* rtv,
 	ID3D11DepthStencilView* dsv, D3D11_VIEWPORT* viewPort)
 {
+	trtv = rtv;
+	tdsv = dsv;
 	dc->ClearRenderTargetView(rtv, reinterpret_cast<const float*>(&Colors::Silver));
 	dc->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	dc->IASetInputLayout(InputLayouts::Basic32);
@@ -211,6 +215,7 @@ void CMainScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	dc->OMSetDepthStencilState(mDepthDisableState, 1);
 	bool result;
 
+	tDepthDisableState = mDepthDisableState;
 	// center Sky about eye in world space
 	XMFLOAT3 eyePos = mCam.GetPosition();
 	XMMATRIX world = XMLoadFloat4x4(&mWorldMtx);
@@ -219,7 +224,6 @@ void CMainScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	Effects::BasicFX->SetWorldViewProj(WVP);
 	Effects::BasicFX->SetDiffuseMap(mBackgroundPicture.GetTexture());
 	Effects::BasicFX->SetTexTransform(XMMatrixScaling(1, 1, 1.0f));
-
 	dc->RSSetState(0);
 	//////////////////////////////////////////////////////////////////////////
 	//기본메인화면.

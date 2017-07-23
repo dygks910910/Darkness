@@ -216,6 +216,9 @@
     <ClCompile Include="EndingScene.cpp">
       <Filter>souce\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="LoadingScene.cpp">
+      <Filter>souce\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common\Camera.h">
@@ -338,6 +341,9 @@
       <Filter>souce\Models</Filter>
     </ClInclude>
     <ClInclude Include="EndingScene.h">
+      <Filter>souce\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadingScene.h">
       <Filter>souce\Scene</Filter>
     </ClInclude>
   </ItemGroup>

@@ -47,6 +47,14 @@ class CGameScene :
 	¼¼ÆÃÇØ³ùÀ½.
 	*/
 	//////////////////////////////////////////////////////////////////////////
+	CBitMap mLoadingScene;
+	CBitMap mLoadingScene2;
+
+	XMFLOAT4X4 mWorldMtx;
+
+	ID3D11DepthStencilState* mDepthStencilState;
+	ID3D11DepthStencilState* mDepthDisableState;
+
 	TextureMgr mTexMgr;
 	GameTimer mTimer;
 	float countDownMin =8;
