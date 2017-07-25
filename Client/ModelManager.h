@@ -8,6 +8,7 @@
 #include "RenderStates.h"
 #include "SkinnedModel.h"
 #include "xnacollision.h"
+#include "ButtonClass.h"
 
 enum Axis
 {
@@ -62,6 +63,9 @@ struct cs_packet_player_anmation_start
 
 class CModelManager
 {
+	CBitMap mLoadingScene2;
+
+
 	ID3D11Device* mDevice;
 	SkinnedModel* mCharacterModel;
 
@@ -175,7 +179,7 @@ public:
 	std::vector<CStaticBasicModel>& GetStaticBasicModels() { return mStaticBasicModels; }
 	std::vector<SkinnedModelInstance>& GetSkinnedInstanceModels() { return mSkinnedModelInstance; }
 
-	void Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device);
+	void Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device, ID3D11DeviceContext* dc, IDXGISwapChain* swapChain, ID3D11DepthStencilState* tDepthDisableState);
 	void DrawStaticNormalModels(ID3D11DeviceContext* dc,ID3DX11EffectTechnique* tech,const XMFLOAT4X4& shadowTransform,const Camera& cam);
 
 	void DrawStaticBasicModels(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMFLOAT4X4& shadowTransform, const Camera& cam);

@@ -48,7 +48,6 @@ class CGameScene :
 	*/
 	//////////////////////////////////////////////////////////////////////////
 	CBitMap mLoadingScene;
-	CBitMap mLoadingScene2;
 
 	XMFLOAT4X4 mWorldMtx;
 

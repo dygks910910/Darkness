@@ -3,10 +3,7 @@
 bool camset = false;
 XMFLOAT3 camtest;
 
- ID3D11RenderTargetView* trtv;
- ID3D11DepthStencilView* tdsv;
  ID3D11DepthStencilState* tDepthDisableState;
-
 
 CGameScene::CGameScene()
 {
@@ -41,8 +38,6 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	mLoadingScene.Render(dc, 0, 0);
 	HR(swapChain->Present(0, 0));
 	
-	//dc->ClearRenderTargetView(trtv, reinterpret_cast<const float*>(&Colors::Silver));
-	//dc->ClearDepthStencilView(tdsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	dc->IASetInputLayout(InputLayouts::Basic32);
 	//ZbufferOff();
 	dc->OMSetDepthStencilState(tDepthDisableState, 1);
@@ -72,7 +67,7 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	//////////////////////////////////////////////////////////////////////////
 	//재질,텍스처불러오기.
 	mTexMgr.Init(device);
-	CModelManager::GetInstance()->Init(mTexMgr, &mCam, device);
+	CModelManager::GetInstance()->Init(mTexMgr, &mCam, device, dc, swapChain, tDepthDisableState);
 	
 
 	//////////////////////////////////////////////////////////////////////////
