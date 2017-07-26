@@ -1,0 +1,600 @@
+﻿  xnacollision.cpp
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2662): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2663): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2664): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2665): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2666): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2667): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2668): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2689): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2690): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2691): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2694): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2695): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2698): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2702): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2712): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2713): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2715): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2716): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2717): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2727): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2728): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2729): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2730): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2731): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2732): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2742): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2743): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2754): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(2254): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4523): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4577): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4639): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4707): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4770): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4832): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathvector.inl(1269): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathmisc.inl(518): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathmisc.inl(519): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+d:\project\darkness\da028a~1\xnacollision.cpp(1322): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+d:\project\darkness\da028a~1\xnacollision.cpp(1326): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+d:\project\darkness\da028a~1\xnacollision.cpp(1414): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+d:\project\darkness\da028a~1\xnacollision.cpp(1418): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+d:\project\darkness\da028a~1\xnacollision.cpp(1422): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+d:\project\darkness\da028a~1\xnacollision.cpp(1426): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+d:\project\darkness\da028a~1\xnacollision.cpp(1430): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+d:\project\darkness\da028a~1\xnacollision.cpp(2751): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+d:\project\darkness\da028a~1\xnacollision.cpp(2755): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+  stdafx.cpp
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2662): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2663): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2664): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2665): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2666): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2667): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2668): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2689): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2690): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2691): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2694): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2695): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2698): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2702): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2712): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2713): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2715): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2716): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2717): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2727): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2728): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2729): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2730): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2731): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2732): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2742): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2743): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2754): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(2254): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4523): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4577): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4639): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4707): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4770): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4832): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathvector.inl(1269): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathmisc.inl(518): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathmisc.inl(519): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+  Timer.cpp
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2662): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2663): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2664): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2665): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2666): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2667): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2668): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2689): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2690): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2691): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2694): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2695): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2698): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2702): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2712): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2713): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2715): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2716): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2717): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2727): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2728): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2729): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2730): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2731): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2732): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2742): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2743): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2754): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(2254): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4523): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4577): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4639): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4707): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4770): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4832): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathvector.inl(1269): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathmisc.inl(518): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathmisc.inl(519): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+d:\project\darkness\da028a~1\timer.cpp(33): warning C4244: 'return': '__int64'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  ThreadFunctions.cpp
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2662): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2663): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2664): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2665): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2666): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2667): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2668): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2689): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2690): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2691): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2694): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2695): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2698): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2702): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2712): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2713): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2715): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2716): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2717): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2727): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2728): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2729): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2730): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2731): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2732): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2742): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2743): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2754): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(2254): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4523): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4577): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4639): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4707): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4770): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4832): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathvector.inl(1269): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathmisc.inl(518): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathmisc.inl(519): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+d:\project\darkness\da028a~1\player.h(43): warning C4996: 'wcscpy': This function or variable may be unsafe. Consider using wcscpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\corecrt_wstring.h(121): note: 'wcscpy' 선언을 참조하십시오.
+d:\project\darkness\da028a~1\threadfunctions.cpp(138): warning C4244: '인수': 'ULONGLONG'에서 'const UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\project\darkness\da028a~1\threadfunctions.cpp(146): warning C4244: '인수': 'int'에서 'const float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\project\darkness\da028a~1\threadfunctions.cpp(150): warning C4244: '인수': 'ULONGLONG'에서 'const UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\project\darkness\da028a~1\threadfunctions.cpp(153): warning C4244: '인수': 'ULONGLONG'에서 'const UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\project\darkness\da028a~1\threadfunctions.cpp(158): warning C4244: '인수': 'float'에서 'const UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\project\darkness\da028a~1\threadfunctions.cpp(158): warning C4244: '인수': 'ULONGLONG'에서 'const UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\project\darkness\da028a~1\threadfunctions.cpp(185): warning C4244: '인수': 'double'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\project\darkness\da028a~1\threadfunctions.cpp(194): warning C4244: '인수': 'int'에서 'const float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\project\darkness\da028a~1\threadfunctions.cpp(195): warning C4244: '인수': 'int'에서 'const float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\project\darkness\da028a~1\threadfunctions.cpp(196): warning C4244: '인수': 'ULONGLONG'에서 'const UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\project\darkness\da028a~1\threadfunctions.cpp(204): warning C4244: '인수': 'ULONGLONG'에서 'const UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\project\darkness\da028a~1\threadfunctions.cpp(277): warning C4244: '인수': 'double'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\project\darkness\da028a~1\threadfunctions.cpp(277): warning C4305: '인수': 'double'에서 'FLOAT'(으)로 잘립니다.
+d:\project\darkness\da028a~1\threadfunctions.cpp(279): warning C4244: '인수': 'int'에서 'const float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\project\darkness\da028a~1\threadfunctions.cpp(280): warning C4244: '인수': 'int'에서 'const float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\project\darkness\da028a~1\threadfunctions.cpp(327): warning C4244: '인수': 'double'에서 'const float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\project\darkness\da028a~1\threadfunctions.cpp(333): warning C4805: '==': 연산에 'bool' 형식과 'BOOL' 형식을 함께 사용하는 것은 안전하지 않습니다.
+d:\project\darkness\da028a~1\threadfunctions.cpp(377): warning C4996: 'wcscpy': This function or variable may be unsafe. Consider using wcscpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\corecrt_wstring.h(121): note: 'wcscpy' 선언을 참조하십시오.
+  SyncObject.cpp
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2662): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2663): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2664): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2665): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2666): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2667): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2668): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2689): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2690): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2691): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2694): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2695): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2698): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2702): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2712): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2713): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2715): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2716): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2717): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2727): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2728): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2729): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2730): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2731): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2732): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2742): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2743): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2754): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(2254): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4523): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4577): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4639): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4707): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4770): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4832): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathvector.inl(1269): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathmisc.inl(518): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathmisc.inl(519): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+  Server.cpp
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2662): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2663): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2664): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2665): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2666): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2667): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2668): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2689): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2690): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2691): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2694): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2695): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2698): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2702): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2712): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2713): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2715): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2716): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2717): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2727): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2728): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2729): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2730): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2731): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2732): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2742): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2743): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2754): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(2254): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4523): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4577): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4639): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4707): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4770): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4832): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathvector.inl(1269): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathmisc.inl(518): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathmisc.inl(519): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+d:\project\darkness\da028a~1\player.h(43): warning C4996: 'wcscpy': This function or variable may be unsafe. Consider using wcscpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\corecrt_wstring.h(121): note: 'wcscpy' 선언을 참조하십시오.
+d:\project\darkness\da028a~1\server.cpp(223): warning C4244: '초기화 중': 'ULONGLONG'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\project\darkness\da028a~1\server.cpp(224): warning C4244: '초기화 중': 'ULONGLONG'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\project\darkness\da028a~1\server.cpp(225): warning C4244: '초기화 중': 'ULONGLONG'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\project\darkness\da028a~1\server.cpp(238): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Player.cpp
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2662): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2663): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2664): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2665): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2666): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2667): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2668): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2689): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2690): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2691): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2694): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2695): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2698): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2702): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2712): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2713): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2715): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2716): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2717): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2727): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2728): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2729): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2730): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2731): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2732): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2742): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2743): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2754): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(2254): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4523): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4577): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4639): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4707): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4770): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4832): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathvector.inl(1269): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathmisc.inl(518): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathmisc.inl(519): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+d:\project\darkness\da028a~1\player.h(43): warning C4996: 'wcscpy': This function or variable may be unsafe. Consider using wcscpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\corecrt_wstring.h(121): note: 'wcscpy' 선언을 참조하십시오.
+d:\project\darkness\da028a~1\player.cpp(26): warning C4996: 'wcscpy': This function or variable may be unsafe. Consider using wcscpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\corecrt_wstring.h(121): note: 'wcscpy' 선언을 참조하십시오.
+d:\project\darkness\da028a~1\player.cpp(162): warning C4305: '인수': 'double'에서 'const float'(으)로 잘립니다.
+d:\project\darkness\da028a~1\player.cpp(165): warning C4305: '인수': 'double'에서 'const float'(으)로 잘립니다.
+d:\project\darkness\da028a~1\player.cpp(174): warning C4805: '==': 연산에 'bool' 형식과 'BOOL' 형식을 함께 사용하는 것은 안전하지 않습니다.
+d:\project\darkness\da028a~1\player.cpp(209): warning C4805: '==': 연산에 'bool' 형식과 'BOOL' 형식을 함께 사용하는 것은 안전하지 않습니다.
+d:\project\darkness\da028a~1\player.cpp(238): warning C4805: '==': 연산에 'bool' 형식과 'BOOL' 형식을 함께 사용하는 것은 안전하지 않습니다.
+d:\project\darkness\da028a~1\player.cpp(263): warning C4805: '==': 연산에 'bool' 형식과 'BOOL' 형식을 함께 사용하는 것은 안전하지 않습니다.
+d:\project\darkness\da028a~1\player.cpp(297): warning C4805: '==': 연산에 'bool' 형식과 'BOOL' 형식을 함께 사용하는 것은 안전하지 않습니다.
+d:\project\darkness\da028a~1\player.cpp(325): warning C4805: '==': 연산에 'bool' 형식과 'BOOL' 형식을 함께 사용하는 것은 안전하지 않습니다.
+d:\project\darkness\da028a~1\player.cpp(437): warning C4305: '인수': 'double'에서 'const float'(으)로 잘립니다.
+d:\project\darkness\da028a~1\player.cpp(440): warning C4305: '인수': 'double'에서 'const float'(으)로 잘립니다.
+d:\project\darkness\da028a~1\player.cpp(456): warning C4805: '==': 연산에 'bool' 형식과 'BOOL' 형식을 함께 사용하는 것은 안전하지 않습니다.
+d:\project\darkness\da028a~1\player.cpp(491): warning C4805: '==': 연산에 'bool' 형식과 'BOOL' 형식을 함께 사용하는 것은 안전하지 않습니다.
+d:\project\darkness\da028a~1\player.cpp(522): warning C4805: '==': 연산에 'bool' 형식과 'BOOL' 형식을 함께 사용하는 것은 안전하지 않습니다.
+d:\project\darkness\da028a~1\player.cpp(548): warning C4805: '==': 연산에 'bool' 형식과 'BOOL' 형식을 함께 사용하는 것은 안전하지 않습니다.
+d:\project\darkness\da028a~1\player.cpp(581): warning C4805: '==': 연산에 'bool' 형식과 'BOOL' 형식을 함께 사용하는 것은 안전하지 않습니다.
+d:\project\darkness\da028a~1\player.cpp(609): warning C4805: '==': 연산에 'bool' 형식과 'BOOL' 형식을 함께 사용하는 것은 안전하지 않습니다.
+d:\project\darkness\da028a~1\player.cpp(724): warning C4305: '인수': 'double'에서 'const float'(으)로 잘립니다.
+d:\project\darkness\da028a~1\player.cpp(727): warning C4305: '인수': 'double'에서 'const float'(으)로 잘립니다.
+d:\project\darkness\da028a~1\player.cpp(742): warning C4805: '==': 연산에 'bool' 형식과 'BOOL' 형식을 함께 사용하는 것은 안전하지 않습니다.
+d:\project\darkness\da028a~1\player.cpp(777): warning C4805: '==': 연산에 'bool' 형식과 'BOOL' 형식을 함께 사용하는 것은 안전하지 않습니다.
+d:\project\darkness\da028a~1\player.cpp(806): warning C4805: '==': 연산에 'bool' 형식과 'BOOL' 형식을 함께 사용하는 것은 안전하지 않습니다.
+d:\project\darkness\da028a~1\player.cpp(833): warning C4805: '==': 연산에 'bool' 형식과 'BOOL' 형식을 함께 사용하는 것은 안전하지 않습니다.
+d:\project\darkness\da028a~1\player.cpp(868): warning C4805: '==': 연산에 'bool' 형식과 'BOOL' 형식을 함께 사용하는 것은 안전하지 않습니다.
+d:\project\darkness\da028a~1\player.cpp(896): warning C4805: '==': 연산에 'bool' 형식과 'BOOL' 형식을 함께 사용하는 것은 안전하지 않습니다.
+d:\project\darkness\da028a~1\player.cpp(1009): warning C4305: '인수': 'double'에서 'const float'(으)로 잘립니다.
+d:\project\darkness\da028a~1\player.cpp(1012): warning C4305: '인수': 'double'에서 'const float'(으)로 잘립니다.
+d:\project\darkness\da028a~1\player.cpp(1022): warning C4805: '==': 연산에 'bool' 형식과 'BOOL' 형식을 함께 사용하는 것은 안전하지 않습니다.
+d:\project\darkness\da028a~1\player.cpp(1057): warning C4805: '==': 연산에 'bool' 형식과 'BOOL' 형식을 함께 사용하는 것은 안전하지 않습니다.
+d:\project\darkness\da028a~1\player.cpp(1088): warning C4805: '==': 연산에 'bool' 형식과 'BOOL' 형식을 함께 사용하는 것은 안전하지 않습니다.
+d:\project\darkness\da028a~1\player.cpp(1112): warning C4805: '==': 연산에 'bool' 형식과 'BOOL' 형식을 함께 사용하는 것은 안전하지 않습니다.
+d:\project\darkness\da028a~1\player.cpp(1146): warning C4805: '==': 연산에 'bool' 형식과 'BOOL' 형식을 함께 사용하는 것은 안전하지 않습니다.
+d:\project\darkness\da028a~1\player.cpp(1174): warning C4805: '==': 연산에 'bool' 형식과 'BOOL' 형식을 함께 사용하는 것은 안전하지 않습니다.
+  Obstacle.cpp
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2662): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2663): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2664): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2665): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2666): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2667): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2668): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2689): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2690): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2691): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2694): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2695): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2698): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2702): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2712): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2713): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2715): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2716): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2717): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2727): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2728): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2729): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2730): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2731): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2732): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2742): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2743): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2754): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(2254): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4523): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4577): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4639): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4707): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4770): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4832): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathvector.inl(1269): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathmisc.inl(518): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathmisc.inl(519): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+  Object.cpp
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2662): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2663): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2664): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2665): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2666): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2667): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2668): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2689): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2690): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2691): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2694): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2695): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2698): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2702): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2712): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2713): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2715): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2716): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2717): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2727): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2728): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2729): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2730): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2731): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2732): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2742): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2743): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2754): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(2254): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4523): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4577): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4639): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4707): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4770): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4832): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathvector.inl(1269): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathmisc.inl(518): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathmisc.inl(519): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+d:\project\darkness\da028a~1\object.cpp(30): warning C4244: '인수': 'double'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\project\darkness\da028a~1\object.cpp(36): warning C4244: '인수': 'double'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\project\darkness\da028a~1\object.cpp(37): warning C4305: '=': 'double'에서 'FLOAT'(으)로 잘립니다.
+  NPC.cpp
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2662): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2663): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2664): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2665): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2666): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2667): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2668): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2689): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2690): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2691): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2694): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2695): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2698): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2702): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2712): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2713): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2715): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2716): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2717): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2727): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2728): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2729): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2730): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2731): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2732): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2742): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2743): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2754): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(2254): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4523): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4577): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4639): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4707): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4770): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4832): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathvector.inl(1269): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathmisc.inl(518): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathmisc.inl(519): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+d:\project\darkness\da028a~1\npc.cpp(15): warning C4305: '=': 'double'에서 'FLOAT'(으)로 잘립니다.
+d:\project\darkness\da028a~1\npc.cpp(18): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+d:\project\darkness\da028a~1\npc.cpp(76): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+d:\project\darkness\da028a~1\npc.cpp(79): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+d:\project\darkness\da028a~1\npc.cpp(88): warning C4805: '==': 연산에 'bool' 형식과 'BOOL' 형식을 함께 사용하는 것은 안전하지 않습니다.
+d:\project\darkness\da028a~1\npc.cpp(123): warning C4805: '==': 연산에 'bool' 형식과 'BOOL' 형식을 함께 사용하는 것은 안전하지 않습니다.
+d:\project\darkness\da028a~1\npc.cpp(152): warning C4805: '==': 연산에 'bool' 형식과 'BOOL' 형식을 함께 사용하는 것은 안전하지 않습니다.
+d:\project\darkness\da028a~1\npc.cpp(180): warning C4805: '==': 연산에 'bool' 형식과 'BOOL' 형식을 함께 사용하는 것은 안전하지 않습니다.
+d:\project\darkness\da028a~1\npc.cpp(214): warning C4805: '==': 연산에 'bool' 형식과 'BOOL' 형식을 함께 사용하는 것은 안전하지 않습니다.
+d:\project\darkness\da028a~1\npc.cpp(242): warning C4805: '==': 연산에 'bool' 형식과 'BOOL' 형식을 함께 사용하는 것은 안전하지 않습니다.
+  Mynamespace.cpp
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2662): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2663): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2664): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2665): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2666): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2667): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2668): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2689): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2690): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2691): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2694): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2695): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2698): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2702): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2712): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2713): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2715): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2716): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2717): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2727): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2728): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2729): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2730): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2731): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2732): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2742): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2743): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2754): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(2254): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4523): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4577): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4639): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4707): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4770): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4832): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathvector.inl(1269): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathmisc.inl(518): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathmisc.inl(519): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+  Darkness_GamePlay_Server.cpp
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2662): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2663): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2664): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2665): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2666): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2667): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2668): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2689): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2690): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2691): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2694): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2695): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2698): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2702): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2712): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2713): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2715): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2716): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2717): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2727): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2728): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2729): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2730): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2731): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2732): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2742): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2743): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2754): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(2254): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4523): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4577): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4639): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4707): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4770): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4832): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathvector.inl(1269): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathmisc.inl(518): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathmisc.inl(519): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+  Clock.cpp
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2662): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2663): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2664): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2665): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2666): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2667): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2668): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2689): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2690): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2691): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2694): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2695): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2698): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2702): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2712): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2713): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2715): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2716): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2717): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2727): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2728): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2729): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2730): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2731): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2732): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2742): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2743): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamath.h(2754): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(2254): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4523): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4577): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4639): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4707): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4770): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathconvert.inl(4832): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathvector.inl(1269): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathmisc.inl(518): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\xnamathmisc.inl(519): warning C4838: 'unsigned int'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+d:\project\darkness\da028a~1\clock.cpp(25): warning C4244: 'return': '__int64'에서 'double'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\project\darkness\da028a~1\clock.cpp(33): warning C4244: 'return': '__int64'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  코드를 생성하고 있습니다...
+d:\project\darkness\da028a~1\clock.cpp(45): warning C4172: 지역 변수 또는 임시의 주소를 반환하고 있습니다.
+d:\project\darkness\da028a~1\clock.cpp(46): warning C4172: 지역 변수 또는 임시의 주소를 반환하고 있습니다.
+  Darkness_GamePlay_Server.vcxproj -> D:\Project\Darkness\DA028A~1\x64\Debug\Darkness_GamePlay_Server.exe
+  Darkness_GamePlay_Server.vcxproj -> D:\Project\Darkness\DA028A~1\x64\Debug\Darkness_GamePlay_Server.pdb (Full PDB)

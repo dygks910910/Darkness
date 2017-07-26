@@ -123,6 +123,9 @@ public:
 	ID3DX11EffectShaderResourceVariable* ShadowMap;
 	ID3DX11EffectShaderResourceVariable* SsaoMap;
 	ID3DX11EffectShaderResourceVariable* CubeMap;
+
+	ID3DX11EffectVariable* PointLight;
+	ID3DX11EffectVariable* SpotLight;
 };
 #pragma endregion
 
@@ -284,6 +287,9 @@ public:
 	ID3DX11EffectShaderResourceVariable* NormalMap;
 	ID3DX11EffectShaderResourceVariable* ShadowMap;
 	ID3DX11EffectShaderResourceVariable* SsaoMap;
+
+	ID3DX11EffectVariable* PointLight;
+	ID3DX11EffectVariable* SpotLight;
 };
 #pragma endregion
 

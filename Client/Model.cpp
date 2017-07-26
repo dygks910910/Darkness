@@ -271,7 +271,6 @@ void CStaticBasicModel::Draw(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* te
 		Effects::BasicFX->SetWorldInvTranspose(worldInvTranspose);
 		Effects::BasicFX->SetWorldViewProj(worldViewProj);
 		Effects::BasicFX->SetWorldViewProjTex(worldViewProj*toTexSpace);
-		
 		Effects::BasicFX->SetMaterial(mObjMatrial);
 		Effects::BasicFX->SetTexTransform(XMMatrixIdentity());
 		Effects::BasicFX->SetShadowTransform(world*XMLoadFloat4x4(&shadowTransform));

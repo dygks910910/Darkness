@@ -8,7 +8,8 @@ cbuffer cbPerFrame
 {
 	DirectionalLight gDirLights[3];
 	float3 gEyePosW;
-
+	PointLight gPointLight;
+	SpotLight gSpotLight;
 	float  gFogStart;
 	float  gFogRange;
 	float4 gFogColor; 
@@ -216,10 +217,10 @@ float4 PS(VertexOut pin,
 		float ambientAccess = gSsaoMap.Sample(samLinear, pin.SsaoPosH.xy, 0.0f).r;
 		
 		// Sum the light contribution from each light source.  
-		[unroll] 
+		float4 A, D, S;
+		[unroll]
 		for(int i = 0; i < gLightCount; ++i)
 		{
-			float4 A, D, S;
 			ComputeDirectionalLight(gMaterial, gDirLights[i], bumpedNormalW, toEye, 
 				A, D, S);
 
@@ -227,7 +228,15 @@ float4 PS(VertexOut pin,
 			diffuse += shadow[i]*D;
 			spec    += shadow[i]*S;
 		}
-		   
+		ComputePointLight(gMaterial, gPointLight, pin.PosW, pin.NormalW, toEye, A, D, S);
+		ambient += A;
+		diffuse += D;
+		spec += S;
+
+		ComputeSpotLight(gMaterial, gSpotLight, pin.PosW, pin.NormalW, toEye, A, D, S);
+		ambient += A;
+		diffuse += D;
+		spec += S;
 		litColor = texColor*(ambient + diffuse) + spec;
 		  
 		if( gReflectionEnabled )

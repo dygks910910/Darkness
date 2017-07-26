@@ -106,6 +106,9 @@ BasicEffect::BasicEffect(ID3D11Device* device, const std::wstring& filename)
 	ShadowMap = mFX->GetVariableByName("gShadowMap")->AsShaderResource();
 	SsaoMap = mFX->GetVariableByName("gSsaoMap")->AsShaderResource();
 
+	PointLight = mFX->GetVariableByName("gPointLight");
+	SpotLight = mFX->GetVariableByName("gSpotLight");
+
 }
 BasicEffect::~BasicEffect()
 {
@@ -524,6 +527,9 @@ NormalMapEffect::NormalMapEffect(ID3D11Device * device, const std::wstring & fil
 	NormalMap = mFX->GetVariableByName("gNormalMap")->AsShaderResource();
 	ShadowMap = mFX->GetVariableByName("gShadowMap")->AsShaderResource();
 	SsaoMap = mFX->GetVariableByName("gSsaoMap")->AsShaderResource();
+
+	PointLight = mFX->GetVariableByName("gPointLight");
+	SpotLight = mFX->GetVariableByName("gSpotLight");
 }
 
 NormalMapEffect::~NormalMapEffect()

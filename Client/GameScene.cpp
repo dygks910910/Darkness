@@ -109,7 +109,7 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	mLastMousePos.x = 0;
 	mLastMousePos.y = 0;
 
-	mDirLights[0].Ambient = XMFLOAT4(0.9f, 0.9f, 0.9f, 1.0f);
+	mDirLights[0].Ambient = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
 	mDirLights[0].Diffuse = XMFLOAT4(0.7f, 0.7f, 0.6f, 1.0f);
 	mDirLights[0].Specular = XMFLOAT4(0.8f, 0.8f, 0.7f, 1.0f);
 	mDirLights[0].Direction = XMFLOAT3(-0.57735f, -0.57735f, 0.57735f);
@@ -155,6 +155,24 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	raindrops.push_back(L"Textures\\raindrop.dds");
 	mRainTexSRV = d3dHelper::CreateTexture2DArraySRV(device, dc	, raindrops);
 	mRain.Init(device, Effects::RainFX, mRainTexSRV, mRandomTexSRV,10000);
+	//////////////////////////////////////////////////////////////////////////
+
+	// Point light--position is changed every frame to animate in UpdateScene function.
+	mPointLight.Ambient = XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
+	mPointLight.Diffuse = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
+	mPointLight.Specular = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
+	mPointLight.Att = XMFLOAT3(0.0f, 0.1f, 0.0f);
+	mPointLight.Range = 25.0f;
+
+	// Spot light--position and direction changed every frame to animate in UpdateScene function.
+	mSpotLight.Ambient = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
+	mSpotLight.Diffuse = XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f);
+	mSpotLight.Specular = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	mSpotLight.Att = XMFLOAT3(1.0f, 0.0f, 0.0f);
+	mSpotLight.Spot = 96.0f;
+	mSpotLight.Range = 10000.0f;
+	//////////////////////////////////////////////////////////////////////////
+
 
 	mTimer.Reset();
 	mTimer.Start();
@@ -240,6 +258,9 @@ std::string CGameScene::UpdateScene(const float dt, MSG& msg)
 		// 		mCharacterInstances[i].Update(dt);
 		mRain.Update(dt, mTimer.TotalTime());
 		mCam.UpdateViewMatrix();
+
+		mSpotLight.Position = mCam.GetPosition();
+		XMStoreFloat3(&mSpotLight.Direction, XMVector3Normalize(mCam.GetLookXM()));
 	}
 	return "";
 }
@@ -323,6 +344,8 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	Effects::BasicFX->SetEyePosW(mCam.GetPosition());
 	Effects::BasicFX->SetCubeMap(mSky->CubeMapSRV());
 	Effects::BasicFX->SetShadowMap(mSmap->DepthMapSRV());
+	Effects::BasicFX->PointLight->SetRawValue(&mPointLight, 0, sizeof(mPointLight));
+	Effects::BasicFX->SpotLight->SetRawValue(&mSpotLight, 0, sizeof(mSpotLight));
 	//Effects::BasicFX->SetSsaoMap(mSsao->AmbientSRV());
 
 	Effects::NormalMapFX->SetDirLights(mDirLights);
@@ -330,6 +353,8 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	Effects::NormalMapFX->SetCubeMap(mSky->CubeMapSRV());
 	Effects::NormalMapFX->SetShadowMap(mSmap->DepthMapSRV());
  	Effects::NormalMapFX->SetSsaoMap(mSsao->AmbientSRV());
+	Effects::NormalMapFX->PointLight->SetRawValue(&mPointLight, 0, sizeof(mPointLight));
+	Effects::NormalMapFX->SpotLight->SetRawValue(&mSpotLight, 0, sizeof(mSpotLight));
 
 	Effects::InstancedBasicFX->SetDirLights(mDirLights);
 	Effects::InstancedBasicFX->SetEyePosW(mCam.GetPosition());

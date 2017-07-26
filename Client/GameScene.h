@@ -78,12 +78,16 @@ class CGameScene :
 
 	float mLightRotationAngle;
 
+
 	XMFLOAT4X4 mLightView;
 	XMFLOAT4X4 mLightProj;
 	XMFLOAT4X4 mShadowTransform;
 	ShadowMap* mSmap;
 	Ssao* mSsao;
 	bool mbTimeOver = false;
+
+	PointLight mPointLight;
+	SpotLight mSpotLight;
 public:
 	CGameScene();
 	virtual ~CGameScene();
