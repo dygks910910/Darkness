@@ -6,7 +6,7 @@
 #include "xnacollision.h"
 #include "DrawText.h"
 #include "GameTimer.h"
-
+#include "Sound.h"
 class CMainScene :
 	public CScene
 {

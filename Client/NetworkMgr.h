@@ -3,6 +3,8 @@
 #include <winsock2.h>
 #include <xnamath.h>
 #include "ModelManager.h"
+#include "Sound.h"
+
 #pragma comment(lib, "ws2_32.lib")
 #include<string.h>
 #ifndef _DEBUG | DEBUG

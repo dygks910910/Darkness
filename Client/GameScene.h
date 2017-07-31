@@ -18,6 +18,7 @@
 #include "Ssao.h"
 #include "MiniMap.h"
 #include "DrawText.h"
+#include "Sound.h"
 
 const int CS_PACKET_CLIENT_DRAW_START = 7;
 

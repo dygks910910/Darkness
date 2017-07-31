@@ -183,6 +183,8 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 		memcpy(&player_anim, packet, packet[0]);
 		CModelManager::GetInstance()->GetSkinnedInstanceModels()[player_anim.id].mAnimstate = player_anim.animationState;
 		CModelManager::GetInstance()->GetSkinnedInstanceModels()[player_anim.id].mAnimCnt = 0;
+		if (player_anim.animationState == 4)
+			SoundClass::GetInstance()->PlayWaveFile(0);
 	}
 	break;
 

@@ -188,7 +188,11 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 	mMinimap.Initialize(device, mClientWidth, mClientHeight, mCam.othMtx(), 100, 100);
 	mDrawText.Init(device, dc);
+
+	PlaySound(L"bgm.wav", NULL, SND_FILENAME | SND_ASYNC);
+
 	OnResize();
+
 	return true;
 }
 bool testcamera = true;
@@ -444,6 +448,8 @@ void CGameScene::OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWn
 {
 	if ((btnState & MK_LBUTTON) != 0)
 	{
+		SoundClass::GetInstance()->PlayWaveFile(1);
+
 		CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].mAnimOneCheck = false;
 		CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].mAttack = true;
 

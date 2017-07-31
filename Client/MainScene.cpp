@@ -1,6 +1,6 @@
 #include "MainScene.h"
-extern ID3D11RenderTargetView* trtv;
-extern ID3D11DepthStencilView* tdsv;
+//extern ID3D11RenderTargetView* trtv;
+//extern ID3D11DepthStencilView* tdsv;
 extern ID3D11DepthStencilState* tDepthDisableState;
 
 CMainScene::CMainScene()
@@ -28,14 +28,13 @@ bool CMainScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	IDXGISwapChain * swapChain, const D3D11_VIEWPORT & viewPort, 
 	const int & clientWidth, const int & clientHeight)
 {
-// 	mDevice = device;
-// 	mDc = dc;
-// 	mSwapChain = swapChain;
+
 	mClientWidth = clientWidth;
 	mClientHeight = clientHeight;
 
 	mCam.SetPosition(0, 0, 0);
 	XMStoreFloat4x4(&mWorldMtx, XMMatrixTranslation(0, 0, 7));
+
 
 	//////////////////////////////////////////////////////////////////////////
 	//로고화면 초기화.
@@ -206,8 +205,8 @@ void CMainScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	IDXGISwapChain* swapChain, ID3D11RenderTargetView* rtv,
 	ID3D11DepthStencilView* dsv, D3D11_VIEWPORT* viewPort)
 {
-	trtv = rtv;
-	tdsv = dsv;
+	//trtv = rtv;
+	//tdsv = dsv;
 	dc->ClearRenderTargetView(rtv, reinterpret_cast<const float*>(&Colors::Silver));
 	dc->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	dc->IASetInputLayout(InputLayouts::Basic32);

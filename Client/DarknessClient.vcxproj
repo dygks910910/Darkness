@@ -240,9 +240,6 @@
     <ClCompile Include="Effects.cpp" />
     <ClCompile Include="EndingScene.cpp" />
     <ClCompile Include="FbxLoader.cpp" />
-    <ClCompile Include="LoadingScene.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="LoadM3d.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainGame.cpp" />
@@ -254,12 +251,16 @@
     <ClCompile Include="NetworkMgr.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="RenderStates.cpp" />
+    <ClCompile Include="RoomScene.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="ShadowMap.cpp" />
     <ClCompile Include="SkinnedData.cpp" />
     <ClCompile Include="SkinnedModel.cpp" />
     <ClCompile Include="Sky.cpp" />
+    <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Ssao.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="GameScene.cpp" />
@@ -288,9 +289,6 @@
     <ClInclude Include="EndingScene.h" />
     <ClInclude Include="FbxLoader.h" />
     <ClInclude Include="FW1FontWrapper.h" />
-    <ClInclude Include="LoadingScene.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="LoadM3d.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="MainScene.h" />
@@ -301,12 +299,16 @@
     <ClInclude Include="NetworkMgr.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="RenderStates.h" />
+    <ClInclude Include="RoomScene.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="ShadowMap.h" />
     <ClInclude Include="SkinnedData.h" />
     <ClInclude Include="SkinnedModel.h" />
     <ClInclude Include="Sky.h" />
+    <ClInclude Include="Sound.h" />
     <ClInclude Include="Ssao.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="GameScene.h" />

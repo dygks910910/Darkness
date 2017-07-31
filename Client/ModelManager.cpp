@@ -366,6 +366,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 	/////////////죽을경우 맨 밖의 if 문////////////////////
 	if (!mSkinnedModelInstance[mMyId].mAlive)
 	{
+
 		if (mSkinnedModelInstance[mMyId].mKeyState != Keystate::die )
 		{
 			mSkinnedModelInstance[mMyId].mAnimCnt = 0;
