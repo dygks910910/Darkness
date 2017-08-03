@@ -116,11 +116,11 @@ void CSceneManager::ChangeScene(std::string sceneName, const float& dt)
 		mScenes.insert(make_pair(sceneName, new CEndingScene));
 		mScenes[sceneName]->Init(mDevice, mDc, mSwapChain, *mViewport, mClientWidth, mClientHeight);
 	}
-	/*else if (mSceneKey == SceneName::roomScene)
+	else if (mSceneKey == SceneName::roomScene)
 	{
 		mScenes.insert(make_pair(sceneName, new CRoomScene));
 		mScenes[sceneName]->Init(mDevice, mDc, mSwapChain, *mViewport, mClientWidth, mClientHeight);
-	}*/
+	}
 	else
 		return;
 

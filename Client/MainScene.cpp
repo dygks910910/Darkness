@@ -141,7 +141,7 @@ std::string CMainScene::UpdateScene(const float dt, MSG& msg)
 		if (mLobbyConnectButton.isClicked)
 		{
 			//ip와 포트를 넘겨줘야함.
-			if (mIpString == L"")
+		/*	if (mIpString == L"")
 			{
 				MessageBox(0, L"IP주소를 입력해주세요", L"error", 0);
 				mLobbyConnectButton.isClicked = false;
@@ -152,20 +152,22 @@ std::string CMainScene::UpdateScene(const float dt, MSG& msg)
 				MessageBox(0, L"포트번호를 입력해주세요", L"error", 0);
 				mLobbyConnectButton.isClicked = false;
 				return "";
-			}
+			}*/
 			if (mNicknameString == L"")
 			{
 				MessageBox(0, L"닉네임를 입력해주세요", L"error", 0);
 				mLobbyConnectButton.isClicked = false;
 				return "";
 			}
-			std::string str;
+		/*	std::string str;
 			str.assign(mIpString.begin(), mIpString.end());
 			std::string port;
-			port.assign(mPortString.begin(), mPortString.end());
-			NetworkMgr::GetInstance()->SetIPAndPortAndNickName(str,mNicknameString);
+			port.assign(mPortString.begin(), mPortString.end());*/
+		//	CModelManager::GetInstance()->mMyNick[0] = mNicknameString;
+			NetworkMgr::GetInstance()->SetIPAndPortAndNickName(IPADDRESS,mNicknameString);
 			NetworkMgr::GetInstance()->Initialize();
-			return SceneName::gameScene;
+
+			return SceneName::roomScene;
 			//////////////////////////////////////////////////////////////////////////
 			//방생성창으로  이동.
 		}

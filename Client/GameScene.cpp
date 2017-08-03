@@ -21,7 +21,6 @@ CGameScene::~CGameScene()
 	mMinimap.Shutdown();
 	CModelManager::GetInstance()->DestroyInstance();
 
-
 }
 
 bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
@@ -193,83 +192,102 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 	OnResize();
 
+	cs_packet_draw_start* draw = reinterpret_cast<cs_packet_draw_start*>(&send_buf1);
+	draw->size = sizeof(cs_packet_draw_start);
+	draw->type = CS_PACKET_CLIENT_DRAW_START;
+	send_wsa_buf1.len = sizeof(cs_packet_draw_start);
+	DWORD io_byte2;
+
+	int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf1, 1, &io_byte2, 0, NULL, NULL);
+	if (ret_val == SOCKET_ERROR)
+		std::cout << " [error] WSASend() " << std::endl;
+
+
 	return true;
 }
 bool testcamera = true;
 std::string CGameScene::UpdateScene(const float dt, MSG& msg)
 {
-	//미니맵 위치 없데이트.
-	//임시로 사용하는 스키니드모델배열의 5번째 모델.즉 플레이어임.
-  	mMinimap.PositionUpdate(CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._41,
-  		CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._43);
-	//mMinimap.PositionUpdate(0,0);
-	mTimer.Tick();
-	//
-	// Control the camera.
-	//
-
-	if (GetAsyncKeyState(VK_UP) & 0x8000)
-		mCam.Walk(20.0f*dt);
-
-	if (GetAsyncKeyState(VK_DOWN) & 0x8000)
-		mCam.Walk(-20.0f*dt);
-
-	if (GetAsyncKeyState(VK_LEFT) & 0x8000)
-		mCam.Strafe(-20.0f*dt);
-
-	if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
-		mCam.Strafe(20.0f*dt);
-
-	if (GetAsyncKeyState('Z') & 0x8000)
+	if (yamee == true)
 	{
-		testcamera = false;
-	}
-	if (GetAsyncKeyState('X') & 0x8000)
-	{
-		testcamera = true;
-	}
-	
-	//
-	// Reset particle systems.
-	//
-	BuildShadowTransform();
+		if (CModelManager::GetInstance()->m_bFinishInit == true)
+		{
+			//미니맵 위치 없데이트.
+			//임시로 사용하는 스키니드모델배열의 5번째 모델.즉 플레이어임.
+			mMinimap.PositionUpdate(CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._41,
+				CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._43);
+			//mMinimap.PositionUpdate(0,0);
+			mTimer.Tick();
+			//
+			// Control the camera.
+			//
+
+			if (GetAsyncKeyState(VK_UP) & 0x8000)
+				mCam.Walk(20.0f*dt);
+
+			if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+				mCam.Walk(-20.0f*dt);
+
+			if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+				mCam.Strafe(-20.0f*dt);
+
+			if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+				mCam.Strafe(20.0f*dt);
+
+			if (GetAsyncKeyState('Z') & 0x8000)
+			{
+				testcamera = false;
+			}
+			if (GetAsyncKeyState('X') & 0x8000)
+			{
+				testcamera = true;
+			}
+
+			//
+			// Reset particle systems.
+			//
+			BuildShadowTransform();
 
 
- 	if (NetworkMgr::GetInstance()->isGameOver)
- 	{
- 		return SceneName::endingScene;
- 	}
- 	if (!mbTimeOver) {
- 		countDownSec -= mTimer.DeltaTime();
- 		
- 		//남은시간이 0이하가 되면?
- 		if (countDownMin < 0)
- 		{
+			if (NetworkMgr::GetInstance()->isGameOver)
+			{
+				return SceneName::endingScene;
+			}
+			if (!mbTimeOver) {
+				countDownSec -= mTimer.DeltaTime();
+
+				//남은시간이 0이하가 되면?
+				if (countDownMin < 0)
+				{
 #ifdef _DEBUG
- 			std::cout << "gameOver" << std::endl;
+					std::cout << "gameOver" << std::endl;
 #endif
- 			countDownMin = 0;
- 			countDownSec = 0;
- 			mbTimeOver = true;
- 		}
- 		//초가 0이하가 되면?
- 		else if (countDownSec - mTimer.DeltaTime() <= 0)
- 		{
- 			countDownSec = 60;
- 			countDownMin -= 1;
- 		}
- 		wchar_t tempString[10];
- 		wsprintf(tempString, TEXT("%d:%d"), (int)countDownMin, (int)countDownSec);
- 		timerString = tempString;
- 	}
-	CModelManager::GetInstance()->UpdateModel(dt, mCam);
-	// 	mCharacterInstance1.Update(dt);
-	// 
-	// 	for (int i = 0; i < Animnum; ++i)
-	// 		mCharacterInstances[i].Update(dt);
-	
-	mRain.Update(dt, mTimer.TotalTime());
-	mCam.UpdateViewMatrix();
+					countDownMin = 0;
+					countDownSec = 0;
+					mbTimeOver = true;
+				}
+				//초가 0이하가 되면?
+				else if (countDownSec - mTimer.DeltaTime() <= 0)
+				{
+					countDownSec = 60;
+					countDownMin -= 1;
+				}
+				wchar_t tempString[10];
+				wsprintf(tempString, TEXT("%d:%d"), (int)countDownMin, (int)countDownSec);
+				timerString = tempString;
+			}
+			CModelManager::GetInstance()->UpdateModel(dt, mCam);
+			// 	mCharacterInstance1.Update(dt);
+			// 
+			// 	for (int i = 0; i < Animnum; ++i)
+			// 		mCharacterInstances[i].Update(dt);
+
+			mRain.Update(dt, mTimer.TotalTime());
+			mCam.UpdateViewMatrix();
+			return "";
+		}
+		return "";
+	}
 	return "";
 }
 
@@ -280,168 +298,163 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 #ifdef _DEBUG
 	//std::cout << camtest.x << std::endl;
 #endif // _DEBUG
-
-	if (camtest.x !=0 && camset ==false)
+	if (CModelManager::GetInstance()->m_bFinishInit == true)
 	{
-		XMFLOAT3 charpo, up;
-		up.x = 0;
-		up.y = 1;
-		up.z = 0;
+		if (camtest.x != 0 && camset == false)
+		{
+			XMFLOAT3 charpo, up;
+			up.x = 0;
+			up.y = 1;
+			up.z = 0;
 
-		charpo.x = CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._41;
-		charpo.y = CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._42+1;
-		charpo.z = CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._43;
+			charpo.x = CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._41;
+			charpo.y = CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._42 + 1;
+			charpo.z = CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._43;
 
-		mCam.SetPosition(camtest);
-		mCam.LookAt(camtest, charpo, up);
+			mCam.SetPosition(camtest);
+			mCam.LookAt(camtest, charpo, up);
 
-		camset = true;
-
-		cs_packet_draw_start* draw = reinterpret_cast<cs_packet_draw_start*>(&send_buf1);
-		draw->size = sizeof(cs_packet_draw_start);
-		draw->type = CS_PACKET_CLIENT_DRAW_START;
-		send_wsa_buf1.len = sizeof(cs_packet_draw_start);
-		DWORD io_byte2;
-
-		int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf1, 1, &io_byte2, 0, NULL, NULL);
-		if (ret_val == SOCKET_ERROR)
-			std::cout << " [error] WSASend() " << std::endl;
+			camset = true;
 
 
+
+		}
+
+
+		mSmap->BindDsvAndSetNullRenderTarget(dc);
+
+		DrawSceneToShadowMap(dc);
+		//DrawSceneToSsaoNormalDepthMap();
+
+
+		dc->RSSetState(0);
+		//////////////////////////////////////////////////////////////
+		//ID3DX11EffectTechnique* animatedTech = Effects::SsaoNormalDepthFX->NormalDepthSkinnedTech;
+		//ID3DX11EffectTechnique* activeSkinnedTech = Effects::NormalMapFX->Light3TexSkinnedTech;
+		XMMATRIX shadowTransform = XMLoadFloat4x4(&mShadowTransform);
+		//
+		// Restore the back and depth buffer to the OM stage.
+		//
+		dc->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+		//mDc->RSSetViewports(1, viewPort);
+		mSsao->SetNormalDepthRenderTarget(dsv);
+
+		//DrawSceneToSsaoNormalDepthMap();
+
+		mSsao->ComputeSsao(mCam);
+		//mSsao->BlurAmbientMap(2);
+
+		ID3D11RenderTargetView* renderTargets[1] = { rtv };
+		dc->OMSetRenderTargets(1, renderTargets, dsv);
+		dc->RSSetViewports(1, viewPort);
+
+
+		dc->ClearRenderTargetView(rtv, reinterpret_cast<const float*>(&Colors::Black));
+
+
+		XMMATRIX view = mCam.View();
+		XMMATRIX proj = mCam.Proj();
+		XMMATRIX viewProj = mCam.ViewProj();
+		float blendFactor[] = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+		// Set per frame constants.
+		Effects::BasicFX->SetDirLights(mDirLights);
+		Effects::BasicFX->SetEyePosW(mCam.GetPosition());
+		Effects::BasicFX->SetCubeMap(mSky->CubeMapSRV());
+		Effects::BasicFX->SetShadowMap(mSmap->DepthMapSRV());
+		//Effects::BasicFX->SetSsaoMap(mSsao->AmbientSRV());
+
+		Effects::NormalMapFX->SetDirLights(mDirLights);
+		Effects::NormalMapFX->SetEyePosW(mCam.GetPosition());
+		Effects::NormalMapFX->SetCubeMap(mSky->CubeMapSRV());
+		Effects::NormalMapFX->SetShadowMap(mSmap->DepthMapSRV());
+		Effects::NormalMapFX->SetSsaoMap(mSsao->AmbientSRV());
+
+		Effects::InstancedBasicFX->SetDirLights(mDirLights);
+		Effects::InstancedBasicFX->SetEyePosW(mCam.GetPosition());
+		//Effects::InstancedBasicFX->SetSsaoMap(mSsao->AmbientSRV());
+		Effects::InstancedBasicFX->SetEyePosW(mCam.GetPosition());
+
+		ID3DX11EffectTechnique* activeNormalMappingTech = Effects::NormalMapFX->Light1TexTech;
+		ID3DX11EffectTechnique* activeBasicTech = Effects::BasicFX->Light1TexAlphaClipTech;
+		ID3DX11EffectTechnique* activeInstanceTech = Effects::InstancedBasicFX->Light1TexTech;
+		ID3DX11EffectTechnique* activeSkinnedTech = Effects::NormalMapFX->Light3TexSkinnedTech;
+
+		dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+		// Figure out which technique to use for different geometry.
+
+
+		//XMMATRIX worldView;
+		//XMMATRIX worldInvTransposeView;
+		//
+		// Draw the grid, cylinders, and box without any cubemap reflection.
+		// 
+
+
+		if (GetAsyncKeyState('1') & 0x8000)
+			dc->RSSetState(RenderStates::WireframeRS);
+		//
+		// Draw the spheres with cubemap reflection.
+		//
+		CModelManager::GetInstance()->DrawStaticBasicModels(dc, activeBasicTech,
+			mShadowTransform, mCam);
+		CModelManager::GetInstance()->DrawStaticNormalModels(dc, activeNormalMappingTech,
+			mShadowTransform, mCam);
+		CModelManager::GetInstance()->DrawInstancedModel(dc, activeInstanceTech,
+			mShadowTransform, mCam);
+		//////////////////////////////////////////////////////////////////////////
+		//draw Animation
+		CModelManager::GetInstance()->DrawSkinnedModels(dc, activeSkinnedTech, mShadowTransform, mCam);
+
+		// FX sets tessellation stages, but it does not disable them.  So do that here
+		// to turn off tessellation.
+		dc->HSSetShader(0, 0, 0);
+		dc->DSSetShader(0, 0, 0);
+		// 	mCordWorld.Draw(mDc, mCam);
+
+		CModelManager::GetInstance()->DrawInstancedModel(dc, activeInstanceTech, mShadowTransform, mCam);
+		mSky->Draw(dc, mCam);
+
+
+		dc->OMSetBlendState(0, blendFactor, 0xffffffff); // restore default
+		dc->IASetInputLayout(InputLayouts::Particle);
+		dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+		mRain.SetEyePos(mCam.GetPosition());
+		mRain.SetEmitPos(mCam.GetPosition());
+		mRain.Draw(dc, mCam);
+
+		mDrawText(timerString, 75, mClientWidth / 2 - 100, 0, FontColorForFW::RED);
+		mMinimap.Render(dc, mCam);
+		if (NetworkMgr::GetInstance()->isGameStart)
+		{
+			//std::cout << "게임이 시작됨.";
+			mTimer.Start();
+		}
+		else
+		{
+			mTimer.Stop();
+			mDrawText(L"다른 플레이어를 기다리는중...", 40, mClientWidth / 2 - 200, mClientHeight / 2, FontColorForFW::WHITE);
+		}
+
+
+
+
+		// restore default states, as the SkyFX changes them in the effect file.
+
+		dc->RSSetState(0);
+		dc->OMSetDepthStencilState(0, 0);
+
+		// Unbind shadow map as a shader input because we are going to render to it next frame.
+		// The shadow might might be at any slot, so clear all slots.
+		ID3D11ShaderResourceView* nullSRV[16] = { 0 };
+		dc->PSSetShaderResources(0, 16, nullSRV);
+		dc->OMSetBlendState(0, blendFactor, 0xffffffff);
+
+		HR(swapChain->Present(0, 0));
+
+		yamee = true;
 	}
-
-
-	mSmap->BindDsvAndSetNullRenderTarget(dc);
-
-	DrawSceneToShadowMap(dc);
-	//DrawSceneToSsaoNormalDepthMap();
-
-
-	dc->RSSetState(0);
-	//////////////////////////////////////////////////////////////
-	//ID3DX11EffectTechnique* animatedTech = Effects::SsaoNormalDepthFX->NormalDepthSkinnedTech;
-	//ID3DX11EffectTechnique* activeSkinnedTech = Effects::NormalMapFX->Light3TexSkinnedTech;
-	XMMATRIX shadowTransform = XMLoadFloat4x4(&mShadowTransform);
-	//
-	// Restore the back and depth buffer to the OM stage.
-	//
-	dc->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-	//mDc->RSSetViewports(1, viewPort);
-	mSsao->SetNormalDepthRenderTarget(dsv);
-
-	//DrawSceneToSsaoNormalDepthMap();
-
- 	mSsao->ComputeSsao(mCam);
-	//mSsao->BlurAmbientMap(2);
-
-	ID3D11RenderTargetView* renderTargets[1] = { rtv };
-	dc->OMSetRenderTargets(1, renderTargets, dsv);
-	dc->RSSetViewports(1, viewPort);
-
-
-	dc->ClearRenderTargetView(rtv, reinterpret_cast<const float*>(&Colors::Black));
-
-
-	XMMATRIX view = mCam.View();
-	XMMATRIX proj = mCam.Proj();
-	XMMATRIX viewProj = mCam.ViewProj();
-	float blendFactor[] = { 0.0f, 0.0f, 0.0f, 0.0f };
-
-	// Set per frame constants.
-	Effects::BasicFX->SetDirLights(mDirLights);
-	Effects::BasicFX->SetEyePosW(mCam.GetPosition());
-	Effects::BasicFX->SetCubeMap(mSky->CubeMapSRV());
-	Effects::BasicFX->SetShadowMap(mSmap->DepthMapSRV());
-	//Effects::BasicFX->SetSsaoMap(mSsao->AmbientSRV());
-
-	Effects::NormalMapFX->SetDirLights(mDirLights);
-	Effects::NormalMapFX->SetEyePosW(mCam.GetPosition());
-	Effects::NormalMapFX->SetCubeMap(mSky->CubeMapSRV());
-	Effects::NormalMapFX->SetShadowMap(mSmap->DepthMapSRV());
- 	Effects::NormalMapFX->SetSsaoMap(mSsao->AmbientSRV());
-
-	Effects::InstancedBasicFX->SetDirLights(mDirLights);
-	Effects::InstancedBasicFX->SetEyePosW(mCam.GetPosition());
-	//Effects::InstancedBasicFX->SetSsaoMap(mSsao->AmbientSRV());
-	Effects::InstancedBasicFX->SetEyePosW(mCam.GetPosition());
-
-	ID3DX11EffectTechnique* activeNormalMappingTech = Effects::NormalMapFX->Light1TexTech;
-	ID3DX11EffectTechnique* activeBasicTech = Effects::BasicFX->Light1TexAlphaClipTech;
-	ID3DX11EffectTechnique* activeInstanceTech = Effects::InstancedBasicFX->Light1TexTech;
-	ID3DX11EffectTechnique* activeSkinnedTech = Effects::NormalMapFX->Light3TexSkinnedTech;
-
-	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-	// Figure out which technique to use for different geometry.
-
-
-	//XMMATRIX worldView;
-	//XMMATRIX worldInvTransposeView;
-	//
-	// Draw the grid, cylinders, and box without any cubemap reflection.
-	// 
-
-
-	if (GetAsyncKeyState('1') & 0x8000)
-		dc->RSSetState(RenderStates::WireframeRS);
-	//
-	// Draw the spheres with cubemap reflection.
-	//
-	CModelManager::GetInstance()->DrawStaticBasicModels(dc, activeBasicTech,
-		mShadowTransform, mCam);
-	CModelManager::GetInstance()->DrawStaticNormalModels(dc, activeNormalMappingTech,
-		mShadowTransform, mCam);
-	CModelManager::GetInstance()->DrawInstancedModel(dc, activeInstanceTech,
-		mShadowTransform, mCam);
-	//////////////////////////////////////////////////////////////////////////
-	//draw Animation
-	CModelManager::GetInstance()->DrawSkinnedModels(dc, activeSkinnedTech,mShadowTransform, mCam);
-
-	// FX sets tessellation stages, but it does not disable them.  So do that here
-	// to turn off tessellation.
-	dc->HSSetShader(0, 0, 0);
-	dc->DSSetShader(0, 0, 0);
-// 	mCordWorld.Draw(mDc, mCam);
-
-	CModelManager::GetInstance()->DrawInstancedModel(dc, activeInstanceTech, mShadowTransform, mCam);
-	mSky->Draw(dc, mCam);
-
-
-	dc->OMSetBlendState(0, blendFactor, 0xffffffff); // restore default
-	dc->IASetInputLayout(InputLayouts::Particle);
-	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
-	mRain.SetEyePos(mCam.GetPosition());
-	mRain.SetEmitPos(mCam.GetPosition());
-	mRain.Draw(dc, mCam);
-
-	mDrawText(timerString, 75, mClientWidth / 2-100, 0, FontColorForFW::RED);
- 	mMinimap.Render(dc, mCam);
-	if (NetworkMgr::GetInstance()->isGameStart)
-	{
-		//std::cout << "게임이 시작됨.";
-		mTimer.Start();
-	}
-	else
-	{
-		mTimer.Stop();
-		mDrawText(L"다른 플레이어를 기다리는중...", 40, mClientWidth / 2 - 200, mClientHeight / 2, FontColorForFW::WHITE);
-	}
-
-
-	
-
-	// restore default states, as the SkyFX changes them in the effect file.
-
-	dc->RSSetState(0);
-	dc->OMSetDepthStencilState(0, 0);
-
-	// Unbind shadow map as a shader input because we are going to render to it next frame.
-	// The shadow might might be at any slot, so clear all slots.
-	ID3D11ShaderResourceView* nullSRV[16] = { 0 };
-	dc->PSSetShaderResources(0, 16, nullSRV);
-	dc->OMSetBlendState(0, blendFactor, 0xffffffff);
-
-	HR(swapChain->Present(0, 0));
 }
 
 void CGameScene::OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWnd)

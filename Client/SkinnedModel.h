@@ -58,5 +58,6 @@ struct SkinnedModelInstance
 	int mKeyState = 0;
 	bool mAlive = true;
 	void Update(float dt);
+
 };
 #endif // SKINNEDMODEL_H

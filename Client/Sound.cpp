@@ -36,8 +36,8 @@ bool SoundClass::Initialize(HWND hwnd)
 	}
 
 	// Load a wave audio file onto a secondary buffer.
-	result = LoadWaveFile("evillaugh.wav", &m_secondaryBuffer1[0]);
-	result = LoadWaveFile("coblaunch.wav", &m_secondaryBuffer1[1]);
+	result = LoadWaveFile("coblaunch.wav", &m_secondaryBuffer1[0]);
+	result = LoadWaveFile("evillaugh.wav", &m_secondaryBuffer1[1]);
 
 	if(!result)
 	{

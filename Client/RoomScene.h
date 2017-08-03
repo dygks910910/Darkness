@@ -8,15 +8,22 @@
 #include "GameTimer.h"
 #include "Sound.h"
 
-#define IPADDRESS "172.30.1.10"
 
-class CMainScene :
+const int CS_PACKET_CREATER_START_CLICK = 8;
+
+struct cs_packet_start_button_click
+{
+	BYTE size;
+	BYTE type;
+};
+
+class CRoomScene :
 	public CScene
 {
 	Camera mCam;
 	XMFLOAT4X4 mWorldMtx;
-// 	ID3D11DepthStencilState* mDepthDisableState;
-// 	ID3D11DepthStencilState* mDepthStencilState;
+	// 	ID3D11DepthStencilState* mDepthDisableState;
+	// 	ID3D11DepthStencilState* mDepthStencilState;
 	//////////////////////////////////////////////////////////////////////////
 	//로고화면
 	CBitMap mMainLogo;
@@ -26,7 +33,13 @@ class CMainScene :
 	CButtonClass mConnectButton;
 	CButtonClass mExitButton;
 	CBitMap mBackgroundPicture;
-	CBitMap mLogo;
+	CBitMap mKingLogo;
+
+	CButtonClass mStartButton;
+
+	//닉네임입력
+	CDrawText mDrawText;
+	std::wstring nickname;
 
 	//////////////////////////////////////////////////////////////////////////
 	///inputBoard;
@@ -54,34 +67,36 @@ class CMainScene :
 
 	wchar_t Text[255];     // 텍스트를 저장하기위한 변수
 	wchar_t Cstr[10];      // 조합중인 문자!!
-	//x 0.8 , y 1.13
-	const int CONNECT_BUTTON_X = 1000 *0.8f;
-	const int CONNECT_BUTTON_Y = 400 * 1.13777f;
+						   //x 0.8 , y 1.13
 
-	const int BUTTON_SIZE_X = 200 * 0.8f;
-	const int BUTTON_SIZE_Y = 100 * 1.13777f;
+	//닉네임
+	const int PLAYER1_NICKNAME_LOCATION_X = 390 * 0.8f;
+	const int PLAYER1_NICKNAME_LOCATION_Y = 90;
 
-	const int EXIT_BUTTON_Y = 500 * 1.13777f;
-	const int RETURN_BUTTON_X = 860 * 0.8f;
-	const int RETURN_BUTTON_Y = 520 * 1.13777f;
+	const int PLAYER2_NICKNAME_LOCATION_X = 390 * 0.8f;
+	const int PLAYER2_NICKNAME_LOCATION_Y = 170;
 
-	const int LOBBY_CONNECT_BUTTON_X = 510 * 0.8f;
-	const int LOBBY_CONNECT_BUTTON_Y = 520 * 1.13777f;
+	const int PLAYER3_NICKNAME_LOCATION_X = 390 * 0.8f;
+	const int PLAYER3_NICKNAME_LOCATION_Y = 245;
 
-	const int INPUT_BOARD_X = 400 * 0.8f;
-	const int INPUT_BOARD_Y = 100 * 1.13777f;
+	const int PLAYER4_NICKNAME_LOCATION_X = 390 * 0.8f;
+	const int PLAYER4_NICKNAME_LOCATION_Y = 320;
 
-	const int INPUT_IP_X = 400 * 0.8f;
-	const int INPUT_IP_Y = 150 * 1.13777f;
+	const int OUTPUT_Y_OFFSET = 80;
 
-	const int INPUT_BAR_WIDTH = 700 * 0.8f;
-	const int INPUT_BAR_HEIGHT = 150 * 1.13777f;
+	//스타트버튼
+	const int START_BUTTON_X = 930 * 0.8f;
+	const int START_BUTTON_Y = 500 * 1.13777f;
 
-	const int INPUT_PORT_X = 400 * 0.8f;
-	const int INPUT_PORT_Y = 270 * 1.13777f;
+	const int BUTTON_SIZE_X = 580 * 0.8f;
+	const int BUTTON_SIZE_Y = 160 * 1.13777f;
 
-	const int INPUT_NICKNAME_X = 400 * 0.8f;
-	const int INPUT_NICKNAME_Y = 390 * 1.13777f;
+	//킹로고
+	const int KINGLOGO_SIZE_X = 50 * 0.8f;
+	const int KINGLOGO_SIZE_Y = 30 * 1.13777f;
+
+	const int KINGLOGO_LOCATION_X = 150 * 0.8f;
+	const int KINGLOGO_LOCATION_Y = 180;
 
 	const int FONT_SIZE = 40;
 	//////////////////////////////////////////////////////////////////////////
@@ -89,24 +104,31 @@ class CMainScene :
 	bool m_bLogoTime;
 
 	//////////////////////////////////////////////////////////////////////////
+	bool m_bStartCheck= false;
+
+
 	//Lobby
 	CDrawText DrawText;
 
+	//sendbuf
+	BYTE   send_buf1[MAX_BUF_SIZE];
+	WSABUF   send_wsa_buf1;
+
 public:
-	CMainScene();
-	virtual ~CMainScene();
+	CRoomScene();
+	virtual ~CRoomScene();
 	virtual bool Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 		IDXGISwapChain* swapChain, const D3D11_VIEWPORT& viewPort, const int& clientWidth, const int& clientHeight);
 	virtual std::string UpdateScene(const float dt, MSG& msg);
 	virtual void Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
-		IDXGISwapChain* swapChain, ID3D11RenderTargetView* rtv, 
+		IDXGISwapChain* swapChain, ID3D11RenderTargetView* rtv,
 		ID3D11DepthStencilView* dsv, D3D11_VIEWPORT* viewPort);
 	virtual void OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWnd);
-	virtual void OnMouseUp(WPARAM btnState, int x, int y) ;
+	virtual void OnMouseUp(WPARAM btnState, int x, int y);
 	virtual void OnMouseMove(WPARAM btnState, int x, int y);
 	virtual void OnResize();
 	virtual void OnKeyboardButtonDown(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam);
 	int GetText(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam);
-	
+
 };
 

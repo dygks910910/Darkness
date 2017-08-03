@@ -102,6 +102,8 @@ class CModelManager
 	float mCheckAngle = 0;
 	float mRotateAngle = 0.005;
 	bool mOneCheck = true;
+
+
 	// 	int clownIndexOffset;
 	// 	int clownVertexOffset;
 	// 	int clownIndexCount;
@@ -199,6 +201,20 @@ public:
 	XMFLOAT4X4 boundworld;
 
 	int mMyId;
+
+	//닉네임 아이디
+	int mNickId[8];
+
+	std::wstring mMyNick[8];
+	bool mRoomHeader;
+
+	bool mCheck = false;
+
+	bool mIsStart = false;
+
+
+	/////네트워크 initpos끝났는지 확인하는 변수
+	bool m_bFinishInit = false;
 
 private:
 	void BuildShapeGeometryBuffers();

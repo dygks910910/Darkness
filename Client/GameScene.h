@@ -22,6 +22,7 @@
 
 const int CS_PACKET_CLIENT_DRAW_START = 7;
 
+
 struct cs_packet_draw_start
 {
 	BYTE size;
@@ -110,6 +111,9 @@ public:
 
 	void DrawSceneToShadowMap(ID3D11DeviceContext* dc);
 	void BuildShadowTransform();
+
+	bool yamee = false;
+
 
 	BYTE   send_buf1[MAX_BUF_SIZE];
 	WSABUF   send_wsa_buf1;
