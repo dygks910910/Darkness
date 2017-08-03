@@ -4,3 +4,10 @@
 *.obj
 Client/Debug/BoxDemo.obj
 *.db
+*.pdb
+*.idb
+*.cso
+*.tlog
+*.ilk
+*.log
+*.lastbuildstate
