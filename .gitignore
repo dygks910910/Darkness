@@ -11,3 +11,5 @@ Client/Debug/BoxDemo.obj
 *.ilk
 *.log
 *.lastbuildstate
+*.ipdb
+*.iobj
