@@ -39,7 +39,7 @@ struct BoundingSphere
 class CGameScene :
 	public CScene
 {
-
+	ID3D11Device* mDevice;
 	/*
 	2017 / 3 / 22 / 16:13
 	작성자:박요한(dygks910910@daum.net)
@@ -58,7 +58,10 @@ class CGameScene :
 
 	ID3D11ShaderResourceView* mFlareSRV;
 	ParticleSystem mRain;
+
+	ID3D11ShaderResourceView* mLightPillarSRV;
 	std::vector<ParticleSystem*> mvFlare;
+	std::vector<ParticleSystem*> mvLightPillar;
 	//////////////////////////////////////////////////////////////////////////
 // 	CCordinate mCordWorld;
 	Camera	 mCam;
@@ -90,6 +93,8 @@ class CGameScene :
 	bool mbTimeOver = false;
 
 	PointLight mPointLight;
+	//true 는 증가 , false 는 감소
+	bool m_bSizeSwitch;
 	SpotLight mSpotLight;
 public:
 	CGameScene();

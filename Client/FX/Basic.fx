@@ -129,16 +129,18 @@ if (gLightCount > 0)
 		ambient += A;
 		diffuse += D;
 		spec += S;
-	}
-	ComputePointLight(gMaterial, gPointLight, pin.PosW, pin.NormalW, toEye, A, D, S);
-	ambient += A;
-	diffuse += D;
-	spec += S;
 
-	ComputeSpotLight(gMaterial, gSpotLight, pin.PosW, pin.NormalW, toEye, A, D, S);
-	ambient += A;
-	diffuse += D;
-	spec += S;
+		ComputePointLight(gMaterial, gPointLight, pin.PosW, pin.NormalW, toEye, A, D, S);
+		ambient += A;
+		diffuse += D;
+		spec += S;
+
+		ComputeSpotLight(gMaterial, gSpotLight, pin.PosW, pin.NormalW, toEye, A, D, S);
+		ambient += A;
+		diffuse += D;
+		spec += S;
+	}
+	
 	litColor = texColor*(ambient + diffuse) + spec;
 
 	if (gReflectionEnabled)

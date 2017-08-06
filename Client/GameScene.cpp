@@ -16,11 +16,20 @@ CGameScene::~CGameScene()
 	ReleaseCOM(mRainTexSRV);
 	ReleaseCOM(mRandomTexSRV);
 	ReleaseCOM(mFlareSRV);
+	ReleaseCOM(mLightPillarSRV);
 	for (int i = 0; i < mvFlare.size(); ++i)
 	{
 		if (mvFlare[i]) {
 			delete mvFlare[i];
 			mvFlare[i] = 0;
+		}
+	}
+
+	for (int i = 0; i < mvLightPillar.size(); ++i)
+	{
+		if (mvLightPillar[i]) {
+			delete mvLightPillar[i];
+			mvLightPillar[i] = 0;
 		}
 	}
 	mMinimap.Shutdown();
@@ -33,7 +42,7 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	IDXGISwapChain* swapChain,
 	const D3D11_VIEWPORT& viewPort, const int& clientWidth, const int& clientHeight)
 {
-
+	mDevice = device;
 	send_wsa_buf1.buf = reinterpret_cast<char*>(send_buf1);
 	send_wsa_buf1.len = MAX_BUF_SIZE;
 
@@ -164,6 +173,8 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	raindrops.push_back(L"Textures\\raindrop.dds");
 	mRainTexSRV = d3dHelper::CreateTexture2DArraySRV(device, dc	, raindrops);
 	mRain.Init(device, Effects::RainFX, mRainTexSRV, mRandomTexSRV,10000);
+
+
 	std::vector<std::wstring> flare;
 	flare.push_back(L"Textures\\flare0.dds");
 	mFlareSRV = d3dHelper::CreateTexture2DArraySRV(device, dc, flare);
@@ -185,7 +196,7 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 	tempFlareParticle = new ParticleSystem();
 	tempFlareParticle->Init(device, Effects::FireFX, mFlareSRV, mRandomTexSRV, 10000);
-	tempFlareParticle->SetEmitPos(XMFLOAT3(-47.48f, 8.860f, 19.005394f));
+	tempFlareParticle->SetEmitPos(XMFLOAT3(-47.48f, 8.845312f, 19.15605f));
 	mvFlare.push_back(tempFlareParticle);
 
 	tempFlareParticle = new ParticleSystem();
@@ -195,9 +206,25 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 	tempFlareParticle = new ParticleSystem();
 	tempFlareParticle->Init(device, Effects::FireFX, mFlareSRV, mRandomTexSRV, 10000);
-	tempFlareParticle->SetEmitPos(XMFLOAT3(47.28f, 8.840f, -47.79604f));
+	tempFlareParticle->SetEmitPos(XMFLOAT3(47.28f, 8.909998, -47.79393f));
 	mvFlare.push_back(tempFlareParticle);
 
+	tempFlareParticle = new ParticleSystem();
+	tempFlareParticle->Init(device, Effects::FireFX, mFlareSRV, mRandomTexSRV, 10000);
+	tempFlareParticle->SetEmitPos(XMFLOAT3(-47.8f, 8.909998f, 47.79393f));
+	mvFlare.push_back(tempFlareParticle);
+
+	tempFlareParticle = new ParticleSystem();
+	tempFlareParticle->Init(device, Effects::FireFX, mFlareSRV, mRandomTexSRV, 10000);
+	tempFlareParticle->SetEmitPos(XMFLOAT3(-47.28f, 8.90940f, -47.79604f));
+	mvFlare.push_back(tempFlareParticle);
+
+	std::vector<std::wstring> light;
+	light.push_back(L"Textures\\particle.dds");
+	mLightPillarSRV = d3dHelper::CreateTexture2DArraySRV(device, dc, light);
+	mvLightPillar.push_back(new ParticleSystem);
+	mvLightPillar[0]->Init(device, Effects::LightPillarFX, mLightPillarSRV, mRandomTexSRV, 10000);
+	mvLightPillar[0]->SetEmitPos(XMFLOAT3(0, 0, 0));
 	//////////////////////////////////////////////////////////////////////////
 
 	// Point light--position is changed every frame to animate in UpdateScene function.
@@ -206,6 +233,7 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	mPointLight.Specular = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
 	mPointLight.Att = XMFLOAT3(0.0f, 0.1f, 0.0f);
 	mPointLight.Range = 25.0f;
+	mPointLight.Position = XMFLOAT3(0, 0, 0);
 
 	// Spot light--position and direction changed every frame to animate in UpdateScene function.
 	mSpotLight.Ambient = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
@@ -295,6 +323,8 @@ std::string CGameScene::UpdateScene(const float dt, MSG& msg)
 			timerString = tempString;
 		}
 		CModelManager::GetInstance()->UpdateModel(dt, mCam);
+	
+	
 		// 	mCharacterInstance1.Update(dt);
 		// 
 		// 	for (int i = 0; i < Animnum; ++i)
@@ -304,8 +334,36 @@ std::string CGameScene::UpdateScene(const float dt, MSG& msg)
 		{
 			p->Update(dt, mTimer.TotalTime());
 		}
-
+		for (auto p : mvLightPillar)
+		{
+			p->Update(dt, mTimer.TotalTime());
+		}
 		mCam.UpdateViewMatrix();
+
+		if (mPointLight.Range >= 25)
+		{
+			m_bSizeSwitch = false;
+		}
+		else if(mPointLight.Range <= 0)
+		{
+			m_bSizeSwitch = true;
+
+		}
+		if (m_bSizeSwitch)
+		{
+			mPointLight.Range += 0.1f;
+		}
+		else
+		{
+			mPointLight.Range -= 0.1f;
+		}
+// 		if (mPointLight.Range >= 25.0f)
+// 		{
+// 		}
+// 		else if(mPointLight.Range <= 0)
+// 		{
+// 			mPointLight.Range += 0.1f;
+// 		}
 		
 		mSpotLight.Position = mCam.GetPosition();
 		XMStoreFloat3(&mSpotLight.Direction, XMVector3Normalize(mCam.GetLookXM()));
@@ -346,11 +404,7 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 		int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf1, 1, &io_byte2, 0, NULL, NULL);
 		if (ret_val == SOCKET_ERROR)
 			std::cout << " [error] WSASend() " << std::endl;
-
-
 	}
-
-
 	mSmap->BindDsvAndSetNullRenderTarget(dc);
 
 	DrawSceneToShadowMap(dc);
@@ -463,6 +517,12 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 		p->Draw(dc, mCam);
 	}
 
+	for (auto p : mvLightPillar)
+	{
+		p->SetEyePos(mCam.GetPosition());
+		p->Draw(dc, mCam);
+	}
+
 	mDrawText(timerString, 75, mClientWidth / 2 - 100, 0, FontColorForFW::RED);
 	mMinimap.Render(dc, mCam);
 	if (NetworkMgr::GetInstance()->isGameStart)
@@ -520,6 +580,9 @@ void CGameScene::OnMouseMove(WPARAM btnState, int x, int y)
 	//}
 	if ((btnState & MK_RBUTTON) != 0)
 	{
+		/************************************************************************/
+		/* 나 자신이 살아있다면...                                                                     */
+		/************************************************************************/
 		if (CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].mAlive)
 		{
 			XMMATRIX	matRot;

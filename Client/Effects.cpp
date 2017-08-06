@@ -218,6 +218,8 @@ SkyEffect*     Effects::SkyFX     = 0;
 TerrainEffect* Effects::TerrainFX = 0;
 ParticleEffect* Effects::FireFX   = 0;
 ParticleEffect* Effects::RainFX   = 0;
+ParticleEffect* Effects::LightPillarFX = 0;
+
 LineEffect* Effects::LineFX = 0;
 BuildShadowMapEffect*  Effects::BuildShadowMapFX = 0;
  SsaoNormalDepthEffect* Effects::SsaoNormalDepthFX = 0;
@@ -243,6 +245,7 @@ void Effects::InitAll(ID3D11Device* device)
 	InstancedBasicFX = new InstancedBasicEffect(device, L"FX/InstancedBasic.fxo");
 	LineFX = new LineEffect(device, L"FX/color.fxo");
 	DebugTexFX = new DebugTexEffect(device, L"FX/DebugTexture.fxo");
+	LightPillarFX = new ParticleEffect(device, L"FX/LightPillar.fxo");
 
 }
 

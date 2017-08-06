@@ -657,6 +657,7 @@ public:
 	static SkyEffect* SkyFX;
 	static TerrainEffect* TerrainFX;
 	static ParticleEffect* FireFX;
+	static ParticleEffect* LightPillarFX;
 	static ParticleEffect* RainFX;
 	static LineEffect* LineFX;
 	static DebugTexEffect* DebugTexFX;

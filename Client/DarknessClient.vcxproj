@@ -205,6 +205,9 @@
     <FxCompile Include="FX\Fire.fx" />
     <FxCompile Include="FX\InstancedBasic.fx" />
     <FxCompile Include="FX\LightHelper.fx" />
+    <FxCompile Include="FX\LightPillar.fx">
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(RelativeDir)%(Filename).fxo</ObjectFileOutput>
+    </FxCompile>
     <FxCompile Include="FX\NormalMap.fx">
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(RelativeDir)%(Filename).fxo</ObjectFileOutput>
     </FxCompile>
