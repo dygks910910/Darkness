@@ -89,6 +89,8 @@ BasicEffect::BasicEffect(ID3D11Device* device, const std::wstring& filename)
 	Light2TexAlphaClipFogReflectTech = mFX->GetTechniqueByName("Light2TexAlphaClipFogReflect");
 	Light3TexAlphaClipFogReflectTech = mFX->GetTechniqueByName("Light3TexAlphaClipFogReflect");
 
+
+
 	WorldViewProj = mFX->GetVariableByName("gWorldViewProj")->AsMatrix();
 	WorldViewProjTex = mFX->GetVariableByName("gWorldViewProjTex")->AsMatrix();
 	World = mFX->GetVariableByName("gWorld")->AsMatrix();

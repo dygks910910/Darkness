@@ -83,7 +83,7 @@ bool CBitMap::Render(ID3D11DeviceContext* deviceContext,
 	Effects::BasicFX->SetDiffuseMap(GetTexture());
 	D3DX11_TECHNIQUE_DESC techDesc;
 	Effects::BasicFX->Light0TexTech->GetDesc(&techDesc);
-	
+
 
 	for (UINT p = 0; p < techDesc.Passes; ++p)
 	{

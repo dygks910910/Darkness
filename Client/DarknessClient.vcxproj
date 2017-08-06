@@ -198,6 +198,7 @@
   <ItemGroup>
     <FxCompile Include="FX\Basic.fx">
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(RelativeDir)%(Filename).fxo</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(RelativeDir)%(Filename).fxo</ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="FX\BuildShadowMap.fx" />
     <FxCompile Include="FX\DebugTexture.fx" />

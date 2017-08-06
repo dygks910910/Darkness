@@ -13,3 +13,5 @@ Client/Debug/BoxDemo.obj
 *.lastbuildstate
 *.ipdb
 *.iobj
+*.diagsession
+*.exe

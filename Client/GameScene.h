@@ -55,7 +55,10 @@ class CGameScene :
 	//RainParticle
 	ID3D11ShaderResourceView* mRainTexSRV;
 	ID3D11ShaderResourceView* mRandomTexSRV;
+
+	ID3D11ShaderResourceView* mFlareSRV;
 	ParticleSystem mRain;
+	std::vector<ParticleSystem*> mvFlare;
 	//////////////////////////////////////////////////////////////////////////
 // 	CCordinate mCordWorld;
 	Camera	 mCam;

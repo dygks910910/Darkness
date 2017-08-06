@@ -44,4 +44,3 @@ private:
 	int m_bitmapWidth, m_bitmapHeight;
 	int m_previousPosX, m_previousPosY;
 };
-

@@ -15,6 +15,14 @@ CGameScene::~CGameScene()
  	SafeDelete(mSsao);
 	ReleaseCOM(mRainTexSRV);
 	ReleaseCOM(mRandomTexSRV);
+	ReleaseCOM(mFlareSRV);
+	for (int i = 0; i < mvFlare.size(); ++i)
+	{
+		if (mvFlare[i]) {
+			delete mvFlare[i];
+			mvFlare[i] = 0;
+		}
+	}
 	mMinimap.Shutdown();
 	CModelManager::GetInstance()->DestroyInstance();
 
@@ -149,12 +157,47 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	XMFLOAT4X4 temp4x4;
 	XMStoreFloat4x4(&temp4x4, XMMatrixIdentity());
 // 	mCordWorld.Init(device, temp4x4, 5000);
-
+	//////////////////////////////////////////////////////////////////////
+	////init the particleSystem
 	mRandomTexSRV = d3dHelper::CreateRandomTexture1DSRV(device);
 	std::vector<std::wstring> raindrops;
 	raindrops.push_back(L"Textures\\raindrop.dds");
 	mRainTexSRV = d3dHelper::CreateTexture2DArraySRV(device, dc	, raindrops);
 	mRain.Init(device, Effects::RainFX, mRainTexSRV, mRandomTexSRV,10000);
+	std::vector<std::wstring> flare;
+	flare.push_back(L"Textures\\flare0.dds");
+	mFlareSRV = d3dHelper::CreateTexture2DArraySRV(device, dc, flare);
+
+	ParticleSystem* tempFlareParticle = new ParticleSystem();
+	tempFlareParticle->Init(device, Effects::FireFX, mFlareSRV, mRandomTexSRV, 10000);
+	tempFlareParticle->SetEmitPos(XMFLOAT3(-32.56f, 10.62453f, 19.00724f));
+	mvFlare.push_back(tempFlareParticle);
+
+	tempFlareParticle = new ParticleSystem();
+	tempFlareParticle->Init(device, Effects::FireFX, mFlareSRV, mRandomTexSRV, 10000);
+	tempFlareParticle->SetEmitPos(XMFLOAT3(-32.56f, 10.62453f, -19.00724f));
+	mvFlare.push_back(tempFlareParticle);
+
+	tempFlareParticle = new ParticleSystem();
+	tempFlareParticle->Init(device, Effects::FireFX, mFlareSRV, mRandomTexSRV, 10000);
+	tempFlareParticle->SetEmitPos(XMFLOAT3(-47.48f, 8.890f, -19.005394f));
+	mvFlare.push_back(tempFlareParticle);
+
+	tempFlareParticle = new ParticleSystem();
+	tempFlareParticle->Init(device, Effects::FireFX, mFlareSRV, mRandomTexSRV, 10000);
+	tempFlareParticle->SetEmitPos(XMFLOAT3(-47.48f, 8.860f, 19.005394f));
+	mvFlare.push_back(tempFlareParticle);
+
+	tempFlareParticle = new ParticleSystem();
+	tempFlareParticle->Init(device, Effects::FireFX, mFlareSRV, mRandomTexSRV, 10000);
+	tempFlareParticle->SetEmitPos(XMFLOAT3(47.28f, 8.840f, 47.23604f));
+	mvFlare.push_back(tempFlareParticle);
+
+	tempFlareParticle = new ParticleSystem();
+	tempFlareParticle->Init(device, Effects::FireFX, mFlareSRV, mRandomTexSRV, 10000);
+	tempFlareParticle->SetEmitPos(XMFLOAT3(47.28f, 8.840f, -47.79604f));
+	mvFlare.push_back(tempFlareParticle);
+
 	//////////////////////////////////////////////////////////////////////////
 
 	// Point light--position is changed every frame to animate in UpdateScene function.
@@ -257,8 +300,13 @@ std::string CGameScene::UpdateScene(const float dt, MSG& msg)
 		// 	for (int i = 0; i < Animnum; ++i)
 		// 		mCharacterInstances[i].Update(dt);
 		mRain.Update(dt, mTimer.TotalTime());
-		mCam.UpdateViewMatrix();
+		for (auto p : mvFlare)
+		{
+			p->Update(dt, mTimer.TotalTime());
+		}
 
+		mCam.UpdateViewMatrix();
+		
 		mSpotLight.Position = mCam.GetPosition();
 		XMStoreFloat3(&mSpotLight.Direction, XMVector3Normalize(mCam.GetLookXM()));
 	}
@@ -403,15 +451,20 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	mSky->Draw(dc, mCam);
 
 
-	dc->OMSetBlendState(0, blendFactor, 0xffffffff); // restore default
+	//dc->OMSetBlendState(0, blendFactor, 0xffffffff); // restore default
 	dc->IASetInputLayout(InputLayouts::Particle);
 	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 	mRain.SetEyePos(mCam.GetPosition());
 	mRain.SetEmitPos(mCam.GetPosition());
 	mRain.Draw(dc, mCam);
+	for (auto p : mvFlare)
+	{
+		p->SetEyePos(mCam.GetPosition());
+		p->Draw(dc, mCam);
+	}
 
-	mDrawText(timerString, 75, mClientWidth / 2-100, 0, FontColorForFW::RED);
- 	mMinimap.Render(dc, mCam);
+	mDrawText(timerString, 75, mClientWidth / 2 - 100, 0, FontColorForFW::RED);
+	mMinimap.Render(dc, mCam);
 	if (NetworkMgr::GetInstance()->isGameStart)
 	{
 		//std::cout << "게임이 시작됨.";
