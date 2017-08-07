@@ -78,11 +78,7 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	mSceneBounds.Radius = 110;
 	//////////////////////////////////////////////////////////////////////////
 	//재질,텍스처불러오기.
-	mTexMgr.Init(device);
-	CModelManager::GetInstance()->Init(mTexMgr, &mCam, device);
-	
-	mSceneBounds.Center = XMFLOAT3(0, 0, 0);
-	mSceneBounds.Radius = 110;
+
 	mLightRotationAngle = 0;
 
 
@@ -99,7 +95,6 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 	//버퍼 빌드
 	//BuildShapeGeometryBuffers();
->>>>>>> origin/SoundandUI
 
 	//////////////////////////////////////////////////////////////////////////
 	mLastMousePos.x = 0;
@@ -341,6 +336,8 @@ std::string CGameScene::UpdateScene(const float dt, MSG& msg)
 			{
 				mPointLight.Range -= 0.1f;
 			}
+			mSpotLight.Position = mCam.GetPosition();
+			XMStoreFloat3(&mSpotLight.Direction, XMVector3Normalize(mCam.GetLookXM()));
 			mCam.UpdateViewMatrix();
 			return "";
 		}
@@ -388,7 +385,7 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 		dc->RSSetState(0);
 		//////////////////////////////////////////////////////////////
-	
+
 		XMMATRIX shadowTransform = XMLoadFloat4x4(&mShadowTransform);
 		//
 		// Restore the back and depth buffer to the OM stage.
@@ -417,21 +414,26 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 		Effects::BasicFX->SetCubeMap(mSky->CubeMapSRV());
 		Effects::BasicFX->SetShadowMap(mSmap->DepthMapSRV());
 		//Effects::BasicFX->SetSsaoMap(mSsao->AmbientSRV());
+		Effects::BasicFX->PointLight->SetRawValue(&mPointLight, 0, sizeof(mPointLight));
+		Effects::BasicFX->SpotLight->SetRawValue(&mSpotLight, 0, sizeof(mSpotLight));
+
 
 		Effects::NormalMapFX->SetDirLights(mDirLights);
 		Effects::NormalMapFX->SetEyePosW(mCam.GetPosition());
 		Effects::NormalMapFX->SetCubeMap(mSky->CubeMapSRV());
 		Effects::NormalMapFX->SetShadowMap(mSmap->DepthMapSRV());
 		Effects::NormalMapFX->SetSsaoMap(mSsao->AmbientSRV());
+		Effects::NormalMapFX->PointLight->SetRawValue(&mPointLight, 0, sizeof(mPointLight));
+		Effects::NormalMapFX->SpotLight->SetRawValue(&mSpotLight, 0, sizeof(mSpotLight));
 
 		Effects::InstancedBasicFX->SetDirLights(mDirLights);
 		Effects::InstancedBasicFX->SetEyePosW(mCam.GetPosition());
 		//Effects::InstancedBasicFX->SetSsaoMap(mSsao->AmbientSRV());
 		Effects::InstancedBasicFX->SetEyePosW(mCam.GetPosition());
 
-		ID3DX11EffectTechnique* activeNormalMappingTech = Effects::NormalMapFX->Light1TexTech;
-		ID3DX11EffectTechnique* activeBasicTech = Effects::BasicFX->Light1TexAlphaClipTech;
-		ID3DX11EffectTechnique* activeInstanceTech = Effects::InstancedBasicFX->Light1TexTech;
+		ID3DX11EffectTechnique* activeNormalMappingTech = Effects::NormalMapFX->Light3TexTech;
+		ID3DX11EffectTechnique* activeBasicTech = Effects::BasicFX->Light3TexAlphaClipTech;
+		ID3DX11EffectTechnique* activeInstanceTech = Effects::InstancedBasicFX->Light3TexTech;
 		ID3DX11EffectTechnique* activeSkinnedTech = Effects::NormalMapFX->Light3TexSkinnedTech;
 
 		dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -474,6 +476,19 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 		mRain.SetEmitPos(mCam.GetPosition());
 		mRain.Draw(dc, mCam);
 
+		for (auto p : mvFlare)
+		{
+			p->SetEyePos(mCam.GetPosition());
+			p->Draw(dc, mCam);
+		}
+
+		for (auto p : mvLightPillar)
+		{
+			p->SetEyePos(mCam.GetPosition());
+			p->Draw(dc, mCam);
+		}
+
+
 		mDrawText(timerString, 75, mClientWidth / 2 - 100, 0, FontColorForFW::RED);
 		mMinimap.Render(dc, mCam);
 		if (NetworkMgr::GetInstance()->isGameStart)
@@ -489,53 +504,6 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 
 
-	// Set per frame constants.
-	Effects::BasicFX->SetDirLights(mDirLights);
-	Effects::BasicFX->SetEyePosW(mCam.GetPosition());
-	Effects::BasicFX->SetCubeMap(mSky->CubeMapSRV());
-	Effects::BasicFX->SetShadowMap(mSmap->DepthMapSRV());
-	Effects::BasicFX->PointLight->SetRawValue(&mPointLight, 0, sizeof(mPointLight));
-	Effects::BasicFX->SpotLight->SetRawValue(&mSpotLight, 0, sizeof(mSpotLight));
-	//Effects::BasicFX->SetSsaoMap(mSsao->AmbientSRV());
-
-	Effects::NormalMapFX->SetDirLights(mDirLights);
-	Effects::NormalMapFX->SetEyePosW(mCam.GetPosition());
-	Effects::NormalMapFX->SetCubeMap(mSky->CubeMapSRV());
-	Effects::NormalMapFX->SetShadowMap(mSmap->DepthMapSRV());
- 	Effects::NormalMapFX->SetSsaoMap(mSsao->AmbientSRV());
-	Effects::NormalMapFX->PointLight->SetRawValue(&mPointLight, 0, sizeof(mPointLight));
-	Effects::NormalMapFX->SpotLight->SetRawValue(&mSpotLight, 0, sizeof(mSpotLight));
-
-	Effects::InstancedBasicFX->SetDirLights(mDirLights);
-	Effects::InstancedBasicFX->SetEyePosW(mCam.GetPosition());
-	Effects::InstancedBasicFX->SetEyePosW(mCam.GetPosition());
-
-	ID3DX11EffectTechnique* activeNormalMappingTech = Effects::NormalMapFX->Light3TexTech;
-	ID3DX11EffectTechnique* activeBasicTech = Effects::BasicFX->Light3TexAlphaClipTech;
-	ID3DX11EffectTechnique* activeInstanceTech = Effects::InstancedBasicFX->Light3TexTech;
-	ID3DX11EffectTechnique* activeSkinnedTech = Effects::NormalMapFX->Light3TexSkinnedTech;
-
-	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-	if (GetAsyncKeyState('1') & 0x8000)
-		dc->RSSetState(RenderStates::WireframeRS);
-	//
-	// Draw the spheres with cubemap reflection.
-	//
-	CModelManager::GetInstance()->DrawStaticBasicModels(dc, activeBasicTech,
-		mShadowTransform, mCam);
-	CModelManager::GetInstance()->DrawStaticNormalModels(dc, activeNormalMappingTech,
-		mShadowTransform, mCam);
-	CModelManager::GetInstance()->DrawInstancedModel(dc, activeInstanceTech,
-		mShadowTransform, mCam);
-	//////////////////////////////////////////////////////////////////////////
-	//draw Animation
-	CModelManager::GetInstance()->DrawSkinnedModels(dc, activeSkinnedTech,mShadowTransform, mCam);
-
-	// FX sets tessellation stages, but it does not disable them.  So do that here
-	// to turn off tessellation.
-	dc->HSSetShader(0, 0, 0);
-	dc->DSSetShader(0, 0, 0);
 
 		// restore default states, as the SkyFX changes them in the effect file.
 
@@ -548,46 +516,8 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 		dc->PSSetShaderResources(0, 16, nullSRV);
 		dc->OMSetBlendState(0, blendFactor, 0xffffffff);
 
-	dc->IASetInputLayout(InputLayouts::Particle);
-	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
-	mRain.SetEyePos(mCam.GetPosition());
-	mRain.SetEmitPos(mCam.GetPosition());
-	mRain.Draw(dc, mCam);
-	for (auto p : mvFlare)
-	{
-		p->SetEyePos(mCam.GetPosition());
-		p->Draw(dc, mCam);
-	}
-
-	for (auto p : mvLightPillar)
-	{
-		p->SetEyePos(mCam.GetPosition());
-		p->Draw(dc, mCam);
-	}
-
-	mDrawText(timerString, 75, mClientWidth / 2 - 100, 0, FontColorForFW::RED);
-	mMinimap.Render(dc, mCam);
-	if (NetworkMgr::GetInstance()->isGameStart)
-	{
-		mTimer.Start();
-	}
-	else
-	{
-		mTimer.Stop();
-		mDrawText(L"다른 플레이어를 기다리는중...", 40, mClientWidth / 2 - 200, mClientHeight / 2, FontColorForFW::WHITE);
-	}
-	// restore default states, as the SkyFX changes them in the effect file.
-
-	dc->RSSetState(0);
-	dc->OMSetDepthStencilState(0, 0);
-
-	// Unbind shadow map as a shader input because we are going to render to it next frame.
-	// The shadow might might be at any slot, so clear all slots.
-	ID3D11ShaderResourceView* nullSRV[16] = { 0 };
-	dc->PSSetShaderResources(0, 16, nullSRV);
-	dc->OMSetBlendState(0, blendFactor, 0xffffffff);
-
 		HR(swapChain->Present(0, 0));
+
 		yamee = true;
 	}
 }
