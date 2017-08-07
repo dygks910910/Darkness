@@ -11,7 +11,6 @@
 
 namespace Vertex
 {
-	
 	// Basic 32-byte vertex structure.
 	struct Basic32
 	{
@@ -71,7 +70,6 @@ public:
 	static const D3D11_INPUT_ELEMENT_DESC PosNormalTexTanSkinned[6];
 
 };
-
 class InputLayouts
 {
 public:

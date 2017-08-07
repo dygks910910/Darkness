@@ -28,7 +28,6 @@ SkinnedModel::SkinnedModel(ID3D11Device* device, TextureMgr& texMgr,
 		NormalMapSRV.push_back(normalMapSRV);
 	}
 }
-//std::ofstream fout("test2.txt");
 SkinnedModel::~SkinnedModel()
 {
 }
@@ -36,17 +35,6 @@ SkinnedModel::~SkinnedModel()
 int a = 0;
 void SkinnedModelInstance::Update(float dt)
 {
-// 	if (GetAsyncKeyState('W') & 0x8000)
-// 		cam->Walk(20.0f*dt);
-// 
-// 	if (GetAsyncKeyState('S') & 0x8000)
-// 		cam->Walk(-20.0f*dt);
-// 
-// 	if (GetAsyncKeyState('A') & 0x8000)
-// 		cam->Strafe(-20.0f*dt);
-// 
-// 	if (GetAsyncKeyState('D') & 0x8000)
-// 		cam->Strafe(20.0f*dt);
 
 
 	TimePos += dt;
@@ -79,7 +67,7 @@ void SkinnedModelInstance::Update(float dt)
 		else
 			mAnimCnt+=3;
 		// Loop animation
-		if (mAnimCnt > mClipnameAndTotalCount.second - 1)//TimePos > Model->SkinnedData.GetClipEndTime(ClipName))
+		if (mAnimCnt > mClipnameAndTotalCount.second - 1)
 		{
 			mAnimCnt = 0;
 		}

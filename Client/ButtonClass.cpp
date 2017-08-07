@@ -43,10 +43,6 @@ void CButtonClass::Update()
 }
 void CButtonClass::OnMouseDown(const int & x, const int & y)
 {
-	//std::cout << "down";
-// 	std::cout << "mouse pos:(" << x << "," << y << ")" << std::endl;
-// 	std::cout << "button pos:(" << mLocationX << "," << mLocationY << ")" << std::endl;
-
 	if (isMouseOnThisButton)
 	{
 		mIndex = BUTTON_STATE::MOUSE_CLICKED_STATE;

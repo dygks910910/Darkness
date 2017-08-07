@@ -87,7 +87,6 @@ bool CBitMap::Render(ID3D11DeviceContext* deviceContext,
 
 	for (UINT p = 0; p < techDesc.Passes; ++p)
 	{
-		//Effects::BasicFX->SetWorld(XMMatrixIdentity());
 		ID3DX11EffectPass* pass = Effects::BasicFX->Light0TexAlphaClipTech->GetPassByIndex(p);
 		pass->Apply(0, deviceContext);
 

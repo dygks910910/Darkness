@@ -70,9 +70,6 @@ class CModelManager
 	ID3D11Buffer* mStaticBasicObjectVB;
 	ID3D11Buffer* mStaticBasicObjectIB;
 
-// 	ID3D11Buffer* mboundVB;
-// 	ID3D11Buffer* mboundIB;
-	//ID3D11Buffer* mInstanceBuffer;
 
 	std::vector<CStaticNomalModel> mStaticNormalModels;
 	std::vector<CStaticBasicModel> mStaticBasicModels;
@@ -98,17 +95,7 @@ class CModelManager
 	float mCheckAngle = 0;
 	float mRotateAngle = 0.005;
 	bool mOneCheck = true;
-	// 	int clownIndexOffset;
-	// 	int clownVertexOffset;
-	// 	int clownIndexCount;
 
-// 	int fenceIndexOffset, fenceVertexOffset, fenceIndexCount;
-// 	int house1IndexOffset, house1VertexOffset, house1IndexCount;
-// 	int house2IndexOffset, house2VertexOffset, house2IndexCount;
-// 	int house3IndexOffset, house3VertexOffset, house3IndexCount;
-// 	int house4IndexOffset, house4VertexOffset, house4IndexCount;
-// 	int house5IndexOffset, house5VertexOffset, house5IndexCount;
-// 	int house6IndexOffset, house6VertexOffset, house6IndexCount;
 	int angelStatueIndexOffset, angelStatueVertexOffset, angelStatueIndexCount;
 	int wallIndexOffset, wallVertexOffset, wallIndexCount;
 	int tower_conerIndexOffset, tower_conerVertexOffset, tower_conerIndexCount;

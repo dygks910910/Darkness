@@ -18,10 +18,6 @@ CStaticNomalModel::CStaticNomalModel(const XMFLOAT4X4 & world,
 
 CStaticNomalModel::~CStaticNomalModel()
 {
-// #ifdef _DEBUG
-// 	ReleaseCOM(mBoxVB);
-// 	ReleaseCOM(mBoxIB);
-// #endif
 
 }
 
@@ -278,11 +274,7 @@ void CStaticBasicModel::Draw(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* te
 		tech->GetPassByIndex(p)->Apply(0, dc);
 		dc->DrawIndexed(mIndexCount, mIndexOffset, mVertexOffset);
 	}
-// 	if (mObjName == "angelStatue") {
-// #ifdef _DEBUG
-// 	
-// #endif
-// 	}
+
 }
 
 
@@ -295,7 +287,6 @@ void CStaticBasicModel::DrawBox(ID3D11DeviceContext* dc, ID3DX11EffectTechnique*
 	
 	UINT stride = sizeof(Vertex::Basic32);
 	UINT  offset = 0;
-	//dc->IASetInputLayout(InputLayouts::Basic32);
 	dc->IASetVertexBuffers(0, 1, &mBoxVB, &stride, &offset);
 	dc->IASetIndexBuffer(mBoxIB, DXGI_FORMAT_R32_UINT, 0);
 	D3DX11_TECHNIQUE_DESC techDesc;

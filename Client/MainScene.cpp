@@ -26,9 +26,6 @@ bool CMainScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	IDXGISwapChain * swapChain, const D3D11_VIEWPORT & viewPort, 
 	const int & clientWidth, const int & clientHeight)
 {
-// 	mDevice = device;
-// 	mDc = dc;
-// 	mSwapChain = swapChain;
 	mClientWidth = clientWidth;
 	mClientHeight = clientHeight;
 
@@ -53,9 +50,6 @@ bool CMainScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	mReturnButton.Init(device, BUTTON_SIZE_X, BUTTON_SIZE_Y, L"UITextures/cancel.png", RETURN_BUTTON_X, RETURN_BUTTON_Y, mClientWidth, mClientHeight);
 	mLobbyConnectButton.Init(device, BUTTON_SIZE_X, BUTTON_SIZE_Y, L"UITextures/connect.png", LOBBY_CONNECT_BUTTON_X, LOBBY_CONNECT_BUTTON_Y, mClientWidth, mClientHeight);
 
-	// Clear the second depth stencil state before setting the parameters.
- 	
- 	
  	D3D11_DEPTH_STENCIL_DESC depthDisabledStencilDesc;
  	ZeroMemory(&depthDisabledStencilDesc, sizeof(depthDisabledStencilDesc));
  
@@ -192,11 +186,8 @@ std::string CMainScene::UpdateScene(const float dt, MSG& msg)
 		}
 		else if(mExitButton.isClicked)
 		{
-// 			~CMainScene();
-// 			exit(1);
 		}
 	}
-	//mCam.UpdateViewMatrix();
 	return "";
 }
 
@@ -209,7 +200,6 @@ void CMainScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	dc->IASetInputLayout(InputLayouts::Basic32);
 	//ZbufferOff();
 	dc->OMSetDepthStencilState(mDepthDisableState, 1);
-	bool result;
 
 	// center Sky about eye in world space
 	XMFLOAT3 eyePos = mCam.GetPosition();
@@ -246,14 +236,11 @@ void CMainScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	}
 
 	//////////////////////////////////////////////////////////////////////////
- 	//std::cout << mTimeForLogo.TotalTime() << std::endl;
  	if (m_bLogoTime)
  	{
  		mMainLogo.Render(dc, 0, 0);
  	}
 
-// 	mDc->OMSetDepthStencilState(mDepthStencilState, 1);
-	//ZbufferOn();
 // restore default states.
 	dc->RSSetState(0);
 	dc->OMSetDepthStencilState(0, 0);
@@ -271,7 +258,6 @@ void CMainScene::OnMouseDown(WPARAM btnState, int x, int y, const HWND & mhMainW
 		if (x > INPUT_IP_X && x < INPUT_IP_X+ INPUT_BAR_WIDTH &&
 			y > INPUT_IP_Y && y < INPUT_IP_Y+ INPUT_BAR_HEIGHT)
 		{
-			//std::cout << "m_bFocusOnIP = true" <<std::endl;
 			m_bFocusOnIP = true;
 			m_bFocusOnNickName = false;
 			m_bFocusOnPort = false;
@@ -279,7 +265,6 @@ void CMainScene::OnMouseDown(WPARAM btnState, int x, int y, const HWND & mhMainW
 		else if (x > INPUT_PORT_X && x < INPUT_PORT_X + INPUT_BAR_WIDTH &&
 			y > INPUT_PORT_Y && y < INPUT_PORT_Y + INPUT_BAR_HEIGHT)
 		{
-			//std::cout << "m_bFocusOnPort = true" << std::endl;
 			m_bFocusOnIP = false;
 			m_bFocusOnNickName = false;
 			m_bFocusOnPort = true;
@@ -287,7 +272,6 @@ void CMainScene::OnMouseDown(WPARAM btnState, int x, int y, const HWND & mhMainW
 		else if (x > INPUT_NICKNAME_X && x < INPUT_NICKNAME_X + INPUT_BAR_WIDTH &&
 			y > INPUT_NICKNAME_Y && y < INPUT_NICKNAME_Y + INPUT_BAR_HEIGHT)
 		{
-			//std::cout << "m_bFocusOnNickname = true" << std::endl;
 			m_bFocusOnIP = false;
 			m_bFocusOnNickName = true;
 			m_bFocusOnPort = false;
@@ -311,8 +295,6 @@ void CMainScene::OnMouseUp(WPARAM btnState, int x, int y)
 
 void CMainScene::OnMouseMove(WPARAM btnState, int x, int y)
 {
-// 	std::cout << "mouse pos :" << "(" << x << "," << y << ")" << std::endl;
-// 	std::cout << "aspectRatio x : " << x * AspectRatio() << std::endl;
 	if (bActivedInputBoard)
 	{
 		mLobbyConnectButton.OnMouseMove(x, y);
@@ -327,7 +309,6 @@ void CMainScene::OnMouseMove(WPARAM btnState, int x, int y)
 void CMainScene::OnResize()
 {
 	mCam.SetLens(0.34f*MathHelper::Pi, AspectRatio(), 0, 3000.0f);
-	//std::cout << AspectRatio() << std::endl;
 }
 void CMainScene::OnKeyboardButtonDown(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
@@ -410,11 +391,8 @@ int CMainScene::GetText(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
 			}
 			else
 			{
-				//mNicknameString += (wchar_t)wparam;
 			}
 		}
-		/*Text[wcslen(Text)] = (wchar_t)wparam;*/
-		//mIpString += (wchar_t)wparam;
 		return 0;
 	case WM_IME_NOTIFY:			// 한자입력...
 		return 0;

@@ -1,5 +1,4 @@
 #pragma once
-//#include "ModelManager.h"
 #include "Vertex.h"
 #include "LightHelper.h"
 #include<string>

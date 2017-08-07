@@ -94,23 +94,7 @@ void Ssao::ComputeSsao(const Camera& camera)
 	Effects::SsaoFX->SetNormalDepthMap(mNormalDepthSRV);
 	Effects::SsaoFX->SetRandomVecMap(mRandomVectorSRV);
 
-// 	UINT stride = sizeof(Vertex::Basic32);
-//     UINT offset = 0;
 
-// 	mDC->IASetInputLayout(InputLayouts::Basic32);
-//     mDC->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-// 	mDC->IASetVertexBuffers(0, 1, &mScreenQuadVB, &stride, &offset);
-// 	mDC->IASetIndexBuffer(mScreenQuadIB, DXGI_FORMAT_R16_UINT, 0);
-// 	
-// 	ID3DX11EffectTechnique* tech = Effects::SsaoFX->SsaoTech;
-// 	D3DX11_TECHNIQUE_DESC techDesc;
-// 
-// 	tech->GetDesc( &techDesc );
-// 	for(UINT p = 0; p < techDesc.Passes; ++p)
-//     {
-// 		tech->GetPassByIndex(p)->Apply(0, mDC);
-// 		mDC->DrawIndexed(6, 0, 0);
-//     }
 }
 
 void Ssao::BlurAmbientMap(int blurCount)

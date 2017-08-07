@@ -10,8 +10,6 @@ CSceneManager::~CSceneManager()
 	{
 		delete p->second;
 	}
-// 	NetworkMgr::DestroyInstance();
-// 	NetworkMgr::Release();
 	
 }
 bool CSceneManager::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
@@ -37,33 +35,13 @@ bool CSceneManager::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	mScenes.insert(make_pair(SceneName::mainScene, new CMainScene));
 	mScenes[mSceneKey]->Init(device, dc, swapChain,
 		*viewport, clientWidth, clientHeight);
-	/*
-	2017 / 1 / 12 / 20:07
-	작성자:박요한(dygks910910@daum.net)
-	설명:TestScene생성.
-	*/
-
-	// 	mScenes.insert(make_pair(SceneName::test, new CBoxScene));
-	// 	mScenes[SceneName::test]->Init(device, dc,swapChain,renderTargetView
-	// 	,  viewport);
-	//OnResize();
+	
 	return true;
 }
 void CSceneManager::UpdateScene(const float dt, MSG& msg)
 {
 
-	/*
-	2017 / 1 / 12 / 22:06
-	작성자:박요한(dygks910910@daum.net)
-	설명:씬 변경.Test
-	*/
-	/*if (GetAsyncKeyState('C') & 0x8000) {
-	mSceneKey = SceneName::MainScene;
-	ChangeScene(SceneName::MainScene, dt);
-	}*/
-// <<<<<<< HEAD
-// 	mScenes[mSceneKey]->UpdateScene(dt);
-// =======
+	
 	std::string changeSceneName = mScenes[mSceneKey]->UpdateScene(dt, msg); 
 	if (changeSceneName != "")
 	{
@@ -103,7 +81,6 @@ void CSceneManager::ChangeScene(std::string sceneName, const float& dt)
 	mSceneKey = sceneName;
 	if (mScenes.find(mSceneKey) != mScenes.end())
 	{
-		//mScenes.insert(make_pair(sceneName, new CTestScene));
 		mScenes[sceneName]->Init(mDevice,mDc,mSwapChain,*mViewport,mClientWidth,mClientHeight);
 	}
 	else if(mSceneKey == SceneName::gameScene)

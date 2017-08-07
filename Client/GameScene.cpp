@@ -35,7 +35,6 @@ CGameScene::~CGameScene()
 	mMinimap.Shutdown();
 	CModelManager::GetInstance()->DestroyInstance();
 
-
 }
 
 bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
@@ -51,78 +50,14 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	mClientWidth = clientWidth;
 	//////////////////////////////////////////////////////////////////////////
 	//월드세팅
-
 	mSceneBounds.Center = XMFLOAT3(0, 0, 0);
 	mSceneBounds.Radius = 110;
-	mLightRotationAngle = 0;
-
 	//////////////////////////////////////////////////////////////////////////
 	//재질,텍스처불러오기.
 	mTexMgr.Init(device);
 	CModelManager::GetInstance()->Init(mTexMgr, &mCam, device);
-	//////////////////////////////////////////////////////////////////////////
-	//zbufferOff를 위한 세팅
-
-// 	D3D11_DEPTH_STENCIL_DESC depthDisabledStencilDesc;
-// 	ZeroMemory(&depthDisabledStencilDesc, sizeof(depthDisabledStencilDesc));
-// 
-// 	// Now create a second depth stencil state which turns off the Z buffer for 2D rendering.  The only difference is 
-// 	// that DepthEnable is set to false, all other parameters are the same as the other depth stencil state.
-// 	depthDisabledStencilDesc.DepthEnable = false;
-// 	depthDisabledStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-// 	depthDisabledStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
-// 	depthDisabledStencilDesc.StencilEnable = true;
-// 	depthDisabledStencilDesc.StencilReadMask = 0xFF;
-// 	depthDisabledStencilDesc.StencilWriteMask = 0xFF;
-// 	depthDisabledStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-// 	depthDisabledStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
-// 	depthDisabledStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-// 	depthDisabledStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-// 	depthDisabledStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-// 	depthDisabledStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
-// 	depthDisabledStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-// 	depthDisabledStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-// 
-// 	HR(device->CreateDepthStencilState(&depthDisabledStencilDesc, &ds));
-// 	depthDisabledStencilDesc.DepthEnable = true;
-// 
-// 	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
-// 	// Initialize the description of the stencil state.
-// 	ZeroMemory(&depthStencilDesc, sizeof(depthStencilDesc));
-// 
-// 	// Set up the description of the stencil state.
-// 	depthStencilDesc.DepthEnable = true;
-// 	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-// 	depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
-// 
-// 	depthStencilDesc.StencilEnable = true;
-// 	depthStencilDesc.StencilReadMask = 0xFF;
-// 	depthStencilDesc.StencilWriteMask = 0xFF;
-// 
-// 	// Stencil operations if pixel is front-facing.
-// 	depthStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-// 	depthStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
-// 	depthStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-// 	depthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-// 
-// 	// Stencil operations if pixel is back-facing.
-// 	depthStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-// 	depthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
-// 	depthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-// 	depthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-// 
-// 	// Create the depth stencil state.
-// 	HR(device->CreateDepthStencilState(&depthStencilDesc, &mDepthStencilState));
-// 	dc->OMSetDepthStencilState(mDepthStencilState, 1);
-
-	//버퍼 빌드
-	//BuildShapeGeometryBuffers();
 
 	//////////////////////////////////////////////////////////////////////////
-	int total = 0;
-
-	//////////////////////////////////////////////////////////////////////////
-	//mTextureMgr.Init(device);
 	mLastMousePos.x = 0;
 	mLastMousePos.y = 0;
 
@@ -130,13 +65,6 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	mDirLights[0].Diffuse = XMFLOAT4(0.7f, 0.7f, 0.6f, 1.0f);
 	mDirLights[0].Specular = XMFLOAT4(0.8f, 0.8f, 0.7f, 1.0f);
 	mDirLights[0].Direction = XMFLOAT3(-0.57735f, -0.57735f, 0.57735f);
-
-	// Shadow acne gets worse as we increase the slope of the polygon (from the
-	// perspective of the light).
-	//mDirLights[0].Direction = XMFLOAT3(5.0f/sqrtf(50.0f), -5.0f/sqrtf(50.0f), 0.0f);
-	//mDirLights[0].Direction = XMFLOAT3(10.0f/sqrtf(125.0f), -5.0f/sqrtf(125.0f), 0.0f);
-	//mDirLights[0].Direction = XMFLOAT3(10.0f/sqrtf(116.0f), -4.0f/sqrtf(116.0f), 0.0f);
-	//mDirLights[0].Direction = XMFLOAT3(10.0f/sqrtf(109.0f), -3.0f/sqrtf(109.0f), 0.0f);
 
 	mDirLights[1].Ambient = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
 	mDirLights[1].Diffuse = XMFLOAT4(0.40f, 0.40f, 0.40f, 1.0f);
@@ -165,7 +93,6 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	//월드좌표계 그려주기.
 	XMFLOAT4X4 temp4x4;
 	XMStoreFloat4x4(&temp4x4, XMMatrixIdentity());
-// 	mCordWorld.Init(device, temp4x4, 5000);
 	//////////////////////////////////////////////////////////////////////
 	////init the particleSystem
 	mRandomTexSRV = d3dHelper::CreateRandomTexture1DSRV(device);
@@ -262,7 +189,6 @@ std::string CGameScene::UpdateScene(const float dt, MSG& msg)
 		//임시로 사용하는 스키니드모델배열의 5번째 모델.즉 플레이어임.
 		mMinimap.PositionUpdate(CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._41,
 			CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._43);
-		//mMinimap.PositionUpdate(0,0);
 		mTimer.Tick();
 		//
 		// Control the camera.
@@ -325,10 +251,7 @@ std::string CGameScene::UpdateScene(const float dt, MSG& msg)
 		CModelManager::GetInstance()->UpdateModel(dt, mCam);
 	
 	
-		// 	mCharacterInstance1.Update(dt);
-		// 
-		// 	for (int i = 0; i < Animnum; ++i)
-		// 		mCharacterInstances[i].Update(dt);
+	
 		mRain.Update(dt, mTimer.TotalTime());
 		for (auto p : mvFlare)
 		{
@@ -357,13 +280,7 @@ std::string CGameScene::UpdateScene(const float dt, MSG& msg)
 		{
 			mPointLight.Range -= 0.1f;
 		}
-// 		if (mPointLight.Range >= 25.0f)
-// 		{
-// 		}
-// 		else if(mPointLight.Range <= 0)
-// 		{
-// 			mPointLight.Range += 0.1f;
-// 		}
+
 		
 		mSpotLight.Position = mCam.GetPosition();
 		XMStoreFloat3(&mSpotLight.Direction, XMVector3Normalize(mCam.GetLookXM()));
@@ -375,9 +292,6 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	IDXGISwapChain* swapChain, ID3D11RenderTargetView* rtv,
 	ID3D11DepthStencilView* dsv, D3D11_VIEWPORT* viewPort)
 {
-#ifdef _DEBUG
-	//std::cout << camtest.x << std::endl;
-#endif // _DEBUG
 
 	if (camtest.x !=0 && camset ==false)
 	{
@@ -392,7 +306,6 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 		mCam.SetPosition(camtest);
 		mCam.LookAt(camtest, charpo, up);
-
 		camset = true;
 
 		cs_packet_draw_start* draw = reinterpret_cast<cs_packet_draw_start*>(&send_buf1);
@@ -408,25 +321,19 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	mSmap->BindDsvAndSetNullRenderTarget(dc);
 
 	DrawSceneToShadowMap(dc);
-	//DrawSceneToSsaoNormalDepthMap();
 
 
 	dc->RSSetState(0);
 	//////////////////////////////////////////////////////////////
-	//ID3DX11EffectTechnique* animatedTech = Effects::SsaoNormalDepthFX->NormalDepthSkinnedTech;
-	//ID3DX11EffectTechnique* activeSkinnedTech = Effects::NormalMapFX->Light3TexSkinnedTech;
 	XMMATRIX shadowTransform = XMLoadFloat4x4(&mShadowTransform);
 	//
 	// Restore the back and depth buffer to the OM stage.
 	//
 	dc->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-	//mDc->RSSetViewports(1, viewPort);
 	mSsao->SetNormalDepthRenderTarget(dsv);
 
-	//DrawSceneToSsaoNormalDepthMap();
 
  	mSsao->ComputeSsao(mCam);
-	//mSsao->BlurAmbientMap(2);
 
 	ID3D11RenderTargetView* renderTargets[1] = { rtv };
 	dc->OMSetRenderTargets(1, renderTargets, dsv);
@@ -460,25 +367,14 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 	Effects::InstancedBasicFX->SetDirLights(mDirLights);
 	Effects::InstancedBasicFX->SetEyePosW(mCam.GetPosition());
-	//Effects::InstancedBasicFX->SetSsaoMap(mSsao->AmbientSRV());
 	Effects::InstancedBasicFX->SetEyePosW(mCam.GetPosition());
 
-	ID3DX11EffectTechnique* activeNormalMappingTech = Effects::NormalMapFX->Light1TexTech;
-	ID3DX11EffectTechnique* activeBasicTech = Effects::BasicFX->Light1TexAlphaClipTech;
-	ID3DX11EffectTechnique* activeInstanceTech = Effects::InstancedBasicFX->Light1TexTech;
+	ID3DX11EffectTechnique* activeNormalMappingTech = Effects::NormalMapFX->Light3TexTech;
+	ID3DX11EffectTechnique* activeBasicTech = Effects::BasicFX->Light3TexAlphaClipTech;
+	ID3DX11EffectTechnique* activeInstanceTech = Effects::InstancedBasicFX->Light3TexTech;
 	ID3DX11EffectTechnique* activeSkinnedTech = Effects::NormalMapFX->Light3TexSkinnedTech;
 
 	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-	// Figure out which technique to use for different geometry.
-
-
-	//XMMATRIX worldView;
-	//XMMATRIX worldInvTransposeView;
-	//
-	// Draw the grid, cylinders, and box without any cubemap reflection.
-	// 
-
 
 	if (GetAsyncKeyState('1') & 0x8000)
 		dc->RSSetState(RenderStates::WireframeRS);
@@ -499,13 +395,11 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	// to turn off tessellation.
 	dc->HSSetShader(0, 0, 0);
 	dc->DSSetShader(0, 0, 0);
-// 	mCordWorld.Draw(mDc, mCam);
 
 	CModelManager::GetInstance()->DrawInstancedModel(dc, activeInstanceTech, mShadowTransform, mCam);
 	mSky->Draw(dc, mCam);
 
 
-	//dc->OMSetBlendState(0, blendFactor, 0xffffffff); // restore default
 	dc->IASetInputLayout(InputLayouts::Particle);
 	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 	mRain.SetEyePos(mCam.GetPosition());
@@ -527,7 +421,6 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	mMinimap.Render(dc, mCam);
 	if (NetworkMgr::GetInstance()->isGameStart)
 	{
-		//std::cout << "게임이 시작됨.";
 		mTimer.Start();
 	}
 	else
@@ -566,18 +459,12 @@ void CGameScene::OnMouseDown(WPARAM btnState, int x, int y, const HWND& mhMainWn
 void CGameScene::OnMouseUp(WPARAM btnState, int x, int y)
 {
 
-	//CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].mAttack = false;
-
 	ReleaseCapture();
 }
 float sumdx = 0;
 void CGameScene::OnMouseMove(WPARAM btnState, int x, int y)
 {
-	//if (!camset)
-	//{
-	//	mCam.SetPosition(camtest);
-	//	camset = true;
-	//}
+	
 	if ((btnState & MK_RBUTTON) != 0)
 	{
 		/************************************************************************/
@@ -601,9 +488,6 @@ void CGameScene::OnMouseMove(WPARAM btnState, int x, int y)
 			float dy = XMConvertToRadians(0.25f*static_cast<float>(y - mLastMousePos.y));
 			//////////////카메라와 객체 거리 구하기///////////
 			
-
-			/*if (CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].mRotateAngle == 0)
-				sumdx = 0;*/
 
 			sumdx += dx;
 
@@ -653,17 +537,10 @@ void CGameScene::OnResize()
 {
 	float a = AspectRatio();
 	mCam.SetLens(0.36f*MathHelper::Pi, AspectRatio(), 0.01f, 3000.0f);
-	//XNA::ComputeFrustumFromProjection(&mCamFrustum, &mCam.Proj());
-	// 	if (mSsao)
-	// 	{
-	// 		mSsao->OnSize(mClientWidth, mClientHeight, mCam.GetFovY(), mCam.GetFarZ());
-	// 	}
 }
 
 void CGameScene::DrawSceneToShadowMap(ID3D11DeviceContext* dc)
 {
-	D3DX11_TECHNIQUE_DESC techDesc;
-
 	XMMATRIX view = XMLoadFloat4x4(&mLightView);
 	XMMATRIX proj = XMLoadFloat4x4(&mLightProj);
 	XMMATRIX viewProj = XMMatrixMultiply(view, proj);
@@ -681,43 +558,12 @@ void CGameScene::DrawSceneToShadowMap(ID3D11DeviceContext* dc)
 	ID3DX11EffectTechnique* smapTech = Effects::BuildShadowMapFX->BuildShadowMapTech;
 	ID3DX11EffectTechnique* animatedSmapTech = Effects::BuildShadowMapFX->BuildShadowMapSkinnedTech;
 
-	//mDc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
 	XMMATRIX world;
 	XMMATRIX worldInvTranspose;
 	XMMATRIX worldViewProj;
 
 	CModelManager::GetInstance()->DrawToShadowMap(dc, smapTech, mLightView, mLightProj);
 
-
-	//mDc->IASetInputLayout(InputLayouts::PosNormalTexTanSkinned);
-
-	//animatedSmapTech->GetDesc(&techDesc);
-	//for (UINT p = 0; p < techDesc.Passes; ++p)
-	//{
-	//	// Instance 1
-
-	//	world = XMLoadFloat4x4(&mCharacterInstance1.World);
-	//	worldInvTranspose = MathHelper::InverseTranspose(world);
-	//	worldViewProj = world*view*proj;
-
-	//	Effects::BuildShadowMapFX->SetWorld(world);
-	//	Effects::BuildShadowMapFX->SetWorldInvTranspose(worldInvTranspose);
-	//	Effects::BuildShadowMapFX->SetWorldViewProj(worldViewProj);
-	//	Effects::BuildShadowMapFX->SetTexTransform(XMMatrixIdentity());
-	//	Effects::BuildShadowMapFX->SetBoneTransforms(
-	//		&mCharacterInstance1.FinalTransforms[0],
-	//		mCharacterInstance1.FinalTransforms.size());
-
-
-	//	animatedSmapTech->GetPassByIndex(p)->Apply(0, mDc);
-
-	//	for (UINT subset = 0; subset < mCharacterInstance1.Model->SubsetCount; ++subset)
-	//	{
-	//		mCharacterInstance1.Model->ModelMesh.Draw(mDc, subset);
-	//	}
-
-	//}
 
 }
 void CGameScene::BuildShadowTransform()

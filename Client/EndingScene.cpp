@@ -20,9 +20,6 @@ bool CEndingScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	IDXGISwapChain * swapChain, const D3D11_VIEWPORT & viewPort, 
 	const int & clientWidth, const int & clientHeight)
 {
-// 	mDevice = device;
-// 	mDc = dc;
-// 	mSwapChain = swapChain;
 	mClientWidth = clientWidth;
 	mClientHeight = clientHeight;
 
@@ -125,7 +122,6 @@ bool CEndingScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	}
 	//함수객체 초기화
 	mDrawText.Init(device, dc);
-	//mMinimap.Initialize(device, 800, 600, mCam.View(), 1000, 1000);
 
 	OnResize();
 	return true;
@@ -152,7 +148,6 @@ void CEndingScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	dc->IASetInputLayout(InputLayouts::Basic32);
 	//ZbufferOff();
 	dc->OMSetDepthStencilState(mDepthDisableState, 1);
-	bool result;
 
 	// center Sky about eye in world space
 	XMFLOAT3 eyePos = mCam.GetPosition();
@@ -164,11 +159,7 @@ void CEndingScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 	mResultBoard.Render(dc, 0, 0);
 
-// 	for (int i = 0; i < 8; ++i) {
-// 		mDrawText(TEXT("NIckName"), 30, OUTPUT_NICKNAME_LOCATION_X, OUTPUT_NICKNAME_LOCATION_Y +i*OUTPUT_Y_OFFSET);
-// 		mDrawText(TEXT("Player_kill"), 30, OUTPUT_PLAYER_KILL_LOCATION_X, OUTPUT_PLAYER_KILL_LOCATION_Y + i*OUTPUT_Y_OFFSET);
-// 		mDrawText(TEXT("Monster_KIll"), 30, OUTPUT_MONSTER_KILL_LOCATION_X, OUTPUT_MONSTER_KILL_LOCATION_Y + i*OUTPUT_Y_OFFSET);
-// 	}
+
 	DrawAllScore();
 	mHomeButton.Draw(dc);
 	dc->RSSetState(0);

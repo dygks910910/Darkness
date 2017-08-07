@@ -45,11 +45,6 @@ protected:
 	const int HOME_BUTTON_X = 1000;
 	const int HOME_BUTTON_Y = 10;
 
-	//플레이어 킬 위치
-	// 첫번째 (921,210)
-
-	//몬스터 킬 위치 (1397,210)
-
 public:
 	CEndingScene();
 	virtual ~CEndingScene();
@@ -80,9 +75,4 @@ struct playerScore
 	UINT MKposX, MKkposY;
 
 	UINT32 fontColor;
-// 	playerScore(const std::wstring& nick,const UINT& playerK,const UINT& monsterK,
-// 		UINT xpos,UINT ypos,UINT32 fontcolr)
-// 		:nickname(nick),playerKill(playerK),monsterKill(monsterK),
-// 		posX(xpos),posY(ypos), fontColor(fontcolr)
-// 	{}
 };

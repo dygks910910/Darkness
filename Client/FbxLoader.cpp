@@ -159,60 +159,6 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh,GeometryGenerator::MeshData& m
 	// Count the polygon count of each material
 	FbxLayerElementArrayTemplate<int>* lMaterialIndice = NULL;
 	FbxGeometryElement::EMappingMode lMaterialMappingMode = FbxGeometryElement::eNone;
-	// 	if (pMesh->GetElementMaterial())
-	// 	{
-	// 		lMaterialIndice = &pMesh->GetElementMaterial()->GetIndexArray();
-	// 		lMaterialMappingMode = pMesh->GetElementMaterial()->GetMappingMode();
-	// 		if (lMaterialIndice && lMaterialMappingMode == FbxGeometryElement::eByPolygon)
-	// 		{
-	// 			FBX_ASSERT(lMaterialIndice->GetCount() == lPolygonCount);
-	// 			if (lMaterialIndice->GetCount() == lPolygonCount)
-	// 			{
-	// 				// Count the faces of each material
-	// 				for (int lPolygonIndex = 0; lPolygonIndex < lPolygonCount; ++lPolygonIndex)
-	// 				{
-	// 					const int lMaterialIndex = lMaterialIndice->GetAt(lPolygonIndex);
-	// 					if (mSubMeshes.Size() < lMaterialIndex + 1)
-	// 					{
-	// 						mSubMeshes.Resize(lMaterialIndex + 1);
-	// 					}
-	// 					if (mSubMeshes[lMaterialIndex] == NULL)
-	// 					{
-	// 						mSubMeshes[lMaterialIndex] = new SubMesh;
-	// 					}
-	// 					mSubMeshes[lMaterialIndex]->TriangleCount += 1;
-	// 				}
-	// 
-	// 				// Make sure we have no "holes" (NULL) in the mSubMeshes table. This can happen
-	// 				// if, in the loop above, we resized the mSubMeshes by more than one slot.
-	// 				for (int i = 0; i < mSubMeshes.Size(); i++)
-	// 				{
-	// 					if (mSubMeshes[i] == NULL)
-	// 						mSubMeshes[i] = new SubMesh;
-	// 				}
-	// 
-	// 				// Record the offset (how many vertex)
-	// 				const int lMaterialCount = mSubMeshes.Size();
-	// 				int lOffset = 0;
-	// 				for (int lIndex = 0; lIndex < lMaterialCount; ++lIndex)
-	// 				{
-	// 					mSubMeshes[lIndex]->IndexOffset = lOffset;
-	// 					lOffset += mSubMeshes[lIndex]->TriangleCount * 3;
-	// 					// This will be used as counter in the following procedures, reset to zero
-	// 					mSubMeshes[lIndex]->TriangleCount = 0;
-	// 				}
-	// 				FBX_ASSERT(lOffset == lPolygonCount * 3);
-	// 			}
-	// 		}
-	// 	}
-
-		// All faces will use the same material.
-	// 	if (mSubMeshes.Size() == 0)
-	// 	{
-	// 		mSubMeshes.Resize(1);
-	// 		mSubMeshes[0] = new SubMesh();
-	// 	}
-
 
 		// Congregate all the data of a mesh to be cached in VBOs.
 		// If normal or UV is by polygon vertex, record all vertex attributes by polygon vertex.
@@ -252,14 +198,8 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh,GeometryGenerator::MeshData& m
 		lPolygonVertexCount = lPolygonCount * TRIANGLE_VERTEX_COUNT;
 	}
 	meshData.Vertices.reserve(lPolygonVertexCount);
-	//float * lVertices = new float[lPolygonVertexCount * VERTEX_STRIDE];
 	meshData.Indices.reserve(lPolygonCount * TRIANGLE_VERTEX_COUNT);
-	//unsigned int * lIndices = new unsigned int[lPolygonCount * TRIANGLE_VERTEX_COUNT];
 	float * lNormals = NULL;
-	if (mHasNormal)
-	{
-		//lNormals = new float[lPolygonVertexCount * NORMAL_STRIDE];
-	}
 	float * lUVs = NULL;
 	FbxStringList lUVNames;
 	pMesh->GetUVSetNames(lUVNames);
@@ -267,7 +207,6 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh,GeometryGenerator::MeshData& m
 	const char * lUVName = NULL;
 	if (mHasUV && lUVNames.GetCount())
 	{
-		//lUVs = new float[lPolygonVertexCount * UV_STRIDE];
 		lUVName = lUVNames[0];
 #ifdef _DEBUG
 		std::cout << "텍스처들:";
@@ -336,14 +275,11 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh,GeometryGenerator::MeshData& m
 			if (mAllByControlPoint)
 			{
 				meshData.Indices.push_back(static_cast<UINT>(lControlPointIndex));
-				//lIndices[lIndexOffset + lVerticeIndex] = static_cast<unsigned int>(lControlPointIndex);
 			}
 			// Populate the array with vertex attribute, if by polygon vertex.
 			else
 			{
 				meshData.Indices.push_back(static_cast<UINT>(lVertexCount));
-
-				//lIndices[lIndexOffset + lVerticeIndex] = static_cast<unsigned int>(lVertexCount);
 
 				lCurrentVertex = lControlPoints[lControlPointIndex];
 				tempVertex.x = static_cast<float>(lCurrentVertex[0] *-1.0f );
@@ -423,7 +359,6 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh,GeometryGenerator::MeshData& m
 			meshData.Vertices.push_back(temp4Insert);
 			++lVertexCount;
 		}
-		//mSubMeshes[lMaterialIndex]->TriangleCount += 1;
 	}
 	XMFLOAT3 testextent;
 	XMFLOAT3 testcenter;
@@ -433,8 +368,6 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh,GeometryGenerator::MeshData& m
 		XMStoreFloat3(&bextent, 0.5f*(resultmax - resultmin));
 
 
-		/*XMStoreFloat3(&bcenter, 0.5*(vMax + vMin));
-		XMStoreFloat3(&bextent, 0.5*(vMax - vMin));*/
 #ifdef _DEBUG
 
 
@@ -442,8 +375,6 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh,GeometryGenerator::MeshData& m
 		std::cout << "center " << bcenter.x << ' ' << bcenter.y << ' ' << bcenter.z << std::endl;
 #endif // _DEBUG
 	}
-	/*std::cout << "extent" << bextent.x << " " << bextent.y << " " << bextent.z << std::endl;
-	std::cout << "center" << bcenter.x << " " << bcenter.y << " " << bcenter.z << std::endl;*/
 	GetUVName();
 }
 
@@ -462,11 +393,9 @@ void CFbxLoader::ProcessMaterials(FbxNode* inNode, Material& material)
 		ProcessMaterialAttribute(surfaceMaterial, i, material);
 	}
 }
-
 void CFbxLoader::ProcessMaterialAttribute(FbxSurfaceMaterial* inMaterial, unsigned int inMaterialIndex, Material& material)
 {
 	FbxDouble3 double3;
-	FbxDouble double1;
 	if (inMaterial->GetClassId().Is(FbxSurfacePhong::ClassId))
 	{
 		Material currMaterial;
@@ -489,36 +418,12 @@ void CFbxLoader::ProcessMaterialAttribute(FbxSurfaceMaterial* inMaterial, unsign
 		currMaterial.Specular.y = static_cast<float>(double3.mData[1]);
 		currMaterial.Specular.z = static_cast<float>(double3.mData[2]);
 
-		// Emissive Color
-// 		double3 = reinterpret_cast<FbxSurfacePhong *>(inMaterial)->Emissive;
-// 		currMaterial.mEmissive.x = static_cast<float>(double3.mData[0]);
-// 		currMaterial->mEmissive.y = static_cast<float>(double3.mData[1]);
-// 		currMaterial->mEmissive.z = static_cast<float>(double3.mData[2]);
-
 		// Reflection
 		double3 = reinterpret_cast<FbxSurfacePhong *>(inMaterial)->Reflection;
 		currMaterial.Reflect.x = static_cast<float>(double3.mData[0]);
 		currMaterial.Reflect.y = static_cast<float>(double3.mData[1]);
 		currMaterial.Reflect.z = static_cast<float>(double3.mData[2]);
 
-		// Transparency Factor
-// 		double1 = reinterpret_cast<FbxSurfacePhong *>(inMaterial)->TransparencyFactor;
-// 		currMaterial->mTransparencyFactor = double1;
-
-		// Shininess
-// 		double1 = reinterpret_cast<FbxSurfacePhong *>(inMaterial)->Shininess;
-// 		currMaterial->mShininess = double1;
-
-		// Specular Factor
-// 		double1 = reinterpret_cast<FbxSurfacePhong *>(inMaterial)->SpecularFactor;
-// 		currMaterial->mSpecularPower = double1;
-
-
-		// Reflection Factor
-// 		double1 = reinterpret_cast<FbxSurfacePhong *>(inMaterial)->ReflectionFactor;
-// 		currMaterial->mReflectionFactor = double1;
-// 
-// 		mMaterialLookUp[inMaterialIndex] = currMaterial;
 		material = currMaterial;
 
 	}
@@ -539,17 +444,7 @@ void CFbxLoader::ProcessMaterialAttribute(FbxSurfaceMaterial* inMaterial, unsign
 		currMaterial.Diffuse.y = static_cast<float>(double3.mData[1]);
 		currMaterial.Diffuse.z = static_cast<float>(double3.mData[2]);
 
-		// Emissive Color
-// 		double3 = reinterpret_cast<FbxSurfaceLambert *>(inMaterial)->Emissive;
-// 		currMaterial->mEmissive.x = static_cast<float>(double3.mData[0]);
-// 		currMaterial->mEmissive.y = static_cast<float>(double3.mData[1]);
-// 		currMaterial->mEmissive.z = static_cast<float>(double3.mData[2]);
-
-		// Transparency Factor
-// 		double1 = reinterpret_cast<FbxSurfaceLambert *>(inMaterial)->TransparencyFactor;
-// 		currMaterial->mTransparencyFactor = double1;
-
-	/*	mMaterialLookUp[inMaterialIndex] = currMaterial;*/
+	
 		material = currMaterial;
 	}
 }
@@ -645,7 +540,6 @@ void CFbxLoader::PrintAttribute(FbxNodeAttribute * pAttribute)
 
 	FbxString typeName = GetAttributeTypeName(pAttribute->GetAttributeType());
 	FbxString attrName = pAttribute->GetName();
-	//PrintTabs();
 	// Note: to retrieve the character array of a FbxString, use its Buffer() method.
 	printf("<attribute type='%s' name='%s'/>\n", typeName.Buffer(), attrName.Buffer());
 }
@@ -704,11 +598,7 @@ void CFbxLoader::Destroy()
 
 	mMaterialLookUp.clear();
 
-	// 	if (mRootNode)
-	// 	{
-	// 		mRootNode->Destroy();
-	// 	}
-		//mSubMeshes.Clear();
+
 
 }
 
@@ -729,7 +619,6 @@ void CFbxLoader::LoadFBX(const char* pFileName, GeometryGenerator::MeshData& mes
 
 	}
 	Destroy();
-	//ProcessMaterials(mRootNode, material);
 }
 
 

@@ -23,11 +23,7 @@ void NetworkMgr::Initialize()
 	{
 		char ip[128] = { 0 };
 
-		/*cout << " 서버 IP 입력 : ";
-		cin >> ip;*/
-
 		strcpy(ip, &m_strIp[0]);
-
 
 		SOCKADDR_IN serverAddr;
 		ZeroMemory(&serverAddr, sizeof(SOCKADDR_IN));
@@ -167,7 +163,6 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 		memcpy(&player_pos, packet, packet[0]);
 		if (CModelManager::GetInstance()->GetSkinnedInstanceModels()[getId()].mId == player_pos.id)
 		{
-			//std::cout << player_pos.cammove.x << ' ' << player_pos.cammove.z << std::endl;
 			CModelManager::GetInstance()->GetSkinnedInstanceModels()[getId()].mcammove = player_pos.cammove;
 			CModelManager::GetInstance()->GetSkinnedInstanceModels()[getId()].World = player_pos.worldMatrix;
 		}

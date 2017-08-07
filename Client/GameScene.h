@@ -63,17 +63,11 @@ class CGameScene :
 	std::vector<ParticleSystem*> mvFlare;
 	std::vector<ParticleSystem*> mvLightPillar;
 	//////////////////////////////////////////////////////////////////////////
-// 	CCordinate mCordWorld;
 	Camera	 mCam;
 	DirectionalLight mDirLights[3];
 	XMFLOAT3 mOriginalLightDir[3];
 	CMiniMap mMinimap;
-	///////////////////////////////Skined Model////////////////////////////////
-	// 	SkinnedModel* mCharacterModel;
-	// 	SkinnedModelInstance mCharacterInstance1;
-	// 	SkinnedModelInstance mCharacterInstance2;
-	// 	SkinnedModelInstance mCharacterInstances[70];
-	//Terrain mTerrain;
+	
 	POINT mLastMousePos;
 	POINT mUpMousePos;
 
@@ -94,7 +88,7 @@ class CGameScene :
 
 	PointLight mPointLight;
 	//true 는 증가 , false 는 감소
-	bool m_bSizeSwitch;
+	bool m_bSizeSwitch = false;
 	SpotLight mSpotLight;
 public:
 	CGameScene();

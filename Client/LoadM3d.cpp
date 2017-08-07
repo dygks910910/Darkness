@@ -22,8 +22,6 @@ bool M3DLoader::LoadM3d(const std::string& filename,
 		fin >> ignore >> numMaterials;
 		fin >> ignore >> numVertices;
 		fin >> ignore >> numTriangles;
-// 		fin >> ignore >> numBones;
-// 		fin >> ignore >> numAnimationClips;
  
 		ReadMaterials(fin, numMaterials, mats);
 		ReadSubsetTable(fin, numMaterials, subsets);

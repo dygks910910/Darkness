@@ -94,8 +94,6 @@ void ParticleSystem::Draw(ID3D11DeviceContext* dc, const Camera& cam)
 	////
 	//// Set IA stage.
 	////
-	//dc->IASetInputLayout(InputLayouts::Particle);
- //   dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 
 	UINT stride = sizeof(Vertex::Particle);
     UINT offset = 0;
