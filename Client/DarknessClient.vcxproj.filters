@@ -93,6 +93,9 @@
     <Filter Include="FW1FontWrapper">
       <UniqueIdentifier>{2c66c34f-e010-4e48-a801-6be0e341b7fa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sound">
+      <UniqueIdentifier>{27c6c15e-bcb3-4c90-90eb-b3a9b5d32abe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="FX\color.fx">
@@ -219,6 +222,12 @@
     <ClCompile Include="EndingScene.cpp">
       <Filter>souce\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="Sound.cpp">
+      <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomScene.cpp">
+      <Filter>souce\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common\Camera.h">
@@ -341,6 +350,12 @@
       <Filter>souce\Models</Filter>
     </ClInclude>
     <ClInclude Include="EndingScene.h">
+      <Filter>souce\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomScene.h">
       <Filter>souce\Scene</Filter>
     </ClInclude>
   </ItemGroup>

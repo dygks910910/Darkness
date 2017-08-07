@@ -18,8 +18,10 @@
 #include "Ssao.h"
 #include "MiniMap.h"
 #include "DrawText.h"
+#include "Sound.h"
 
 const int CS_PACKET_CLIENT_DRAW_START = 7;
+
 
 struct cs_packet_draw_start
 {
@@ -47,6 +49,13 @@ class CGameScene :
 	¼¼ÆÃÇØ³ùÀ½.
 	*/
 	//////////////////////////////////////////////////////////////////////////
+	CBitMap mLoadingScene;
+
+	XMFLOAT4X4 mWorldMtx;
+
+	ID3D11DepthStencilState* mDepthStencilState;
+	ID3D11DepthStencilState* mDepthDisableState;
+
 	TextureMgr mTexMgr;
 	GameTimer mTimer;
 	float countDownMin =8;
@@ -108,6 +117,9 @@ public:
 
 	void DrawSceneToShadowMap(ID3D11DeviceContext* dc);
 	void BuildShadowTransform();
+
+	bool yamee = false;
+
 
 	BYTE   send_buf1[MAX_BUF_SIZE];
 	WSABUF   send_wsa_buf1;

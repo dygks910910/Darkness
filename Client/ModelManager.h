@@ -8,6 +8,7 @@
 #include "RenderStates.h"
 #include "SkinnedModel.h"
 #include "xnacollision.h"
+#include "ButtonClass.h"
 
 enum Axis
 {
@@ -24,6 +25,15 @@ enum Keystate
 	die = 5,
 	run = 6
 
+};
+
+enum Animstate
+{
+	idle = 0,
+	walk = 1,
+	attack = 2,
+	runnning = 3,
+	death = 4
 };
 
 const int MAX_BUF_SIZE = 4000;
@@ -62,6 +72,9 @@ struct cs_packet_player_anmation_start
 
 class CModelManager
 {
+	CBitMap mLoadingScene2;
+
+
 	ID3D11Device* mDevice;
 	SkinnedModel* mCharacterModel;
 
@@ -95,6 +108,7 @@ class CModelManager
 	float mCheckAngle = 0;
 	float mRotateAngle = 0.005;
 	bool mOneCheck = true;
+
 
 	int angelStatueIndexOffset, angelStatueVertexOffset, angelStatueIndexCount;
 	int wallIndexOffset, wallVertexOffset, wallIndexCount;
@@ -162,7 +176,7 @@ public:
 	std::vector<CStaticBasicModel>& GetStaticBasicModels() { return mStaticBasicModels; }
 	std::vector<SkinnedModelInstance>& GetSkinnedInstanceModels() { return mSkinnedModelInstance; }
 
-	void Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device);
+	void Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device, ID3D11DeviceContext* dc, IDXGISwapChain* swapChain, ID3D11DepthStencilState* tDepthDisableState);
 	void DrawStaticNormalModels(ID3D11DeviceContext* dc,ID3DX11EffectTechnique* tech,const XMFLOAT4X4& shadowTransform,const Camera& cam);
 
 	void DrawStaticBasicModels(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMFLOAT4X4& shadowTransform, const Camera& cam);
@@ -182,6 +196,20 @@ public:
 	XMFLOAT4X4 boundworld;
 
 	int mMyId;
+
+	//닉네임 아이디
+	int mNickId[8];
+
+	std::wstring mMyNick[8];
+	bool mRoomHeader;
+
+	bool mCheck = false;
+
+	bool mIsStart = false;
+
+
+	/////네트워크 initpos끝났는지 확인하는 변수
+	bool m_bFinishInit = false;
 
 private:
 	void BuildShapeGeometryBuffers();

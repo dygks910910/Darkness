@@ -38,7 +38,7 @@ CModelManager::~CModelManager()
 	}
 }
 
-void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device)
+void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device, ID3D11DeviceContext* dc, IDXGISwapChain* swapChain, ID3D11DepthStencilState* tDepthDisableState)
 {
 	check = false;
 	mDevice = device;
@@ -76,11 +76,27 @@ void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device)
 					>> TestFinalTransforms[i][j]._41 >> TestFinalTransforms[i][j]._42 >> TestFinalTransforms[i][j]._43 >> TestFinalTransforms[i][j]._44;
 			}
 		}
+		if (k == 2)
+		{
+			dc->IASetInputLayout(InputLayouts::Basic32);
+			dc->OMSetDepthStencilState(tDepthDisableState, 1);
+
+			mLoadingScene2.Initialize(device, 1280, 800, L"UITextures/loading3.png", 1280, 800);
+			mLoadingScene2.Render(dc, 0, 0);
+			HR(swapChain->Present(0, 0));
+		}
 		mclipAnimbuf.insert(std::pair<std::string, std::vector<XMFLOAT4X4>*>(clipname[k], TestFinalTransforms));
 
 		testfinalTransform.clear();
 	}
 	fin.close();
+
+	dc->IASetInputLayout(InputLayouts::Basic32);
+	dc->OMSetDepthStencilState(tDepthDisableState, 1);
+
+	mLoadingScene2.Initialize(device, 1280, 800, L"UITextures/loading4.png", 1280, 800);
+	mLoadingScene2.Render(dc, 0, 0);
+	HR(swapChain->Present(0, 0));
 
 	for (int i = 0; i < ANIMCNT; ++i)
 	{
@@ -90,6 +106,14 @@ void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device)
 
 	BuildBasicGeometryBuffer();
 	BuildShapeGeometryBuffers();
+
+	dc->IASetInputLayout(InputLayouts::Basic32);
+	dc->OMSetDepthStencilState(tDepthDisableState, 1);
+
+	mLoadingScene2.Initialize(device, 1280, 800, L"UITextures/loading5.png", 1280, 800);
+	mLoadingScene2.Render(dc, 0, 0);
+	HR(swapChain->Present(0, 0));
+
 	ReadMapData(texMgr, *cam);
 	send_wsa_buf.buf = reinterpret_cast<char*>(send_buf);
 	send_wsa_buf.len = MAX_BUF_SIZE;
@@ -126,7 +150,6 @@ void CModelManager::DrawStaticSsaoNormalModels(ID3D11DeviceContext * dc, ID3DX11
 	for (auto p : mStaticNormalModels)
 	{
 		p.DrawSsao(dc, tech, shadowTransform, cam);
-		//p.Draw(dc, tech, shadowTransform, cam);
 	}
 	UINT stride2 = sizeof(Vertex::Basic32);
 	UINT  offset2 = 0;
@@ -157,30 +180,33 @@ void CModelManager::DrawSkinnedModels(ID3D11DeviceContext* dc, ID3DX11EffectTech
 	tech->GetDesc(&techDesc);
 	for (int i = 0; i < mSkinnedModelInstance.size(); ++i)
 	{
-		for (UINT p = 0; p < techDesc.Passes; ++p)
+		if (mSkinnedModelInstance[i].mExistObject == true)
 		{
-			world = XMLoadFloat4x4(&mSkinnedModelInstance[i].World);
-			worldInvTranspose = MathHelper::InverseTranspose(world);
-			worldViewProj = world*cam.View()*cam.Proj();
-
-			Effects::NormalMapFX->SetWorld(world);
-			Effects::NormalMapFX->SetWorldInvTranspose(worldInvTranspose);
-			Effects::NormalMapFX->SetWorldViewProj(worldViewProj);
-			Effects::NormalMapFX->SetWorldViewProjTex(worldViewProj*toTexSpace);
-			Effects::NormalMapFX->SetShadowTransform(world*XMLoadFloat4x4(&shadowTransform));
-			Effects::NormalMapFX->SetTexTransform(XMMatrixScaling(1.0f, 1.0f, 1.0f));
-			Effects::NormalMapFX->SetBoneTransforms(
-				&mSkinnedModelInstance[i].FinalTransforms[0],
-				mSkinnedModelInstance[i].FinalTransforms.size());
-
-			for (UINT subset = 0; subset < mSkinnedModelInstance[i].Model->SubsetCount; ++subset)
+			for (UINT p = 0; p < techDesc.Passes; ++p)
 			{
-				Effects::NormalMapFX->SetMaterial(mSkinnedModelInstance[i].Model->Mat[subset]);
-				Effects::NormalMapFX->SetDiffuseMap(mSkinnedModelInstance[i].Model->DiffuseMapSRV[mSkinnedModelInstance[i].selectedDiffuseMapIndex]);
-				Effects::NormalMapFX->SetNormalMap(mSkinnedModelInstance[i].Model->NormalMapSRV[subset]);
+				world = XMLoadFloat4x4(&mSkinnedModelInstance[i].World);
+				worldInvTranspose = MathHelper::InverseTranspose(world);
+				worldViewProj = world*cam.View()*cam.Proj();
 
-				tech->GetPassByIndex(p)->Apply(0, dc);
-				mSkinnedModelInstance[i].Model->ModelMesh.Draw(dc, subset);
+				Effects::NormalMapFX->SetWorld(world);
+				Effects::NormalMapFX->SetWorldInvTranspose(worldInvTranspose);
+				Effects::NormalMapFX->SetWorldViewProj(worldViewProj);
+				Effects::NormalMapFX->SetWorldViewProjTex(worldViewProj*toTexSpace);
+				Effects::NormalMapFX->SetShadowTransform(world*XMLoadFloat4x4(&shadowTransform));
+				Effects::NormalMapFX->SetTexTransform(XMMatrixScaling(1.0f, 1.0f, 1.0f));
+				Effects::NormalMapFX->SetBoneTransforms(
+					&mSkinnedModelInstance[i].FinalTransforms[0],
+					mSkinnedModelInstance[i].FinalTransforms.size());
+
+				for (UINT subset = 0; subset < mSkinnedModelInstance[i].Model->SubsetCount; ++subset)
+				{
+					Effects::NormalMapFX->SetMaterial(mSkinnedModelInstance[i].Model->Mat[subset]);
+					Effects::NormalMapFX->SetDiffuseMap(mSkinnedModelInstance[i].Model->DiffuseMapSRV[mSkinnedModelInstance[i].selectedDiffuseMapIndex]);
+					Effects::NormalMapFX->SetNormalMap(mSkinnedModelInstance[i].Model->NormalMapSRV[subset]);
+
+					tech->GetPassByIndex(p)->Apply(0, dc);
+					mSkinnedModelInstance[i].Model->ModelMesh.Draw(dc, subset);
+				}
 			}
 		}
 	}
@@ -304,6 +330,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 	/////////////죽을경우 맨 밖의 if 문////////////////////
 	if (!mSkinnedModelInstance[mMyId].mAlive)
 	{
+
 		if (mSkinnedModelInstance[mMyId].mKeyState != Keystate::die )
 		{
 			mSkinnedModelInstance[mMyId].mAnimCnt = 0;
@@ -327,7 +354,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 				anim->size = sizeof(cs_packet_player_anmation_start);
 				anim->type = CS_PACKET_START_ANIMATION;
 				anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
-				anim->animationState = 2;
+				anim->animationState = Animstate::attack;
 				send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
 				DWORD io_byte2;
 
@@ -351,7 +378,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 					anim->size = sizeof(cs_packet_player_anmation_start);
 					anim->type = CS_PACKET_START_ANIMATION;
 					anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
-					anim->animationState = 3;
+					anim->animationState = Animstate::runnning;
 					send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
 					DWORD io_byte2;
 
@@ -399,7 +426,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 					anim->size = sizeof(cs_packet_player_anmation_start);
 					anim->type = CS_PACKET_START_ANIMATION;
 					anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
-					anim->animationState = 1;
+					anim->animationState = Animstate::walk;
 					send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
 					DWORD io_byte2;
 
@@ -452,7 +479,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 					anim->size = sizeof(cs_packet_player_anmation_start);
 					anim->type = CS_PACKET_START_ANIMATION;
 					anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
-					anim->animationState = 1;
+					anim->animationState = Animstate::walk;
 					send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
 
 					DWORD io_byte2;
@@ -505,7 +532,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 					anim->size = sizeof(cs_packet_player_anmation_start);
 					anim->type = CS_PACKET_START_ANIMATION;
 					anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
-					anim->animationState = 1;
+					anim->animationState = Animstate::walk;
 					send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
 
 					DWORD io_byte2;
@@ -559,7 +586,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 					anim->size = sizeof(cs_packet_player_anmation_start);
 					anim->type = CS_PACKET_START_ANIMATION;
 					anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
-					anim->animationState = 1;
+					anim->animationState = Animstate::walk;
 					send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
 
 					DWORD io_byte2;
@@ -591,7 +618,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 					anim->size = sizeof(cs_packet_player_anmation_start);
 					anim->type = CS_PACKET_START_ANIMATION;
 					anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
-					anim->animationState = 0;
+					anim->animationState = Animstate::idle;
 					send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
 
 					DWORD io_byte2;
@@ -612,40 +639,22 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 
 void CModelManager::BuildShapeGeometryBuffers()
 {
-
-
-
-
 	GeometryGenerator::MeshData box;
 	GeometryGenerator::MeshData grid;
-
-
-
-
 
 	GeometryGenerator geoGen;
 	geoGen.CreateBox(1.0f, 1.0f, 1.0f, box);
 	geoGen.CreateGrid(10.0f, 10.0f, 11, 11, grid);
 	CFbxLoader loader;
 
-
-
-
 	boxVertexOffset = 0;
 	gridVertexOffset = box.Vertices.size();
-
-
 
 	boxIndexCount = box.Indices.size();
 	gridIndexCount = grid.Indices.size();
 
-
-
-
 	boxIndexOffset = 0;
 	gridIndexOffset = boxIndexCount;
-
-
 
 	UINT totalVertexCount =
 		box.Vertices.size() +
@@ -682,9 +691,6 @@ void CModelManager::BuildShapeGeometryBuffers()
 			1.0f);
 	}
 
-
-
-
 	D3D11_BUFFER_DESC vbd;
 	vbd.Usage = D3D11_USAGE_IMMUTABLE;
 	vbd.ByteWidth = sizeof(Vertex::PosNormalTexTan) * totalVertexCount;
@@ -715,7 +721,6 @@ void CModelManager::BuildShapeGeometryBuffers()
 	D3D11_SUBRESOURCE_DATA iinitData;
 	iinitData.pSysMem = &indices[0];
 	HR(mDevice->CreateBuffer(&ibd, &iinitData, &mStaticNormalMappingObjectIB));
-
 
 	//////////////////////////////////////////////////////////////////////////
 	//basic데이터 추출
@@ -761,6 +766,7 @@ void CModelManager::BuildBasicGeometryBuffer()
 	loader.LoadFBX("Darkness fbx\\Barrel.FBX", barrel, barrelBox);
 
 	//////////////////////////////////////////////////////////////////////////
+		//VertexOffset설정
 	angelStatueVertexOffset = 0;
 	wallVertexOffset = angelStatue.Vertices.size();
 	tower_conerVertexOffset = wallVertexOffset + wall.Vertices.size();
@@ -785,6 +791,7 @@ void CModelManager::BuildBasicGeometryBuffer()
 	building_f_VertexOffset = crate_VertexOffset + crate.Vertices.size();
 	barrel_VertexOffset = building_f_VertexOffset + building_f.Vertices.size();
 	//////////////////////////////////////////////////////////////////////////
+	//indexCount설정.
 	angelStatueIndexCount = angelStatue.Indices.size();
 	wallIndexCount = wall.Indices.size();
 	tower_conerIndexCount = tower_corner.Indices.size();
@@ -1028,7 +1035,6 @@ void CModelManager::BuildBasicGeometryBuffer()
 	// Pack the indices of all the meshes into one index buffer.
 	//
 	std::vector<UINT> indices;
-	
 	indices.insert(indices.end(), angelStatue.Indices.rbegin(), angelStatue.Indices.rend());
 	indices.insert(indices.end(), wall.Indices.rbegin(), wall.Indices.rend());
 	indices.insert(indices.end(), tower_corner.Indices.rbegin(), tower_corner.Indices.rend());
@@ -1522,7 +1528,6 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 		{
 			std::cout << "찾을수 없음" << std::endl;
 		}
-		
 		ZeroMemory(&objectName, sizeof(objectName));
 		ZeroMemory(&position, sizeof(position));
 		ZeroMemory(&rotation, sizeof(rotation));

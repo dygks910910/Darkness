@@ -1,5 +1,5 @@
 #include "MainScene.h"
-
+extern ID3D11DepthStencilState* tDepthDisableState;
 
 CMainScene::CMainScene()
 {
@@ -31,6 +31,7 @@ bool CMainScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 
 	mCam.SetPosition(0, 0, 0);
 	XMStoreFloat4x4(&mWorldMtx, XMMatrixTranslation(0, 0, 7));
+
 
 	//////////////////////////////////////////////////////////////////////////
 	//로고화면 초기화.
@@ -133,32 +134,17 @@ std::string CMainScene::UpdateScene(const float dt, MSG& msg)
 	{
 		if (mLobbyConnectButton.isClicked)
 		{
-			//ip와 포트를 넘겨줘야함.
-			if (mIpString == L"")
-			{
-				MessageBox(0, L"IP주소를 입력해주세요", L"error", 0);
-				mLobbyConnectButton.isClicked = false;
-				return "";
-			}
-			if (mPortString == L"")
-			{
-				MessageBox(0, L"포트번호를 입력해주세요", L"error", 0);
-				mLobbyConnectButton.isClicked = false;
-				return "";
-			}
 			if (mNicknameString == L"")
 			{
 				MessageBox(0, L"닉네임를 입력해주세요", L"error", 0);
 				mLobbyConnectButton.isClicked = false;
 				return "";
 			}
-			std::string str;
-			str.assign(mIpString.begin(), mIpString.end());
-			std::string port;
-			port.assign(mPortString.begin(), mPortString.end());
-			NetworkMgr::GetInstance()->SetIPAndPortAndNickName(str,mNicknameString);
+		
+			NetworkMgr::GetInstance()->SetIPAndPortAndNickName(IPADDRESS,mNicknameString);
 			NetworkMgr::GetInstance()->Initialize();
-			return SceneName::gameScene;
+
+			return SceneName::roomScene;
 			//////////////////////////////////////////////////////////////////////////
 			//방생성창으로  이동.
 		}
@@ -198,9 +184,9 @@ void CMainScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	dc->ClearRenderTargetView(rtv, reinterpret_cast<const float*>(&Colors::Silver));
 	dc->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	dc->IASetInputLayout(InputLayouts::Basic32);
-	//ZbufferOff();
 	dc->OMSetDepthStencilState(mDepthDisableState, 1);
 
+	tDepthDisableState = mDepthDisableState;
 	// center Sky about eye in world space
 	XMFLOAT3 eyePos = mCam.GetPosition();
 	XMMATRIX world = XMLoadFloat4x4(&mWorldMtx);
@@ -209,7 +195,6 @@ void CMainScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	Effects::BasicFX->SetWorldViewProj(WVP);
 	Effects::BasicFX->SetDiffuseMap(mBackgroundPicture.GetTexture());
 	Effects::BasicFX->SetTexTransform(XMMatrixScaling(1, 1, 1.0f));
-
 	dc->RSSetState(0);
 	//////////////////////////////////////////////////////////////////////////
 	//기본메인화면.

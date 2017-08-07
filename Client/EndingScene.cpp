@@ -83,8 +83,8 @@ bool CEndingScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
  	HR(device->CreateDepthStencilState(&depthStencilDesc, &mDepthStencilState));
  	dc->OMSetDepthStencilState(mDepthStencilState, 1);
 	//////////////////////////////////////////////////////////////////////////스코어 초기화.
-	mScores.resize(MAX_CLIENT);
-	for (int i = 0; i < MAX_CLIENT; ++i) {
+	mScores.resize(NetworkMgr::GetInstance()->getGameResult().max_client);
+	for (int i = 0; i < NetworkMgr::GetInstance()->getGameResult().max_client; ++i) {
 		mScores[i].nickname = NetworkMgr::GetInstance()->getGameResult().game_result[i].nickName;
 		mScores[i].monsterKill = NetworkMgr::GetInstance()->getGameResult().game_result[i].NPCKill;
 		mScores[i].playerKill = NetworkMgr::GetInstance()->getGameResult().game_result[i].playerKill;
@@ -106,10 +106,13 @@ bool CEndingScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 		{
 			mScores[i].fontColor = FontColorForFW::SILVER;
 		}
-		else if (i == 3)
+		else if (i == 2)
 		{
 			mScores[i].fontColor = FontColorForFW::BRONZE;
 		}
+		else
+			mScores[i].fontColor = FontColorForFW::BRONZE;
+		
 		mScores[i].NIckposX = OUTPUT_NICKNAME_LOCATION_X;
 		mScores[i].NickposY = OUTPUT_NICKNAME_LOCATION_Y+ i * OUTPUT_Y_OFFSET;
 
@@ -159,7 +162,6 @@ void CEndingScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 	mResultBoard.Render(dc, 0, 0);
 
-
 	DrawAllScore();
 	mHomeButton.Draw(dc);
 	dc->RSSetState(0);
@@ -204,7 +206,7 @@ int CEndingScene::GetText(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
 void CEndingScene::DrawAllScore()
 {
 	std::wstring temp;
-	wchar_t tempbuff[10];
+	wchar_t tempbuff[100];
 	for (int i = 0; i < mScores.size(); ++i) {
 		mDrawText(mScores[i].nickname, 30, OUTPUT_NICKNAME_LOCATION_X, OUTPUT_NICKNAME_LOCATION_Y + i*OUTPUT_Y_OFFSET,mScores[i].fontColor);
 		

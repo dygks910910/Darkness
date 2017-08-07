@@ -43,7 +43,6 @@ void NetworkMgr::Initialize()
 
 	saved_size = 0;
 	recv_size = 0;
-
 }
 void NetworkMgr::Release()
 {
@@ -94,26 +93,37 @@ void NetworkMgr::ReadPacket(const SOCKET& sock)
 			saved_size += io_byte;
 			io_byte = 0;
 		}
-
 	}
-
 }
 void NetworkMgr::ProcessPacket(BYTE* packet)
 {
 	switch (packet[1]) {
 	case SC_PACKET_PUT_USER:
 	{
+		CModelManager::GetInstance()->mCheck = true;
+		CModelManager::GetInstance()->send_wsa_buf.buf = reinterpret_cast<char*>(send_buf);
+		CModelManager::GetInstance()->send_wsa_buf.len = MAX_BUF_SIZE;
 		sc_packet_put_user put_user;
 		memcpy(&put_user, packet, packet[0]);
 		setId(put_user.id);
-		CModelManager::GetInstance()->GetSkinnedInstanceModels()[getId()].mId = put_user.id;
+		//CModelManager::GetInstance()->GetSkinnedInstanceModels()[getId()].mId = put_user.id;
+		CModelManager::GetInstance()->mMyId = put_user.id;
+
+		//방장인지 구분
+		CModelManager::GetInstance()->mRoomHeader = put_user.IsCreater;
 
 		cs_packet_player_nickname* nick
-			= reinterpret_cast<cs_packet_player_nickname*>(&CModelManager::GetInstance()->send_buf);
+			= reinterpret_cast<cs_packet_player_nickname*>(&send_buf);
 		nick->size = sizeof(cs_packet_player_nickname);
 		nick->type = CS_PACKET_CLEINT_NICKNAME;
-		nick->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[put_user.id].mId;
+		nick->id = put_user.id;//CModelManager::GetInstance()->mMyId;//CModelManager::GetInstance()->GetSkinnedInstanceModels()[put_user.id].mId;
+
+		//std::cout << nick->id << std::endl;
+
 		wcscpy(nick->nickName,&mNickName[0]);
+
+		//닉네임저장
+		CModelManager::GetInstance()->mMyNick[put_user.id] = nick->nickName;
 
 		CModelManager::GetInstance()->send_wsa_buf.len = sizeof(cs_packet_player_nickname);
 		DWORD io_byte2;
@@ -127,6 +137,24 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 #endif
 		break;
 	}
+	case SC_PACKET_ROOM_DATA:
+	{
+		sc_packet_room_data room_data;
+		memcpy(&room_data, packet, packet[0]);
+
+		CModelManager::GetInstance()->mMyNick[room_data.id] = room_data.nickName;
+	}
+	break;
+
+	case SC_PACKET_GAME_START:
+	{
+		sc_packet_game_start game_start;
+		memcpy(&game_start, packet, packet[0]);
+
+		CModelManager::GetInstance()->mIsStart = true;
+	}
+	break;
+
 	case SC_PACKET_PLAYGAME_INIT_POS:
 	{
 		sc_packet_playgame_init_pos init_pos;
@@ -134,14 +162,20 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 
 		// 내 아이디와 패킷으로 온 ID가 같으면 내걸 set
 		// 아니면. 다른 애걸 set
-		if (CModelManager::GetInstance()->GetSkinnedInstanceModels()[getId()].mId == init_pos.id)
+		if (getId() == init_pos.id)
 		{
 			CModelManager::GetInstance()->GetSkinnedInstanceModels()[getId()].World = init_pos.worldMatrix;
-
 
 			camtest.x = init_pos.campos.x;
 			camtest.y = 2.332356;
 			camtest.z = init_pos.campos.z;
+
+			CModelManager::GetInstance()->GetSkinnedInstanceModels()[getId()].mId = init_pos.id;
+
+			CModelManager::GetInstance()->m_bFinishInit = true;
+
+			CModelManager::GetInstance()->GetSkinnedInstanceModels()[getId()].mExistObject = init_pos.isRender;
+
 #ifdef _DEBUG
 			std::cout << camtest.x << " " << camtest.y << " " << camtest.z << std::endl;
 			std::cout << "아이디는" << CModelManager::GetInstance()->GetSkinnedInstanceModels()[getId()].mId << std::endl;
@@ -151,10 +185,14 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 		{
 			CModelManager::GetInstance()->GetSkinnedInstanceModels()[init_pos.id].mId = init_pos.id;
 			CModelManager::GetInstance()->GetSkinnedInstanceModels()[init_pos.id].World = init_pos.worldMatrix;
+
+			CModelManager::GetInstance()->GetSkinnedInstanceModels()[init_pos.id].mExistObject = init_pos.isRender;
+
 #ifdef _DEBUG	
 			std::cout << "아이디는" << CModelManager::GetInstance()->GetSkinnedInstanceModels()[init_pos.id].mId << std::endl;
 #endif
 		}
+		
 		break;
 	}
 	case SC_PACKET_PLAYGAME_PLAYER_POS:
@@ -178,6 +216,8 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 		memcpy(&player_anim, packet, packet[0]);
 		CModelManager::GetInstance()->GetSkinnedInstanceModels()[player_anim.id].mAnimstate = player_anim.animationState;
 		CModelManager::GetInstance()->GetSkinnedInstanceModels()[player_anim.id].mAnimCnt = 0;
+		if (player_anim.animationState == 4)
+			SoundClass::GetInstance()->PlayWaveFile(0);
 	}
 	break;
 

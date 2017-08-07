@@ -46,7 +46,7 @@ bool CMainGame::Init()
 	// Must init Effects first since InputLayouts depend on shader signatures.
 
 	NetworkMgr::GetInstance()->SetWindowHandle(D3DApp::MainWnd());
-
+	SoundClass::GetInstance()->Initialize(D3DApp::MainWnd());
 	Effects::InitAll(md3dDevice);
 	InputLayouts::InitAll(md3dDevice);
 	RenderStates::InitAll(md3dDevice);

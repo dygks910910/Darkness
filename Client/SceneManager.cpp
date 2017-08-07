@@ -35,13 +35,11 @@ bool CSceneManager::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	mScenes.insert(make_pair(SceneName::mainScene, new CMainScene));
 	mScenes[mSceneKey]->Init(device, dc, swapChain,
 		*viewport, clientWidth, clientHeight);
-	
 	return true;
 }
 void CSceneManager::UpdateScene(const float dt, MSG& msg)
 {
 
-	
 	std::string changeSceneName = mScenes[mSceneKey]->UpdateScene(dt, msg); 
 	if (changeSceneName != "")
 	{
@@ -81,9 +79,9 @@ void CSceneManager::ChangeScene(std::string sceneName, const float& dt)
 	mSceneKey = sceneName;
 	if (mScenes.find(mSceneKey) != mScenes.end())
 	{
-		mScenes[sceneName]->Init(mDevice,mDc,mSwapChain,*mViewport,mClientWidth,mClientHeight);
+		mScenes[sceneName]->Init(mDevice, mDc, mSwapChain, *mViewport, mClientWidth, mClientHeight);
 	}
-	else if(mSceneKey == SceneName::gameScene)
+	else if (mSceneKey == SceneName::gameScene)
 	{
 		mScenes.insert(make_pair(sceneName, new CGameScene));
 		mScenes[sceneName]->Init(mDevice, mDc, mSwapChain, *mViewport, mClientWidth, mClientHeight);
@@ -93,6 +91,14 @@ void CSceneManager::ChangeScene(std::string sceneName, const float& dt)
 		mScenes.insert(make_pair(sceneName, new CEndingScene));
 		mScenes[sceneName]->Init(mDevice, mDc, mSwapChain, *mViewport, mClientWidth, mClientHeight);
 	}
+	else if (mSceneKey == SceneName::roomScene)
+	{
+		mScenes.insert(make_pair(sceneName, new CRoomScene));
+		mScenes[sceneName]->Init(mDevice, mDc, mSwapChain, *mViewport, mClientWidth, mClientHeight);
+	}
+	else
+		return;
+
 }
 
 void CSceneManager::OnKeyBoardButtonDown(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)

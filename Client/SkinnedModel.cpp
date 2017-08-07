@@ -31,12 +31,9 @@ SkinnedModel::SkinnedModel(ID3D11Device* device, TextureMgr& texMgr,
 SkinnedModel::~SkinnedModel()
 {
 }
-//bool test = true;
 int a = 0;
 void SkinnedModelInstance::Update(float dt)
 {
-
-
 	TimePos += dt;
 
 	if (TimePos >= 0)

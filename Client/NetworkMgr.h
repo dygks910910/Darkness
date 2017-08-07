@@ -3,6 +3,8 @@
 #include <winsock2.h>
 #include <xnamath.h>
 #include "ModelManager.h"
+#include "Sound.h"
+
 #pragma comment(lib, "ws2_32.lib")
 #include<string.h>
 #ifndef _DEBUG | DEBUG
@@ -16,7 +18,7 @@ const int MY_SERVER_PORT = 9000;
 const int MAX_PACKET_SIZE = 255;
 const int MAX_BUF = 4000;
 const int WM_SOCKET = WM_USER + 1;
-const int MAX_CLIENT = 2;
+const int MAX_CLIENT = 8;
 // S -> C packet
 const int SC_PACKET_PUT_USER = 0;
 const int SC_PACKET_PLAYGAME_INIT_POS = 1;
@@ -25,34 +27,40 @@ const int SC_PACKET_PLAYGAME_START_ANMATION = 3;
 const int SC_PACKET_PLAYGAME_PLAYER_DIE = 4;
 const int SC_PACKET_PLAYGAME_GAME_RESULT = 5;
 const int SC_PACKET_PLAYGAME_TIMER_START = 6;
-#pragma pack(push, 1)   
+const int SC_PACKET_ROOM_DATA = 7;
+const int SC_PACKET_GAME_START = 8;
+
+
+#pragma pack(push, 1)
 // sc_packet
 struct sc_packet_put_user
 {
 	BYTE size;
 	BYTE type;
 	WORD id;
+	WORD IsCreater;
 };
 const int CS_PACKET_CLEINT_NICKNAME = 6;
- 
+
 struct sc_packet_timer_start
 {
 	BYTE size;
 	BYTE type;
 };
 
-   struct cs_packet_player_nickname
-   {
-      BYTE size;
-      BYTE type;
-      WORD id;
-      WCHAR nickName[20];
-   };
+struct cs_packet_player_nickname
+{
+	BYTE size;
+	BYTE type;
+	WORD id;
+	WCHAR nickName[20];
+};
 struct sc_packet_playgame_init_pos
 {
 	BYTE size;
 	BYTE type;
 	WORD id;
+	UINT isRender;
 	XMFLOAT4X4    worldMatrix;
 	XMFLOAT3 campos;
 };
@@ -86,6 +94,23 @@ struct sc_packet_game_result
 	UINT max_client;
 	game_result game_result[MAX_CLIENT];
 };
+
+struct sc_packet_room_data
+{
+	BYTE size;
+	BYTE type;
+	WORD id;
+	WCHAR nickName[20];
+};
+
+
+struct sc_packet_game_start
+{
+	BYTE size;
+	BYTE type;
+};
+
+
 #pragma pack(pop)  
 
 class NetworkMgr
@@ -135,15 +160,17 @@ public:
 	}
 
 public:
-	void setId(int id){mId = id;}
+	void setId(int id) { mId = id; }
 	int getId() { return mId; }
 	sc_packet_game_result getGameResult() { return mGameResult; }
-	bool isGameOver=false;
+	bool isGameOver = false;
 	bool isGameStart = false;
+
+	BYTE   send_buf[4000];
 
 public:
 	void SetWindowHandle(HWND h) { mHandle = h; };
-	void SetIPAndPort(std::string ip, std::string port = "9000") { 
+	void SetIPAndPort(std::string ip, std::string port = "9000") {
 		this->m_strIp = ip;
 #ifdef _DEBUG
 		std::cout << this->m_strIp << std::endl;

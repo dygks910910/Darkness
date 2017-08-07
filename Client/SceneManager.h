@@ -4,6 +4,7 @@
 #include<string.h>
 #include "MainScene.h"
 #include "EndingScene.h"
+#include "RoomScene.h"
 class CSceneManager
 {
 private:

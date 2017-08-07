@@ -73,6 +73,5 @@ struct playerScore
 	UINT NIckposX, NickposY;
 	UINT PKposX, PKposY;
 	UINT MKposX, MKkposY;
-
 	UINT32 fontColor;
 };
