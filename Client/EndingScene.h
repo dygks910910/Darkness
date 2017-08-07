@@ -78,7 +78,6 @@ struct playerScore
 	UINT NIckposX, NickposY;
 	UINT PKposX, PKposY;
 	UINT MKposX, MKkposY;
-
 	UINT32 fontColor;
 // 	playerScore(const std::wstring& nick,const UINT& playerK,const UINT& monsterK,
 // 		UINT xpos,UINT ypos,UINT32 fontcolr)

@@ -51,6 +51,14 @@ bool CRoomScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 
 	mStartButton.Init(device, BUTTON_SIZE_X, BUTTON_SIZE_Y, L"UITextures/Start.png", START_BUTTON_X, START_BUTTON_Y, mClientWidth, mClientHeight);
 
+	mChangeStateButton[0].Init(device, LEFT1_BUTTON_SIZE_X, LEFT1_BUTTON_SIZE_Y, L"UITextures/left.png", LEFT1_BUTTON_X, LEFT1_BUTTON_Y, mClientWidth, mClientHeight);
+
+	mChangeStateButton[1].Init(device, RIGHT1_BUTTON_SIZE_X, RIGHT1_BUTTON_SIZE_Y, L"UITextures/right.png", RIGHT1_BUTTON_X, RIGHT1_BUTTON_Y, mClientWidth, mClientHeight);
+
+	mChangeStateButton[2].Init(device, LEFT2_BUTTON_SIZE_X, LEFT2_BUTTON_SIZE_Y, L"UITextures/left.png", LEFT2_BUTTON_X, LEFT2_BUTTON_Y, mClientWidth, mClientHeight);
+
+	mChangeStateButton[3].Init(device, RIGHT2_BUTTON_SIZE_X, RIGHT2_BUTTON_SIZE_Y, L"UITextures/right.png", RIGHT2_BUTTON_X, RIGHT2_BUTTON_Y, mClientWidth, mClientHeight);
+
 
 	m_bStartCheck = false;
 	//mLogo.Initialize(device, mClientWidth / 2, mClientHeight / 1.5f, L"UITextures/Logo.png", 800, 200);
@@ -257,46 +265,31 @@ void CRoomScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 					mDrawText(CModelManager::GetInstance()->mMyNick[i], 30, PLAYER3_NICKNAME_LOCATION_X, PLAYER3_NICKNAME_LOCATION_Y + OUTPUT_Y_OFFSET, FontColorForFW::GOLD);
 				else if (i == 3)
 					mDrawText(CModelManager::GetInstance()->mMyNick[i], 30, PLAYER4_NICKNAME_LOCATION_X, PLAYER4_NICKNAME_LOCATION_Y + OUTPUT_Y_OFFSET, FontColorForFW::GOLD);
+				else if (i == 4)
+					mDrawText(CModelManager::GetInstance()->mMyNick[i], 30, PLAYER5_NICKNAME_LOCATION_X, PLAYER5_NICKNAME_LOCATION_Y + OUTPUT_Y_OFFSET, FontColorForFW::GOLD);
+				else if (i == 5)
+					mDrawText(CModelManager::GetInstance()->mMyNick[i], 30, PLAYER6_NICKNAME_LOCATION_X, PLAYER6_NICKNAME_LOCATION_Y + OUTPUT_Y_OFFSET, FontColorForFW::GOLD);
+				else if (i == 6)
+					mDrawText(CModelManager::GetInstance()->mMyNick[i], 30, PLAYER7_NICKNAME_LOCATION_X, PLAYER7_NICKNAME_LOCATION_Y + OUTPUT_Y_OFFSET, FontColorForFW::GOLD);
+				else if (i == 7)
+					mDrawText(CModelManager::GetInstance()->mMyNick[i], 30, PLAYER8_NICKNAME_LOCATION_X, PLAYER8_NICKNAME_LOCATION_Y + OUTPUT_Y_OFFSET, FontColorForFW::GOLD);
 			}
 		}
 
 		//스타트 버튼
 		mStartButton.Draw(dc);
 
+		//화살표 버튼
+		mChangeStateButton[0].Draw(dc);
+		mChangeStateButton[1].Draw(dc);
+		mChangeStateButton[2].Draw(dc);
+		mChangeStateButton[3].Draw(dc);
+
+
 		//방장 왕관표시
 		mKingLogo.Render(dc, KINGLOGO_LOCATION_X, KINGLOGO_LOCATION_Y);
 
-		//mLogo.Render(dc, LOGO_X, LOGO_Y);
-		//mConnectButton.Draw(dc);
-		//mExitButton.Draw(dc);
-		//////////////////////////////////////////////////////////////////////////
-		//IP주소 입력창 화면
-		/*if (bActivedInputBoard)
-		{
-			mInputBoard.Render(dc, INPUT_BOARD_X, INPUT_BOARD_Y);
-			mInputIP.Render(dc, INPUT_IP_X, INPUT_IP_Y);
-			DrawText(mIpString, FONT_SIZE, INPUT_IP_X + 200, INPUT_IP_Y + 80);
-
-			mInputPort.Render(dc, INPUT_PORT_X, INPUT_PORT_Y);
-			DrawText(mPortString, FONT_SIZE, INPUT_PORT_X + 200, INPUT_PORT_Y + 80);
-
-			mInputNickname.Render(dc, INPUT_NICKNAME_X, INPUT_NICKNAME_Y);
-			DrawText(mNicknameString, FONT_SIZE, INPUT_NICKNAME_X + 200, INPUT_NICKNAME_Y + 80);
-
-			mLobbyConnectButton.Draw(dc);
-			mReturnButton.Draw(dc);
-		}
-	*/
-	//////////////////////////////////////////////////////////////////////////
-	//std::cout << mTimeForLogo.TotalTime() << std::endl;
-	/*if (m_bLogoTime)
-	{
-		mMainLogo.Render(dc, 0, 0);
-	}*/
-
-	// 	mDc->OMSetDepthStencilState(mDepthStencilState, 1);
-	//ZbufferOn();
-	// restore default states.
+		
 		dc->RSSetState(0);
 		dc->OMSetDepthStencilState(0, 0);
 
@@ -306,24 +299,30 @@ void CRoomScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 void CRoomScene::OnMouseDown(WPARAM btnState, int x, int y, const HWND & mhMainWnd)
 {
-
-	mStartButton.OnMouseDown(x, y);
-	if (x > START_BUTTON_X && x < START_BUTTON_X + BUTTON_SIZE_X)
+	if (CModelManager::GetInstance()->mMyId == 0)
 	{
-		cs_packet_start_button_click* start = reinterpret_cast<cs_packet_start_button_click*>(&send_buf1);
-		start->size = sizeof(cs_packet_start_button_click);
-		start->type = CS_PACKET_CREATER_START_CLICK;
-		send_wsa_buf1.len = sizeof(cs_packet_start_button_click);
-		DWORD io_byte2;
+		mStartButton.OnMouseDown(x, y);
+		if (x > START_BUTTON_X && x < START_BUTTON_X + BUTTON_SIZE_X && y > START_BUTTON_Y && y < START_BUTTON_Y + BUTTON_SIZE_Y)
+		{
+			cs_packet_start_button_click* start = reinterpret_cast<cs_packet_start_button_click*>(&send_buf1);
+			start->size = sizeof(cs_packet_start_button_click);
+			start->type = CS_PACKET_CREATER_START_CLICK;
+			send_wsa_buf1.len = sizeof(cs_packet_start_button_click);
+			DWORD io_byte2;
 
-		int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf1, 1, &io_byte2, 0, NULL, NULL);
-		if (ret_val == SOCKET_ERROR)
-			std::cout << " [error] WSASend() " << std::endl;
+			int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &send_wsa_buf1, 1, &io_byte2, 0, NULL, NULL);
+			if (ret_val == SOCKET_ERROR)
+				std::cout << " [error] WSASend() " << std::endl;
 
-		//m_bStartCheck = true;
+			//m_bStartCheck = true;
 
 
+		}
 	}
+
+	for (int i = 0; i < 4; ++i)
+		mChangeStateButton[i].OnMouseDown(x, y);
+
 	//if (bActivedInputBoard)
 	//{
 	//	//ip입력창 active state check
@@ -358,8 +357,12 @@ void CRoomScene::OnMouseDown(WPARAM btnState, int x, int y, const HWND & mhMainW
 
 void CRoomScene::OnMouseUp(WPARAM btnState, int x, int y)
 {
-
-	mStartButton.OnMouseUp(x, y);
+	if (CModelManager::GetInstance()->mMyId == 0)
+	{
+		mStartButton.OnMouseUp(x, y);
+		for (int i = 0; i < 4; ++i)
+			mChangeStateButton[i].OnMouseUp(x, y);
+	}
 
 }
 
@@ -367,7 +370,12 @@ void CRoomScene::OnMouseMove(WPARAM btnState, int x, int y)
 {
 	// 	std::cout << "mouse pos :" << "(" << x << "," << y << ")" << std::endl;
 	// 	std::cout << "aspectRatio x : " << x * AspectRatio() << std::endl;
-	mStartButton.OnMouseMove(x, y);
+	if (CModelManager::GetInstance()->mMyId == 0)
+	{
+		mStartButton.OnMouseMove(x, y);
+		for (int i = 0; i < 4; ++i)
+			mChangeStateButton[i].OnMouseMove(x, y);
+	}
 }
 void CRoomScene::OnResize()
 {

@@ -45,7 +45,7 @@ bool SoundClass::Initialize(HWND hwnd)
 	}
 
 	// Play the wave file now that it has been loaded.
-	result = PlayWaveFile(1);
+	//result = PlayWaveFile(1);
 	if(!result)
 	{
 		return false;

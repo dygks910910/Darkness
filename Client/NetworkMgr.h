@@ -18,7 +18,7 @@ const int MY_SERVER_PORT = 9000;
 const int MAX_PACKET_SIZE = 255;
 const int MAX_BUF = 4000;
 const int WM_SOCKET = WM_USER + 1;
-const int MAX_CLIENT = 2;
+const int MAX_CLIENT = 8;
 // S -> C packet
 const int SC_PACKET_PUT_USER = 0;
 const int SC_PACKET_PLAYGAME_INIT_POS = 1;
@@ -60,6 +60,7 @@ struct sc_packet_playgame_init_pos
 	BYTE size;
 	BYTE type;
 	WORD id;
+	UINT isRender;
 	XMFLOAT4X4    worldMatrix;
 	XMFLOAT3 campos;
 };

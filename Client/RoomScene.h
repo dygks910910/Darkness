@@ -37,6 +37,8 @@ class CRoomScene :
 
 	CButtonClass mStartButton;
 
+	CButtonClass mChangeStateButton[4];
+
 	//닉네임입력
 	CDrawText mDrawText;
 	std::wstring nickname;
@@ -82,6 +84,18 @@ class CRoomScene :
 	const int PLAYER4_NICKNAME_LOCATION_X = 390 * 0.8f;
 	const int PLAYER4_NICKNAME_LOCATION_Y = 320;
 
+	const int PLAYER5_NICKNAME_LOCATION_X = 390 * 0.8f;
+	const int PLAYER5_NICKNAME_LOCATION_Y = 400;
+
+	const int PLAYER6_NICKNAME_LOCATION_X = 390 * 0.8f;
+	const int PLAYER6_NICKNAME_LOCATION_Y = 475;
+
+	const int PLAYER7_NICKNAME_LOCATION_X = 390 * 0.8f;
+	const int PLAYER7_NICKNAME_LOCATION_Y = 550;
+
+	const int PLAYER8_NICKNAME_LOCATION_X = 390 * 0.8f;
+	const int PLAYER8_NICKNAME_LOCATION_Y = 630;
+
 	const int OUTPUT_Y_OFFSET = 80;
 
 	//스타트버튼
@@ -97,6 +111,34 @@ class CRoomScene :
 
 	const int KINGLOGO_LOCATION_X = 150 * 0.8f;
 	const int KINGLOGO_LOCATION_Y = 180;
+
+	//화살표버튼 맨왼쪽
+	const int LEFT1_BUTTON_X = 970 * 0.8f;
+	const int LEFT1_BUTTON_Y = 400 * 1.13777f;
+
+	const int LEFT1_BUTTON_SIZE_X = 50 * 0.8f;
+	const int LEFT1_BUTTON_SIZE_Y = 40 * 1.13777f;
+
+	//화살표버튼 맨왼쪽에서 두번째
+	const int RIGHT1_BUTTON_X = 1120 * 0.8f;
+	const int RIGHT1_BUTTON_Y = 400 * 1.13777f;
+
+	const int RIGHT1_BUTTON_SIZE_X = 50 * 0.8f;
+	const int RIGHT1_BUTTON_SIZE_Y = 40 * 1.13777f;
+
+	//화살표버튼 맨왼쪽에서 세번째
+	const int LEFT2_BUTTON_X = 1280 * 0.8f;
+	const int LEFT2_BUTTON_Y = 400 * 1.13777f;
+
+	const int LEFT2_BUTTON_SIZE_X = 50 * 0.8f;
+	const int LEFT2_BUTTON_SIZE_Y = 40 * 1.13777f;
+
+	//화살표버튼 맨오른쪽
+	const int RIGHT2_BUTTON_X = 1430 * 0.8f;
+	const int RIGHT2_BUTTON_Y = 400 * 1.13777f;
+
+	const int RIGHT2_BUTTON_SIZE_X = 50 * 0.8f;
+	const int RIGHT2_BUTTON_SIZE_Y = 40 * 1.13777f;
 
 	const int FONT_SIZE = 40;
 	//////////////////////////////////////////////////////////////////////////

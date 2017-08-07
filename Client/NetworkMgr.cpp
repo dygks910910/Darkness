@@ -169,7 +169,6 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 		{
 			CModelManager::GetInstance()->GetSkinnedInstanceModels()[getId()].World = init_pos.worldMatrix;
 
-
 			camtest.x = init_pos.campos.x;
 			camtest.y = 2.332356;
 			camtest.z = init_pos.campos.z;
@@ -178,12 +177,11 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 
 			CModelManager::GetInstance()->m_bFinishInit = true;
 
-
+			CModelManager::GetInstance()->GetSkinnedInstanceModels()[getId()].mExistObject = init_pos.isRender;
 
 #ifdef _DEBUG
 			std::cout << camtest.x << " " << camtest.y << " " << camtest.z << std::endl;
 			std::cout << "아이디는" << CModelManager::GetInstance()->GetSkinnedInstanceModels()[getId()].mId << std::endl;
-
 #endif
 		}
 		else
@@ -191,6 +189,7 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 			CModelManager::GetInstance()->GetSkinnedInstanceModels()[init_pos.id].mId = init_pos.id;
 			CModelManager::GetInstance()->GetSkinnedInstanceModels()[init_pos.id].World = init_pos.worldMatrix;
 
+			CModelManager::GetInstance()->GetSkinnedInstanceModels()[init_pos.id].mExistObject = init_pos.isRender;
 
 #ifdef _DEBUG	
 			std::cout << "아이디는" << CModelManager::GetInstance()->GetSkinnedInstanceModels()[init_pos.id].mId << std::endl;

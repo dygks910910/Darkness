@@ -204,30 +204,33 @@ void CModelManager::DrawSkinnedModels(ID3D11DeviceContext* dc, ID3DX11EffectTech
 	tech->GetDesc(&techDesc);
 	for (int i = 0; i < mSkinnedModelInstance.size(); ++i)
 	{
-		for (UINT p = 0; p < techDesc.Passes; ++p)
+		if (mSkinnedModelInstance[i].mExistObject == true)
 		{
-			world = XMLoadFloat4x4(&mSkinnedModelInstance[i].World);
-			worldInvTranspose = MathHelper::InverseTranspose(world);
-			worldViewProj = world*cam.View()*cam.Proj();
-
-			Effects::NormalMapFX->SetWorld(world);
-			Effects::NormalMapFX->SetWorldInvTranspose(worldInvTranspose);
-			Effects::NormalMapFX->SetWorldViewProj(worldViewProj);
-			Effects::NormalMapFX->SetWorldViewProjTex(worldViewProj*toTexSpace);
-			Effects::NormalMapFX->SetShadowTransform(world*XMLoadFloat4x4(&shadowTransform));
-			Effects::NormalMapFX->SetTexTransform(XMMatrixScaling(1.0f, 1.0f, 1.0f));
-			Effects::NormalMapFX->SetBoneTransforms(
-				&mSkinnedModelInstance[i].FinalTransforms[0],
-				mSkinnedModelInstance[i].FinalTransforms.size());
-
-			for (UINT subset = 0; subset < mSkinnedModelInstance[i].Model->SubsetCount; ++subset)
+			for (UINT p = 0; p < techDesc.Passes; ++p)
 			{
-				Effects::NormalMapFX->SetMaterial(mSkinnedModelInstance[i].Model->Mat[subset]);
-				Effects::NormalMapFX->SetDiffuseMap(mSkinnedModelInstance[i].Model->DiffuseMapSRV[mSkinnedModelInstance[i].selectedDiffuseMapIndex]);
-				Effects::NormalMapFX->SetNormalMap(mSkinnedModelInstance[i].Model->NormalMapSRV[subset]);
+				world = XMLoadFloat4x4(&mSkinnedModelInstance[i].World);
+				worldInvTranspose = MathHelper::InverseTranspose(world);
+				worldViewProj = world*cam.View()*cam.Proj();
 
-				tech->GetPassByIndex(p)->Apply(0, dc);
-				mSkinnedModelInstance[i].Model->ModelMesh.Draw(dc, subset);
+				Effects::NormalMapFX->SetWorld(world);
+				Effects::NormalMapFX->SetWorldInvTranspose(worldInvTranspose);
+				Effects::NormalMapFX->SetWorldViewProj(worldViewProj);
+				Effects::NormalMapFX->SetWorldViewProjTex(worldViewProj*toTexSpace);
+				Effects::NormalMapFX->SetShadowTransform(world*XMLoadFloat4x4(&shadowTransform));
+				Effects::NormalMapFX->SetTexTransform(XMMatrixScaling(1.0f, 1.0f, 1.0f));
+				Effects::NormalMapFX->SetBoneTransforms(
+					&mSkinnedModelInstance[i].FinalTransforms[0],
+					mSkinnedModelInstance[i].FinalTransforms.size());
+
+				for (UINT subset = 0; subset < mSkinnedModelInstance[i].Model->SubsetCount; ++subset)
+				{
+					Effects::NormalMapFX->SetMaterial(mSkinnedModelInstance[i].Model->Mat[subset]);
+					Effects::NormalMapFX->SetDiffuseMap(mSkinnedModelInstance[i].Model->DiffuseMapSRV[mSkinnedModelInstance[i].selectedDiffuseMapIndex]);
+					Effects::NormalMapFX->SetNormalMap(mSkinnedModelInstance[i].Model->NormalMapSRV[subset]);
+
+					tech->GetPassByIndex(p)->Apply(0, dc);
+					mSkinnedModelInstance[i].Model->ModelMesh.Draw(dc, subset);
+				}
 			}
 		}
 	}
