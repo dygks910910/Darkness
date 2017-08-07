@@ -1,6 +1,4 @@
 #include "RoomScene.h"
-//extern ID3D11RenderTargetView* trtv;
-//extern ID3D11DepthStencilView* tdsv;
 extern ID3D11DepthStencilState* tDepthDisableState;
 
 CRoomScene::CRoomScene()
@@ -61,18 +59,7 @@ bool CRoomScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 
 
 	m_bStartCheck = false;
-	//mLogo.Initialize(device, mClientWidth / 2, mClientHeight / 1.5f, L"UITextures/Logo.png", 800, 200);
-	//mConnectButton.Init(device, BUTTON_SIZE_X, BUTTON_SIZE_Y, L"UITextures/connect.png", CONNECT_BUTTON_X, CONNECT_BUTTON_Y, mClientWidth, mClientHeight);
-	//mExitButton.Init(device, BUTTON_SIZE_X, BUTTON_SIZE_Y, L"UITextures/exit.png", CONNECT_BUTTON_X, EXIT_BUTTON_Y, mClientWidth, mClientHeight);
-	////////////////////////////////////////////////////////////////////////////
-	////inputboard 초기화.
-	//mInputBoard.Initialize(device, mClientWidth, mClientHeight, L"UITextures/InputBoard.png", 800, 600);
-	//mInputIP.Initialize(device, mClientWidth, mClientHeight, L"UITextures/InputIP.png", 700, 150);
-	//mInputPort.Initialize(device, mClientWidth, mClientHeight, L"UITextures/InputPort.png", 700, 150);
-	//mInputNickname.Initialize(device, mClientWidth, mClientHeight, L"UITextures/InputNickName.png", 700, 150);
-	//mReturnButton.Init(device, BUTTON_SIZE_X, BUTTON_SIZE_Y, L"UITextures/cancel.png", RETURN_BUTTON_X, RETURN_BUTTON_Y, mClientWidth, mClientHeight);
-	//mLobbyConnectButton.Init(device, BUTTON_SIZE_X, BUTTON_SIZE_Y, L"UITextures/connect.png", LOBBY_CONNECT_BUTTON_X, LOBBY_CONNECT_BUTTON_Y, mClientWidth, mClientHeight);
-
+	
 	// Clear the second depth stencil state before setting the parameters.
 
 
@@ -135,92 +122,21 @@ bool CRoomScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	m_bLogoTime = true;
 	//함수객체 초기화
 	DrawText.Init(device, dc);
-	//mMinimap.Initialize(device, 800, 600, mCam.View(), 1000, 1000);
 	mIpString = L"";
 	ZeroMemory(&Text, sizeof(Text));
 	ZeroMemory(&Cstr, sizeof(Cstr));
-	//mTimeForLogo.Start();
-	//mTimeForLogo.Reset();
 	OnResize();
 	return true;
 }
 
 std::string CRoomScene::UpdateScene(const float dt, MSG& msg)
 {
-	//////////////////////////////////////////////////////////////////////////
-	//로고를 비추는 창을 켜주는 시간을 계산.
-	/*mTimeForLogo.Tick();
-	if (mTimeForLogo.TotalTime() > 5)
-	{
-		m_bLogoTime = false;
-	}*/
 	if (m_bStartCheck == true)
 		return SceneName::gameScene;
 
 	else if (CModelManager::GetInstance()->mIsStart == true)
 		return SceneName::gameScene;
-	//if (bActivedInputBoard)
-	//{
-	//	if (mLobbyConnectButton.isClicked)
-	//	{
-	//		//ip와 포트를 넘겨줘야함.
-	//		if (mIpString == L"")
-	//		{
-	//			MessageBox(0, L"IP주소를 입력해주세요", L"error", 0);
-	//			mLobbyConnectButton.isClicked = false;
-	//			return "";
-	//		}
-	//		if (mPortString == L"")
-	//		{
-	//			MessageBox(0, L"포트번호를 입력해주세요", L"error", 0);
-	//			mLobbyConnectButton.isClicked = false;
-	//			return "";
-	//		}
-	//		if (mNicknameString == L"")
-	//		{
-	//			MessageBox(0, L"닉네임를 입력해주세요", L"error", 0);
-	//			mLobbyConnectButton.isClicked = false;
-	//			return "";
-	//		}
-	//		std::string str;
-	//		str.assign(mIpString.begin(), mIpString.end());
-	//		std::string port;
-	//		port.assign(mPortString.begin(), mPortString.end());
-	//		NetworkMgr::GetInstance()->SetIPAndPortAndNickName(str, mNicknameString);
-	//		NetworkMgr::GetInstance()->Initialize();
-			//return SceneName::gameScene;
-			//////////////////////////////////////////////////////////////////////////
-			//방생성창으로  이동.
-	//	}
-	//	if (mReturnButton.isClicked)
-	//	{
-	//		////////////////////////////////////////////////////////////
-	//		//메인화면으로 이동.
-	//		bActivedInputBoard = false;
-	//		mConnectButton.isClicked = false;
-	//		mExitButton.isClicked = false;
-	//		mLobbyConnectButton.isClicked = false;
-	//		mReturnButton.isClicked = false;
-	//		m_bFocusOnIP = false;
-	//		m_bFocusOnPort = false;
-	//		m_bFocusOnNickName = false;
-	//		//////////////////////////////////////////////////////////////////////////
-	//		//메인화면으로 돌아올경우 모든버튼의 Isclicked 초기화해줘야함.
-	//	}
-	//}
-	//else
-	//{
-	//	if (mConnectButton.isClicked)
-	//	{
-	//		bActivedInputBoard = true;
-	//	}
-	//	else if (mExitButton.isClicked)
-	//	{
-	//		// 			~CMainScene();
-	//		// 			exit(1);
-	//	}
-	//}
-	////mCam.UpdateViewMatrix();
+
 	return "";
 }
 
@@ -230,12 +146,9 @@ void CRoomScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 {
 	if (CModelManager::GetInstance()->mCheck)
 	{
-		//trtv = rtv;
-		//tdsv = dsv;
 		dc->ClearRenderTargetView(rtv, reinterpret_cast<const float*>(&Colors::Silver));
 		dc->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 		dc->IASetInputLayout(InputLayouts::Basic32);
-		//ZbufferOff();
 		dc->OMSetDepthStencilState(mDepthDisableState, 1);
 		bool result;
 
@@ -314,45 +227,12 @@ void CRoomScene::OnMouseDown(WPARAM btnState, int x, int y, const HWND & mhMainW
 			if (ret_val == SOCKET_ERROR)
 				std::cout << " [error] WSASend() " << std::endl;
 
-			//m_bStartCheck = true;
-
-
 		}
 	}
 
 	for (int i = 0; i < 4; ++i)
 		mChangeStateButton[i].OnMouseDown(x, y);
 
-	//if (bActivedInputBoard)
-	//{
-	//	//ip입력창 active state check
-	//	mLobbyConnectButton.OnMouseDown(x, y);
-	//	mReturnButton.OnMouseDown(x, y);
-	//	if (x > INPUT_IP_X && x < INPUT_IP_X + INPUT_BAR_WIDTH &&
-	//		y > INPUT_IP_Y && y < INPUT_IP_Y + INPUT_BAR_HEIGHT)
-	//	{
-	//		//std::cout << "m_bFocusOnIP = true" <<std::endl;
-	//		m_bFocusOnIP = true;
-	//		m_bFocusOnNickName = false;
-	//		m_bFocusOnPort = false;
-	//	}
-	//	else if (x > INPUT_PORT_X && x < INPUT_PORT_X + INPUT_BAR_WIDTH &&
-	//		y > INPUT_PORT_Y && y < INPUT_PORT_Y + INPUT_BAR_HEIGHT)
-	//	{
-	//		//std::cout << "m_bFocusOnPort = true" << std::endl;
-	//		m_bFocusOnIP = false;
-	//		m_bFocusOnNickName = false;
-	//		m_bFocusOnPort = true;
-	//	}
-	//	else if (x > INPUT_NICKNAME_X && x < INPUT_NICKNAME_X + INPUT_BAR_WIDTH &&
-	//		y > INPUT_NICKNAME_Y && y < INPUT_NICKNAME_Y + INPUT_BAR_HEIGHT)
-	//	{
-	//		//std::cout << "m_bFocusOnNickname = true" << std::endl;
-	//		m_bFocusOnIP = false;
-	//		m_bFocusOnNickName = true;
-	//		m_bFocusOnPort = false;
-	//	}
-	//}
 }
 
 void CRoomScene::OnMouseUp(WPARAM btnState, int x, int y)
@@ -368,8 +248,6 @@ void CRoomScene::OnMouseUp(WPARAM btnState, int x, int y)
 
 void CRoomScene::OnMouseMove(WPARAM btnState, int x, int y)
 {
-	// 	std::cout << "mouse pos :" << "(" << x << "," << y << ")" << std::endl;
-	// 	std::cout << "aspectRatio x : " << x * AspectRatio() << std::endl;
 	if (CModelManager::GetInstance()->mMyId == 0)
 	{
 		mStartButton.OnMouseMove(x, y);
@@ -380,7 +258,6 @@ void CRoomScene::OnMouseMove(WPARAM btnState, int x, int y)
 void CRoomScene::OnResize()
 {
 	mCam.SetLens(0.34f*MathHelper::Pi, AspectRatio(), 0, 3000.0f);
-	//std::cout << AspectRatio() << std::endl;
 }
 void CRoomScene::OnKeyboardButtonDown(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {

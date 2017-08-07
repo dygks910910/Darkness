@@ -28,27 +28,12 @@ SkinnedModel::SkinnedModel(ID3D11Device* device, TextureMgr& texMgr,
 		NormalMapSRV.push_back(normalMapSRV);
 	}
 }
-//std::ofstream fout("test2.txt");
 SkinnedModel::~SkinnedModel()
 {
 }
-//bool test = true;
 int a = 0;
 void SkinnedModelInstance::Update(float dt)
 {
-// 	if (GetAsyncKeyState('W') & 0x8000)
-// 		cam->Walk(20.0f*dt);
-// 
-// 	if (GetAsyncKeyState('S') & 0x8000)
-// 		cam->Walk(-20.0f*dt);
-// 
-// 	if (GetAsyncKeyState('A') & 0x8000)
-// 		cam->Strafe(-20.0f*dt);
-// 
-// 	if (GetAsyncKeyState('D') & 0x8000)
-// 		cam->Strafe(20.0f*dt);
-
-
 	TimePos += dt;
 
 	if (TimePos >= 0)

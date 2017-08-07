@@ -65,7 +65,7 @@ void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device, 
 		fin >> total;
 		animTotalCounts[k] = total;
 		auto TestFinalTransforms = new std::vector<XMFLOAT4X4>[total];
-		//testfinalTransform.resize(total);
+
 		for (int i = 0; i < total; ++i)
 		{
 			TestFinalTransforms[i].resize(mCharacterModel->SkinnedData.BoneCount());
@@ -80,7 +80,6 @@ void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device, 
 		if (k == 2)
 		{
 			dc->IASetInputLayout(InputLayouts::Basic32);
-			//ZbufferOff();
 			dc->OMSetDepthStencilState(tDepthDisableState, 1);
 
 			mLoadingScene2.Initialize(device, 1280, 800, L"UITextures/loading3.png", 1280, 800);
@@ -94,7 +93,6 @@ void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device, 
 	fin.close();
 
 	dc->IASetInputLayout(InputLayouts::Basic32);
-	//ZbufferOff();
 	dc->OMSetDepthStencilState(tDepthDisableState, 1);
 
 	mLoadingScene2.Initialize(device, 1280, 800, L"UITextures/loading4.png", 1280, 800);
@@ -111,7 +109,6 @@ void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device, 
 	BuildShapeGeometryBuffers();
 
 	dc->IASetInputLayout(InputLayouts::Basic32);
-	//ZbufferOff();
 	dc->OMSetDepthStencilState(tDepthDisableState, 1);
 
 	mLoadingScene2.Initialize(device, 1280, 800, L"UITextures/loading5.png", 1280, 800);
@@ -154,7 +151,6 @@ void CModelManager::DrawStaticSsaoNormalModels(ID3D11DeviceContext * dc, ID3DX11
 	for (auto p : mStaticNormalModels)
 	{
 		p.DrawSsao(dc, tech, shadowTransform, cam);
-		//p.Draw(dc, tech, shadowTransform, cam);
 	}
 	UINT stride2 = sizeof(Vertex::Basic32);
 	UINT  offset2 = 0;
@@ -165,25 +161,6 @@ void CModelManager::DrawStaticSsaoNormalModels(ID3D11DeviceContext * dc, ID3DX11
 	{
 		p.DrawSsao(dc, tech, shadowTransform, cam);
 	}
-
-	//dc->IASetInputLayout(InputLayouts::InstancedBasic32);
-
-	//UINT instanceStride[2] = { sizeof(Vertex::Basic32), sizeof(XMFLOAT4X4) };
-	//UINT instanceOffset[2] = { 0,0 };
-	//ID3D11Buffer* vbs[2] = { mStaticBasicObjectVB,mInstanceModels[0].GetInstanceBuffer() };
-
-
-	//for (int i = 0; i < mInstanceModels.size(); ++i)
-	//{
-	//	dc->IASetVertexBuffers(0, 2, vbs, instanceStride, instanceOffset);
-	//	dc->IASetIndexBuffer(mStaticBasicObjectIB, DXGI_FORMAT_R32_UINT, 0);
-	//	//Effects::InstancedBasicFX->Light3TexTech->GetDesc(&techDesc);
-
-
-	//	mInstanceModels[i].DrawSsao(dc, tech, shadowTransform, cam);
-	//}
-
-
 }
 
 void CModelManager::DrawSkinnedModels(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMFLOAT4X4& shadowTransform, const Camera& cam)
@@ -319,18 +296,6 @@ void CModelManager::DrawToShadowMap(ID3D11DeviceContext * dc, ID3DX11EffectTechn
 	{
 		p.DrawToShadowMap(dc, tech, lightView, lightProj);
 	}
-
-	// 	UINT instanceStride[2] = { sizeof(Vertex::Basic32), sizeof(XMFLOAT4X4) };
-	// 	UINT instanceOffset[2] = { 0,0 };
-	// 	for (int i = 0; i < mInstanceModels.size(); ++i)
-	// 	{
-	// 		ID3D11Buffer* vbs[2] = { mStaticBasicObjectVB,mInstanceModels[i].GetInstanceBuffer() };
-	// 		dc->IASetVertexBuffers(0, 2, vbs, instanceStride, instanceOffset);
-	// 		dc->IASetIndexBuffer(mStaticBasicObjectIB, DXGI_FORMAT_R32_UINT, 0);
-	// 
-	// 		mInstanceModels[i].DrawToShadowMap(dc, tech, lightView, lightProj);
-	// 	}
-
 }
 
 void CModelManager::DrawInstancedModel(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMFLOAT4X4& shadowTransform, const Camera& cam)
@@ -346,9 +311,6 @@ void CModelManager::DrawInstancedModel(ID3D11DeviceContext* dc, ID3DX11EffectTec
 	{
 		dc->IASetVertexBuffers(0, 2, vbs, instanceStride, instanceOffset);
 		dc->IASetIndexBuffer(mStaticBasicObjectIB, DXGI_FORMAT_R32_UINT, 0);
-		//Effects::InstancedBasicFX->Light3TexTech->GetDesc(&techDesc);
-
-
 		mInstanceModels[i].Draw(dc, tech, shadowTransform, cam);
 	}
 
@@ -393,7 +355,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 				anim->size = sizeof(cs_packet_player_anmation_start);
 				anim->type = CS_PACKET_START_ANIMATION;
 				anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
-				anim->animationState = 2;
+				anim->animationState = Animstate::attack;
 				send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
 				DWORD io_byte2;
 
@@ -417,7 +379,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 					anim->size = sizeof(cs_packet_player_anmation_start);
 					anim->type = CS_PACKET_START_ANIMATION;
 					anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
-					anim->animationState = 3;
+					anim->animationState = Animstate::runnning;
 					send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
 					DWORD io_byte2;
 
@@ -449,7 +411,6 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 				move->size = sizeof(cs_packet_player_move);
 				move->type = CS_UP;
 				move->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
-				//std::cout << camera.GetLook().x << " " << camera.GetLook.y << " " << camera.GetLook.GetFarZ( << std::endl;
 				move->camlook = camera.GetLook();
 				move->campos = campos;
 				send_wsa_buf.len = sizeof(cs_packet_player_move);
@@ -466,7 +427,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 					anim->size = sizeof(cs_packet_player_anmation_start);
 					anim->type = CS_PACKET_START_ANIMATION;
 					anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
-					anim->animationState = 1;
+					anim->animationState = Animstate::walk;
 					send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
 					DWORD io_byte2;
 
@@ -522,7 +483,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 					anim->size = sizeof(cs_packet_player_anmation_start);
 					anim->type = CS_PACKET_START_ANIMATION;
 					anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
-					anim->animationState = 1;
+					anim->animationState = Animstate::walk;
 					send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
 
 					DWORD io_byte2;
@@ -575,7 +536,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 					anim->size = sizeof(cs_packet_player_anmation_start);
 					anim->type = CS_PACKET_START_ANIMATION;
 					anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
-					anim->animationState = 1;
+					anim->animationState = Animstate::walk;
 					send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
 
 					DWORD io_byte2;
@@ -629,7 +590,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 					anim->size = sizeof(cs_packet_player_anmation_start);
 					anim->type = CS_PACKET_START_ANIMATION;
 					anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
-					anim->animationState = 1;
+					anim->animationState = Animstate::walk;
 					send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
 
 					DWORD io_byte2;
@@ -661,7 +622,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 					anim->size = sizeof(cs_packet_player_anmation_start);
 					anim->type = CS_PACKET_START_ANIMATION;
 					anim->id = CModelManager::GetInstance()->GetSkinnedInstanceModels()[mMyId].mId;
-					anim->animationState = 0;
+					anim->animationState = Animstate::idle;
 					send_wsa_buf.len = sizeof(cs_packet_player_anmation_start);
 
 					DWORD io_byte2;
@@ -682,40 +643,22 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 
 void CModelManager::BuildShapeGeometryBuffers()
 {
-
-
-
-
 	GeometryGenerator::MeshData box;
 	GeometryGenerator::MeshData grid;
-
-
-
-
 
 	GeometryGenerator geoGen;
 	geoGen.CreateBox(1.0f, 1.0f, 1.0f, box);
 	geoGen.CreateGrid(10.0f, 10.0f, 11, 11, grid);
 	CFbxLoader loader;
 
-
-
-
 	boxVertexOffset = 0;
 	gridVertexOffset = box.Vertices.size();
-
-
 
 	boxIndexCount = box.Indices.size();
 	gridIndexCount = grid.Indices.size();
 
-
-
-
 	boxIndexOffset = 0;
 	gridIndexOffset = boxIndexCount;
-
-
 
 	UINT totalVertexCount =
 		box.Vertices.size() +
@@ -752,9 +695,6 @@ void CModelManager::BuildShapeGeometryBuffers()
 			1.0f);
 	}
 
-
-
-
 	D3D11_BUFFER_DESC vbd;
 	vbd.Usage = D3D11_USAGE_IMMUTABLE;
 	vbd.ByteWidth = sizeof(Vertex::PosNormalTexTan) * totalVertexCount;
@@ -787,7 +727,6 @@ void CModelManager::BuildShapeGeometryBuffers()
 	iinitData.pSysMem = &indices[0];
 	HR(mDevice->CreateBuffer(&ibd, &iinitData, &mStaticNormalMappingObjectIB));
 
-
 	//////////////////////////////////////////////////////////////////////////
 	//basic데이터 추출
 	BuildBasicGeometryBuffer();
@@ -808,13 +747,6 @@ void CModelManager::BuildBasicGeometryBuffer()
 
 
 	//////////////////////////////////////////////////////////////////////////여기까지 지움
-		// 	loader.LoadFBX("Darkness fbx\\fence1.FBX", fence);
-		// 	loader.LoadFBX("Darkness fbx\\house 1.fbx", house1);
-		// 	loader.LoadFBX("Darkness fbx\\house 2.fbx", house2);
-		// 	loader.LoadFBX("Darkness fbx\\house 3.fbx", house3);
-		// 	loader.LoadFBX("Darkness fbx\\house 4.fbx", house4);
-		// 	loader.LoadFBX("Darkness fbx\\house 5.fbx", house5);
-		// 	loader.LoadFBX("Darkness fbx\\house 6.fbx", house6);
 	loader.LoadFBX("Darkness fbx\\angelStatue.fbx", angelStatue, angelStatueBox);
 	loader.LoadFBX("Darkness fbx\\wall.fbx", wall, wallBox);
 	loader.LoadFBX("Darkness fbx\\tower_corner.fbx", tower_corner, tower_cornerBox);
@@ -841,13 +773,6 @@ void CModelManager::BuildBasicGeometryBuffer()
 	//////////////////////////////////////////////////////////////////////////
 		//VertexOffset설정
 
-// 	house1VertexOffset = 0;
-// 	house2VertexOffset = house1.Vertices.size();
-// 	house3VertexOffset = house2VertexOffset + house2.Vertices.size();
-// 	house4VertexOffset = house3VertexOffset + house3.Vertices.size();
-// 	house5VertexOffset = house4VertexOffset + house4.Vertices.size();
-// 	house6VertexOffset = house5VertexOffset + house5.Vertices.size();
-// 	fenceVertexOffset = house6VertexOffset + house6.Vertices.size();
 	angelStatueVertexOffset = 0;
 	wallVertexOffset = angelStatue.Vertices.size();
 	tower_conerVertexOffset = wallVertexOffset + wall.Vertices.size();
@@ -873,13 +798,6 @@ void CModelManager::BuildBasicGeometryBuffer()
 	barrel_VertexOffset = building_f_VertexOffset + building_f.Vertices.size();
 	//////////////////////////////////////////////////////////////////////////
 	//indexCount설정.
-// 	house1IndexCount = house1.Indices.size();
-// 	house2IndexCount = house2.Indices.size();
-// 	house3IndexCount = house3.Indices.size();
-// 	house4IndexCount = house4.Indices.size();
-// 	house5IndexCount = house5.Indices.size();
-// 	house6IndexCount = house6.Indices.size();
-// 	fenceIndexCount = fence.Indices.size();
 	angelStatueIndexCount = angelStatue.Indices.size();
 	wallIndexCount = wall.Indices.size();
 	tower_conerIndexCount = tower_corner.Indices.size();
@@ -905,13 +823,6 @@ void CModelManager::BuildBasicGeometryBuffer()
 	//////////////////////////////////////////////////////////////////////////
 	//indexOffset설정
 
-// 	house1IndexOffset = 0;
-// 	house2IndexOffset = house1IndexCount;
-// 	house3IndexOffset = house2IndexOffset + house2IndexCount;
-// 	house4IndexOffset = house3IndexOffset + house3IndexCount;
-// 	house5IndexOffset = house4IndexOffset + house4IndexCount;
-// 	house6IndexOffset = house5IndexOffset + house5IndexCount;
-// 	fenceIndexOffset = house6IndexOffset + house6IndexCount;
 	angelStatueIndexOffset = 0;
 	wallIndexOffset = angelStatueIndexCount;
 	tower_conerIndexOffset = wallIndexOffset + wallIndexCount;
@@ -936,13 +847,6 @@ void CModelManager::BuildBasicGeometryBuffer()
 	barrel_IndexOffset = building_f_IndexOffset + building_f_IndexCount;
 	//////////////////////////////////////////////////////////////////////////
 	UINT totalVertexCount =
-		// 		house1.Vertices.size() +
-		// 		house2.Vertices.size() +
-		// 		house3.Vertices.size() +
-		// 		house4.Vertices.size() +
-		// 		house5.Vertices.size() +
-		// 		house6.Vertices.size() +
-		// 		fence.Vertices.size() +
 		angelStatue.Vertices.size() +
 		wall.Vertices.size() +
 		tower_corner.Vertices.size() +
@@ -967,13 +871,6 @@ void CModelManager::BuildBasicGeometryBuffer()
 		barrel.Vertices.size();
 
 	UINT totalIndexCount =
-		// 		house1IndexCount +
-		// 		house2IndexCount +
-		// 		house3IndexCount +
-		// 		house4IndexCount +
-		// 		house5IndexCount +
-		// 		house6IndexCount +
-		// 		fenceIndexCount +
 		angelStatueIndexCount +
 		wallIndexCount +
 		tower_conerIndexCount +
@@ -1145,13 +1042,7 @@ void CModelManager::BuildBasicGeometryBuffer()
 	// Pack the indices of all the meshes into one index buffer.
 	//
 	std::vector<UINT> indices;
-	// 	indices.insert(indices.end(), house1.Indices.rbegin(), house1.Indices.rend());
-	// 	indices.insert(indices.end(), house2.Indices.rbegin(), house2.Indices.rend());
-	// 	indices.insert(indices.end(), house3.Indices.rbegin(), house3.Indices.rend());
-	// 	indices.insert(indices.end(), house4.Indices.rbegin(), house4.Indices.rend());
-	// 	indices.insert(indices.end(), house5.Indices.rbegin(), house5.Indices.rend());
-	// 	indices.insert(indices.end(), house6.Indices.rbegin(), house6.Indices.rend());
-	// 	indices.insert(indices.end(), fence.Indices.rbegin(), fence.Indices.rend());
+
 	indices.insert(indices.end(), angelStatue.Indices.rbegin(), angelStatue.Indices.rend());
 	indices.insert(indices.end(), wall.Indices.rbegin(), wall.Indices.rend());
 	indices.insert(indices.end(), tower_corner.Indices.rbegin(), tower_corner.Indices.rend());
@@ -1645,12 +1536,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 		{
 			std::cout << "찾을수 없음" << std::endl;
 		}
-		// 		std::cout << objectName << std::endl;
-		// 		std::cout << position.x << " " << position.y << " " << position.z << std::endl;
-		// 		std::cout << rotation.x << " " << rotation.y << " " << rotation.z << " " << rotation.w << std::endl;
-		// 		std::cout << scale.x << " " << scale.y << " " << scale.z << std::endl << std::endl;
 		ZeroMemory(&objectName, sizeof(objectName));
-		//ZeroMemory(&cIgnore, sizeof(cIgnore));
 		ZeroMemory(&position, sizeof(position));
 		ZeroMemory(&rotation, sizeof(rotation));
 		ZeroMemory(&scale, sizeof(scale));
@@ -1721,10 +1607,6 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 
 		}
 	}
-	// 	int randomIndex = rand() % mSkinnedModelInstance.size();
-	// 	cam->SetPosition(mSkinnedModelInstance[randomIndex].camPos);
-	// 	mSkinnedModelInstance[randomIndex].isPlayer = true;
-	// 	mSkinnedModelInstance[randomIndex].cam = cam;
 
 	ifs.close();
 

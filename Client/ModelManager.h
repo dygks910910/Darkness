@@ -27,6 +27,15 @@ enum Keystate
 
 };
 
+enum Animstate
+{
+	idle = 0,
+	walk = 1,
+	attack = 2,
+	runnning = 3,
+	death = 4
+};
+
 const int MAX_BUF_SIZE = 4000;
 
 const int CS_UP = 1;

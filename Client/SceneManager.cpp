@@ -10,8 +10,6 @@ CSceneManager::~CSceneManager()
 	{
 		delete p->second;
 	}
-// 	NetworkMgr::DestroyInstance();
-// 	NetworkMgr::Release();
 	
 }
 bool CSceneManager::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
@@ -43,10 +41,6 @@ bool CSceneManager::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	설명:TestScene생성.
 	*/
 
-	// 	mScenes.insert(make_pair(SceneName::test, new CBoxScene));
-	// 	mScenes[SceneName::test]->Init(device, dc,swapChain,renderTargetView
-	// 	,  viewport);
-	//OnResize();
 	return true;
 }
 void CSceneManager::UpdateScene(const float dt, MSG& msg)
@@ -57,10 +51,6 @@ void CSceneManager::UpdateScene(const float dt, MSG& msg)
 	작성자:박요한(dygks910910@daum.net)
 	설명:씬 변경.Test
 	*/
-	/*if (GetAsyncKeyState('C') & 0x8000) {
-	mSceneKey = SceneName::MainScene;
-	ChangeScene(SceneName::MainScene, dt);
-	}*/
 // <<<<<<< HEAD
 // 	mScenes[mSceneKey]->UpdateScene(dt);
 // =======

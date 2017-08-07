@@ -9,8 +9,8 @@
 #include "Sound.h"
 
 //#define IPADDRESS "192.168.0.5"
-//#define IPADDRESS "127.0.0.1"
-#define IPADDRESS "172.20.10.4"
+#define IPADDRESS "127.0.0.1"
+//#define IPADDRESS "172.20.10.4"
 
 class CMainScene :
 	public CScene

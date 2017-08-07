@@ -1,6 +1,4 @@
 #include "MainScene.h"
-//extern ID3D11RenderTargetView* trtv;
-//extern ID3D11DepthStencilView* tdsv;
 extern ID3D11DepthStencilState* tDepthDisableState;
 
 CMainScene::CMainScene()
@@ -140,30 +138,13 @@ std::string CMainScene::UpdateScene(const float dt, MSG& msg)
 	{
 		if (mLobbyConnectButton.isClicked)
 		{
-			//ip와 포트를 넘겨줘야함.
-		/*	if (mIpString == L"")
-			{
-				MessageBox(0, L"IP주소를 입력해주세요", L"error", 0);
-				mLobbyConnectButton.isClicked = false;
-				return "";
-			}
-			if (mPortString == L"")
-			{
-				MessageBox(0, L"포트번호를 입력해주세요", L"error", 0);
-				mLobbyConnectButton.isClicked = false;
-				return "";
-			}*/
 			if (mNicknameString == L"")
 			{
 				MessageBox(0, L"닉네임를 입력해주세요", L"error", 0);
 				mLobbyConnectButton.isClicked = false;
 				return "";
 			}
-		/*	std::string str;
-			str.assign(mIpString.begin(), mIpString.end());
-			std::string port;
-			port.assign(mPortString.begin(), mPortString.end());*/
-		//	CModelManager::GetInstance()->mMyNick[0] = mNicknameString;
+		
 			NetworkMgr::GetInstance()->SetIPAndPortAndNickName(IPADDRESS,mNicknameString);
 			NetworkMgr::GetInstance()->Initialize();
 
@@ -207,12 +188,9 @@ void CMainScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	IDXGISwapChain* swapChain, ID3D11RenderTargetView* rtv,
 	ID3D11DepthStencilView* dsv, D3D11_VIEWPORT* viewPort)
 {
-	//trtv = rtv;
-	//tdsv = dsv;
 	dc->ClearRenderTargetView(rtv, reinterpret_cast<const float*>(&Colors::Silver));
 	dc->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	dc->IASetInputLayout(InputLayouts::Basic32);
-	//ZbufferOff();
 	dc->OMSetDepthStencilState(mDepthDisableState, 1);
 	bool result;
 
@@ -251,14 +229,11 @@ void CMainScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	}
 
 	//////////////////////////////////////////////////////////////////////////
- 	//std::cout << mTimeForLogo.TotalTime() << std::endl;
  	if (m_bLogoTime)
  	{
  		mMainLogo.Render(dc, 0, 0);
  	}
 
-// 	mDc->OMSetDepthStencilState(mDepthStencilState, 1);
-	//ZbufferOn();
 // restore default states.
 	dc->RSSetState(0);
 	dc->OMSetDepthStencilState(0, 0);
@@ -316,8 +291,6 @@ void CMainScene::OnMouseUp(WPARAM btnState, int x, int y)
 
 void CMainScene::OnMouseMove(WPARAM btnState, int x, int y)
 {
-// 	std::cout << "mouse pos :" << "(" << x << "," << y << ")" << std::endl;
-// 	std::cout << "aspectRatio x : " << x * AspectRatio() << std::endl;
 	if (bActivedInputBoard)
 	{
 		mLobbyConnectButton.OnMouseMove(x, y);
@@ -332,7 +305,6 @@ void CMainScene::OnMouseMove(WPARAM btnState, int x, int y)
 void CMainScene::OnResize()
 {
 	mCam.SetLens(0.34f*MathHelper::Pi, AspectRatio(), 0, 3000.0f);
-	//std::cout << AspectRatio() << std::endl;
 }
 void CMainScene::OnKeyboardButtonDown(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
@@ -418,8 +390,6 @@ int CMainScene::GetText(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
 				//mNicknameString += (wchar_t)wparam;
 			}
 		}
-		/*Text[wcslen(Text)] = (wchar_t)wparam;*/
-		//mIpString += (wchar_t)wparam;
 		return 0;
 	case WM_IME_NOTIFY:			// 한자입력...
 		return 0;
