@@ -612,7 +612,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 			else
 			{
 				mSkinnedModelInstance[mMyId].mKeyState = 0;
-				if (mSkinnedModelInstance[mMyId].mAnimOneCheck || mSkinnedModelInstance[mMyId].mRunStop == true)
+				if (mSkinnedModelInstance[mMyId].mAnimOneCheck == true || mSkinnedModelInstance[mMyId].mRunStop == true || mSkinnedModelInstance[mMyId].mAfterAttack == true)
 				{
 					cs_packet_player_anmation_start* anim = reinterpret_cast<cs_packet_player_anmation_start*>(&send_buf);
 					anim->size = sizeof(cs_packet_player_anmation_start);
@@ -630,6 +630,7 @@ void CModelManager::UpdateModel(const float & dt, Camera& camera)
 					mSkinnedModelInstance[mMyId].mAnimCnt = 0;
 					mSkinnedModelInstance[mMyId].mClipnameAndTotalCount = mClipnameAndTotalCounts[0];
 					mSkinnedModelInstance[mMyId].mRunStop = false;
+					mSkinnedModelInstance[mMyId].mAfterAttack = false;
 				}
 				mSkinnedModelInstance[mMyId].mAnimOneCheck = false;
 			}
