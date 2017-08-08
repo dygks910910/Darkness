@@ -1,4 +1,7 @@
 #include "MainScene.h"
+
+
+
 extern ID3D11DepthStencilState* tDepthDisableState;
 
 CMainScene::CMainScene()

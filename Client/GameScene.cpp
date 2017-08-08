@@ -281,29 +281,32 @@ std::string CGameScene::UpdateScene(const float dt, MSG& msg)
 
 			if (NetworkMgr::GetInstance()->isGameOver)
 			{
+				mfEndingTimerCount += mTimer.DeltaTime();
+				CameraRatateForWinner();
+				if(mfEndingTimerCount > 5)
 				return SceneName::endingScene;
 			}
 			if (!mbTimeOver) {
-				countDownSec -= mTimer.DeltaTime();
+				mfCountDownSec -= mTimer.DeltaTime();
 
 				//남은시간이 0이하가 되면?
-				if (countDownMin < 0)
+				if (mfCountDownMin < 0)
 				{
 #ifdef _DEBUG
 					std::cout << "gameOver" << std::endl;
 #endif
-					countDownMin = 0;
-					countDownSec = 0;
+					mfCountDownMin = 0;
+					mfCountDownSec = 0;
 					mbTimeOver = true;
 				}
 				//초가 0이하가 되면?
-				else if (countDownSec - mTimer.DeltaTime() <= 0)
+				else if (mfCountDownSec - mTimer.DeltaTime() <= 0)
 				{
-					countDownSec = 60;
-					countDownMin -= 1;
+					mfCountDownSec = 60;
+					mfCountDownMin -= 1;
 				}
 				wchar_t tempString[10];
-				wsprintf(tempString, TEXT("%d:%d"), (int)countDownMin, (int)countDownSec);
+				wsprintf(tempString, TEXT("%d:%d"), (int)mfCountDownMin, (int)mfCountDownSec);
 				timerString = tempString;
 			}
 			CModelManager::GetInstance()->UpdateModel(dt, mCam);
@@ -501,7 +504,10 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 			mTimer.Stop();
 			mDrawText(L"다른 플레이어를 기다리는중...", 40, mClientWidth / 2 - 200, mClientHeight / 2, FontColorForFW::WHITE);
 		}
-
+		if (mfEndingTimerCount != 0)
+		{
+			mDrawText(L" YOU WIN", 60, mClientWidth / 2, mClientHeight / 2,FontColorForFW::GOLD);
+		}
 
 
 
@@ -681,4 +687,53 @@ void CGameScene::BuildShadowTransform()
 	XMStoreFloat4x4(&mLightView, V);
 	XMStoreFloat4x4(&mLightProj, P);
 	XMStoreFloat4x4(&mShadowTransform, S);
+}
+
+void CGameScene::CameraRatateForWinner()
+{
+	XMMATRIX	matRot;
+	XMFLOAT3 objectpos, campos, dist, up;
+	XMVECTOR eye, upper;
+	//XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+	up.x = 0;
+	up.y = 1;
+	up.z = 0;
+	///////////////오브젝트 위치 얻기/////////////////
+
+
+	//////////////카메라 위치 얻기////////////////////
+	// Make each pixel correspond to a quarter of a degree.
+	float dx = XMConvertToRadians(0.25f*static_cast<float>(10.0f));
+	float dy = XMConvertToRadians(0.25f*static_cast<float>(10.0f));
+	//////////////카메라와 객체 거리 구하기///////////
+
+	sumdx += dx;
+
+	CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].mRotateAngle = sumdx;
+
+	matRot = XMMatrixRotationY(dx);
+	objectpos.x = CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._41;
+	objectpos.y = CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._42 + 1;
+	objectpos.z = CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._43;
+
+	campos = mCam.GetPosition();
+
+	dist.x = campos.x - objectpos.x;
+	dist.y = campos.y - objectpos.y;
+	dist.z = campos.z - objectpos.z;
+
+	eye = XMVector3TransformCoord(XMLoadFloat3(&dist), matRot);
+	upper = XMVector3TransformCoord(XMLoadFloat3(&up), matRot);
+
+	XMStoreFloat3(&dist, eye);
+	XMStoreFloat3(&up, upper);
+
+	CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].mCharCamPos = dist;
+
+	campos.x = dist.x + objectpos.x;
+	campos.y = dist.y + objectpos.y;
+	campos.z = dist.z + objectpos.z;
+	std::cout << objectpos.x - campos.x << ' ' << objectpos.y - campos.y << ' ' << objectpos.z - campos.z << std::endl;
+	mCam.LookAt(campos, objectpos, up);
+	///////////////////////////////////////////
 }

@@ -58,8 +58,9 @@ class CGameScene :
 
 	TextureMgr mTexMgr;
 	GameTimer mTimer;
-	float countDownMin =8;
-	float countDownSec = 0;
+	float mfEndingTimerCount = 0;
+	float mfCountDownMin =8;
+	float mfCountDownSec = 0;
 	std::wstring timerString;
 	//RainParticle
 	ID3D11ShaderResourceView* mRainTexSRV;
@@ -119,7 +120,7 @@ public:
 	void BuildShadowTransform();
 
 	bool yamee = false;
-
+	void CameraRatateForWinner();
 
 	BYTE   send_buf1[MAX_BUF_SIZE];
 	WSABUF   send_wsa_buf1;
