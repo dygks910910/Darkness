@@ -53,6 +53,7 @@ void SkinnedModelInstance::Update(float dt)
 				mAnimCnt = 168;
 				mAttack = false;
 				mAnimOneCheck = false;
+				mAfterAttack = true;
 			}
 			else
 				mAnimCnt += 3;

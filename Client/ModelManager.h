@@ -200,7 +200,7 @@ public:
 	//닉네임 아이디
 	int mNickId[8];
 
-	std::wstring mMyNick[8];
+	std::wstring mMyNick[8] = { L"" };
 	bool mRoomHeader;
 
 	bool mCheck = false;

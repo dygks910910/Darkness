@@ -188,6 +188,22 @@ void CRoomScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 					mDrawText(CModelManager::GetInstance()->mMyNick[i], 30, PLAYER8_NICKNAME_LOCATION_X, PLAYER8_NICKNAME_LOCATION_Y + OUTPUT_Y_OFFSET, FontColorForFW::GOLD);
 			}
 		}
+		if (NetworkMgr::GetInstance()->getId() == 0)
+			mDrawText(NetworkMgr::GetInstance()->mNickName, 30, PLAYER1_NICKNAME_LOCATION_X, PLAYER1_NICKNAME_LOCATION_Y + OUTPUT_Y_OFFSET, FontColorForFW::GOLD);
+		else if (NetworkMgr::GetInstance()->getId() == 1)
+			mDrawText(NetworkMgr::GetInstance()->mNickName, 30, PLAYER2_NICKNAME_LOCATION_X, PLAYER2_NICKNAME_LOCATION_Y + OUTPUT_Y_OFFSET, FontColorForFW::GOLD);
+		else if (NetworkMgr::GetInstance()->getId() == 2)
+			mDrawText(NetworkMgr::GetInstance()->mNickName, 30, PLAYER3_NICKNAME_LOCATION_X, PLAYER3_NICKNAME_LOCATION_Y + OUTPUT_Y_OFFSET, FontColorForFW::GOLD);
+		else if (NetworkMgr::GetInstance()->getId() == 3)
+			mDrawText(NetworkMgr::GetInstance()->mNickName, 30, PLAYER4_NICKNAME_LOCATION_X, PLAYER4_NICKNAME_LOCATION_Y + OUTPUT_Y_OFFSET, FontColorForFW::GOLD);
+		else if (NetworkMgr::GetInstance()->getId() == 4)
+			mDrawText(NetworkMgr::GetInstance()->mNickName, 30, PLAYER5_NICKNAME_LOCATION_X, PLAYER5_NICKNAME_LOCATION_Y + OUTPUT_Y_OFFSET, FontColorForFW::GOLD);
+		else if (NetworkMgr::GetInstance()->getId() == 5)
+			mDrawText(NetworkMgr::GetInstance()->mNickName, 30, PLAYER6_NICKNAME_LOCATION_X, PLAYER6_NICKNAME_LOCATION_Y + OUTPUT_Y_OFFSET, FontColorForFW::GOLD);
+		else if (NetworkMgr::GetInstance()->getId() == 6)
+			mDrawText(NetworkMgr::GetInstance()->mNickName, 30, PLAYER7_NICKNAME_LOCATION_X, PLAYER7_NICKNAME_LOCATION_Y + OUTPUT_Y_OFFSET, FontColorForFW::GOLD);
+		else if (NetworkMgr::GetInstance()->getId() == 7)
+			mDrawText(NetworkMgr::GetInstance()->mNickName, 30, PLAYER8_NICKNAME_LOCATION_X, PLAYER8_NICKNAME_LOCATION_Y + OUTPUT_Y_OFFSET, FontColorForFW::GOLD);
 
 		//스타트 버튼
 		mStartButton.Draw(dc);

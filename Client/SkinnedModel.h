@@ -59,5 +59,8 @@ struct SkinnedModelInstance
 	bool mAlive = true;
 	void Update(float dt);
 	bool mExistObject = false;
+
+	//공격후 idle모션
+	bool mAfterAttack = false;
 };
 #endif // SKINNEDMODEL_H

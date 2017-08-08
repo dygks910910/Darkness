@@ -124,7 +124,6 @@ class NetworkMgr
 	int   saved_size;
 	std::string m_strIp;
 	std::string m_portNum;
-	std::wstring mNickName;
 	int mId;
 	sc_packet_game_result mGameResult;
 private:
@@ -169,6 +168,8 @@ public:
 	BYTE   send_buf[4000];
 
 public:
+	std::wstring mNickName = L"dd";
+
 	void SetWindowHandle(HWND h) { mHandle = h; };
 	void SetIPAndPort(std::string ip, std::string port = "9000") {
 		this->m_strIp = ip;
