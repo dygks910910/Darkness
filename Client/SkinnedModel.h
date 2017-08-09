@@ -62,5 +62,7 @@ struct SkinnedModelInstance
 
 	//공격후 idle모션
 	bool mAfterAttack = false;
+	//파티클 방출중인가?
+	bool mParticleEmmiting = false;
 };
 #endif // SKINNEDMODEL_H

@@ -176,7 +176,6 @@ void CModelManager::DrawSkinnedModels(ID3D11DeviceContext* dc, ID3DX11EffectTech
 	XMMATRIX world;
 	XMMATRIX worldInvTranspose;
 	XMMATRIX worldViewProj;
-
 	tech->GetDesc(&techDesc);
 	for (int i = 0; i < mSkinnedModelInstance.size(); ++i)
 	{

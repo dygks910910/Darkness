@@ -339,6 +339,23 @@ std::string CGameScene::UpdateScene(const float dt, MSG& msg)
 			{
 				mPointLight.Range -= 0.1f;
 			}
+			for (auto& p : CModelManager::GetInstance()->GetSkinnedInstanceModels())
+			{
+				if (p.mAnimstate == Animstate::death)
+				{
+					if (false == p.mParticleEmmiting)
+					{
+						ParticleSystem* particle;
+						particle = new ParticleSystem;
+						particle->Init(mDevice, Effects::LightPillarFX, mLightPillarSRV, mRandomTexSRV, 10000);
+						particle->SetEmitPos(XMFLOAT3(p.World._41, p.World._42, p.World._43));
+						mvLightPillar.push_back(particle);
+						p.mParticleEmmiting = true;
+					}
+				}
+			}
+			
+
 			mSpotLight.Position = mCam.GetPosition();
 			XMStoreFloat3(&mSpotLight.Direction, XMVector3Normalize(mCam.GetLookXM()));
 			mCam.UpdateViewMatrix();
@@ -416,7 +433,7 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 		Effects::BasicFX->SetEyePosW(mCam.GetPosition());
 		Effects::BasicFX->SetCubeMap(mSky->CubeMapSRV());
 		Effects::BasicFX->SetShadowMap(mSmap->DepthMapSRV());
-		//Effects::BasicFX->SetSsaoMap(mSsao->AmbientSRV());
+		Effects::BasicFX->SetSsaoMap(mSsao->AmbientSRV());
 		Effects::BasicFX->PointLight->SetRawValue(&mPointLight, 0, sizeof(mPointLight));
 		Effects::BasicFX->SpotLight->SetRawValue(&mSpotLight, 0, sizeof(mSpotLight));
 
@@ -506,7 +523,7 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 		}
 		if (mfEndingTimerCount != 0)
 		{
-			mDrawText(L" YOU WIN", 60, mClientWidth / 2, mClientHeight / 2,FontColorForFW::GOLD);
+			mDrawText(L" GAME OVER", 60, mClientWidth / 2-100, mClientHeight / 2-100,FontColorForFW::GOLD);
 		}
 
 
