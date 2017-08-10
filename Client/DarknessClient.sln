@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Darkness", "DarknessClient.vcxproj", "{E76DB861-9CF7-4CF2-A077-78AA9E5F5303}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Darkness_Setup", "Darkness_Setup\Darkness_Setup.vdproj", "{903E3836-EBC2-4A4F-B2A1-0387ADEEA324}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -22,6 +24,10 @@ Global
 		{E76DB861-9CF7-4CF2-A077-78AA9E5F5303}.Release|Win32.Build.0 = Release|Win32
 		{E76DB861-9CF7-4CF2-A077-78AA9E5F5303}.Release|x64.ActiveCfg = Release|x64
 		{E76DB861-9CF7-4CF2-A077-78AA9E5F5303}.Release|x64.Build.0 = Release|x64
+		{903E3836-EBC2-4A4F-B2A1-0387ADEEA324}.Debug|Win32.ActiveCfg = Debug
+		{903E3836-EBC2-4A4F-B2A1-0387ADEEA324}.Debug|x64.ActiveCfg = Debug
+		{903E3836-EBC2-4A4F-B2A1-0387ADEEA324}.Release|Win32.ActiveCfg = Release
+		{903E3836-EBC2-4A4F-B2A1-0387ADEEA324}.Release|x64.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
