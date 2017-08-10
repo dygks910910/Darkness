@@ -14,10 +14,7 @@ CMainScene::~CMainScene()
 	//////////////////////////////////////////////////////////////////////////
 	//사용한 비트맵 메모리 반환.
 	mBackgroundPicture.Shutdown();
-	mLogo.Shutdown();
 	mInputBoard.Shutdown();
-	mInputIP.Shutdown();
-	mInputPort.Shutdown();
 	mInputNickname.Shutdown();
 	mMainLogo.Shutdown();
 	ReleaseCOM(mDepthDisableState);
@@ -35,6 +32,10 @@ bool CMainScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	mCam.SetPosition(0, 0, 0);
 	XMStoreFloat4x4(&mWorldMtx, XMMatrixTranslation(0, 0, 7));
 
+	CModelManager::GetInstance()->m_bFinishInit = false;
+	NetworkMgr::GetInstance()->mCheckPacket = false;
+	NetworkMgr::GetInstance()->isGameOver = false;
+	NetworkMgr::GetInstance()->isGameStart = false;
 
 	//////////////////////////////////////////////////////////////////////////
 	//로고화면 초기화.
@@ -42,17 +43,14 @@ bool CMainScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	//////////////////////////////////////////////////////////////////////////
 	//메인화면 초기화.
 	mBackgroundPicture.Initialize(device, mClientWidth, mClientHeight, L"UITextures/backGroundClown.PNG", mClientWidth, mClientHeight);
-	mLogo.Initialize(device, mClientWidth/2, mClientHeight/1.5f, L"UITextures/Logo.png", 800, 200);
 	mConnectButton.Init(device, BUTTON_SIZE_X, BUTTON_SIZE_Y, L"UITextures/connect.png", CONNECT_BUTTON_X, CONNECT_BUTTON_Y, mClientWidth, mClientHeight);
 	mExitButton.Init(device, BUTTON_SIZE_X, BUTTON_SIZE_Y, L"UITextures/exit.png", CONNECT_BUTTON_X, EXIT_BUTTON_Y, mClientWidth, mClientHeight);
 	//////////////////////////////////////////////////////////////////////////
 	//inputboard 초기화.
-	mInputBoard.Initialize(device, mClientWidth, mClientHeight, L"UITextures/InputBoard.png", 800, 600);
-	mInputIP.Initialize(device, mClientWidth, mClientHeight, L"UITextures/InputIP.png", 700, 150);
-	mInputPort.Initialize(device, mClientWidth, mClientHeight, L"UITextures/InputPort.png", 700, 150);
+	mInputBoard.Initialize(device, mClientWidth, mClientHeight, L"UITextures/NicknameBoard.png", 800, 600);
 	mInputNickname.Initialize(device, mClientWidth, mClientHeight, L"UITextures/InputNickName.png", 700, 150);
-	mReturnButton.Init(device, BUTTON_SIZE_X, BUTTON_SIZE_Y, L"UITextures/cancel.png", RETURN_BUTTON_X, RETURN_BUTTON_Y, mClientWidth, mClientHeight);
-	mLobbyConnectButton.Init(device, BUTTON_SIZE_X, BUTTON_SIZE_Y, L"UITextures/connect.png", LOBBY_CONNECT_BUTTON_X, LOBBY_CONNECT_BUTTON_Y, mClientWidth, mClientHeight);
+	mReturnButton.Init(device, RETURN_BUTTON_SIZE_X, RETURN_BUTTON_SIZE_Y, L"UITextures/X.png", RETURN_BUTTON_X, RETURN_BUTTON_Y, mClientWidth, mClientHeight);
+	mLobbyConnectButton.Init(device, LOGIN_BUTTON_SIZE_X, LOGIN_BUTTON_SIZE_Y, L"UITextures/Login.png", LOGIN_BUTTON_X, LOGIN_BUTTON_Y, mClientWidth, mClientHeight);
 
  	D3D11_DEPTH_STENCIL_DESC depthDisabledStencilDesc;
  	ZeroMemory(&depthDisabledStencilDesc, sizeof(depthDisabledStencilDesc));
@@ -107,9 +105,7 @@ bool CMainScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
  	dc->OMSetDepthStencilState(mDepthStencilState, 1);
 
 	bActivedInputBoard = false;
-	m_bFocusOnIP = false;
 	m_bFocusOnNickName = false;
-	m_bFocusOnPort = false;
 	m_bLogoTime = true;
 	//함수객체 초기화
 	DrawText.Init(device, dc);
@@ -160,8 +156,6 @@ std::string CMainScene::UpdateScene(const float dt, MSG& msg)
 			mExitButton.isClicked = false;
 			mLobbyConnectButton.isClicked = false;
 			mReturnButton.isClicked = false;
-			m_bFocusOnIP = false;
-			m_bFocusOnPort = false;
 			m_bFocusOnNickName = false;
 			//////////////////////////////////////////////////////////////////////////
 			//메인화면으로 돌아올경우 모든버튼의 Isclicked 초기화해줘야함.
@@ -202,7 +196,6 @@ void CMainScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	//////////////////////////////////////////////////////////////////////////
 	//기본메인화면.
 	mBackgroundPicture.Render(dc, 0, 0);
-	mLogo.Render(dc, LOGO_X, LOGO_Y);
 	mConnectButton.Draw(dc);
 	mExitButton.Draw(dc);
 	//////////////////////////////////////////////////////////////////////////
@@ -210,13 +203,8 @@ void CMainScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	if (bActivedInputBoard)
 	{
 		mInputBoard.Render(dc, INPUT_BOARD_X, INPUT_BOARD_Y);
-		mInputIP.Render(dc, INPUT_IP_X, INPUT_IP_Y);
- 		DrawText(mIpString, FONT_SIZE, INPUT_IP_X+200, INPUT_IP_Y+80);
 
-		mInputPort.Render(dc, INPUT_PORT_X, INPUT_PORT_Y);
-		DrawText(mPortString, FONT_SIZE, INPUT_PORT_X + 200, INPUT_PORT_Y+ 80);
-
-		mInputNickname.Render(dc, INPUT_NICKNAME_X, INPUT_NICKNAME_Y);
+		//mInputNickname.Render(dc, INPUT_NICKNAME_X, INPUT_NICKNAME_Y);
 		DrawText(mNicknameString, FONT_SIZE, INPUT_NICKNAME_X + 200, INPUT_NICKNAME_Y + 80);
 
 		mLobbyConnectButton.Draw(dc);
@@ -243,26 +231,11 @@ void CMainScene::OnMouseDown(WPARAM btnState, int x, int y, const HWND & mhMainW
 		//ip입력창 active state check
   		mLobbyConnectButton.OnMouseDown(x, y);
   		mReturnButton.OnMouseDown(x, y);
-		if (x > INPUT_IP_X && x < INPUT_IP_X+ INPUT_BAR_WIDTH &&
-			y > INPUT_IP_Y && y < INPUT_IP_Y+ INPUT_BAR_HEIGHT)
-		{
-			m_bFocusOnIP = true;
-			m_bFocusOnNickName = false;
-			m_bFocusOnPort = false;
-		}
-		else if (x > INPUT_PORT_X && x < INPUT_PORT_X + INPUT_BAR_WIDTH &&
-			y > INPUT_PORT_Y && y < INPUT_PORT_Y + INPUT_BAR_HEIGHT)
-		{
-			m_bFocusOnIP = false;
-			m_bFocusOnNickName = false;
-			m_bFocusOnPort = true;
-		}
-		else if (x > INPUT_NICKNAME_X && x < INPUT_NICKNAME_X + INPUT_BAR_WIDTH &&
+		
+		if (x > INPUT_NICKNAME_X && x < INPUT_NICKNAME_X + INPUT_BAR_WIDTH &&
 			y > INPUT_NICKNAME_Y && y < INPUT_NICKNAME_Y + INPUT_BAR_HEIGHT)
 		{
-			m_bFocusOnIP = false;
 			m_bFocusOnNickName = true;
-			m_bFocusOnPort = false;
 		}
   	}
 }
@@ -300,7 +273,7 @@ void CMainScene::OnResize()
 }
 void CMainScene::OnKeyboardButtonDown(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
-	if (m_bFocusOnIP || m_bFocusOnNickName || m_bFocusOnPort) {
+	if (m_bFocusOnNickName) {
 		if (GetText(hWnd, msg, wparam, lparam) == 0)
 		{
 			return;
@@ -346,7 +319,7 @@ int CMainScene::GetText(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
 		return 0;
 	case WM_CHAR:				// 1byte 문자 (ex : 영어)
 		
-		if (m_bFocusOnIP) 
+	/*	if (m_bFocusOnIP) 
 		{
 			if ((char)wparam == '\b')
 			{
@@ -369,7 +342,7 @@ int CMainScene::GetText(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
 			{
 				mPortString += (wchar_t)wparam;
 			}
-		}
+		}*/
 		if (m_bFocusOnNickName)
 		{
 			if ((char)wparam == '\b')

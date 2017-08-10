@@ -8,8 +8,8 @@
 #include "GameTimer.h"
 #include "Sound.h"
 
-//#define IPADDRESS "192.168.0.5"
-#define IPADDRESS "127.0.0.1"
+#define IPADDRESS "192.168.0.8"
+//#define IPADDRESS "127.0.0.1"
 //#define IPADDRESS "172.20.10.4"
 
 class CMainScene :
@@ -42,8 +42,6 @@ class CMainScene :
 	std::wstring mNicknameString;
 
 	bool bActivedInputBoard;
-	bool m_bFocusOnIP;
-	bool m_bFocusOnPort;
 	bool m_bFocusOnNickName;
 
 	ID3D11DepthStencilState* mDepthDisableState;
@@ -55,20 +53,27 @@ class CMainScene :
 	wchar_t Text[255];     // 텍스트를 저장하기위한 변수
 	wchar_t Cstr[10];      // 조합중인 문자!!
 	//x 0.8 , y 1.13
-	const int CONNECT_BUTTON_X = 1000 *0.8f;
+	const int CONNECT_BUTTON_X = 1100 *0.8f;
 	const int CONNECT_BUTTON_Y = 400 * 1.13777f;
 
-	const int BUTTON_SIZE_X = 200 * 0.8f;
+	const int BUTTON_SIZE_X = 250 * 0.8f;
 	const int BUTTON_SIZE_Y = 100 * 1.13777f;
 
+	const int LOGIN_BUTTON_SIZE_X = 250 * 0.8f;
+	const int LOGIN_BUTTON_SIZE_Y = 75 * 1.13777f;
+
+	const int RETURN_BUTTON_SIZE_X = 110 * 0.8f;
+	const int RETURN_BUTTON_SIZE_Y = 80 * 1.13777f;
+
 	const int EXIT_BUTTON_Y = 500 * 1.13777f;
-	const int RETURN_BUTTON_X = 860 * 0.8f;
-	const int RETURN_BUTTON_Y = 520 * 1.13777f;
 
-	const int LOBBY_CONNECT_BUTTON_X = 510 * 0.8f;
-	const int LOBBY_CONNECT_BUTTON_Y = 520 * 1.13777f;
+	const int RETURN_BUTTON_X = 1100 * 0.8f;
+	const int RETURN_BUTTON_Y = 110 * 1.13777f;
 
-	const int INPUT_BOARD_X = 400 * 0.8f;
+	const int LOGIN_BUTTON_X = 990 * 0.8f;
+	const int LOGIN_BUTTON_Y = 400 * 1.13777f;
+
+	const int INPUT_BOARD_X = 300 * 0.8;
 	const int INPUT_BOARD_Y = 100 * 1.13777f;
 
 	const int INPUT_IP_X = 400 * 0.8f;
@@ -80,8 +85,8 @@ class CMainScene :
 	const int INPUT_PORT_X = 400 * 0.8f;
 	const int INPUT_PORT_Y = 270 * 1.13777f;
 
-	const int INPUT_NICKNAME_X = 400 * 0.8f;
-	const int INPUT_NICKNAME_Y = 390 * 1.13777f;
+	const int INPUT_NICKNAME_X = 280 * 0.8f;
+	const int INPUT_NICKNAME_Y = 340 * 1.13777f;
 
 	const int FONT_SIZE = 40;
 	//////////////////////////////////////////////////////////////////////////
