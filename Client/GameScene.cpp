@@ -49,6 +49,8 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 	XMStoreFloat4x4(&mWorldMtx, XMMatrixTranslation(0, 0, 7));
 
+	camtest.x = 0;
+	camset = false;
 	//////////////////////////////////////////////////////////////////////
 	//로딩화면 초기화
 	mLoadingScene.Initialize(device, 1280, 800, L"UITextures/loading1.png", 1280, 800);
@@ -189,9 +191,12 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	std::vector<std::wstring> light;
 	light.push_back(L"Textures\\particle.dds");
 	mLightPillarSRV = d3dHelper::CreateTexture2DArraySRV(device, dc, light);
-	mvLightPillar.push_back(new ParticleSystem);
-	mvLightPillar[0]->Init(device, Effects::LightPillarFX, mLightPillarSRV, mRandomTexSRV, 10000);
-	mvLightPillar[0]->SetEmitPos(XMFLOAT3(0, 0, 0));
+	if (!mvLightPillar.empty())
+	{
+		mvLightPillar.push_back(new ParticleSystem);
+		mvLightPillar[0]->Init(device, Effects::LightPillarFX, mLightPillarSRV, mRandomTexSRV, 10000);
+		mvLightPillar[0]->SetEmitPos(XMFLOAT3(0, 0, 0));
+	}
 	//////////////////////////////////////////////////////////////////////////
 
 	// Point light--position is changed every frame to animate in UpdateScene function.
@@ -218,7 +223,7 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	mMinimap.Initialize(device, mClientWidth, mClientHeight, mCam.othMtx(), 100, 100);
 	mDrawText.Init(device, dc);
 
-	PlaySound(L"bgm.wav", NULL, SND_FILENAME | SND_ASYNC);
+	PlaySound(L"bgm.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 
 	OnResize();
 
@@ -239,7 +244,7 @@ bool testcamera = true;
 std::string CGameScene::UpdateScene(const float dt, MSG& msg)
 {
 
-	if (yamee == true)
+	if (NetworkMgr::GetInstance()->mCheckPacket == true)
 	{
 		if (CModelManager::GetInstance()->m_bFinishInit == true)
 		{
@@ -303,7 +308,7 @@ std::string CGameScene::UpdateScene(const float dt, MSG& msg)
 					countDownMin -= 1;
 				}
 				wchar_t tempString[10];
-				wsprintf(tempString, TEXT("%d:%d"), (int)countDownMin, (int)countDownSec);
+				wsprintf(tempString, TEXT("%d:%d"), (int)NetworkMgr::GetInstance()->m_min, (int)NetworkMgr::GetInstance()->m_sec);
 				timerString = tempString;
 			}
 			CModelManager::GetInstance()->UpdateModel(dt, mCam);
@@ -371,7 +376,6 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 			mCam.LookAt(camtest, charpo, up);
 
 			camset = true;
-
 
 
 		}
@@ -518,7 +522,7 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 		HR(swapChain->Present(0, 0));
 
-		yamee = true;
+		NetworkMgr::GetInstance()->mCheckPacket = true;
 	}
 }
 

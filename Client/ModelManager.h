@@ -201,6 +201,7 @@ public:
 	int mNickId[8];
 
 	std::wstring mMyNick[8] = { L"" };
+
 	bool mRoomHeader;
 
 	bool mCheck = false;

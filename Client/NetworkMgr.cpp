@@ -15,6 +15,8 @@ NetworkMgr::~NetworkMgr()
 
 void NetworkMgr::Initialize()
 {
+	for (int i = 0; i < MAX_CLIENT; ++i)
+		mPlayerExist[i] = true;
 	WSADATA   wsadata;
 	WSAStartup(MAKEWORD(2, 2), &wsadata);
 	isGameOver = false;
@@ -97,7 +99,8 @@ void NetworkMgr::ReadPacket(const SOCKET& sock)
 }
 void NetworkMgr::ProcessPacket(BYTE* packet)
 {
-	switch (packet[1]) {
+	switch (packet[1])
+	{
 	case SC_PACKET_PUT_USER:
 	{
 		CModelManager::GetInstance()->mCheck = true;
@@ -120,7 +123,7 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 
 		//std::cout << nick->id << std::endl;
 
-		wcscpy(nick->nickName,&mNickName[0]);
+		wcscpy(nick->nickName, &mNickName[0]);
 
 		//닉네임저장
 		CModelManager::GetInstance()->mMyNick[put_user.id] = nick->nickName;
@@ -128,7 +131,7 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 		CModelManager::GetInstance()->send_wsa_buf.len = sizeof(cs_packet_player_nickname);
 		DWORD io_byte2;
 
-		int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), 
+		int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(),
 			&CModelManager::GetInstance()->send_wsa_buf,
 			1, &io_byte2, 0, NULL, NULL);
 		if (ret_val == SOCKET_ERROR)
@@ -137,11 +140,12 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 #endif
 		break;
 	}
+
 	case SC_PACKET_ROOM_DATA:
 	{
 		sc_packet_room_data room_data;
 		memcpy(&room_data, packet, packet[0]);
-
+		mPlayerExist[room_data.id] = true;
 		CModelManager::GetInstance()->mMyNick[room_data.id] = room_data.nickName;
 	}
 	break;
@@ -192,7 +196,7 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 			std::cout << "아이디는" << CModelManager::GetInstance()->GetSkinnedInstanceModels()[init_pos.id].mId << std::endl;
 #endif
 		}
-		
+
 		break;
 	}
 	case SC_PACKET_PLAYGAME_PLAYER_POS:
@@ -228,16 +232,63 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 		CModelManager::GetInstance()->GetSkinnedInstanceModels()[player_die.id].mAlive = false;
 	}
 	break;
+
 	case SC_PACKET_PLAYGAME_GAME_RESULT:
 	{
 		isGameOver = true;
-		//sc_packet_game_result player_result;
+		sc_packet_game_result player_result;
 		memcpy(&mGameResult, packet, packet[0]);
+		for (int i = 0; i < MAX_CLIENT; ++i)
+			CModelManager::GetInstance()->mMyNick[i] = L"";
+
+		/*cs_packet_shutdown* shutdown = reinterpret_cast<cs_packet_shutdown*>(&send_buf);
+		shutdown->size = sizeof(cs_packet_shutdown);
+		shutdown->type = CS_PACKET_SHUTDOWN;
+		shutdown->id = getId();
+		CModelManager::GetInstance()->send_wsa_buf.len = sizeof(cs_packet_shutdown);
+		DWORD io_byte2;
+
+		int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &CModelManager::GetInstance()->send_wsa_buf, 1, &io_byte2, 0, NULL, NULL);
+		if (ret_val == SOCKET_ERROR)
+			std::cout << " [error] WSASend() " << std::endl;*/
+		for (int i = 0; i < CModelManager::GetInstance()->GetSkinnedInstanceModels().size(); ++i)
+		{
+			CModelManager::GetInstance()->GetSkinnedInstanceModels()[i].mAlive = true;
+			CModelManager::GetInstance()->GetSkinnedInstanceModels()[i].mExistObject = false;
+		}
+		camtest.x = 0;
+		camtest.y = 0;
+		camtest.z = 0;
+
+		Release();
 	}
 	break;
+
 	case SC_PACKET_PLAYGAME_TIMER_START:
+	{
 		isGameStart = true;
-		break;
+	}
+	break;
+
+	case SC_PACKET_TIME:
+	{
+		sc_packet_time play_time;
+		memcpy(&play_time, packet, packet[0]);
+		m_min = play_time.min;
+		m_sec = play_time.sec;
+	}
+	break;
+
+	case SC_PACKET_PLAYER_REMOVE:
+	{
+		sc_packet_player_remove player_remove;
+		memcpy(&player_remove, packet, packet[0]);
+		if (!CModelManager::GetInstance()->GetSkinnedInstanceModels().empty())
+			CModelManager::GetInstance()->GetSkinnedInstanceModels()[player_remove.id].mExistObject = false;
+		mPlayerExist[player_remove.id] = false;
+	}
+	break;
+
 	default:
 		break;
 

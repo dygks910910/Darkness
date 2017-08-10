@@ -135,7 +135,10 @@ std::string CRoomScene::UpdateScene(const float dt, MSG& msg)
 		return SceneName::gameScene;
 
 	else if (CModelManager::GetInstance()->mIsStart == true)
+	{
+		CModelManager::GetInstance()->mIsStart = false;
 		return SceneName::gameScene;
+	}
 
 	return "";
 }
@@ -168,7 +171,7 @@ void CRoomScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 		for (int i = 0; i < 8; ++i)
 		{
-			if (!CModelManager::GetInstance()->mMyNick[i].empty())
+			if (!CModelManager::GetInstance()->mMyNick[i].empty() && NetworkMgr::GetInstance()->mPlayerExist[i] == true)
 			{
 				if (i == 0)
 					mDrawText(CModelManager::GetInstance()->mMyNick[i], 30, PLAYER1_NICKNAME_LOCATION_X, PLAYER1_NICKNAME_LOCATION_Y + OUTPUT_Y_OFFSET, FontColorForFW::GOLD);

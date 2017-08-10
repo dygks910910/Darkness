@@ -29,7 +29,10 @@ const int SC_PACKET_PLAYGAME_GAME_RESULT = 5;
 const int SC_PACKET_PLAYGAME_TIMER_START = 6;
 const int SC_PACKET_ROOM_DATA = 7;
 const int SC_PACKET_GAME_START = 8;
+const int SC_PACKET_TIME = 9;
+const int SC_PACKET_PLAYER_REMOVE = 10;
 
+const int CS_PACKET_SHUTDOWN = 9;
 
 #pragma pack(push, 1)
 // sc_packet
@@ -55,6 +58,15 @@ struct cs_packet_player_nickname
 	WORD id;
 	WCHAR nickName[20];
 };
+
+
+struct cs_packet_shutdown
+{
+	BYTE size;
+	BYTE type;
+	WORD id;
+};
+
 struct sc_packet_playgame_init_pos
 {
 	BYTE size;
@@ -111,6 +123,20 @@ struct sc_packet_game_start
 };
 
 
+struct sc_packet_time
+{
+	BYTE size;
+	BYTE type;
+	UINT min;
+	UINT sec;
+};
+
+struct sc_packet_player_remove
+{
+	BYTE size;
+	BYTE type;
+	WORD id;
+};
 #pragma pack(pop)  
 
 class NetworkMgr
@@ -126,6 +152,7 @@ class NetworkMgr
 	std::string m_portNum;
 	int mId;
 	sc_packet_game_result mGameResult;
+
 private:
 	static NetworkMgr* instance;
 public:
@@ -151,7 +178,6 @@ public:
 	void DestroyInstance()
 	{
 		if (instance)
-
 		{
 			delete instance;
 			instance = nullptr;
@@ -164,6 +190,13 @@ public:
 	sc_packet_game_result getGameResult() { return mGameResult; }
 	bool isGameOver = false;
 	bool isGameStart = false;
+
+	int m_min = 0;
+	int m_sec = 0;
+
+	bool mPlayerExist[8];
+
+	bool mCheckPacket = false;
 
 	BYTE   send_buf[4000];
 

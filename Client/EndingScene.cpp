@@ -136,6 +136,7 @@ std::string CEndingScene::UpdateScene(const float dt, MSG& msg)
 	//로고를 비추는 창을 켜주는 시간을 계산.
 	if (mHomeButton.isClicked)
 	{
+		PlaySound(NULL, 0, 0);
 		return SceneName::mainScene;
 	}
 
@@ -218,4 +219,5 @@ void CEndingScene::DrawAllScore()
 		temp = tempbuff;
 		mDrawText(temp, 30, OUTPUT_MONSTER_KILL_LOCATION_X, OUTPUT_MONSTER_KILL_LOCATION_Y + i*OUTPUT_Y_OFFSET, mScores[i].fontColor);
 	}
+
 }
