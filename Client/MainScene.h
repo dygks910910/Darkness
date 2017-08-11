@@ -7,7 +7,7 @@
 #include "DrawText.h"
 #include "GameTimer.h"
 #include "Sound.h"
-
+#include<fstream>
 #define IPADDRESS "127.0.0.1"
 //#define IPADDRESS "127.0.0.1"
 //#define IPADDRESS "172.20.10.4"

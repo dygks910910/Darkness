@@ -135,8 +135,12 @@ std::string CMainScene::UpdateScene(const float dt, MSG& msg)
 				mLobbyConnectButton.isClicked = false;
 				return "";
 			}
-		
-			NetworkMgr::GetInstance()->SetIPAndPortAndNickName(IPADDRESS,mNicknameString);
+			std::ifstream fin("ServerIpAddress.txt",std::ios::in);
+			char addr[25];
+			fin >> addr;
+
+			fin.close();
+			NetworkMgr::GetInstance()->SetIPAndPortAndNickName(addr,mNicknameString);
 			NetworkMgr::GetInstance()->Initialize();
 
 			return SceneName::roomScene;
