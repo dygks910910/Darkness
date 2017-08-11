@@ -16,3 +16,6 @@ Client/Debug/BoxDemo.obj
 *.diagsession
 *.exe
 *.rej
+*.user
+*.opendb
+*.msi

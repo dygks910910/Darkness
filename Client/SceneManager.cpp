@@ -77,12 +77,23 @@ void CSceneManager::OnResize()
 void CSceneManager::ChangeScene(std::string sceneName, const float& dt)
 {
 	mSceneKey = sceneName;
+	for (auto p = mScenes.begin(); p != mScenes.end(); ++p)
+	{
+		delete p->second;
+	}
+	mScenes.clear();
 	if (mScenes.find(mSceneKey) != mScenes.end())
 	{
+		if (mSceneKey == SceneName::mainScene)
+		{
+			mScenes[sceneName]->Init(mDevice, mDc, mSwapChain, *mViewport, mClientWidth, mClientHeight);
+			CModelManager::GetInstance()->DestroyInstance();
+		}
 		mScenes[sceneName]->Init(mDevice, mDc, mSwapChain, *mViewport, mClientWidth, mClientHeight);
 	}
 	else if (mSceneKey == SceneName::gameScene)
 	{
+		
 		mScenes.insert(make_pair(sceneName, new CGameScene));
 		mScenes[sceneName]->Init(mDevice, mDc, mSwapChain, *mViewport, mClientWidth, mClientHeight);
 	}
@@ -90,11 +101,19 @@ void CSceneManager::ChangeScene(std::string sceneName, const float& dt)
 	{
 		mScenes.insert(make_pair(sceneName, new CEndingScene));
 		mScenes[sceneName]->Init(mDevice, mDc, mSwapChain, *mViewport, mClientWidth, mClientHeight);
+
 	}
 	else if (mSceneKey == SceneName::roomScene)
 	{
 		mScenes.insert(make_pair(sceneName, new CRoomScene));
 		mScenes[sceneName]->Init(mDevice, mDc, mSwapChain, *mViewport, mClientWidth, mClientHeight);
+
+	}
+	else if (mSceneKey == SceneName::mainScene)
+	{
+		mScenes.insert(make_pair(sceneName, new CMainScene));
+		mScenes[sceneName]->Init(mDevice, mDc, mSwapChain, *mViewport, mClientWidth, mClientHeight);
+
 	}
 	else
 		return;

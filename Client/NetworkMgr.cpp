@@ -241,16 +241,7 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 		for (int i = 0; i < MAX_CLIENT; ++i)
 			CModelManager::GetInstance()->mMyNick[i] = L"";
 
-		/*cs_packet_shutdown* shutdown = reinterpret_cast<cs_packet_shutdown*>(&send_buf);
-		shutdown->size = sizeof(cs_packet_shutdown);
-		shutdown->type = CS_PACKET_SHUTDOWN;
-		shutdown->id = getId();
-		CModelManager::GetInstance()->send_wsa_buf.len = sizeof(cs_packet_shutdown);
-		DWORD io_byte2;
-
-		int ret_val = WSASend(NetworkMgr::GetInstance()->GetSock(), &CModelManager::GetInstance()->send_wsa_buf, 1, &io_byte2, 0, NULL, NULL);
-		if (ret_val == SOCKET_ERROR)
-			std::cout << " [error] WSASend() " << std::endl;*/
+		
 		for (int i = 0; i < CModelManager::GetInstance()->GetSkinnedInstanceModels().size(); ++i)
 		{
 			CModelManager::GetInstance()->GetSkinnedInstanceModels()[i].mAlive = true;
@@ -260,7 +251,6 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 		camtest.y = 0;
 		camtest.z = 0;
 
-		Release();
 	}
 	break;
 

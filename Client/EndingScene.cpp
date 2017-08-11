@@ -125,7 +125,7 @@ bool CEndingScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	}
 	//함수객체 초기화
 	mDrawText.Init(device, dc);
-
+	NetworkMgr::GetInstance()->Release();
 	OnResize();
 	return true;
 }

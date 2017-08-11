@@ -121,7 +121,7 @@ public:
 
 	bool yamee = false;
 	void CameraRatateForWinner();
-
+	void CreateDepthStencilState(ID3D11Device* device);
 	BYTE   send_buf1[MAX_BUF_SIZE];
 	WSABUF   send_wsa_buf1;
 };

@@ -135,8 +135,6 @@ void CModelManager::DrawStaticNormalModels(ID3D11DeviceContext* dc, ID3DX11Effec
 	{
 		p.Draw(dc, tech, shadowTransform, cam);
 	}
-
-
 }
 
 void CModelManager::DrawStaticSsaoNormalModels(ID3D11DeviceContext * dc, ID3DX11EffectTechnique * tech, const XMMATRIX & shadowTransform, const Camera & cam)

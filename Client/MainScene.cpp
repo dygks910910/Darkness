@@ -1,9 +1,5 @@
 #include "MainScene.h"
 
-
-
-extern ID3D11DepthStencilState* tDepthDisableState;
-
 CMainScene::CMainScene()
 {
 }
@@ -183,7 +179,6 @@ void CMainScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	dc->IASetInputLayout(InputLayouts::Basic32);
 	dc->OMSetDepthStencilState(mDepthDisableState, 1);
 
-	tDepthDisableState = mDepthDisableState;
 	// center Sky about eye in world space
 	XMFLOAT3 eyePos = mCam.GetPosition();
 	XMMATRIX world = XMLoadFloat4x4(&mWorldMtx);
