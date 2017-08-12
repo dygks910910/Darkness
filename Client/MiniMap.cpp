@@ -100,20 +100,20 @@ bool CMiniMap::Render(ID3D11DeviceContext * deviceContext, const Camera & camera
 	XMFLOAT3 eyePos = camera.GetPosition();
 
 	XMMATRIX WVP = XMMatrixMultiply(m_worldMtx, m_worldMtx*camera.Proj()*camera.othMtx());
-	Effects::BasicFX->SetWorldViewProj(WVP);
+	Effects::TextureFX->SetWorldViewProj(WVP);
 
 	D3DX11_TECHNIQUE_DESC techDesc;
-	Effects::BasicFX->Light0TexTech->GetDesc(&techDesc);
+	Effects::TextureFX->Tech->GetDesc(&techDesc);
 
 	for (UINT p = 0; p < techDesc.Passes; ++p)
 	{
-		ID3DX11EffectPass* pass = Effects::BasicFX->Light0TexTech->GetPassByIndex(p);
+		ID3DX11EffectPass* pass = Effects::TextureFX->Tech->GetPassByIndex(p);
 		pass->Apply(0, deviceContext);
 
 		deviceContext->DrawIndexed(6, 0, 0);
 	}
 	// Render the border bitmap using the texture shader.
-	Effects::BasicFX->SetDiffuseMap(m_MiniMapBitmap->GetTexture());
+	Effects::TextureFX->SetDiffuseMap(m_MiniMapBitmap->GetTexture());
 
 	// Put the mini-map bitmap vertex and index buffers on the graphics pipeline to prepare them for drawing.
 	result = m_MiniMapBitmap->Render(deviceContext, m_mapLocationX, m_mapLocationY);

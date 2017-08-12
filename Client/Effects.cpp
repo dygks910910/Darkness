@@ -228,7 +228,7 @@ BuildShadowMapEffect*  Effects::BuildShadowMapFX = 0;
 NormalMapEffect* Effects::NormalMapFX = 0;
 DebugTexEffect*        Effects::DebugTexFX = 0;
 InstancedBasicEffect* Effects::InstancedBasicFX = 0;
-
+TextureEffect* Effects::TextureFX = 0;
 
 void Effects::InitAll(ID3D11Device* device)
 {
@@ -246,7 +246,7 @@ void Effects::InitAll(ID3D11Device* device)
 	LineFX = new LineEffect(device, L"FX/color.fxo");
 	DebugTexFX = new DebugTexEffect(device, L"FX/DebugTexture.fxo");
 	LightPillarFX = new ParticleEffect(device, L"FX/LightPillar.fxo");
-
+	TextureFX = new TextureEffect(device, L"FX/Texture.fxo");
 }
 
 void Effects::DestroyAll()
@@ -264,6 +264,7 @@ void Effects::DestroyAll()
 	SafeDelete(InstancedBasicFX);
 	SafeDelete(LineFX);
 	SafeDelete(DebugTexFX);
+	SafeDelete(TextureFX);
 }
 
 #pragma endregion
@@ -559,5 +560,18 @@ NormalMapEffect::~NormalMapEffect()
  }
  
  SsaoEffect::~SsaoEffect()
+ {
+ }
+
+ TextureEffect::TextureEffect(ID3D11Device * device, const std::wstring & filename)
+	 :Effect(device,filename)
+ {
+	 WorldViewProj = mFX->GetVariableByName("worldViewProj")->AsMatrix();
+	 DiffuseMap = mFX->GetVariableByName("shaderTexture")->AsShaderResource();
+	 Tech = mFX->GetTechniqueByName("tech");
+
+ }
+
+ TextureEffect::~TextureEffect()
  {
  }

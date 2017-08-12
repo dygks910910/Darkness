@@ -150,7 +150,7 @@ void CRoomScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	{
 		dc->ClearRenderTargetView(rtv, reinterpret_cast<const float*>(&Colors::Silver));
 		dc->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-		dc->IASetInputLayout(InputLayouts::Basic32);
+		dc->IASetInputLayout(InputLayouts::PosTex);
 		dc->OMSetDepthStencilState(mDepthDisableState, 1);
 		bool result;
 
@@ -159,9 +159,8 @@ void CRoomScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 		XMMATRIX world = XMLoadFloat4x4(&mWorldMtx);
 		XMMATRIX WVP = XMMatrixMultiply(world, world*mCam.Proj()*mCam.othMtx());
 
-		Effects::BasicFX->SetWorldViewProj(WVP);
-		Effects::BasicFX->SetDiffuseMap(mBackgroundPicture.GetTexture());
-		Effects::BasicFX->SetTexTransform(XMMatrixScaling(1, 1, 1.0f));
+		Effects::TextureFX->SetWorldViewProj(WVP);
+		Effects::TextureFX->SetDiffuseMap(mBackgroundPicture.GetTexture());
 		dc->RSSetState(0);
 		//////////////////////////////////////////////////////////////////////////
 		//기본메인화면.

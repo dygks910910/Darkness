@@ -54,6 +54,12 @@ namespace Vertex
 		XMFLOAT3 Weights;
 		BYTE BoneIndices[4];
 	};
+
+	struct PosTex
+	{
+		XMFLOAT3 Pos;
+		XMFLOAT2 Tex;
+	};
 }
 
 class InputLayoutDesc
@@ -68,6 +74,8 @@ public:
 	static const D3D11_INPUT_ELEMENT_DESC PosNormalTexTan[4];
 	static const D3D11_INPUT_ELEMENT_DESC InstancedBasic32[7];
 	static const D3D11_INPUT_ELEMENT_DESC PosNormalTexTanSkinned[6];
+	static const D3D11_INPUT_ELEMENT_DESC PosTex[2];
+
 
 };
 class InputLayouts
@@ -84,6 +92,8 @@ public:
 	static ID3D11InputLayout* PosNormalTexTan;
 	static ID3D11InputLayout* InstancedBasic32;
 	static ID3D11InputLayout* PosNormalTexTanSkinned;
+	static ID3D11InputLayout* PosTex;
+
 
 };
 

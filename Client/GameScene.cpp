@@ -513,6 +513,7 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 
 		mDrawText(timerString, 75, mClientWidth / 2 - 100, 0, FontColorForFW::RED);
+		dc->IASetInputLayout(InputLayouts::PosTex);
 		mMinimap.Render(dc, mCam);
 		if (NetworkMgr::GetInstance()->isGameStart)
 		{

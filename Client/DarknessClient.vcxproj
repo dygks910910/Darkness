@@ -220,6 +220,9 @@
     <FxCompile Include="FX\SsaoBlur.fx" />
     <FxCompile Include="FX\SsaoNormalDepth.fx" />
     <FxCompile Include="FX\Terrain.fx" />
+    <FxCompile Include="FX\Texture.fx">
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(RelativeDir)%(Filename).fxo</ObjectFileOutput>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BitMap.cpp" />

@@ -37,6 +37,9 @@
     <FxCompile Include="FX\Terrain.fx">
       <Filter>FX</Filter>
     </FxCompile>
+    <FxCompile Include="FX\Texture.fx">
+      <Filter>FX</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">

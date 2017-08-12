@@ -130,7 +130,21 @@ public:
 	ID3DX11EffectVariable* SpotLight;
 };
 #pragma endregion
+#pragma region TextureEffect
+class TextureEffect: public Effect
+{
+public:
+	TextureEffect(ID3D11Device* device, const std::wstring& filename);
+	~TextureEffect();
+	void SetDiffuseMap(ID3D11ShaderResourceView* tex) { DiffuseMap->SetResource(tex); }
+	void SetWorldViewProj(CXMMATRIX M) { WorldViewProj->SetMatrix(reinterpret_cast<const float*>(&M)); }
 
+	ID3DX11EffectMatrixVariable* WorldViewProj;
+	ID3DX11EffectShaderResourceVariable* DiffuseMap;
+	ID3DX11EffectTechnique* Tech;
+
+};
+#pragma endregion
 
 #pragma region NormalMapEffect
 class NormalMapEffect : public Effect
@@ -665,6 +679,7 @@ public:
 	static SsaoEffect* SsaoFX;
 	static SsaoBlurEffect* SsaoBlurFX;
 	static SsaoNormalDepthEffect* SsaoNormalDepthFX;
+	static TextureEffect* TextureFX;
 
 };
 #pragma endregion

@@ -80,14 +80,14 @@ bool CBitMap::Render(ID3D11DeviceContext* deviceContext,
 
 	// Put the vertex and index buffers on the graphics pipeline to prepare them for drawing.
 	RenderBuffers(deviceContext);
-	Effects::BasicFX->SetDiffuseMap(GetTexture());
+	Effects::TextureFX->SetDiffuseMap(GetTexture());
 	D3DX11_TECHNIQUE_DESC techDesc;
-	Effects::BasicFX->Light0TexTech->GetDesc(&techDesc);
+	Effects::TextureFX->Tech->GetDesc(&techDesc);
 
 
 	for (UINT p = 0; p < techDesc.Passes; ++p)
 	{
-		ID3DX11EffectPass* pass = Effects::BasicFX->Light0TexAlphaClipTech->GetPassByIndex(p);
+		ID3DX11EffectPass* pass = Effects::TextureFX->Tech->GetPassByIndex(p);
 		pass->Apply(0, deviceContext);
 
 		deviceContext->DrawIndexed(6, 0, 0);
@@ -217,9 +217,9 @@ void CBitMap::ShutdownBuffers()
 bool CBitMap::UpdateBuffers(ID3D11DeviceContext * deviceContext, int positionX, int positionY)
 {
 	float left, right, top, bottom;
-	Vertex::Basic32* vertices;
+	Vertex::PosTex* vertices;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	Vertex::Basic32* verticesPtr;
+	Vertex::PosTex* verticesPtr;
 	HRESULT result;
 
 	// If the position we are rendering this bitmap to has not changed then don't update the vertex buffer since it
@@ -246,7 +246,7 @@ bool CBitMap::UpdateBuffers(ID3D11DeviceContext * deviceContext, int positionX, 
 	bottom = top - (float)m_bitmapHeight;
 
 	// Create the vertex array.
-	vertices = new Vertex::Basic32[m_vertexCount];
+	vertices = new Vertex::PosTex[m_vertexCount];
 	if (!vertices)
 	{
 		return false;
@@ -256,29 +256,23 @@ bool CBitMap::UpdateBuffers(ID3D11DeviceContext * deviceContext, int positionX, 
 	// First triangle.
 	vertices[0].Pos = XMFLOAT3(left, top, 0.0f);  // Top left.
 	vertices[0].Tex = XMFLOAT2(0.0f, 0.0f);
-	vertices[0].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
 
 	vertices[1].Pos = XMFLOAT3(right, bottom, 0.0f);  // Bottom right.
 	vertices[1].Tex = XMFLOAT2(1.0f, 1.0f);
-	vertices[1].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
 	vertices[2].Pos = XMFLOAT3(left, bottom, 0.0f);  // Bottom left.
 	vertices[2].Tex = XMFLOAT2(0.0f, 1.0f);
-	vertices[2].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
 	// Second triangle.
 	vertices[3].Pos = XMFLOAT3(left, top, 0.0f);  // Top left.
 	vertices[3].Tex = XMFLOAT2(0.0f, 0.0f);
-	vertices[3].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
 	vertices[4].Pos = XMFLOAT3(right, top, 0.0f);  // Top right.
 	vertices[4].Tex = XMFLOAT2(1.0f, 0.0f);
-	vertices[4].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
 	vertices[5].Pos = XMFLOAT3(right, bottom, 0.0f);  // Bottom right.
 	vertices[5].Tex = XMFLOAT2(1.0f, 1.0f);
-	vertices[5].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
 
 	XMFLOAT3 vMinf3(+MathHelper::Infinity, +MathHelper::Infinity, +MathHelper::Infinity);
@@ -303,10 +297,10 @@ bool CBitMap::UpdateBuffers(ID3D11DeviceContext * deviceContext, int positionX, 
 	}
 
 	// Get a pointer to the data in the vertex buffer.
-	verticesPtr = (Vertex::Basic32*)mappedResource.pData;
+	verticesPtr = (Vertex::PosTex*)mappedResource.pData;
 
 	// Copy the data into the vertex buffer.
-	memcpy(verticesPtr, (void*)vertices, (sizeof(Vertex::Basic32) * m_vertexCount));
+	memcpy(verticesPtr, (void*)vertices, (sizeof(Vertex::PosTex) * m_vertexCount));
 
 	// Unlock the vertex buffer.
 	deviceContext->Unmap(m_vertexBuffer, 0);
@@ -325,7 +319,7 @@ void CBitMap::RenderBuffers(ID3D11DeviceContext* deviceContext)
 
 
 	// Set vertex buffer stride and offset.
-	stride = sizeof(Vertex::Basic32);
+	stride = sizeof(Vertex::PosTex);
 	offset = 0;
 	// Set the vertex buffer to active in the input assembler so it can be rendered.
 	deviceContext->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
