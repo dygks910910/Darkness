@@ -52,13 +52,13 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	camset = false;
 	//////////////////////////////////////////////////////////////////////
 	//로딩화면 초기화
+	dc->IASetInputLayout(InputLayouts::PosTex);
+	dc->OMSetDepthStencilState(mDepthDisableState, 1);
 	mLoadingScene.Initialize(device, 1280, 800, L"UITextures/loading1.png", 1280, 800);
 	mLoadingScene.Render(dc, 0, 0);
 	HR(swapChain->Present(0, 0));
 	
-	dc->IASetInputLayout(InputLayouts::Basic32);
 	//ZbufferOff();
-	dc->OMSetDepthStencilState(mDepthDisableState, 1);
 
 	mLoadingScene.Initialize(device, 1280, 800, L"UITextures/loading2.png", 1280, 800);
 	mLoadingScene.Render(dc, 0, 0);

@@ -137,7 +137,7 @@ bool CBitMap::InitializeBuffers(ID3D11Device* device)
 	}
 
 	// Initialize vertex array to zeros at first.
-	memset(vertices, 0, (sizeof(Vertex::Basic32) * m_vertexCount));
+	memset(vertices, 0, (sizeof(Vertex::PosTex) * m_vertexCount));
 
 	// Load the index array with data.
 	for (i = 0; i < m_indexCount; i++)
@@ -147,7 +147,7 @@ bool CBitMap::InitializeBuffers(ID3D11Device* device)
 
 	// Set up the description of the static vertex buffer.
 	vertexBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	vertexBufferDesc.ByteWidth = sizeof(Vertex::Basic32) * m_vertexCount;
+	vertexBufferDesc.ByteWidth = sizeof(Vertex::PosTex) * m_vertexCount;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vertexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	vertexBufferDesc.MiscFlags = 0;

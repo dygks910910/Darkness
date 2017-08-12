@@ -79,7 +79,7 @@ void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device, 
 		}
 		if (k == 2)
 		{
-			dc->IASetInputLayout(InputLayouts::Basic32);
+			dc->IASetInputLayout(InputLayouts::PosTex);
 			dc->OMSetDepthStencilState(tDepthDisableState, 1);
 
 			mLoadingScene2.Initialize(device, 1280, 800, L"UITextures/loading3.png", 1280, 800);
@@ -91,9 +91,9 @@ void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device, 
 		testfinalTransform.clear();
 	}
 	fin.close();
-
-	dc->IASetInputLayout(InputLayouts::Basic32);
-	dc->OMSetDepthStencilState(tDepthDisableState, 1);
+// 
+// 	dc->IASetInputLayout(InputLayouts::PosTex);
+// 	dc->OMSetDepthStencilState(tDepthDisableState, 1);
 
 	mLoadingScene2.Initialize(device, 1280, 800, L"UITextures/loading4.png", 1280, 800);
 	mLoadingScene2.Render(dc, 0, 0);
@@ -104,12 +104,8 @@ void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device, 
 		mClipnameAndTotalCounts[i] = std::make_pair(clipname[i], animTotalCounts[i]);
 	}
 
-
 	BuildBasicGeometryBuffer();
 	BuildShapeGeometryBuffers();
-
-	dc->IASetInputLayout(InputLayouts::Basic32);
-	dc->OMSetDepthStencilState(tDepthDisableState, 1);
 
 	mLoadingScene2.Initialize(device, 1280, 800, L"UITextures/loading5.png", 1280, 800);
 	mLoadingScene2.Render(dc, 0, 0);
