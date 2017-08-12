@@ -11,10 +11,6 @@ CRoomScene::~CRoomScene()
 	//사용한 비트맵 메모리 반환.
 	mBackgroundPicture.Shutdown();
 	mKingLogo.Shutdown();
-	mInputBoard.Shutdown();
-	mInputIP.Shutdown();
-	mInputPort.Shutdown();
-	mInputNickname.Shutdown();
 	mMainLogo.Shutdown();
 	ReleaseCOM(mDepthDisableState);
 	ReleaseCOM(mDepthStencilState);
@@ -48,14 +44,7 @@ bool CRoomScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 
 	mStartButton.Init(device, BUTTON_SIZE_X, BUTTON_SIZE_Y, L"UITextures/Start.png", START_BUTTON_X, START_BUTTON_Y, mClientWidth, mClientHeight);
 
-	mChangeStateButton[0].Init(device, LEFT1_BUTTON_SIZE_X, LEFT1_BUTTON_SIZE_Y, L"UITextures/left.png", LEFT1_BUTTON_X, LEFT1_BUTTON_Y, mClientWidth, mClientHeight);
-
-	mChangeStateButton[1].Init(device, RIGHT1_BUTTON_SIZE_X, RIGHT1_BUTTON_SIZE_Y, L"UITextures/right.png", RIGHT1_BUTTON_X, RIGHT1_BUTTON_Y, mClientWidth, mClientHeight);
-
-	mChangeStateButton[2].Init(device, LEFT2_BUTTON_SIZE_X, LEFT2_BUTTON_SIZE_Y, L"UITextures/left.png", LEFT2_BUTTON_X, LEFT2_BUTTON_Y, mClientWidth, mClientHeight);
-
-	mChangeStateButton[3].Init(device, RIGHT2_BUTTON_SIZE_X, RIGHT2_BUTTON_SIZE_Y, L"UITextures/right.png", RIGHT2_BUTTON_X, RIGHT2_BUTTON_Y, mClientWidth, mClientHeight);
-
+	
 
 	m_bStartCheck = false;
 	
@@ -121,9 +110,7 @@ bool CRoomScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	m_bLogoTime = true;
 	//함수객체 초기화
 	DrawText.Init(device, dc);
-	mIpString = L"";
-	ZeroMemory(&Text, sizeof(Text));
-	ZeroMemory(&Cstr, sizeof(Cstr));
+
 	OnResize();
 	return true;
 }
@@ -209,10 +196,7 @@ void CRoomScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 		mStartButton.Draw(dc);
 
 		//화살표 버튼
-		mChangeStateButton[0].Draw(dc);
-		mChangeStateButton[1].Draw(dc);
-		mChangeStateButton[2].Draw(dc);
-		mChangeStateButton[3].Draw(dc);
+		
 
 
 		//방장 왕관표시
@@ -246,8 +230,7 @@ void CRoomScene::OnMouseDown(WPARAM btnState, int x, int y, const HWND & mhMainW
 		}
 	}
 
-	for (int i = 0; i < 4; ++i)
-		mChangeStateButton[i].OnMouseDown(x, y);
+	
 
 }
 
@@ -256,8 +239,7 @@ void CRoomScene::OnMouseUp(WPARAM btnState, int x, int y)
 	if (CModelManager::GetInstance()->mMyId == 0)
 	{
 		mStartButton.OnMouseUp(x, y);
-		for (int i = 0; i < 4; ++i)
-			mChangeStateButton[i].OnMouseUp(x, y);
+		
 	}
 
 }
@@ -267,8 +249,7 @@ void CRoomScene::OnMouseMove(WPARAM btnState, int x, int y)
 	if (CModelManager::GetInstance()->mMyId == 0)
 	{
 		mStartButton.OnMouseMove(x, y);
-		for (int i = 0; i < 4; ++i)
-			mChangeStateButton[i].OnMouseMove(x, y);
+		
 	}
 }
 void CRoomScene::OnResize()
@@ -277,95 +258,5 @@ void CRoomScene::OnResize()
 }
 void CRoomScene::OnKeyboardButtonDown(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
-	if (m_bFocusOnIP || m_bFocusOnNickName || m_bFocusOnPort) {
-		if (GetText(hWnd, msg, wparam, lparam) == 0)
-		{
-			return;
-		}
-	}
-}
-int CRoomScene::GetText(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
-{
-	int len;
-	HIMC m_hIMC = NULL;   // IME 핸들
-
-	switch (msg)
-	{
-	case WM_IME_COMPOSITION:
-		if (m_bFocusOnNickName)
-		{
-			m_hIMC = ImmGetContext(hWnd);	// ime핸들을 얻는것
-
-			if (lparam & GCS_RESULTSTR)
-			{
-				if ((len = ImmGetCompositionString(m_hIMC, GCS_RESULTSTR, NULL, 0)) > 0)
-				{
-					// 완성된 글자가 있다.
-					ImmGetCompositionString(m_hIMC, GCS_RESULTSTR, Cstr, len);
-					Cstr[len] = 0;
-					mNicknameString += Cstr;
-				}
-
-			}
-			else if (lparam & GCS_COMPSTR)
-			{
-				// 현재 글자를 조합 중이다.
-
-				// 조합중인 길이를 얻는다.
-				len = ImmGetCompositionString(m_hIMC, GCS_COMPSTR, NULL, 0);
-				// str에  조합중인 문자를 얻는다.
-				ImmGetCompositionString(m_hIMC, GCS_COMPSTR, Cstr, len);
-				Cstr[len] = 0;
-			}
-
-			ImmReleaseContext(hWnd, m_hIMC);	// IME 핸들 반환!!
-		}
-		return 0;
-	case WM_CHAR:				// 1byte 문자 (ex : 영어)
-
-		if (m_bFocusOnIP)
-		{
-			if ((char)wparam == '\b')
-			{
-				if (mIpString.size() > 0)
-					mIpString.pop_back();
-			}
-			else
-			{
-				mIpString += (wchar_t)wparam;
-			}
-		}
-		if (m_bFocusOnPort)
-		{
-			if ((char)wparam == '\b')
-			{
-				if (mPortString.size() > 0)
-					mPortString.pop_back();
-			}
-			else
-			{
-				mPortString += (wchar_t)wparam;
-			}
-		}
-		if (m_bFocusOnNickName)
-		{
-			if ((char)wparam == '\b')
-			{
-				if (mNicknameString.size() > 0)
-					mNicknameString.pop_back();
-			}
-			else
-			{
-				//mNicknameString += (wchar_t)wparam;
-			}
-		}
-		/*Text[wcslen(Text)] = (wchar_t)wparam;*/
-		//mIpString += (wchar_t)wparam;
-		return 0;
-	case WM_IME_NOTIFY:			// 한자입력...
-		return 0;
-	case WM_KEYDOWN:			// 키다운..
-		return 0;
-	}
-	return 1;
+	
 }

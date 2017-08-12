@@ -69,15 +69,12 @@ bool CBitMap::Render(ID3D11DeviceContext* deviceContext,
 	int positionX, int positionY)
 {
 	bool result;
-
-
 	// Re-build the dynamic vertex buffer for rendering to possibly a different location on the screen.
 	result = UpdateBuffers(deviceContext, positionX, positionY);
 	if (!result)
 	{
 		return false;
 	}
-
 	// Put the vertex and index buffers on the graphics pipeline to prepare them for drawing.
 	RenderBuffers(deviceContext);
 	Effects::TextureFX->SetDiffuseMap(GetTexture());

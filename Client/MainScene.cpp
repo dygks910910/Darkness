@@ -272,7 +272,7 @@ void CMainScene::OnResize()
 void CMainScene::OnKeyboardButtonDown(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
 	if (m_bFocusOnNickName) {
-		if (GetText(hWnd, msg, wparam, lparam) == 0)
+		if (GetText	(hWnd, msg, wparam, lparam) == 0)
 		{
 			return;
 		}
@@ -280,83 +280,53 @@ void CMainScene::OnKeyboardButtonDown(HWND hWnd, UINT msg, WPARAM wparam, LPARAM
 }
 int CMainScene::GetText(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
-	int len;
-	HIMC m_hIMC = NULL;   // IME 핸들
-
-	switch (msg)
+ 	int len;
+ 	HIMC m_hIMC = NULL;   // IME 핸들
+ 
+ 	switch (msg)
+ 	{
+ 	case WM_IME_COMPOSITION:
+ 		if (m_bFocusOnNickName)
+ 		{
+ 			m_hIMC = ImmGetContext(hWnd);	// ime핸들을 얻는것
+ 
+ 			if (lparam & GCS_RESULTSTR)
+ 			{
+ 				if ((len = ImmGetCompositionString(m_hIMC, GCS_RESULTSTR, NULL, 0)) > 0)
+ 				{
+ 					// 완성된 글자가 있다.
+ 					ImmGetCompositionString(m_hIMC, GCS_RESULTSTR, Cstr, len);
+ 					Cstr[len] = 0;
+ 					mNicknameString += Cstr;
+ 				}
+ 			}
+ 			else if (lparam & GCS_COMPSTR)
+ 			{
+ 				//// 현재 글자를 조합 중이다.
+ 				//// 조합중인 길이를 얻는다.
+ 				//len = ImmGetCompositionString(m_hIMC, GCS_COMPSTR, NULL, 0);
+ 				//// str에  조합중인 문자를 얻는다.
+ 				//ImmGetCompositionString(m_hIMC, GCS_COMPSTR, Cstr, len);
+ 				//Cstr[len] = 0;
+ 			}
+ 
+ 			ImmReleaseContext(hWnd, m_hIMC);	// IME 핸들 반환!!
+ 		}
+ 		return 0;
+ 	case WM_CHAR:				// 1byte 문자 (ex : 영어)
 	{
-	case WM_IME_COMPOSITION:
-		if (m_bFocusOnNickName)
-		{
-			m_hIMC = ImmGetContext(hWnd);	// ime핸들을 얻는것
-
-			if (lparam & GCS_RESULTSTR)
-			{
-				if ((len = ImmGetCompositionString(m_hIMC, GCS_RESULTSTR, NULL, 0)) > 0)
-				{
-					// 완성된 글자가 있다.
-					ImmGetCompositionString(m_hIMC, GCS_RESULTSTR, Cstr, len);
-					Cstr[len] = 0;
-					mNicknameString += Cstr;
-				}
-
-			}
-			else if (lparam & GCS_COMPSTR)
-			{
-				// 현재 글자를 조합 중이다.
-
-				// 조합중인 길이를 얻는다.
-				len = ImmGetCompositionString(m_hIMC, GCS_COMPSTR, NULL, 0);
-				// str에  조합중인 문자를 얻는다.
-				ImmGetCompositionString(m_hIMC, GCS_COMPSTR, Cstr, len);
-				Cstr[len] = 0;
-			}
-
-			ImmReleaseContext(hWnd, m_hIMC);	// IME 핸들 반환!!
-		}
-		return 0;
-	case WM_CHAR:				// 1byte 문자 (ex : 영어)
-		
-	/*	if (m_bFocusOnIP) 
-		{
-			if ((char)wparam == '\b')
-			{
-				if(mIpString.size() > 0)
-				mIpString.pop_back();
-			}
-			else
-			{
-				mIpString += (wchar_t)wparam;
-			}
-		}
-		if (m_bFocusOnPort)
-		{
-			if ((char)wparam == '\b')
-			{
-				if (mPortString.size() > 0)
-				mPortString.pop_back();
-			}
-			else
-			{
-				mPortString += (wchar_t)wparam;
-			}
-		}*/
-		if (m_bFocusOnNickName)
-		{
-			if ((char)wparam == '\b')
-			{
-				if (mNicknameString.size() > 0)
-				mNicknameString.pop_back();
-			}
-			else
-			{
-			}
-		}
-		return 0;
-	case WM_IME_NOTIFY:			// 한자입력...
-		return 0;
-	case WM_KEYDOWN:			// 키다운..
-		return 0;
+// 		if (wparam == '\b' && mNicknameString.size() > 0)
+// 		{
+// 			mNicknameString.pop_back();
+// 		}
+// 		else
+// 			mNicknameString += wparam;
 	}
+ 		return 0;
+ 	case WM_IME_NOTIFY:			// 한자입력...
+ 		return 0;
+ 	case WM_KEYDOWN:			// 키다운..
+ 		return 0;
+ 	}
 	return 1;
 }

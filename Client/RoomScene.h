@@ -27,17 +27,16 @@ class CRoomScene :
 	//////////////////////////////////////////////////////////////////////////
 	//로고화면
 	CBitMap mMainLogo;
-	GameTimer mTimeForLogo;
+// 	GameTimer mTimeForLogo;
 	//////////////////////////////////////////////////////////////////////////
 	//메인 화면
-	CButtonClass mConnectButton;
-	CButtonClass mExitButton;
+// 	CButtonClass mConnectButton;
+// 	CButtonClass mExitButton;
 	CBitMap mBackgroundPicture;
 	CBitMap mKingLogo;
 
 	CButtonClass mStartButton;
 
-	CButtonClass mChangeStateButton[4];
 
 	//닉네임입력
 	CDrawText mDrawText;
@@ -45,15 +44,15 @@ class CRoomScene :
 
 	//////////////////////////////////////////////////////////////////////////
 	///inputBoard;
-	CBitMap mInputBoard;
-	CBitMap mInputIP;
-	CBitMap mInputPort;
-	CBitMap mInputNickname;
-	CButtonClass mLobbyConnectButton;
-	CButtonClass mReturnButton;
+// 	CBitMap mInputBoard;
+// 	CBitMap mInputIP;
+// 	CBitMap mInputPort;
+// 	CBitMap mInputNickname;
+// 	CButtonClass mLobbyConnectButton;
+// 	CButtonClass mReturnButton;
 
-	std::wstring mIpString;
-	std::wstring mPortString;
+// 	std::wstring mIpString;
+// 	std::wstring mPortString;
 	std::wstring mNicknameString;
 
 	bool bActivedInputBoard;
@@ -63,13 +62,13 @@ class CRoomScene :
 
 	ID3D11DepthStencilState* mDepthDisableState;
 	ID3D11DepthStencilState* mDepthStencilState;
-
-	const int LOGO_X = 100;
-	const int LOGO_Y = -70;
-
-	wchar_t Text[255];     // 텍스트를 저장하기위한 변수
-	wchar_t Cstr[10];      // 조합중인 문자!!
-						   //x 0.8 , y 1.13
+// 
+// 	const int LOGO_X = 100;
+// 	const int LOGO_Y = -70;
+// 
+// 	wchar_t Text[255];     // 텍스트를 저장하기위한 변수
+// 	wchar_t Cstr[10];      // 조합중인 문자!!
+// 						   //x 0.8 , y 1.13
 
 	//닉네임
 	const int PLAYER1_NICKNAME_LOCATION_X = 390 * 0.8f;
@@ -170,7 +169,7 @@ public:
 	virtual void OnMouseMove(WPARAM btnState, int x, int y);
 	virtual void OnResize();
 	virtual void OnKeyboardButtonDown(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam);
-	int GetText(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam);
+	//int GetText(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
 };
 
