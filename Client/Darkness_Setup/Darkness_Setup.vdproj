@@ -93,12 +93,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_11C0E6DC1A0E401CAD97883307FBF744"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_128FE537888E4939926303D3EEC4ED9E"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -190,12 +184,6 @@
         "Entry"
         {
         "MsmKey" = "8:_2094AD1A91274DD3BFBAC3812AF4A94C"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_23A6C5EC537A4A21BBAC2EB1A98CAE2F"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -321,12 +309,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_3E74E177A3C64B788B086EAE88918C45"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_3F068FAC7BA74910BFCCD684A8EEF5EE"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -400,6 +382,12 @@
         "Entry"
         {
         "MsmKey" = "8:_50ABFFF102A04D838E3431B59D53C5C9"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_52617A382DAA414BB51BFA94A2DDF238"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -627,6 +615,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_818F09CF32D14FD3955801E47C0F074B"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_81D6C027A40147E181716366313C143E"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -658,12 +652,6 @@
         "Entry"
         {
         "MsmKey" = "8:_86EE64CE3A9748A3A2942002481EE5E8"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_87519DCB6B3445F9A1A4153C91A07673"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -861,6 +849,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_ABFBB5F34E93495F89B5FEBECE990E86"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_AC9AF05156414F909EF46563D515C34D"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -970,6 +964,12 @@
         "Entry"
         {
         "MsmKey" = "8:_C2F71C732A1F4C0991EC952FEE5D7439"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C355AB4D8058464D86EB03BBC540B738"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -1252,12 +1252,6 @@
         "Entry"
         {
         "MsmKey" = "8:_F25161A7761C40F6AEAF9F7F190A9C65"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_F3CBC336559A4FC4B115344636E465B0"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -1964,26 +1958,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_23A6C5EC537A4A21BBAC2EB1A98CAE2F"
-            {
-            "SourcePath" = "8:..\\..\\Server\\Darkness_GamePlay_Server\\player.txt"
-            "TargetName" = "8:player.txt"
-            "Tag" = "8:"
-            "Folder" = "8:_1DC4B806D993479E9C38AF752BDFA74A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_23F8DFB34A53466BBD3E9F68E0DE5218"
             {
             "SourcePath" = "8:..\\UITextures\\right2.png"
@@ -2384,26 +2358,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3E74E177A3C64B788B086EAE88918C45"
-            {
-            "SourcePath" = "8:..\\..\\Server\\Darkness_GamePlay_Server\\obstacle.txt"
-            "TargetName" = "8:obstacle.txt"
-            "Tag" = "8:"
-            "Folder" = "8:_1DC4B806D993479E9C38AF752BDFA74A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3F068FAC7BA74910BFCCD684A8EEF5EE"
             {
             "SourcePath" = "8:..\\FX\\InstancedBasic.fxo"
@@ -2630,6 +2584,26 @@
             "TargetName" = "8:SnowBox.png"
             "Tag" = "8:"
             "Folder" = "8:_99E4FA5068BE4B4288CDD7F943267405"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_52617A382DAA414BB51BFA94A2DDF238"
+            {
+            "SourcePath" = "8:..\\..\\Darkness_GamePlay_Server\\player.txt"
+            "TargetName" = "8:player.txt"
+            "Tag" = "8:"
+            "Folder" = "8:_1DC4B806D993479E9C38AF752BDFA74A"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -3384,6 +3358,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_818F09CF32D14FD3955801E47C0F074B"
+            {
+            "SourcePath" = "8:..\\..\\Darkness_GamePlay_Server\\obstacle.txt"
+            "TargetName" = "8:obstacle.txt"
+            "Tag" = "8:"
+            "Folder" = "8:_1DC4B806D993479E9C38AF752BDFA74A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_81D6C027A40147E181716366313C143E"
             {
             "SourcePath" = "8:..\\Darkness fbx\\angelStatue.fbx"
@@ -3490,26 +3484,6 @@
             "TargetName" = "8:Building_21.fbx"
             "Tag" = "8:"
             "Folder" = "8:_B2FBD4455FEA4163A8E126B105E8D91F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_87519DCB6B3445F9A1A4153C91A07673"
-            {
-            "SourcePath" = "8:..\\..\\Server\\Darkness_GamePlay_Server\\obstacle2.txt"
-            "TargetName" = "8:obstacle2.txt"
-            "Tag" = "8:"
-            "Folder" = "8:_1DC4B806D993479E9C38AF752BDFA74A"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -4544,6 +4518,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C355AB4D8058464D86EB03BBC540B738"
+            {
+            "SourcePath" = "8:..\\..\\Darkness_GamePlay_Server\\obstacle2.txt"
+            "TargetName" = "8:obstacle2.txt"
+            "Tag" = "8:"
+            "Folder" = "8:_1DC4B806D993479E9C38AF752BDFA74A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C3F3278AC5C64B87A7AB0C8627EB9DB6"
             {
             "SourcePath" = "8:..\\Darkness fbx\\Building_d.fbx"
@@ -5484,26 +5478,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F3CBC336559A4FC4B115344636E465B0"
-            {
-            "SourcePath" = "8:..\\..\\Server\\Darkness_GamePlay_Server\\ReadMe.txt"
-            "TargetName" = "8:ReadMe.txt"
-            "Tag" = "8:"
-            "Folder" = "8:_1DC4B806D993479E9C38AF752BDFA74A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F6B426A2336C4605B53B1482B7BBDD20"
             {
             "SourcePath" = "8:..\\UITextures\\homeButton2.png"
@@ -5769,7 +5743,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Darkness_Setup"
         "ProductCode" = "8:{6938F3C1-E1E8-4766-B0A0-AA12B18567A6}"
-        "PackageCode" = "8:{B9A45CD1-F9F8-4AB0-836B-FAC6853EEB2A}"
+        "PackageCode" = "8:{522B104F-FA3A-40B4-8374-AC79686AAE6D}"
         "UpgradeCode" = "8:{9C0F0414-4579-435A-9E88-2C2FF637711A}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -5903,6 +5877,20 @@
             "Icon" = "8:"
             "Feature" = "8:"
             }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_36D1DD3DDEFE4D59AD73EB207B0B33A7"
+            {
+            "Name" = "8:Darkness_GamePlay_Server (Active)"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_ABFBB5F34E93495F89B5FEBECE990E86"
+            "Folder" = "8:_5121DE4604734F30BD4C3C5352B38F20"
+            "WorkingFolder" = "8:_1DC4B806D993479E9C38AF752BDFA74A"
+            "Icon" = "8:"
+            "Feature" = "8:"
+            }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_4A8AA9FE118C4BB1A0FC9D77991DA11A"
             {
             "Name" = "8:Darkness"
@@ -5917,7 +5905,7 @@
             "Icon" = "8:"
             "Feature" = "8:"
             }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_68EBF42BDD454660B07D9350808D8E7F"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_CDAF3CCA513343E49F33B1AFF2033983"
             {
             "Name" = "8:Darkness_GamePlay_Server (Active)"
             "Arguments" = "8:"
@@ -5925,21 +5913,7 @@
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_11C0E6DC1A0E401CAD97883307FBF744"
-            "Folder" = "8:_5121DE4604734F30BD4C3C5352B38F20"
-            "WorkingFolder" = "8:_1DC4B806D993479E9C38AF752BDFA74A"
-            "Icon" = "8:"
-            "Feature" = "8:"
-            }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_AB6C3AD180AC4C619F426C9594021D0D"
-            {
-            "Name" = "8:Darkness_GamePlay_Server (Active)"
-            "Arguments" = "8:"
-            "Description" = "8:"
-            "ShowCmd" = "3:1"
-            "IconIndex" = "3:0"
-            "Transitive" = "11:FALSE"
-            "Target" = "8:_11C0E6DC1A0E401CAD97883307FBF744"
+            "Target" = "8:_ABFBB5F34E93495F89B5FEBECE990E86"
             "Folder" = "8:_585482E52AA145FF9138AF113F01EAF8"
             "WorkingFolder" = "8:_1DC4B806D993479E9C38AF752BDFA74A"
             "Icon" = "8:"
@@ -6344,37 +6318,9 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_11C0E6DC1A0E401CAD97883307FBF744"
-            {
-            "SourcePath" = "8:..\\x64\\Debug\\Darkness_GamePlay_Server.exe"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_1DC4B806D993479E9C38AF752BDFA74A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:"
-            "OutputGroupCanonicalName" = "8:Built"
-            "OutputProjectGuid" = "8:{BF186D90-C261-42DE-A3EC-76572977FB46}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_50510003072F4B2CAE23CAA26400964C"
             {
-            "SourcePath" = "8:..\\x64\\Debug\\Darkness.exe"
+            "SourcePath" = "8:..\\x64\\Release\\Darkness.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_7F9EA113FC37480C8373F586B14AA253"
@@ -6395,6 +6341,34 @@
             "OutputConfiguration" = "8:"
             "OutputGroupCanonicalName" = "8:Built"
             "OutputProjectGuid" = "8:{E76DB861-9CF7-4CF2-A077-78AA9E5F5303}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_ABFBB5F34E93495F89B5FEBECE990E86"
+            {
+            "SourcePath" = "8:..\\x64\\Release\\Darkness_GamePlay_Server.exe"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_1DC4B806D993479E9C38AF752BDFA74A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:Built"
+            "OutputProjectGuid" = "8:{BF186D90-C261-42DE-A3EC-76572977FB46}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"
                 {

@@ -37,7 +37,7 @@ bool SoundClass::Initialize(HWND hwnd)
 
 	// Load a wave audio file onto a secondary buffer.
 	result = LoadWaveFile("Zombie_2.wav", &m_secondaryBuffer1[0]);
-	result = LoadWaveFile("Zombie_6.wav", &m_secondaryBuffer1[1]);
+	result = LoadWaveFile("Zombie_1.wav", &m_secondaryBuffer1[1]);
 
 	if(!result)
 	{

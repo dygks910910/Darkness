@@ -7,7 +7,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Darkness", "DarknessClient.
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Darkness_Setup", "Darkness_Setup\Darkness_Setup.vdproj", "{903E3836-EBC2-4A4F-B2A1-0387ADEEA324}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Darkness_GamePlay_Server", "..\Server\Darkness_GamePlay_Server\Darkness_GamePlay_Server.vcxproj", "{BF186D90-C261-42DE-A3EC-76572977FB46}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Darkness_GamePlay_Server", "..\Darkness_GamePlay_Server\Darkness_GamePlay_Server.vcxproj", "{BF186D90-C261-42DE-A3EC-76572977FB46}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
