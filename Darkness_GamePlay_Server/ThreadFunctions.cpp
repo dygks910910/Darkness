@@ -40,12 +40,6 @@ void AcceptThread()
 		if (client_sock == SOCKET_ERROR)
 			break;
 
-		//if (thread_running == false)
-		//{
-			//closesocket(client_sock);
-			//break;
-		//}
-
 		// id값을 0~8번을 돌려서 비어 있는 값으로 set해준다.
 		// MAXPLAYER 만큼
 		for (int i = 0; i < Room::GetInstance()->GetMaxPlayer(); ++i) {
