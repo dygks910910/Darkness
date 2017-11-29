@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DarknessMaptool", "Assembly-CSharp.csproj", "{2A046976-6134-ADE4-4D8D-98049CAFBDAC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DarknessMaptool", "Assembly-CSharp-Editor.csproj", "{C98B585C-A422-EE5C-296D-607689F8D2D8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2A046976-6134-ADE4-4D8D-98049CAFBDAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A046976-6134-ADE4-4D8D-98049CAFBDAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A046976-6134-ADE4-4D8D-98049CAFBDAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A046976-6134-ADE4-4D8D-98049CAFBDAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C98B585C-A422-EE5C-296D-607689F8D2D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C98B585C-A422-EE5C-296D-607689F8D2D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C98B585C-A422-EE5C-296D-607689F8D2D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C98B585C-A422-EE5C-296D-607689F8D2D8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
