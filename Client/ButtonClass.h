@@ -40,7 +40,11 @@ public:
 	CButtonClass();
 	~CButtonClass();
 	XNA::AxisAlignedBox GetBox() { return mButton[0].mMeshBox; }
-	
+	int GetLocationX() { return mLocationX; };
+	int GetLocationY() { return mLocationY; };
+	int GetBitmapWidth() { return mBitmapWidth; }
+	int GetBitmapHeight() { return mBitmapHeight; }
+
 	bool isClicked;
 
 };

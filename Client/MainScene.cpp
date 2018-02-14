@@ -24,7 +24,6 @@ bool CMainScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 {
 	mClientWidth = clientWidth;
 	mClientHeight = clientHeight;
-
 	mCam.SetPosition(0, 0, 0);
 	XMStoreFloat4x4(&mWorldMtx, XMMatrixTranslation(0, 0, 7));
 
@@ -38,15 +37,26 @@ bool CMainScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	mMainLogo.Initialize(device, mClientWidth, mClientHeight, L"UITextures/DarknessLogo.PNG", mClientWidth, mClientHeight);
 	//////////////////////////////////////////////////////////////////////////
 	//메인화면 초기화.
-	mBackgroundPicture.Initialize(device, mClientWidth, mClientHeight, L"UITextures/backGroundClown.PNG", mClientWidth, mClientHeight);
-	mConnectButton.Init(device, BUTTON_SIZE_X, BUTTON_SIZE_Y, L"UITextures/connect.png", CONNECT_BUTTON_X, CONNECT_BUTTON_Y, mClientWidth, mClientHeight);
-	mExitButton.Init(device, BUTTON_SIZE_X, BUTTON_SIZE_Y, L"UITextures/exit.png", CONNECT_BUTTON_X, EXIT_BUTTON_Y, mClientWidth, mClientHeight);
+	mBackgroundPicture.Initialize(device, mClientWidth, mClientHeight, L"UITextures/backGroundClown.PNG", mClientWidth-100, mClientHeight-100);
+	mConnectButton.Init(device, BUTTON_SIZE_X, BUTTON_SIZE_Y, L"UITextures/connect.png", mClientWidth/2 + mClientWidth/2/3, mClientHeight/2+mClientHeight/2/3, mClientWidth, mClientHeight);
+	mExitButton.Init(device, BUTTON_SIZE_X, BUTTON_SIZE_Y, L"UITextures/exit.png", mClientWidth / 2 + mClientWidth / 2 / 3, mClientHeight / 2 + mClientHeight / 2 /3+mConnectButton.GetBitmapHeight(), mClientWidth, mClientHeight);
 	//////////////////////////////////////////////////////////////////////////
-	//inputboard 초기화.
-	mInputBoard.Initialize(device, mClientWidth, mClientHeight, L"UITextures/NicknameBoard.png", 800, 600);
-	mInputNickname.Initialize(device, mClientWidth, mClientHeight, L"UITextures/InputNickName.png", 700, 150);
-	mReturnButton.Init(device, RETURN_BUTTON_SIZE_X, RETURN_BUTTON_SIZE_Y, L"UITextures/X.png", RETURN_BUTTON_X, RETURN_BUTTON_Y, mClientWidth, mClientHeight);
-	mLobbyConnectButton.Init(device, LOGIN_BUTTON_SIZE_X, LOGIN_BUTTON_SIZE_Y, L"UITextures/Login.png", LOGIN_BUTTON_X, LOGIN_BUTTON_Y, mClientWidth, mClientHeight);
+	
+	
+//inputboard 초기화.
+	mInputBoard.Initialize(device,mClientWidth, mClientHeight,
+		L"UITextures/NicknameBoard.png",800 , 600);
+
+	mInputNickname.Initialize(device, mClientWidth, mClientHeight,
+		L"UITextures/InputNickName.png", 700, 150);
+	
+	mReturnButton.Init(device, RETURN_BUTTON_SIZE_X, RETURN_BUTTON_SIZE_Y,
+		L"UITextures/X.png", RETURN_BUTTON_X, RETURN_BUTTON_Y,
+		mClientWidth, mClientHeight);
+
+	mLobbyConnectButton.Init(device, LOGIN_BUTTON_SIZE_X, LOGIN_BUTTON_SIZE_Y,
+		L"UITextures/Login.png", LOGIN_BUTTON_X, LOGIN_BUTTON_Y,
+		mClientWidth, mClientHeight);
 
  	D3D11_DEPTH_STENCIL_DESC depthDisabledStencilDesc;
  	ZeroMemory(&depthDisabledStencilDesc, sizeof(depthDisabledStencilDesc));
@@ -69,7 +79,7 @@ bool CMainScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
  	depthDisabledStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
  
  	HR(device->CreateDepthStencilState(&depthDisabledStencilDesc, &mDepthDisableState));
- 	depthDisabledStencilDesc.DepthEnable = true;
+ 	depthDisabledStencilDesc.DepthEnable = false;
  
  	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
  	// Initialize the description of the stencil state.
@@ -197,13 +207,11 @@ void CMainScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	mConnectButton.Draw(dc);
 	mExitButton.Draw(dc);
 	//////////////////////////////////////////////////////////////////////////
-	//IP주소 입력창 화면
 	if (bActivedInputBoard)
 	{
-		mInputBoard.Render(dc, INPUT_BOARD_X, INPUT_BOARD_Y);
+		mInputBoard.Render(dc, mClientWidth/2-mClientWidth/2/3, mClientHeight/2-mClientWidth/2/4);
 
-		//mInputNickname.Render(dc, INPUT_NICKNAME_X, INPUT_NICKNAME_Y);
-		DrawText(mNicknameString, FONT_SIZE, INPUT_NICKNAME_X + 200, INPUT_NICKNAME_Y + 80);
+		DrawText(mNicknameString, FONT_SIZE, INPUT_NICKNAME_X + 300, INPUT_NICKNAME_Y + 80);
 
 		mLobbyConnectButton.Draw(dc);
 		mReturnButton.Draw(dc);
@@ -292,13 +300,13 @@ int CMainScene::GetText(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
  
  			if (lparam & GCS_RESULTSTR)
  			{
- 				if ((len = ImmGetCompositionString(m_hIMC, GCS_RESULTSTR, NULL, 0)) > 0)
- 				{
- 					// 완성된 글자가 있다.
- 					ImmGetCompositionString(m_hIMC, GCS_RESULTSTR, Cstr, len);
- 					Cstr[len] = 0;
- 					mNicknameString += Cstr;
- 				}
+ 				//if ((len = ImmGetCompositionString(m_hIMC, GCS_RESULTSTR, NULL, 0)) > 0)
+ 				//{
+ 				//	// 완성된 글자가 있다.
+ 				//	ImmGetCompositionString(m_hIMC, GCS_RESULTSTR, Cstr, len);
+ 				//	Cstr[len] = 0;
+ 				//	mNicknameString += Cstr;
+ 				//}
  			}
  			else if (lparam & GCS_COMPSTR)
  			{
@@ -315,12 +323,12 @@ int CMainScene::GetText(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
  		return 0;
  	case WM_CHAR:				// 1byte 문자 (ex : 영어)
 	{
-// 		if (wparam == '\b' && mNicknameString.size() > 0)
-// 		{
-// 			mNicknameString.pop_back();
-// 		}
-// 		else
-// 			mNicknameString += wparam;
+ 		if (wparam == '\b' && mNicknameString.size() > 0)
+ 		{
+ 			mNicknameString.pop_back();
+ 		}
+ 		else
+ 			mNicknameString += wparam;
 	}
  		return 0;
  	case WM_IME_NOTIFY:			// 한자입력...

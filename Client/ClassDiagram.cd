@@ -1,0 +1,1313 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Camera" Collapsed="true">
+    <Position X="66.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQQCicAABigAAJEARAAAQQAEwAIBogBggQFEAMAgAkI=</HashCode>
+      <FileName>Common\Camera.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="D3DApp" Collapsed="true">
+    <Position X="4.75" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAABEABBEEAgAAAKQ4AQAAAAghIyAAJAJIACAEASBCo=</HashCode>
+      <FileName>Common\d3dApp.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="d3dHelper" Collapsed="true">
+    <Position X="79" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQCAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dUtil.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TextHelper" Collapsed="true">
+    <Position X="70.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dUtil.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Convert" Collapsed="true">
+    <Position X="73.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Common\d3dUtil.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CEffectVector&lt;T&gt;" Collapsed="true">
+    <Position X="10.75" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AiYAIEAhEAAAADCAgAIQAAADAAEBAAAAAAACAQBEAAA=</HashCode>
+      <FileName>Common\d3dxGlobal.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CEffectVectorOwner&lt;T&gt;" Collapsed="true">
+    <Position X="10.75" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAAAAAAIAAAAAAAEAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Common\d3dxGlobal.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CheckedNumber&lt;T, MaxValue&gt;" Collapsed="true">
+    <Position X="14.75" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAAQAAAAQAAAAAAEAgAAAAAQA=</HashCode>
+      <FileName>Common\d3dxGlobal.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CDataBlock" Collapsed="true">
+    <Position X="73.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAIAAARgAAAACAAABAAAAAAAQAQAAAAIAAAA=</HashCode>
+      <FileName>Common\d3dxGlobal.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CDataBlockStore" Collapsed="true">
+    <Position X="75.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAIIBAYCAIAACAAAAAAABIAAAAAAAAAIQAAA=</HashCode>
+      <FileName>Common\d3dxGlobal.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CEffectHashTable&lt;T, pfnIsEqual&gt;" Collapsed="true">
+    <Position X="7.75" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACQBQAAAAQAAACEAAAAEAAABCAAAABBAQEABBDQ=</HashCode>
+      <FileName>Common\d3dxGlobal.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CEffectHashTableWithPrivateHeap&lt;T, pfnIsEqual&gt;" Collapsed="true">
+    <Position X="7.75" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAAAAAAgAAAAAAAAQAAAAAgAAAEABAAA=</HashCode>
+      <FileName>Common\d3dxGlobal.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameTimer" Collapsed="true">
+    <Position X="68.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AhAAAAgAACAABAAJAAAIAgAAAAAAAAUAIAAAAAAAQQA=</HashCode>
+      <FileName>Common\GameTimer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometryGenerator" Collapsed="true">
+    <Position X="70.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAgkAAQAAAAAAIAAQAAgAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\GeometryGenerator.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MathHelper" Collapsed="true">
+    <Position X="77.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAABABAIAAAAEAAiIAAAAAAIEAAAgAAAAAAAAAA=</HashCode>
+      <FileName>Common\MathHelper.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TextureMgr" Collapsed="true">
+    <Position X="72" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAEIBABAAAAAAAAAAAAAAAAiAAAAAAA=</HashCode>
+      <FileName>Common\TextureMgr.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Waves" Collapsed="true">
+    <Position X="73.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABQAgAAAAAAAAAAAQBAIAEEAQBELQAEgAAICAABARhA=</HashCode>
+      <FileName>Common\Waves.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CBitMap" Collapsed="true">
+    <Position X="68.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CCAEAQASAgAAEUAQCAAQCRAAQAIACAAAABAQAACAEQA=</HashCode>
+      <FileName>BitMap.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CButtonClass" Collapsed="true">
+    <Position X="70.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAQAAAkgAAgAAAAAIMBAQAAJgoAAiAACCAgA=</HashCode>
+      <FileName>ButtonClass.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CMiniMap" Collapsed="true">
+    <Position X="70.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAMEAAAAZABAAAUgQCQEgAAAAQCABAAAAAAIAA=</HashCode>
+      <FileName>MiniMap.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTexture" Collapsed="true">
+    <Position X="77.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQACEAAAAQAAAAAAAYAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Texture.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CEndingScene" Collapsed="true">
+    <Position X="6.5" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgEAAAkQAAAAAwAKQAAECBAOAjEABAAAIAACAABSAAA=</HashCode>
+      <FileName>EndingScene.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CMainScene" Collapsed="true">
+    <Position X="8.75" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>MkWAghAAAAEEEj9MQGDCAAgCEjCAhAhgIAICGMFyAIA=</HashCode>
+      <FileName>MainScene.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CRoomScene" Collapsed="true">
+    <Position X="2" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>MpTRABEQogAAAgAEwAHkACgiQjCABAggYLIiAEAaBYA=</HashCode>
+      <FileName>RoomScene.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CScene" Collapsed="true">
+    <Position X="5.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAgAAQgAAAAAAAhAQAAIAIAACAAASAAA=</HashCode>
+      <FileName>Scene.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSceneManager" Collapsed="true">
+    <Position X="75.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAIBAAAAAAogAQAJJIAAAAhAQAAIAIAgCIAASAgA=</HashCode>
+      <FileName>SceneManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CGameScene" Collapsed="true">
+    <Position X="4.25" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AkDAAlABiAYgAwIAQQAGEIACg3pIFJiEJAICIEgSgBA=</HashCode>
+      <FileName>GameScene.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CFbxLoader" Collapsed="true">
+    <Position X="79" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ADAAgAQEhgAAAAAAgQAANEBIAADAiIBAAIECBQAUAQA=</HashCode>
+      <FileName>FbxLoader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Effect" Collapsed="true">
+    <Position X="16.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAgAAIAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Effects.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BasicEffect" Collapsed="true">
+    <Position X="21.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>RgEQgAAABhBwAwAEJBUFQBAAYBAAAAAEDEREsAEEQRA=</HashCode>
+      <FileName>Effects.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TextureEffect" Collapsed="true">
+    <Position X="23.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAgARACAAEQAA=</HashCode>
+      <FileName>Effects.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NormalMapEffect" Collapsed="true">
+    <Position X="25.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>RQEAgAgARlB4AxBEJBUFQRACYBAAAAAFDcREsAEEQRI=</HashCode>
+      <FileName>Effects.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SsaoNormalDepthEffect" Collapsed="true">
+    <Position X="28" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAEAAAIAAABBAEAAAAAQABCAxAAAQGQAI=</HashCode>
+      <FileName>Effects.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SsaoEffect" Collapsed="true">
+    <Position X="30.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>sAAAAAgBEAABIAwAAAAAEEAEEAEAAAAIgAAAAAARAAE=</HashCode>
+      <FileName>Effects.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SsaoBlurEffect" Collapsed="true">
+    <Position X="3.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ICBAAIgAAAAIAgAAEAAAAAgAAAAAAAAAgAAAAAAABAA=</HashCode>
+      <FileName>Effects.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DebugTexEffect" Collapsed="true">
+    <Position X="5.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAEAAAAAAAAAAgAjEAAAAAAAJAAAAMAAA=</HashCode>
+      <FileName>Effects.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BuildShadowMapEffect" Collapsed="true">
+    <Position X="7.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>RAAACKAIADBIEIAAIAAAQBAQEAEAAAE5DARAMAAERAE=</HashCode>
+      <FileName>Effects.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SkyEffect" Collapsed="true">
+    <Position X="10" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAQAABAAAAAAAAAAAAAAAAAAABAAAAECIA=</HashCode>
+      <FileName>Effects.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TerrainEffect" Collapsed="true">
+    <Position X="12.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>RAAAAIAARFAAEIAEBBAAQBABYRDAOgUUCAQIAIMEAhA=</HashCode>
+      <FileName>Effects.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ParticleEffect" Collapsed="true">
+    <Position X="14.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>RAEAAIBoAAAAMLAAAAAIAAAAAAAAAEAAQACAAAFAABE=</HashCode>
+      <FileName>Effects.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InstancedBasicEffect" Collapsed="true">
+    <Position X="16.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>RAAAAIAABBAAA4AEJBABQAAAIBAAAAAEDAQAkAAEQBA=</HashCode>
+      <FileName>Effects.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LineEffect" Collapsed="true">
+    <Position X="19" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAEAAAAEAAAAAAABAAAAEAAA=</HashCode>
+      <FileName>Effects.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Effects" Collapsed="true">
+    <Position X="66.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADAAAAAAAEAIQAgAAAAhgAAgAEAAAEAAAAgAIDAAA=</HashCode>
+      <FileName>Effects.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderStates" Collapsed="true">
+    <Position X="70.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAEAAAAAAAAAQAAAAAAQAAAAAAAAAFAAAgAAIAAAA=</HashCode>
+      <FileName>RenderStates.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCordinate" Collapsed="true">
+    <Position X="72" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAQAAAgAAEAAAAAAAAACAAAAAAAAGEAAAAAA=</HashCode>
+      <FileName>Cordinate.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="M3DLoader" Collapsed="true">
+    <Position X="75.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgACYAEAACAIAABAAAAAEAAAAAAAAAAAAAAAAIA=</HashCode>
+      <FileName>LoadM3d.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshGeometry" Collapsed="true">
+    <Position X="79" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEEAgBAAAIgAAQAEAAAAAEACAAEAAAAAgAAAAAAA=</HashCode>
+      <FileName>MeshGeometry.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SkinnedData" Collapsed="true">
+    <Position X="73.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAggAAAIABEAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>SkinnedData.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ParticleSystem" Collapsed="true">
+    <Position X="68.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AASAhACAAABABoKAQEAAQAMAAIAEAAgAAAAiAKAIAEg=</HashCode>
+      <FileName>ParticleSystem.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sky" Collapsed="true">
+    <Position X="77.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEEAAAAAAAAgEAAAAAAAAAAACAACAAEAAgACAAAAA=</HashCode>
+      <FileName>Sky.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CMainGame" Collapsed="true">
+    <Position X="4.75" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAABAQAAAAAAAAhAAAAAAIAACAAASACA=</HashCode>
+      <FileName>MainGame.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CStaticBasicModel" Collapsed="true">
+    <Position X="1.75" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIBSAAgAQAABgQIAAIQAACAAAAAAAAAIBAAACACQAA=</HashCode>
+      <FileName>Model.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CStaticNomalModel" Collapsed="true">
+    <Position X="1.75" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgQEiAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Model.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CInstanceBasicModel" Collapsed="true">
+    <Position X="66.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AECBQAAIAAAAAkAAACIAkAQACEBAAQAAIAgAACAAAAA=</HashCode>
+      <FileName>Model.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CModelManager" Collapsed="true">
+    <Position X="72" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>/KzlsPYiFMAsCaO3F25RYOAjZES4eUIIrHGroslJHvg=</HashCode>
+      <FileName>ModelManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SkinnedModel" Collapsed="true">
+    <Position X="75.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEABAACAAFAAAAAAAAAQAgIAAAAAAAAAEAAAAAEAAAA=</HashCode>
+      <FileName>SkinnedModel.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InputLayoutDesc" Collapsed="true">
+    <Position X="72" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACCAAAAAAAAAAQQACAAAAAAEAAAAABACA=</HashCode>
+      <FileName>Vertex.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InputLayouts" Collapsed="true">
+    <Position X="73.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACCAAAAAAAAAAQQACAAAAEAEAAAAIBACA=</HashCode>
+      <FileName>Vertex.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Terrain" Collapsed="true">
+    <Position X="68.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ICEIAACACQAQAgAAAAAAAABCAAkBAACAgEADc0EAIIQ=</HashCode>
+      <FileName>Terrain.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ShadowMap" Collapsed="true">
+    <Position X="72" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAABBAAAAABAAABAAAAABAQAAAkAAAAAAI=</HashCode>
+      <FileName>ShadowMap.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ssao" Collapsed="true">
+    <Position X="66.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABIACAAYA4EEQgAIAAAICEQIEIAgEAACAAKgCAAEBAA=</HashCode>
+      <FileName>Ssao.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SoundClass" Collapsed="true">
+    <Position X="79" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAACAAAAAARCAACAEAQAARAAEAAAEAAAAAAABQgA=</HashCode>
+      <FileName>Sound.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CDrawText" Collapsed="true">
+    <Position X="77.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAGAAAAAABAAAAAACAAAACAAABBAA=</HashCode>
+      <FileName>DrawText.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NetworkMgr" Collapsed="true">
+    <Position X="66.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IgAEEBAAAAgAgQAAISACAAKCVIBAMBgAAA0ABhAAIQg=</HashCode>
+      <FileName>NetworkMgr.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="D3DX11Core::CMemoryStream" Collapsed="true">
+    <Position X="68.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAABACEAABAACAAAAAAgAAQAAAAAgAAAAIAAAAA=</HashCode>
+      <FileName>Common\d3dxGlobal.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="D3DX11_STATE_BLOCK_MASK" Collapsed="true">
+    <Position X="70.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>HvCAQAIAADAEAESABACAwQGADCAIAQQQIAACQACIMSg=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="D3DX11_EFFECT_TYPE_DESC" Collapsed="true">
+    <Position X="75.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAGAAAAIQAAAAAAAAAREAAQAEAAgAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="D3DX11_EFFECT_VARIABLE_DESC" Collapsed="true">
+    <Position X="77.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAABAAAAAgACAAAAAAAAAQAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="D3DX11_EFFECT_SHADER_DESC" Collapsed="true">
+    <Position X="73.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAAQgAAAAEAAAAACAQCACAAAAAAAACAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="D3DX11_PASS_DESC" Collapsed="true">
+    <Position X="66.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAIBAAAAAIAAQAQAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="D3DX11_PASS_SHADER_DESC" Collapsed="true">
+    <Position X="68.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="D3DX11_TECHNIQUE_DESC" Collapsed="true">
+    <Position X="72" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAQAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="D3DX11_GROUP_DESC" Collapsed="true">
+    <Position X="79" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAAAAAAAAAAQAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="D3DX11_EFFECT_DESC" Collapsed="true">
+    <Position X="72" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAEAAAAAEAAAAAAAAAAIEAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="DirectionalLight" Collapsed="true">
+    <Position X="73.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAQAAAAAAAgAAAiAAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Common\LightHelper.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="PointLight" Collapsed="true">
+    <Position X="66.75" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAACgAgAgAAAAAAAACAAAAAAAAAIEAAAAA=</HashCode>
+      <FileName>Common\LightHelper.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="SpotLight" Collapsed="true">
+    <Position X="66.75" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAABACgAgAiAAAAAAAACAAAAAAAgAAEAAAAA=</HashCode>
+      <FileName>Common\LightHelper.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Material" Collapsed="true">
+    <Position X="73.75" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAAgAAAAABAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Common\LightHelper.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="playerScore" Collapsed="true">
+    <Position X="79" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAACAAQAAAAAAAAAAAACUEAAAAAAgAAAAAQA=</HashCode>
+      <FileName>EndingScene.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="cs_packet_start_button_click" Collapsed="true">
+    <Position X="70.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RoomScene.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="cs_packet_draw_start" Collapsed="true">
+    <Position X="75.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameScene.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="BoundingSphere" Collapsed="true">
+    <Position X="73.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>GameScene.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="M3dMaterial" Collapsed="true">
+    <Position X="72" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAIIAIAAAAAAAAAABAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>LoadM3d.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Keyframe" Collapsed="true">
+    <Position X="68.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAEAAAACAAIAAAAACAACAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SkinnedData.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="BoneAnimation" Collapsed="true">
+    <Position X="72" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAIAAAAEAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SkinnedData.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="AnimationClip" Collapsed="true">
+    <Position X="66.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAgAAQAAAAAAAAACAAAAAAAAQA=</HashCode>
+      <FileName>SkinnedData.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="cs_packet_player_move" Collapsed="true">
+    <Position X="79" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAAIAAAAAAAAABAAAAAAAAAAAgAgA=</HashCode>
+      <FileName>ModelManager.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="cs_packet_player_anmation_start" Collapsed="true">
+    <Position X="77.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIgAAAAAAAABAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>ModelManager.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="SkinnedModelInstance" Collapsed="true">
+    <Position X="77.25" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAFAAAABAAIAACCAEAAAQACAGlhBEMACgAIAAAAIg=</HashCode>
+      <FileName>SkinnedModel.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="FW1_GLYPHCOORDS" Collapsed="true">
+    <Position X="66.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAEAAAQAAAAAAAAAAAAABAAAAAEgQAAAAAAAAQ=</HashCode>
+      <FileName>FW1FontWrapper.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="FW1_GLYPHSHEETDESC" Collapsed="true">
+    <Position X="72" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAAAAEAgAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>FW1FontWrapper.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="FW1_GLYPHMETRICS" Collapsed="true">
+    <Position X="70.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAAAAEAAAAAAAADAAAAAAAAAAAA=</HashCode>
+      <FileName>FW1FontWrapper.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="FW1_GLYPHIMAGEDATA" Collapsed="true">
+    <Position X="68.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAAAABAAAAAAIAAAQAAA=</HashCode>
+      <FileName>FW1FontWrapper.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="FW1_GLYPHVERTEX" Collapsed="true">
+    <Position X="73.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAIAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FW1FontWrapper.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="FW1_VERTEXDATA" Collapsed="true">
+    <Position X="77.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAQACAAAAAEAAAAAAE=</HashCode>
+      <FileName>FW1FontWrapper.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="FW1_RECTF" Collapsed="true">
+    <Position X="75.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAIAAAACACAAAAAAAA=</HashCode>
+      <FileName>FW1FontWrapper.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="FW1_DWRITEFONTPARAMS" Collapsed="true">
+    <Position X="77.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAkAAAgAAAAIAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>FW1FontWrapper.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="FW1_FONTWRAPPERCREATEPARAMS" Collapsed="true">
+    <Position X="79" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAUAAgAQAAAAAAAIAAAACAAIAACEAAA=</HashCode>
+      <FileName>FW1FontWrapper.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="IFW1Object" Collapsed="true">
+    <Position X="13" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FW1FontWrapper.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="IFW1GlyphSheet" Collapsed="true">
+    <Position X="9.5" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABQAAAQABAAAAAAACAAAAAAAgAAAQAQAAIAAA=</HashCode>
+      <FileName>FW1FontWrapper.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="IFW1GlyphAtlas" Collapsed="true">
+    <Position X="11.75" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABQAABAAAAAAAAAACAAAAAAAgAEAAAAAAJAAI=</HashCode>
+      <FileName>FW1FontWrapper.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="IFW1GlyphProvider" Collapsed="true">
+    <Position X="14" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAQAAAAAAAAAAAAAAAAAAAAAgAAAAQAAAAAAAAAQ=</HashCode>
+      <FileName>FW1FontWrapper.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="IFW1DWriteRenderTarget" Collapsed="true">
+    <Position X="16.25" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>FW1FontWrapper.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="IFW1ColorRGBA" Collapsed="true">
+    <Position X="18.5" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>FW1FontWrapper.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="IFW1TextGeometry" Collapsed="true">
+    <Position X="20.75" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAQBAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>FW1FontWrapper.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="IFW1TextRenderer" Collapsed="true">
+    <Position X="23" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FW1FontWrapper.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="IFW1GlyphRenderStates" Collapsed="true">
+    <Position X="2.75" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAAAAAAAAAAAAAgCAAAAAAQAAAA=</HashCode>
+      <FileName>FW1FontWrapper.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="IFW1GlyphVertexDrawer" Collapsed="true">
+    <Position X="5" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>FW1FontWrapper.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="IFW1FontWrapper" Collapsed="true">
+    <Position X="7.25" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEEABAQAAAEgAAAABAAAAAgAQgAQAEAAAAIAAA=</HashCode>
+      <FileName>FW1FontWrapper.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="IFW1Factory" Collapsed="true">
+    <Position X="66.75" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAIAAAAAQACAQAAABAAAAAQAAgAAAAAABAAIA=</HashCode>
+      <FileName>FW1FontWrapper.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="sc_packet_put_user" Collapsed="true">
+    <Position X="70.25" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAABAAAAAAAAAAAAAgE=</HashCode>
+      <FileName>NetworkMgr.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="sc_packet_timer_start" Collapsed="true">
+    <Position X="75.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>NetworkMgr.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="cs_packet_player_nickname" Collapsed="true">
+    <Position X="66.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAQABAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>NetworkMgr.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="cs_packet_shutdown" Collapsed="true">
+    <Position X="68.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAABAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>NetworkMgr.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="sc_packet_playgame_init_pos" Collapsed="true">
+    <Position X="66.75" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAABIAAAAEAAAABAAAAAAAAAAAgAgA=</HashCode>
+      <FileName>NetworkMgr.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="sc_packet_playgame_player_pos" Collapsed="true">
+    <Position X="68.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAAAIAAAAEAAAABAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>NetworkMgr.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="sc_packet_player_anmation_start" Collapsed="true">
+    <Position X="77.25" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIgAAAAAAAABAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>NetworkMgr.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="game_result" Collapsed="true">
+    <Position X="79" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAQAQAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>NetworkMgr.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="sc_packet_game_result" Collapsed="true">
+    <Position X="73.75" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAABEAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>NetworkMgr.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="sc_packet_room_data" Collapsed="true">
+    <Position X="72" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAQABAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>NetworkMgr.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="sc_packet_game_start" Collapsed="true">
+    <Position X="75.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>NetworkMgr.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="sc_packet_time" Collapsed="true">
+    <Position X="73.75" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAAIQAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>NetworkMgr.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="sc_packet_player_remove" Collapsed="true">
+    <Position X="79" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAABAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>NetworkMgr.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="XNA::Sphere" Collapsed="true">
+    <Position X="79" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>Common\xnacollision.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="XNA::AxisAlignedBox" Collapsed="true">
+    <Position X="68.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>Common\xnacollision.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="XNA::OrientedBox" Collapsed="true">
+    <Position X="75.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>Common\xnacollision.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="XNA::Frustum" Collapsed="true">
+    <Position X="75.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAIAgQAAEAAAAgCAAAAAAAAAAAAAAAAAAAgAAAA=</HashCode>
+      <FileName>Common\xnacollision.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Vertex::Basic32" Collapsed="true">
+    <Position X="70.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAACIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Vertex.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Vertex::Terrain" Collapsed="true">
+    <Position X="68.5" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAACAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Vertex.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Vertex::Particle" Collapsed="true">
+    <Position X="77.25" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAEAAAAAAAIAAAAAAEQAAAAAAAAA=</HashCode>
+      <FileName>Vertex.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Vertex::Line" Collapsed="true">
+    <Position X="70.25" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAACAAACAAAAAAAAAAAA=</HashCode>
+      <FileName>Vertex.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Vertex::PosNormalTexTan" Collapsed="true">
+    <Position X="68.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAgAAAAAAAAAAAAACIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Vertex.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Vertex::PosNormalTexTanSkinned" Collapsed="true">
+    <Position X="70.25" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEEAAAAAgAAAAAAAAAAAAACIAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>Vertex.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Vertex::PosTex" Collapsed="true">
+    <Position X="72" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Vertex.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Typedef Name="LPD3D11EFFECTTYPE" Collapsed="true">
+    <Position X="18.75" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="LPD3D11EFFECTVARIABLE" Collapsed="true">
+    <Position X="23.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="LPD3D11EFFECTSCALARVARIABLE" Collapsed="true">
+    <Position X="57.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="LPD3D11EFFECTVECTORVARIABLE" Collapsed="true">
+    <Position X="62" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="LPD3D11EFFECTMATRIXVARIABLE" Collapsed="true">
+    <Position X="0.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="LPD3D11EFFECTSTRINGVARIABLE" Collapsed="true">
+    <Position X="32.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="LPD3D11EFFECTCLASSINSTANCEVARIABLE" Collapsed="true">
+    <Position X="35" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="LPD3D11EFFECTINTERFACEVARIABLE" Collapsed="true">
+    <Position X="37.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="LPD3D11EFFECTSHADERRESOURCEVARIABLE" Collapsed="true">
+    <Position X="39.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="LPD3D11EFFECTUNORDEREDACCESSVIEWVARIABLE" Collapsed="true">
+    <Position X="41.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="LPD3D11EFFECTRENDERTARGETVIEWVARIABLE" Collapsed="true">
+    <Position X="44" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="LPD3D11EFFECTDEPTHSTENCILVIEWVARIABLE" Collapsed="true">
+    <Position X="46.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="LPD3D11EFFECTCONSTANTBUFFER" Collapsed="true">
+    <Position X="48.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="LPD3D11EFFECTSHADERVARIABLE" Collapsed="true">
+    <Position X="50.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="LPD3D11EFFECTBLENDVARIABLE" Collapsed="true">
+    <Position X="53" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="LPD3D11EFFECTDEPTHSTENCILVARIABLE" Collapsed="true">
+    <Position X="55.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="LPD3D11EFFECTRASTERIZERVARIABLE" Collapsed="true">
+    <Position X="59.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="LPD3D11EFFECTSAMPLERVARIABLE" Collapsed="true">
+    <Position X="64.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="LPD3D11EFFECTPASS" Collapsed="true">
+    <Position X="9.75" Y="17.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="LPD3D11EFFECTTECHNIQUE" Collapsed="true">
+    <Position X="5.75" Y="17.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="LPD3D11EFFECTGROUP" Collapsed="true">
+    <Position X="1.75" Y="17.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="LPD3D11EFFECT" Collapsed="true">
+    <Position X="14.75" Y="16.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="CCheckedDword" Collapsed="true">
+    <Position X="17.75" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dxGlobal.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="CCheckedDword64" Collapsed="true">
+    <Position X="14.75" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dxGlobal.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="PFN_FW1CREATEFACTORY" Collapsed="true">
+    <Position X="66.75" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FW1FontWrapper.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Interface Name="ID3DX11EffectType" Collapsed="true">
+    <Position X="18.75" Y="16.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAQAAAJAAAgAAAAAAAAAAAAAAAAAAgQAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ID3DX11EffectVariable" Collapsed="true">
+    <Position X="23.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAIAJQAhAAigBAACEAAEAIDEACAQAAEEIFUA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ID3DX11EffectScalarVariable" Collapsed="true">
+    <Position X="57.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACQAAkAACAAAgAIAAEAAAAAAAAAACAAAAAAAACAABA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ID3DX11EffectVectorVariable" Collapsed="true">
+    <Position X="62" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABIgEAgBAAAABABQAAAAAQCAAAAAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ID3DX11EffectMatrixVariable" Collapsed="true">
+    <Position X="0.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAKAAEAEAAgAAAAAQQCICBAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ID3DX11EffectStringVariable" Collapsed="true">
+    <Position X="32.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ID3DX11EffectClassInstanceVariable" Collapsed="true">
+    <Position X="35" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ID3DX11EffectInterfaceVariable" Collapsed="true">
+    <Position X="37.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ID3DX11EffectShaderResourceVariable" Collapsed="true">
+    <Position X="39.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAQAAAAAAAAACAAAAAQ=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ID3DX11EffectUnorderedAccessViewVariable" Collapsed="true">
+    <Position X="41.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AFAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ID3DX11EffectRenderTargetViewVariable" Collapsed="true">
+    <Position X="44" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAABAAAAAAABAAAAAACIAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ID3DX11EffectDepthStencilViewVariable" Collapsed="true">
+    <Position X="46.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAIAAAAEQAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ID3DX11EffectConstantBuffer" Collapsed="true">
+    <Position X="48.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAABAAAAAAAAAAAQgAAAggAAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ID3DX11EffectShaderVariable" Collapsed="true">
+    <Position X="50.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACACAAAABAAQAAAAIAAAAAFAAEAAAADAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ID3DX11EffectBlendVariable" Collapsed="true">
+    <Position X="53" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEEAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ID3DX11EffectDepthStencilVariable" Collapsed="true">
+    <Position X="55.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAABABAAQA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ID3DX11EffectRasterizerVariable" Collapsed="true">
+    <Position X="59.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAAAAAAIAAAAAAQAAAAAAAAAAAAQA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ID3DX11EffectSamplerVariable" Collapsed="true">
+    <Position X="64.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAABAQAAAQA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ID3DX11EffectPass" Collapsed="true">
+    <Position X="9.75" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAgABAABAIAABgAAgAAAAAAAAAIAAAQAACAQAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ID3DX11EffectTechnique" Collapsed="true">
+    <Position X="5.75" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAIAABAAAgAAAAAAAAAJAAAABAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ID3DX11EffectGroup" Collapsed="true">
+    <Position X="1.75" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAABAAAgAAAQAAAAAIEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ID3DX11Effect" Collapsed="true">
+    <Position X="14.75" Y="18.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAEAACQCABAAAgAAQQAAAAIIUoCAAAAAAAAAAA=</HashCode>
+      <FileName>Common\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="BUTTON_STATE" Collapsed="true">
+    <Position X="72" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAQAAAAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>ButtonClass.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Axis" Collapsed="true">
+    <Position X="70.25" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAQAAAAA=</HashCode>
+      <FileName>ModelManager.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Keystate" Collapsed="true">
+    <Position X="75.5" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAACACAAAAAAAAAAAAAAAIAAAAAAAAAgAAgAA=</HashCode>
+      <FileName>ModelManager.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Animstate" Collapsed="true">
+    <Position X="68.5" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAAAAAAAAAQAAAAAACAACAAIAAAAAA=</HashCode>
+      <FileName>ModelManager.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ANIMATION_INFO" Collapsed="true">
+    <Position X="66.75" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAAAgAAACACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ModelManager.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="FW1_TEXT_FLAG" Collapsed="true">
+    <Position X="73.75" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYAABAAABCAAABAAIIEQAAAAAIIEAAAAAAAgEAAQII=</HashCode>
+      <FileName>FW1FontWrapper.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="맑은 고딕" Size="9" />
+</ClassDiagram>

@@ -312,15 +312,42 @@ bool D3DApp::InitMainWindow()
 		MessageBox(0, L"RegisterClass Failed.", 0, 0);
 		return false;
 	}
+	mClientWidth = GetSystemMetrics(SM_CXSCREEN);
+	mClientHeight = GetSystemMetrics(SM_CYSCREEN);
 
-	// Compute window rectangle dimensions based on requested client area dimensions.
 	RECT R = { 0, 0, mClientWidth, mClientHeight };
-    AdjustWindowRect(&R, WS_OVERLAPPEDWINDOW, false);
-	int width  = R.right - R.left;
-	int height = R.bottom - R.top;
+	DEVMODE dmScreenSettings;
 
-	mhMainWnd = CreateWindow(L"D3DWndClassName", mMainWndCaption.c_str(), 
-		WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, width, height, 0, 0, mhAppInst, 0); 
+#define FULL_SCREEN true
+	int width;
+	int height;
+	if (FULL_SCREEN)
+	{
+		// If full screen set the screen to maximum size of the users desktop and 32bit.
+		memset(&dmScreenSettings, 0, sizeof(dmScreenSettings));
+		dmScreenSettings.dmSize = sizeof(dmScreenSettings);
+		dmScreenSettings.dmPelsWidth = (unsigned long)mClientWidth;
+		dmScreenSettings.dmPelsHeight = (unsigned long)mClientHeight;
+		dmScreenSettings.dmBitsPerPel = 32;
+		dmScreenSettings.dmFields = DM_BITSPERPEL | DM_PELSWIDTH | DM_PELSHEIGHT;
+
+		// Change the display settings to full screen.
+		ChangeDisplaySettings(&dmScreenSettings, CDS_FULLSCREEN);
+
+		// Set the position of the window to the top left corner.
+		width =height  = 0;
+	}
+	else {
+		// Compute window rectangle dimensions based on requested client area dimensions.
+		AdjustWindowRect(&R, WS_OVERLAPPEDWINDOW, false);
+		width = R.right - R.left;
+		height = R.bottom - R.top;
+	}
+	
+
+	mhMainWnd = CreateWindowEx(WS_EX_APPWINDOW, L"D3DWndClassName", mMainWndCaption.c_str(), 
+		WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_POPUP, CW_USEDEFAULT, CW_USEDEFAULT,
+		mClientWidth, mClientHeight, 0, 0, mhAppInst, 0); 
 	if( !mhMainWnd )
 	{
 		MessageBox(0, L"CreateWindow Failed.", 0, 0);
@@ -328,6 +355,9 @@ bool D3DApp::InitMainWindow()
 	}
 
 	ShowWindow(mhMainWnd, SW_SHOW);
+	SetForegroundWindow(mhMainWnd);
+	SetFocus(mhMainWnd);
+
 	UpdateWindow(mhMainWnd);
 
 	return true;
