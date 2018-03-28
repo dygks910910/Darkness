@@ -87,7 +87,7 @@ bool D3DApp::Init()
 	DialogBox(mhAppInst, MAKEINTRESOURCE(IDD_DIALOG_STARTSETTING), mhMainWnd, MainDialogProc);
 
 
-	if(!InitMainWindow())
+	if(!InitMainWindow(isFullScreen))
 		return false; 
 
 	if(!InitDirect3D())
@@ -297,7 +297,7 @@ LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 }
 
 
-bool D3DApp::InitMainWindow()
+bool D3DApp::InitMainWindow(const bool& fullScreen)
 {
 	WNDCLASS wc;
 	wc.style         = CS_HREDRAW | CS_VREDRAW;
@@ -322,10 +322,9 @@ bool D3DApp::InitMainWindow()
 	RECT R = { 0, 0, mClientWidth, mClientHeight };
 	DEVMODE dmScreenSettings;
 
-#define FULL_SCREEN true
 	int width;
 	int height;
-	if (FULL_SCREEN)
+	if (fullScreen)
 	{
 		mClientWidth = GetSystemMetrics(SM_CXSCREEN);
 		mClientHeight = GetSystemMetrics(SM_CYSCREEN);
@@ -534,22 +533,26 @@ void D3DApp::CreateSwapChain(bool use4xaa)
 	ReleaseCOM(dxgiFactory);
 
 }
+#include<list>
 BOOL  D3DApp::MyDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	wchar_t str[15];
 	std::wstring ipAddress;
 	HWND comboHandle;
 	int selectionResolutionIndex = 0;
-	/*comboHandle = GetDlgItem(hDlg, IDC_COMBO_RESOLUTION);
-	std::list<std::wstring> comboStrings{L"HD",L"FHD" };*/
+	comboHandle = GetDlgItem(hDlg, IDC_COMBO_RESOLUTION);
+	std::list<std::wstring> comboStrings{L"HD",L"FHD" };
+
 	switch (uMsg) {
 	case WM_INITDIALOG:
 		SetDlgItemText(hDlg, IDC_SERVER_IPADDRESS, L"127.0.0.1");
-		/*SetDlgItemText(hDlg, IDC_COMBO_RESOLUTION, L"default");
+		SetDlgItemText(hDlg, IDC_COMBO_RESOLUTION, L"default");
 		for (auto p = comboStrings.begin(); p != comboStrings.end(); ++p) {
 			SendMessage(comboHandle, CB_ADDSTRING, 0, (LPARAM)(*p).c_str());
-		}*/
+		}
 		return TRUE;
+
+
 	case WM_COMMAND:
 		switch (wParam)
 		{
@@ -557,7 +560,29 @@ BOOL  D3DApp::MyDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			GetDlgItemText(hDlg, IDC_SERVER_IPADDRESS,str,15);
 			ipAddress = str;
 			server_ipAddress.assign(ipAddress.begin() ,ipAddress.end());
+
+			//리턴값 = 선택된 인덱스 -1이면 설정안된상태.
+			selectionResolutionIndex = SendMessage(comboHandle, CB_GETCURSEL, 0, 0);
+			if (selectionResolutionIndex == 0)
+			{
+				mClientWidth = FHD_WIDTH;
+				mClientHeight = FHD_HEIGHT;
+			}
+			else if (selectionResolutionIndex == 1)
+			{
+				mClientWidth = HD_WIDTH;
+				mClientHeight = HD_HEIGHT;
+			}
 #if defined DEBUG | _DEBUG
+			if (selectionResolutionIndex == 0)
+			{
+				std::cout << "FHD선택됨" << std::endl;
+			}
+			else if (selectionResolutionIndex == 1)
+			{
+				std::cout << "HD선택됨" << std::endl;
+
+			}
 			std::cout << "서버 IP주소:";
 			std::cout  << server_ipAddress;
 			std::cout << std::endl;

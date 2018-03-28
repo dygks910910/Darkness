@@ -161,7 +161,9 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Common\d3dApp.h" />
+    <ClInclude Include="Common\d3dApp.h">
+      <DeploymentContent>false</DeploymentContent>
+    </ClInclude>
     <ClInclude Include="Common\d3dUtil.h" />
     <ClInclude Include="Common\d3dx11effect.h" />
     <ClInclude Include="Common\dxerr.h" />

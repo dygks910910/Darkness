@@ -21,6 +21,12 @@
 
 class D3DApp
 {
+		const int FHD_WIDTH = 1920;
+		const int FHD_HEIGHT = 1080;
+
+		const int HD_WIDTH = 1600;
+		const int HD_HEIGHT = 900;
+
 public:
 	D3DApp(HINSTANCE hInstance);
 	virtual ~D3DApp();
@@ -85,7 +91,8 @@ public:
 	BOOL MyDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 protected:
-	bool InitMainWindow();
+	bool InitMainWindow(const bool& fullScreen);
+
 	bool InitDirect3D();
 	std::string server_ipAddress;
 
@@ -115,7 +122,7 @@ protected:
 	int mClientWidth;
 	int mClientHeight;
 	bool mEnable4xMsaa;
-
+	bool isFullScreen;
 private:
 	void CreateD3DDevice();
 	void CreateSwapChain(bool use4xaa);
