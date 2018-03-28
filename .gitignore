@@ -19,3 +19,5 @@ Client/Debug/BoxDemo.obj
 *.user
 *.opendb
 *.msi
+Client/Debug/*
+Client/x64/*
