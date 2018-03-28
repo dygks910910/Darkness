@@ -75,18 +75,16 @@ public:
 	// Framework methods.  Derived client class overrides these methods to 
 	// implement specific application requirements.
 
-	virtual bool Init();
-	virtual void OnResize();
-	virtual void UpdateScene(const float& dt,const MSG& msg) {};
-	virtual void DrawScene() {
-
-	};
-	virtual void OnKeyboardButtonDown(const HWND& hwnd, const UINT& msg,
+	 bool Init();
+	 void OnResize();
+	 void UpdateScene(const float& dt,const MSG& msg) {};
+	 void DrawScene() {};
+	 void OnKeyboardButtonDown(const HWND& hwnd, const UINT& msg,
 		const WPARAM& wParam,const LPARAM& lParam) {};
 
-	virtual void OnMouseDown(const WPARAM& wParam, const int& x, const int& y) {};
+	 void OnMouseDown(const WPARAM& wParam, const int& x, const int& y) {};
 
-	virtual LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+	 LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 	BOOL MyDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
