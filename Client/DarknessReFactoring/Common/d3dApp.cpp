@@ -5,12 +5,13 @@
 #include <WindowsX.h>
 #include <sstream>
 #include<D3DX11.h>
+
 namespace
 {
 	// This is just used to forward Windows messages from a global window
 	// procedure to our member function window procedure because we cannot
 	// assign a member function to WNDCLASS::lpfnWndProc.
-	 D3DApp* gd3dApp = 0;
+	D3DApp* gd3dApp = 0;
 }
 LRESULT CALLBACK
 MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -25,24 +26,17 @@ MainDialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	return gd3dApp->MyDlgProc(hwnd, msg, wParam, lParam);
 }
 D3DApp::D3DApp(HINSTANCE hInstance)
-:	mhAppInst(hInstance),
-	mMainWndCaption(L"D3D11 Application"),
+	: mMainWndCaption(L"D3D11 Application"),
 	md3dDriverType(D3D_DRIVER_TYPE_UNKNOWN),
 	mEnable4xMsaa(false),
-	mhMainWnd(0),
 	mAppPaused(false),
 	mMinimized(false),
 	mMaximized(false),
 	mResizing(false),
-	m4xMsaaQuality(0),
- 
-	md3dDevice(0),
-	md3dImmediateContext(0),
-	mSwapChain(0),
-	mDepthStencilBuffer(0),
-	mRenderTargetView(0),
-	mDepthStencilView(0)
+	m4xMsaaQuality(0)
 {
+	mhAppInst = hInstance;
+	mhMainWnd = 0;
 	ZeroMemory(&mScreenViewport, sizeof(D3D11_VIEWPORT));
 
 	// Get a pointer to the application object so we can forward 
@@ -59,11 +53,13 @@ D3DApp::~D3DApp()
 	ReleaseCOM(mDepthStencilBuffer);
 
 	// Restore all default settings.
-	if( md3dImmediateContext )
+	if (md3dImmediateContext)
 		md3dImmediateContext->ClearState();
 
 	ReleaseCOM(md3dImmediateContext);
 	ReleaseCOM(md3dDevice);
+
+	SafeDelete(m_pSceneManager);
 }
 
 HINSTANCE D3DApp::AppInst()const
@@ -84,18 +80,25 @@ float D3DApp::AspectRatio()const
 bool D3DApp::Init()
 {
 
-	DialogBox(mhAppInst, MAKEINTRESOURCE(IDD_DIALOG_STARTSETTING), mhMainWnd, MainDialogProc);
+	DialogBox(mhAppInst, MAKEINTRESOURCE(IDD_DIALOG_STARTSETTING), mhMainWnd, (DLGPROC)MainDialogProc);
 
 
-	if(!InitMainWindow(isFullScreen))
-		return false; 
-
-	if(!InitDirect3D())
+	if (!InitMainWindow(isFullScreen))
 		return false;
+
+	if (!InitDirect3D())
+		return false;
+	//SceneManager의 참조변수를 d3dApp클래스의 static변수를 통해 초기화되기때문에
+	//InitDirect3D이후에 생성해야함 
+
+	m_pSceneManager = new CSceneManager();
+	m_pSceneManager->Init();
+	OnResize();
+	m_pSceneManager->OnResize();
 
 	return true;
 }
- 
+
 void D3DApp::OnResize()
 {
 	assert(md3dImmediateContext);
@@ -121,30 +124,30 @@ void D3DApp::OnResize()
 	// Create the depth/stencil buffer and view.
 
 	D3D11_TEXTURE2D_DESC depthStencilDesc;
-	
-	depthStencilDesc.Width     = mClientWidth;
-	depthStencilDesc.Height    = mClientHeight;
+
+	depthStencilDesc.Width = mClientWidth;
+	depthStencilDesc.Height = mClientHeight;
 	depthStencilDesc.MipLevels = 1;
 	depthStencilDesc.ArraySize = 1;
-	depthStencilDesc.Format    = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	depthStencilDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	// Use 4X MSAA? --must match swap chain MSAA values.
-	if( mEnable4xMsaa )
+	if (mEnable4xMsaa)
 	{
-		depthStencilDesc.SampleDesc.Count   = 4;
-		depthStencilDesc.SampleDesc.Quality = m4xMsaaQuality-1;
+		depthStencilDesc.SampleDesc.Count = 4;
+		depthStencilDesc.SampleDesc.Quality = m4xMsaaQuality - 1;
 	}
 	// No MSAA
 	else
 	{
-		depthStencilDesc.SampleDesc.Count   = 1;
+		depthStencilDesc.SampleDesc.Count = 1;
 		depthStencilDesc.SampleDesc.Quality = 0;
 	}
 
-	depthStencilDesc.Usage          = D3D11_USAGE_DEFAULT;
-	depthStencilDesc.BindFlags      = D3D11_BIND_DEPTH_STENCIL;
-	depthStencilDesc.CPUAccessFlags = 0; 
-	depthStencilDesc.MiscFlags      = 0;
+	depthStencilDesc.Usage = D3D11_USAGE_DEFAULT;
+	depthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	depthStencilDesc.CPUAccessFlags = 0;
+	depthStencilDesc.MiscFlags = 0;
 
 	HR(md3dDevice->CreateTexture2D(&depthStencilDesc, 0, &mDepthStencilBuffer));
 	HR(md3dDevice->CreateDepthStencilView(mDepthStencilBuffer, 0, &mDepthStencilView));
@@ -153,25 +156,24 @@ void D3DApp::OnResize()
 	// Set the viewport transform.
 	mScreenViewport.TopLeftX = 0;
 	mScreenViewport.TopLeftY = 0;
-	mScreenViewport.Width    = static_cast<float>(mClientWidth);
-	mScreenViewport.Height   = static_cast<float>(mClientHeight);
+	mScreenViewport.Width = static_cast<float>(mClientWidth);
+	mScreenViewport.Height = static_cast<float>(mClientHeight);
 	mScreenViewport.MinDepth = 0.0f;
 	mScreenViewport.MaxDepth = 1.0f;
 
 	md3dImmediateContext->RSSetViewports(1, &mScreenViewport);
-	
+
 }
 
 LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	OnKeyboardButtonDown(hwnd, msg, wParam, lParam);
-	switch( msg )
+	switch (msg)
 	{
-	// WM_ACTIVATE is sent when the window is activated or deactivated.  
-	// We pause the game when the window is deactivated and unpause it 
-	// when it becomes active.  
+		// WM_ACTIVATE is sent when the window is activated or deactivated.  
+		// We pause the game when the window is deactivated and unpause it 
+		// when it becomes active.  
 	case WM_ACTIVATE:
-		if( LOWORD(wParam) == WA_INACTIVE )
+		if (LOWORD(wParam) == WA_INACTIVE)
 		{
 			mAppPaused = true;
 			mTimer.Stop();
@@ -183,31 +185,35 @@ LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		}
 		return 0;
 
-	// WM_SIZE is sent when the user resizes the window.  
+		// WM_SIZE is sent when the user resizes the window.  
+	case WM_KEYDOWN:
+	case WM_KEYUP:
+		OnKeyboardButtonDown(wParam);
+		return 0;
 	case WM_SIZE:
 		// Save the new client area dimensions.
-		mClientWidth  = LOWORD(lParam);
+		mClientWidth = LOWORD(lParam);
 		mClientHeight = HIWORD(lParam);
-		if( md3dDevice )
+		if (md3dDevice)
 		{
-			if( wParam == SIZE_MINIMIZED )
+			if (wParam == SIZE_MINIMIZED)
 			{
 				mAppPaused = true;
 				mMinimized = true;
 				mMaximized = false;
 			}
-			else if( wParam == SIZE_MAXIMIZED )
+			else if (wParam == SIZE_MAXIMIZED)
 			{
 				mAppPaused = false;
 				mMinimized = false;
 				mMaximized = true;
 				OnResize();
 			}
-			else if( wParam == SIZE_RESTORED )
+			else if (wParam == SIZE_RESTORED)
 			{
-				
+
 				// Restoring from minimized state?
-				if( mMinimized )
+				if (mMinimized)
 				{
 					mAppPaused = false;
 					mMinimized = false;
@@ -215,13 +221,13 @@ LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				}
 
 				// Restoring from maximized state?
-				else if( mMaximized )
+				else if (mMaximized)
 				{
 					mAppPaused = false;
 					mMaximized = false;
 					OnResize();
 				}
-				else if( mResizing )
+				else if (mResizing)
 				{
 					// If user is dragging the resize bars, we do not resize 
 					// the buffers here because as the user continuously 
@@ -240,40 +246,40 @@ LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		}
 		return 0;
 
-	// WM_EXITSIZEMOVE is sent when the user grabs the resize bars.
+		// WM_EXITSIZEMOVE is sent when the user grabs the resize bars.
 	case WM_ENTERSIZEMOVE:
 		mAppPaused = true;
-		mResizing  = true;
+		mResizing = true;
 		mTimer.Stop();
 		return 0;
 
-	// WM_EXITSIZEMOVE is sent when the user releases the resize bars.
-	// Here we reset everything based on the new window dimensions.
+		// WM_EXITSIZEMOVE is sent when the user releases the resize bars.
+		// Here we reset everything based on the new window dimensions.
 	case WM_EXITSIZEMOVE:
 		mAppPaused = false;
-		mResizing  = false;
+		mResizing = false;
 		mTimer.Start();
 		OnResize();
 		return 0;
- 
-	// WM_DESTROY is sent when the window is being destroyed.
+
+		// WM_DESTROY is sent when the window is being destroyed.
 	case WM_DESTROY:
+		SafeDelete( m_pSceneManager);
 		PostQuitMessage(0);
 		return 0;
-
-	// The WM_MENUCHAR message is sent when a menu is active and the user presses 
-	// a key that does not correspond to any mnemonic or accelerator key. 
+		// The WM_MENUCHAR message is sent when a menu is active and the user presses 
+		// a key that does not correspond to any mnemonic or accelerator key. 
 	case WM_MENUCHAR:
-        // Don't beep when we alt-enter.
-        return MAKELRESULT(0, MNC_CLOSE);
+		// Don't beep when we alt-enter.
+		return MAKELRESULT(0, MNC_CLOSE);
 
-	// Catch this message so to prevent the window from becoming too small.
+		// Catch this message so to prevent the window from becoming too small.
 	case WM_GETMINMAXINFO:
 		((MINMAXINFO*)lParam)->ptMinTrackSize.x = 200;
-		((MINMAXINFO*)lParam)->ptMinTrackSize.y = 200; 
+		((MINMAXINFO*)lParam)->ptMinTrackSize.y = 200;
 		return 0;
-	//case WM_SOCKET:
-		//Packet(hwnd, msg, wParam, lParam);
+		//case WM_SOCKET:
+			//Packet(hwnd, msg, wParam, lParam);
 		return 0;
 	case WM_LBUTTONDOWN:
 	case WM_MBUTTONDOWN:
@@ -283,13 +289,13 @@ LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	case WM_LBUTTONUP:
 	case WM_MBUTTONUP:
 	case WM_RBUTTONUP:
-		//OnMouseUp(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+		OnMouseUp(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 		return 0;
 	case WM_MOUSEMOVE:
-		//OnMouseMove(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+		OnMouseMove(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 		return 0;
 	case WM_CHAR:
-		
+
 		return 0;
 	}
 
@@ -300,18 +306,18 @@ LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 bool D3DApp::InitMainWindow(const bool& fullScreen)
 {
 	WNDCLASS wc;
-	wc.style         = CS_HREDRAW | CS_VREDRAW;
-	wc.lpfnWndProc   = MainWndProc; 
-	wc.cbClsExtra    = 0;
-	wc.cbWndExtra    = 0;
-	wc.hInstance     = mhAppInst;
-	wc.hIcon         = LoadIcon(0, IDI_APPLICATION);
-	wc.hCursor       = LoadCursor(0, IDC_ARROW);
+	wc.style = CS_HREDRAW | CS_VREDRAW;
+	wc.lpfnWndProc = MainWndProc;
+	wc.cbClsExtra = 0;
+	wc.cbWndExtra = 0;
+	wc.hInstance = mhAppInst;
+	wc.hIcon = LoadIcon(0, IDI_APPLICATION);
+	wc.hCursor = LoadCursor(0, IDC_ARROW);
 	wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
 	wc.lpszMenuName = 0;
 	wc.lpszClassName = L"D3DWndClassName";
 
-	if( !RegisterClass(&wc) )
+	if (!RegisterClass(&wc))
 	{
 		MessageBox(0, L"RegisterClass Failed.", 0, 0);
 		return false;
@@ -340,7 +346,7 @@ bool D3DApp::InitMainWindow(const bool& fullScreen)
 		ChangeDisplaySettings(&dmScreenSettings, CDS_FULLSCREEN);
 
 		// Set the position of the window to the top left corner.
-		width =height  = 0;
+		width = height = 0;
 	}
 	else {
 		// Compute window rectangle dimensions based on requested client area dimensions.
@@ -348,12 +354,12 @@ bool D3DApp::InitMainWindow(const bool& fullScreen)
 		width = R.right - R.left;
 		height = R.bottom - R.top;
 	}
-	
 
-	mhMainWnd = CreateWindowEx(WS_EX_APPWINDOW, L"D3DWndClassName", mMainWndCaption.c_str(), 
+
+	mhMainWnd = CreateWindowEx(WS_EX_APPWINDOW, L"D3DWndClassName", mMainWndCaption.c_str(),
 		WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_POPUP, CW_USEDEFAULT, CW_USEDEFAULT,
-		mClientWidth, mClientHeight, 0, 0, mhAppInst, 0); 
-	if( !mhMainWnd )
+		mClientWidth, mClientHeight, 0, 0, mhAppInst, 0);
+	if (!mhMainWnd)
 	{
 		MessageBox(0, L"CreateWindow Failed.", 0, 0);
 		return false;
@@ -374,7 +380,7 @@ bool D3DApp::InitDirect3D()
 	CreateD3DDevice();
 	HR(md3dDevice->CheckMultisampleQualityLevels(
 		DXGI_FORMAT_R8G8B8A8_UNORM, 4, &m4xMsaaQuality));
-	assert( m4xMsaaQuality > 0 );
+	assert(m4xMsaaQuality > 0);
 	CreateSwapChain(false);
 	return true;
 }
@@ -391,18 +397,18 @@ void D3DApp::CalculateFrameStats()
 	frameCnt++;
 
 	// Compute averages over one second period.
-	if( (mTimer.TotalTime() - timeElapsed) >= 1.0f )
+	if ((mTimer.TotalTime() - timeElapsed) >= 1.0f)
 	{
 		float fps = (float)frameCnt; // fps = frameCnt / 1
 		float mspf = 1000.0f / fps;
 
-		std::wostringstream outs;   
+		std::wostringstream outs;
 		outs.precision(6);
 		outs << mMainWndCaption << L"    "
-			 << L"FPS: " << fps << L"    " 
-			 << L"Frame Time: " << mspf << L" (ms)";
+			<< L"FPS: " << fps << L"    "
+			<< L"Frame Time: " << mspf << L" (ms)";
 		SetWindowText(mhMainWnd, outs.str().c_str());
-		
+
 		// Reset for next average.
 		frameCnt = 0;
 		timeElapsed += 1.0f;
@@ -541,7 +547,7 @@ BOOL  D3DApp::MyDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	HWND comboHandle;
 	int selectionResolutionIndex = 0;
 	comboHandle = GetDlgItem(hDlg, IDC_COMBO_RESOLUTION);
-	std::list<std::wstring> comboStrings{L"HD",L"FHD" };
+	std::list<std::wstring> comboStrings{ L"HD",L"FHD" };
 
 	switch (uMsg) {
 	case WM_INITDIALOG:
@@ -557,9 +563,9 @@ BOOL  D3DApp::MyDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		switch (wParam)
 		{
 		case IDOK:
-			GetDlgItemText(hDlg, IDC_SERVER_IPADDRESS,str,15);
+			GetDlgItemText(hDlg, IDC_SERVER_IPADDRESS, str, 15);
 			ipAddress = str;
-			server_ipAddress.assign(ipAddress.begin() ,ipAddress.end());
+			server_ipAddress.assign(ipAddress.begin(), ipAddress.end());
 
 			//리턴값 = 선택된 인덱스 -1이면 설정안된상태.
 			selectionResolutionIndex = SendMessage(comboHandle, CB_GETCURSEL, 0, 0);
@@ -584,7 +590,7 @@ BOOL  D3DApp::MyDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 			}
 			std::cout << "서버 IP주소:";
-			std::cout  << server_ipAddress;
+			std::cout << server_ipAddress;
 			std::cout << std::endl;
 #endif
 			EndDialog(hDlg, 0);

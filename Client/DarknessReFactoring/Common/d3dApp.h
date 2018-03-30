@@ -15,26 +15,27 @@
 #include "GameTimer.h"
 #include <string>
 #include"../resource.h"
+#include"../SceneManager.h"
+#include "../Global.h"
 #if defined(DEBUG) | defined(_DEBUG)
 #include<iostream>
 #endif
-
+namespace
+{
+	const int FHD_WIDTH = 1920;
+	const int FHD_HEIGHT = 1080;
+	const int HD_WIDTH = 1600;
+	const int HD_HEIGHT = 900;
+}
 class D3DApp
 {
-		const int FHD_WIDTH = 1920;
-		const int FHD_HEIGHT = 1080;
-
-		const int HD_WIDTH = 1600;
-		const int HD_HEIGHT = 900;
-
 public:
 	D3DApp(HINSTANCE hInstance);
-	virtual ~D3DApp();
-
+	 ~D3DApp();
+	 //인터페이스
 	HINSTANCE AppInst()const;
 	HWND      MainWnd()const;
 	float     AspectRatio()const;
-	
 	int Run()
 	{
 		MSG msg = { 0 };
@@ -71,61 +72,59 @@ public:
 
 		return (int)msg.wParam;
 	}
-
 	// Framework methods.  Derived client class overrides these methods to 
 	// implement specific application requirements.
-
 	 bool Init();
 	 void OnResize();
-	 void UpdateScene(const float& dt,const MSG& msg) {};
-	 void DrawScene() {};
-	 void OnKeyboardButtonDown(const HWND& hwnd, const UINT& msg,
-		const WPARAM& wParam,const LPARAM& lParam) {};
-
-	 void OnMouseDown(const WPARAM& wParam, const int& x, const int& y) {};
+	 void UpdateScene(const float& dt, MSG& msg) { m_pSceneManager->UpdateScene(dt, msg); };
+	 void DrawScene() { m_pSceneManager->Draw(); };
+	
+	 void OnKeyboardButtonDown(const WPARAM& wParam)
+	 {
+		 m_pSceneManager->OnKeyboardButtonDown(wParam);
+	 };
+	 void OnMouseDown(const WPARAM& wParam, const int& x, const int& y) 
+	 {
+		 m_pSceneManager->OnMouseDown(wParam, x, y);
+	 };
+	 void OnMouseUp(const WPARAM& wParam, const int& x, const int& y)
+	 {
+		 m_pSceneManager->OnMouseUp(wParam,x,y);
+	 }
+	 void OnMouseMove(const WPARAM& wParam, const int& x, const int& y)
+	 {
+		 m_pSceneManager->OnMouseMove(wParam, x, y);
+	 }
 
 	 LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
-
 	BOOL MyDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-protected:
+private:
+	//멤버함수
+	void CreateD3DDevice();
+	void CreateSwapChain(bool use4xaa);
 	bool InitMainWindow(const bool& fullScreen);
-
 	bool InitDirect3D();
-	std::string server_ipAddress;
-
 	void CalculateFrameStats();
-protected:
-	HINSTANCE mhAppInst;
-	HWND      mhMainWnd;
+
+private:
+	//커스텀 변수
 	bool      mAppPaused;
 	bool      mMinimized;
 	bool      mMaximized;
 	bool      mResizing;
-	UINT      m4xMsaaQuality;
-
-	GameTimer mTimer;
-// 	GameTimer mTimerForFPS;
-	ID3D11Device* md3dDevice;
-	ID3D11DeviceContext* md3dImmediateContext;
-	IDXGISwapChain* mSwapChain;
-	ID3D11Texture2D* mDepthStencilBuffer;
-	ID3D11RenderTargetView* mRenderTargetView;
-	ID3D11DepthStencilView* mDepthStencilView;
-	D3D11_VIEWPORT mScreenViewport;
-
-	// Derived class should set these in derived constructor to customize starting values.
-	std::wstring mMainWndCaption;
-	D3D_DRIVER_TYPE md3dDriverType;
-	int mClientWidth;
-	int mClientHeight;
 	bool mEnable4xMsaa;
 	bool isFullScreen;
-private:
-	void CreateD3DDevice();
-	void CreateSwapChain(bool use4xaa);
+	std::string server_ipAddress;
+	std::wstring mMainWndCaption;
+	UINT      m4xMsaaQuality;
+	GameTimer mTimer;
+	D3D_DRIVER_TYPE md3dDriverType;
+	CSceneManager* m_pSceneManager;
 
-
+public :
+	//정적변수
+	
 };
 
 
