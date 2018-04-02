@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Model.h"
+#include "ffModel.h"
 #include "GeometryGenerator.h"
 #include "FbxLoader.h"
 #include "TextureMgr.h"

@@ -179,11 +179,11 @@
     <ClCompile Include="Common\xnacollision.cpp" />
     <ClCompile Include="Effects.cpp" />
     <ClCompile Include="FbxLoader.cpp" />
+    <ClCompile Include="ffModel.cpp" />
     <ClCompile Include="Global.cpp" />
     <ClCompile Include="LoadM3d.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MeshGeometry.cpp" />
-    <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModelManager.cpp" />
     <ClCompile Include="RenderStates.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -209,10 +209,10 @@
     <ClInclude Include="Common\xnacollision.h" />
     <ClInclude Include="Effects.h" />
     <ClInclude Include="FbxLoader.h" />
+    <ClInclude Include="ffModel.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="LoadM3d.h" />
     <ClInclude Include="MeshGeometry.h" />
-    <ClInclude Include="Model.h" />
     <ClInclude Include="ModelManager.h" />
     <ClInclude Include="RenderStates.h" />
     <ClInclude Include="resource.h" />
@@ -225,10 +225,6 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="PureDirectX11Framework.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
-    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="FX\Basic.fx">
@@ -401,6 +397,9 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)FX\%(Filename).fxo</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)FX\%(Filename).fxo</ObjectFileOutput>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

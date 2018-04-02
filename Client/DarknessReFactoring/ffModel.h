@@ -29,7 +29,6 @@ public:
 #if DEBUG|_DEBUG
 	void DrawBox(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const Camera& cam);
 #endif // DEBUG|_DEBUG
-
 public:
 	CStaticBasicModel(const XMFLOAT4X4& world,
 		const Material& matrial,

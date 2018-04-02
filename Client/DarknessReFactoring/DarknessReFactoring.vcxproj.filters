@@ -81,9 +81,6 @@
     <ClCompile Include="SkinnedModel.cpp">
       <Filter>소스 파일\Model</Filter>
     </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>소스 파일\Model</Filter>
-    </ClCompile>
     <ClCompile Include="Common\xnacollision.cpp">
       <Filter>common</Filter>
     </ClCompile>
@@ -93,20 +90,23 @@
     <ClCompile Include="Common\Camera.cpp">
       <Filter>common</Filter>
     </ClCompile>
-    <ClCompile Include="SkinnedData.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Common\TextureMgr.cpp">
       <Filter>common</Filter>
     </ClCompile>
     <ClCompile Include="MeshGeometry.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="ffModel.cpp">
+      <Filter>소스 파일\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinnedData.cpp">
+      <Filter>소스 파일\Model</Filter>
+    </ClCompile>
     <ClCompile Include="FbxLoader.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\Model</Filter>
     </ClCompile>
     <ClCompile Include="LoadM3d.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\Model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -155,9 +155,6 @@
     <ClInclude Include="TestScene.h">
       <Filter>소스 파일\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>소스 파일\Model</Filter>
-    </ClInclude>
     <ClInclude Include="ModelManager.h">
       <Filter>소스 파일\Model</Filter>
     </ClInclude>
@@ -173,29 +170,29 @@
     <ClInclude Include="Common\Camera.h">
       <Filter>common</Filter>
     </ClInclude>
-    <ClInclude Include="SkinnedData.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Common\TextureMgr.h">
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="MeshGeometry.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="ffModel.h">
+      <Filter>소스 파일\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinnedData.h">
+      <Filter>소스 파일\Model</Filter>
+    </ClInclude>
     <ClInclude Include="FbxLoader.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>소스 파일\Model</Filter>
     </ClInclude>
     <ClInclude Include="LoadM3d.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>소스 파일\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="PureDirectX11Framework.rc">
       <Filter>리소스 파일</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="FX\Basic.fx">
@@ -249,5 +246,8 @@
     <FxCompile Include="FX\color.fx">
       <Filter>FX</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>
