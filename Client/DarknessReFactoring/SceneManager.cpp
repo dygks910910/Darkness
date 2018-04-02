@@ -49,9 +49,16 @@ void CSceneManager::OnResize()
 	scene->OnResize();
 }
 
-void CSceneManager::OnKeyboardButtonDown(const WPARAM & wParam)
+void CSceneManager::OnKeyboardButtonDown(const WPARAM & wParam, UINT msg)
 {
-	if (VK_ESCAPE == wParam)
-		PostMessage(mhMainWnd,WM_DESTROY,0,0);
-	scene->OnKeyboardButtonDown( wParam);
+	switch (msg)
+	{
+	case WM_KEYDOWN:
+		if (VK_ESCAPE == wParam)
+			PostMessage(mhMainWnd, WM_DESTROY, 0, 0);
+		break;
+	default:
+		break;
+	}
+	scene->OnKeyboardButtonDown(wParam,msg);
 }

@@ -79,9 +79,9 @@ public:
 	 void UpdateScene(const float& dt, MSG& msg) { m_pSceneManager->UpdateScene(dt, msg); };
 	 void DrawScene() { m_pSceneManager->Draw(); };
 	
-	 void OnKeyboardButtonDown(const WPARAM& wParam)
+	 void OnKeyboardButtonDown(const WPARAM& wParam,UINT msg)
 	 {
-		 m_pSceneManager->OnKeyboardButtonDown(wParam);
+		 m_pSceneManager->OnKeyboardButtonDown(wParam,msg);
 	 };
 	 void OnMouseDown(const WPARAM& wParam, const int& x, const int& y) 
 	 {

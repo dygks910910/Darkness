@@ -54,7 +54,7 @@ bool CTestScene::Init()
 	return true;
 }
 
-void CTestScene::OnKeyboardButtonDown(WPARAM wParam)
+void CTestScene::OnKeyboardButtonDown(WPARAM wParam, UINT msg)
 {
 
 }
@@ -98,7 +98,7 @@ void CTestScene::Draw()
 	Effects::BasicFX->SetEyePosW(mEyePosW);
 
 	ID3DX11EffectTechnique* activeTech = Effects::BasicFX->Light2TexTech;
-
+	
 	D3DX11_TECHNIQUE_DESC techDesc;
 	activeTech->GetDesc(&techDesc);
 	for (UINT p = 0; p < techDesc.Passes; ++p)

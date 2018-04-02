@@ -188,7 +188,7 @@ LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		// WM_SIZE is sent when the user resizes the window.  
 	case WM_KEYDOWN:
 	case WM_KEYUP:
-		OnKeyboardButtonDown(wParam);
+		OnKeyboardButtonDown(wParam,msg);
 		return 0;
 	case WM_SIZE:
 		// Save the new client area dimensions.

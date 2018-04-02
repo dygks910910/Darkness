@@ -11,7 +11,7 @@ public:
 	virtual ~CTestScene();
 	// Scene을(를) 통해 상속됨
 	virtual bool Init() override;
-	virtual void OnKeyboardButtonDown( WPARAM wParam) override;
+	virtual void OnKeyboardButtonDown( WPARAM wParam,UINT msg) override;
 	virtual std::string UpdateScene(const float dt, MSG & msg) override;
 	virtual void Draw() override;
 	virtual void OnMouseDown(WPARAM btnState, int x, int y) override;
