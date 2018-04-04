@@ -13,6 +13,7 @@ namespace
 	// assign a member function to WNDCLASS::lpfnWndProc.
 	D3DApp* gd3dApp = 0;
 }
+
 LRESULT CALLBACK
 MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -20,11 +21,13 @@ MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	// before CreateWindow returns, and thus before mhMainWnd is valid.
 	return gd3dApp->MsgProc(hwnd, msg, wParam, lParam);
 }
+
 BOOL CALLBACK
 MainDialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	return gd3dApp->MyDlgProc(hwnd, msg, wParam, lParam);
 }
+
 D3DApp::D3DApp(HINSTANCE hInstance)
 	: mMainWndCaption(L"D3D11 Application"),
 	md3dDriverType(D3D_DRIVER_TYPE_UNKNOWN),
@@ -87,9 +90,9 @@ bool D3DApp::Init()
 
 	if (!InitDirect3D())
 		return false;
+
 	//SceneManager의 참조변수를 d3dApp클래스의 static변수를 통해 초기화되기때문에
 	//InitDirect3D이후에 생성해야함 
-
 	m_pSceneManager = new CSceneManager();
 	m_pSceneManager->Init();
 	OnResize();
@@ -231,7 +234,6 @@ LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		mTimer.Start();
 		OnResize();
 		return 0;
-
 		// WM_DESTROY is sent when the window is being destroyed.
 	case WM_DESTROY:
 		SafeDelete( m_pSceneManager);
@@ -562,8 +564,6 @@ BOOL  D3DApp::MyDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			SendMessage(comboHandle, CB_ADDSTRING, 0, (LPARAM)(*p).c_str());
 		}
 		return TRUE;
-
-
 	case WM_COMMAND:
 		switch (wParam)
 		{

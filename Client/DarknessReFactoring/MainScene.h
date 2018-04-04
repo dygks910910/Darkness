@@ -9,20 +9,23 @@
 #include"Global.h"
 #include"RenderStates.h"
 #include<fstream>
-#define IPADDRESS "127.0.0.1"
-//#define IPADDRESS "127.0.0.1"
-//#define IPADDRESS "172.20.10.4"
 
 class CMainScene :
 	public Scene
 {
+	const int LOGO_TIME_SEC = 4;
 	Camera mCam;
 	XMFLOAT4X4 mWorldMtx;
 	//////////////////////////////////////////////////////////////////////////
-	//로고화면
+	//비트맵
 	CBitMap mMainLogo;
+	bool isLogoTime = true;
+	CBitMap mBackground;
 	//////////////////////////////////////////////////////////////////////////
-	//메인 화면
+	//버튼
+	CButtonClass playButton;
+	CButtonClass mExitButton;
+
 
 	//////////////////////////////////////////////////////////////////////////
 	///inputBoard;
@@ -41,6 +44,6 @@ public:
 	virtual void OnResize()override;
 	virtual void Draw() override;
 	virtual void OnMouseDown(WPARAM btnState, int x, int y) override;
-
+	BOOL  MyDlgProcForInputNickname(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 };
 

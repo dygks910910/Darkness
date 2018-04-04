@@ -2,9 +2,8 @@
 
 
 
-void CButtonClass::Init(ID3D11Device* device, const int& bitmapWidth,
-	const int& bitmapHeight, const WCHAR* filename, const int& locationX, const int& locationY,
-	const int& clientWidth, const int& clientHeight)
+void CButtonClass::Init(const int& bitmapWidth,
+	const int& bitmapHeight, const WCHAR* filename, const int& locationX, const int& locationY)
 {
 	
 	mIndex = BUTTON_STATE::NORMAL_STATE;
@@ -15,8 +14,6 @@ void CButtonClass::Init(ID3D11Device* device, const int& bitmapWidth,
 	mLocationY = locationY;
 	mBitmapWidth = bitmapWidth;
 	mBitmapHeight = bitmapHeight;
-	mClientWidth = clientWidth;
-	mClientHeight = clientHeight;
 
 	std::wstring temp = filename;
 	std::wstring temp1 = filename;
@@ -32,9 +29,9 @@ void CButtonClass::Init(ID3D11Device* device, const int& bitmapWidth,
 	isMouseOnThisButton = false;
 	isClicked = false;
 }
-void CButtonClass::Draw(ID3D11DeviceContext* dc)
+void CButtonClass::Draw()
 {
-	Effects::BasicFX->SetDiffuseMap(mButton[mIndex].GetTexture());
+	Effects::TextureFX->SetDiffuseMap(mButton[mIndex].GetTexture());
 	mButton[mIndex].Render( mLocationX, mLocationY);
 }
 void CButtonClass::Update()
