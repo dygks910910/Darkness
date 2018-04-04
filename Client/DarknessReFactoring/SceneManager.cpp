@@ -1,15 +1,20 @@
 #include "SceneManager.h"
-#include"Common\d3dApp.h"
 
 
 CSceneManager::CSceneManager()
 {
-	scene = new CTestScene();
+	Effects::InitAll(md3dDevice);
+	InputLayouts::InitAll(md3dDevice);
+	RenderStates::InitAll(md3dDevice);
+	scene = new CMainScene();
 }
 
 
 CSceneManager::~CSceneManager()
 {
+	Effects::DestroyAll();
+	InputLayouts::DestroyAll();
+	RenderStates::DestroyAll();
 	SafeDelete(scene);
 }
 

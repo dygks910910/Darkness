@@ -4,6 +4,7 @@ ID3D11Device* md3dDevice = nullptr;
 ID3D11DeviceContext* md3dImmediateContext = nullptr;
 IDXGISwapChain* mSwapChain = nullptr;
 ID3D11Texture2D* mDepthStencilBuffer = nullptr;
+ID3D11Texture2D* mDepthDisableStencilBuffer = nullptr;
 ID3D11RenderTargetView* mRenderTargetView = nullptr;
 ID3D11DepthStencilView* mDepthStencilView = nullptr;
 D3D11_VIEWPORT mScreenViewport{ 0 };

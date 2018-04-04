@@ -100,7 +100,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>libfbxsdk-md.lib;imm32.lib;d3d11.lib;d3dx11d.lib;D3DCompiler.lib;Effects11d.lib;dxgi.lib;dxguid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FW1FontWrapper.lib;libfbxsdk-md.lib;imm32.lib;d3d11.lib;d3dx11d.lib;D3DCompiler.lib;Effects11d.lib;dxgi.lib;dxguid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
       <ShaderType>Effect</ShaderType>
@@ -167,6 +167,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BitMap.cpp" />
+    <ClCompile Include="ButtonClass.cpp" />
     <ClCompile Include="Common\Camera.cpp" />
     <ClCompile Include="Common\d3dApp.cpp" />
     <ClCompile Include="Common\d3dUtil.cpp" />
@@ -177,12 +179,14 @@
     <ClCompile Include="Common\MathHelper.cpp" />
     <ClCompile Include="Common\TextureMgr.cpp" />
     <ClCompile Include="Common\xnacollision.cpp" />
+    <ClCompile Include="DrawText.cpp" />
     <ClCompile Include="Effects.cpp" />
     <ClCompile Include="FbxLoader.cpp" />
     <ClCompile Include="ffModel.cpp" />
     <ClCompile Include="Global.cpp" />
     <ClCompile Include="LoadM3d.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainScene.cpp" />
     <ClCompile Include="MeshGeometry.cpp" />
     <ClCompile Include="ModelManager.cpp" />
     <ClCompile Include="RenderStates.cpp" />
@@ -191,9 +195,12 @@
     <ClCompile Include="SkinnedData.cpp" />
     <ClCompile Include="SkinnedModel.cpp" />
     <ClCompile Include="TestScene.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BitMap.h" />
+    <ClInclude Include="ButtonClass.h" />
     <ClInclude Include="Common\Camera.h" />
     <ClInclude Include="Common\d3dApp.h">
       <DeploymentContent>false</DeploymentContent>
@@ -207,11 +214,13 @@
     <ClInclude Include="Common\MathHelper.h" />
     <ClInclude Include="Common\TextureMgr.h" />
     <ClInclude Include="Common\xnacollision.h" />
+    <ClInclude Include="DrawText.h" />
     <ClInclude Include="Effects.h" />
     <ClInclude Include="FbxLoader.h" />
     <ClInclude Include="ffModel.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="LoadM3d.h" />
+    <ClInclude Include="MainScene.h" />
     <ClInclude Include="MeshGeometry.h" />
     <ClInclude Include="ModelManager.h" />
     <ClInclude Include="RenderStates.h" />
@@ -221,6 +230,7 @@
     <ClInclude Include="SkinnedData.h" />
     <ClInclude Include="SkinnedModel.h" />
     <ClInclude Include="TestScene.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <ItemGroup>

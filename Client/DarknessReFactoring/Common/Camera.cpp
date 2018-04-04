@@ -164,6 +164,11 @@ XMMATRIX Camera::ViewProj()const
 	return XMMatrixMultiply(View(), Proj());
 }
 
+XMMATRIX Camera::OthoProj() const
+{
+	return XMMatrixOrthographicLH(mClientWidth, mClientHeight, 0.0f, 1000.0f);
+}
+
 void Camera::Strafe(float d)
 {
 	// mPosition += d*mRight

@@ -10,7 +10,7 @@
 class SkinnedModel
 {
 public:
-	SkinnedModel(ID3D11Device* device, TextureMgr& texMgr,
+	SkinnedModel( TextureMgr& texMgr,
 		const std::string& modelFilename, const std::wstring& texturePath);
 	~SkinnedModel();
 

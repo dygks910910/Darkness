@@ -14,7 +14,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 #pragma comment( linker, "/entry:WinMainCRTStartup /subsystem:console" )
 #endif
 
-	//_CrtSetBreakAlloc(3054771);
+	//_CrtSetBreakAlloc(2413);
 
 	D3DApp mainGame(hInstance);
 

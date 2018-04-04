@@ -2,6 +2,7 @@
 #include"Common\d3dUtil.h"
 #include"Global.h"
 #include"TestScene.h"
+#include"MainScene.h"
 class CSceneManager
 {
 public:
@@ -16,7 +17,7 @@ public:
 	void OnResize();
 	  void OnKeyboardButtonDown(const WPARAM& wParam,UINT msg);
 private:
-	CTestScene* scene;
+	Scene* scene;
 
 };
 

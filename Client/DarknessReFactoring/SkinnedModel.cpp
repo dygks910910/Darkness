@@ -1,15 +1,15 @@
 #include "SkinnedModel.h"
 #include "LoadM3d.h"
 #include <iostream>
-SkinnedModel::SkinnedModel(ID3D11Device* device, TextureMgr& texMgr,
+SkinnedModel::SkinnedModel(TextureMgr& texMgr,
 	const std::string& modelFilename, const std::wstring& texturePath)
 {
 	std::vector<M3dMaterial> mats;
 	M3DLoader m3dLoader;
 	m3dLoader.LoadM3d(modelFilename, Vertices, Indices, Subsets, mats, SkinnedData);
 
-	ModelMesh.SetVertices(device, &Vertices[0], Vertices.size(),false);
-	ModelMesh.SetIndices(device, &Indices[0], Indices.size());
+	ModelMesh.SetVertices(md3dDevice, &Vertices[0], Vertices.size(),false);
+	ModelMesh.SetIndices(md3dDevice, &Indices[0], Indices.size());
 	ModelMesh.SetSubsetTable(Subsets);
 
 	SubsetCount = mats.size();
@@ -31,7 +31,6 @@ SkinnedModel::SkinnedModel(ID3D11Device* device, TextureMgr& texMgr,
 SkinnedModel::~SkinnedModel()
 {
 }
-int a = 0;
 void SkinnedModelInstance::Update(float dt)
 {
 	TimePos += dt;

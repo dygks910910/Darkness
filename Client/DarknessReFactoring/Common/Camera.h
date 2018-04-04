@@ -12,7 +12,7 @@
 #define CAMERA_H
 
 #include "d3dUtil.h"
-
+#include"../Global.h"
 class Camera
 {
 public:
@@ -57,7 +57,7 @@ public:
 	XMMATRIX View()const;
 	XMMATRIX Proj()const;
 	XMMATRIX ViewProj()const;
-
+	XMMATRIX OthoProj()const;
 	// Strafe/Walk the camera a distance d.
 	void Strafe(float d);
 	void Walk(float d);

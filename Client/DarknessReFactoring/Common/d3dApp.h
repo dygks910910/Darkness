@@ -103,6 +103,7 @@ private:
 	//¸â¹öÇÔ¼ö
 	void CreateD3DDevice();
 	void CreateSwapChain(bool use4xaa);
+	void CreateDepStencilView();
 	bool InitMainWindow(const bool& fullScreen);
 	bool InitDirect3D();
 	void CalculateFrameStats();

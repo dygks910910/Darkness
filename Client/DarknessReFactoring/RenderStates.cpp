@@ -10,6 +10,7 @@ ID3D11RasterizerState* RenderStates::SolidRS = 0;
 ID3D11BlendState*      RenderStates::AlphaToCoverageBS = 0;
 ID3D11BlendState*      RenderStates::TransparentBS     = 0;
 ID3D11DepthStencilState* RenderStates::EqualsDSS = 0;
+ID3D11DepthStencilState* RenderStates::DepthDisableState = 0;
 
 void RenderStates::InitAll(ID3D11Device* device)
 {
@@ -52,6 +53,27 @@ void RenderStates::InitAll(ID3D11Device* device)
 	equalsDesc.DepthFunc = D3D11_COMPARISON_EQUAL;
 
 	HR(device->CreateDepthStencilState(&equalsDesc, &EqualsDSS));
+
+
+	//depthDisableState
+	D3D11_DEPTH_STENCIL_DESC depthDisableDesc;
+	ZeroMemory(&equalsDesc, sizeof(D3D11_DEPTH_STENCIL_DESC));
+	depthDisableDesc.DepthEnable = false;
+	depthDisableDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	depthDisableDesc.DepthFunc = D3D11_COMPARISON_LESS;
+	depthDisableDesc.StencilEnable = true;
+	depthDisableDesc.StencilReadMask = 0xFF;
+	depthDisableDesc.StencilWriteMask = 0xFF;
+	depthDisableDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	depthDisableDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+	depthDisableDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	depthDisableDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+	depthDisableDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	depthDisableDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+	depthDisableDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	depthDisableDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+	HR(device->CreateDepthStencilState(&depthDisableDesc, &DepthDisableState));
+
 	/*
 	2017 / 1 / 10 / 6:49
 	작성자:박요한(dygks910910@daum.net)
@@ -103,4 +125,7 @@ void RenderStates::DestroyAll()
 	ReleaseCOM(NoCullRS);
 	ReleaseCOM(AlphaToCoverageBS);
 	ReleaseCOM(TransparentBS);
+	ReleaseCOM(EqualsDSS);
+	ReleaseCOM(DepthDisableState);
+
 }

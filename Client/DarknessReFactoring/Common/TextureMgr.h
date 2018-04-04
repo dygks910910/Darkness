@@ -3,7 +3,7 @@
 
 #include "d3dUtil.h"
 #include <map>
-
+#include"../Global.h"
 ///<summary>
 /// Simple texture manager to avoid loading duplicate textures from file.  That can
 /// happen, for example, if multiple meshes reference the same texture filename. 
@@ -23,7 +23,6 @@ private:
 	TextureMgr& operator=(const TextureMgr& rhs);
 	
 private:
-	ID3D11Device* md3dDevice;
 	std::map<std::wstring, ID3D11ShaderResourceView*> mTextureSRV;
 };
 

@@ -3,6 +3,7 @@
 #include"Common\GeometryGenerator.h"
 #include"Vertex.h"
 #include"Effects.h"
+#include"RenderStates.h"
 class CTestScene :
 	public Scene
 {

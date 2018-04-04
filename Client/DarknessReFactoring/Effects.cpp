@@ -252,19 +252,22 @@ void Effects::InitAll(ID3D11Device* device)
 void Effects::DestroyAll()
 {
 	SafeDelete(NormalMapFX);
- 	SafeDelete(SsaoBlurFX);
- 	SafeDelete(SsaoFX);
- 	SafeDelete(SsaoNormalDepthFX);
-	SafeDelete(BuildShadowMapFX);
-	SafeDelete(BasicFX);
-	SafeDelete(SkyFX);
+ 	SafeDelete(BuildShadowMapFX);
+ 	SafeDelete(BasicFX);
+ 	SafeDelete(SkyFX);
 	SafeDelete(TerrainFX);
 	SafeDelete(FireFX);
+	SafeDelete(LightPillarFX);
 	SafeDelete(RainFX);
-	SafeDelete(InstancedBasicFX);
 	SafeDelete(LineFX);
 	SafeDelete(DebugTexFX);
+	SafeDelete(InstancedBasicFX);
+	SafeDelete(SsaoFX);
+	SafeDelete(SsaoBlurFX);
+	SafeDelete(SsaoNormalDepthFX);
 	SafeDelete(TextureFX);
+
+
 }
 
 #pragma endregion
@@ -566,7 +569,10 @@ NormalMapEffect::~NormalMapEffect()
  TextureEffect::TextureEffect(ID3D11Device * device, const std::wstring & filename)
 	 :Effect(device,filename)
  {
-	 WorldViewProj = mFX->GetVariableByName("worldViewProj")->AsMatrix();
+	 World = mFX->GetVariableByName("worldMatrix")->AsMatrix();
+	 View = mFX->GetVariableByName("viewMatrix")->AsMatrix();
+	 Proj = mFX->GetVariableByName("projectionMatrix")->AsMatrix();
+
 	 DiffuseMap = mFX->GetVariableByName("shaderTexture")->AsShaderResource();
 	 Tech = mFX->GetTechniqueByName("tech");
 

@@ -56,7 +56,7 @@ void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device, 
 	std::string clipname[ANIMCNT] = { "Idle", "Walk", "Attack1", "Run", "Death" };
 
 
-	mCharacterModel = new SkinnedModel(mDevice, texMgr, "Models/Clown.txt", L"Textures\\");
+	mCharacterModel = new SkinnedModel( texMgr, "Models/Clown.txt", L"Textures\\");
 	std::ifstream fin("Models/testanim.txt");
 	std::vector<std::vector<XMFLOAT4X4>> testfinalTransform;
 	int total = 0;

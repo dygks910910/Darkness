@@ -8,7 +8,10 @@
 /////////////
 cbuffer MatrixBuffer
 {
-	matrix worldViewProj;
+	matrix worldMatrix;
+	matrix viewMatrix;
+	matrix projectionMatrix;
+
 };
 
 Texture2D shaderTexture;
@@ -36,17 +39,15 @@ PixelInputType VS(VertexInputType input)
 {
 	PixelInputType output;
 
+	output.position = mul(input.position, worldMatrix);
+	output.position = mul(input.position, viewMatrix);
+	output.position = mul(input.position, projectionMatrix);
 
-	// Change the position vector to be 4 units for proper matrix calculations.
-	input.position.w = 1.0f;
-
-	// Calculate the position of the vertex against the world, view, and projection matrices.
-	output.position = mul(input.position, worldViewProj);
-
-	// Store the texture coordinates for the pixel shader.
 	output.tex = input.tex;
 
 	return output;
+
+
 }
 
 float4 PS(PixelInputType input) : SV_TARGET

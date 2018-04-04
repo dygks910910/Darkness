@@ -137,9 +137,15 @@ public:
 	TextureEffect(ID3D11Device* device, const std::wstring& filename);
 	~TextureEffect();
 	void SetDiffuseMap(ID3D11ShaderResourceView* tex) { DiffuseMap->SetResource(tex); }
-	void SetWorldViewProj(CXMMATRIX M) { WorldViewProj->SetMatrix(reinterpret_cast<const float*>(&M)); }
+	void SetWorld(CXMMATRIX M) { World->SetMatrix(reinterpret_cast<const float*>(&M)); }
+	void SetView(CXMMATRIX M) { View->SetMatrix(reinterpret_cast<const float*>(&M)); }
+	void SetProj(CXMMATRIX M) { Proj->SetMatrix(reinterpret_cast<const float*>(&M)); }
 
-	ID3DX11EffectMatrixVariable* WorldViewProj;
+
+	ID3DX11EffectMatrixVariable* World;
+	ID3DX11EffectMatrixVariable* View;
+	ID3DX11EffectMatrixVariable* Proj;
+
 	ID3DX11EffectShaderResourceVariable* DiffuseMap;
 	ID3DX11EffectTechnique* Tech;
 
