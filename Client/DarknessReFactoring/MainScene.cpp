@@ -6,7 +6,7 @@ namespace
 }
 
 BOOL CALLBACK
-MainDialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+InputNickDialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	return scene->MyDlgProcForInputNickname(hwnd, msg, wParam, lParam);
 }
@@ -23,6 +23,7 @@ CMainScene::~CMainScene()
 	//사용한 비트맵 메모리 반환.
 	mMainLogo.Shutdown();
 	mBackground.Shutdown();
+
 }
 
 
@@ -43,7 +44,10 @@ std::string CMainScene::UpdateScene(const float dt, MSG& msg)
 	{
 		if (playButton.isClicked)
 		{
-
+			//DialogBox(mhAppInst, MAKEINTRESOURCE(IDD_DIALOG_STARTSETTING), mhMainWnd, (DLGPROC)MainDialogProc);
+			playButton.isClicked = false;
+			DialogBox(mhAppInst, MAKEINTRESOURCE(IDD_DIALOG_INPUT_NICKNAME), mhMainWnd, (DLGPROC)InputNickDialogProc);
+			return "";
 		}
 		else if (mExitButton.isClicked)
 		{
@@ -143,7 +147,7 @@ void CMainScene::OnMouseDown(WPARAM btnState, int x, int y)
 
 BOOL CMainScene::MyDlgProcForInputNickname(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-
+	wchar_t str[20];
 	switch (uMsg) {
 	case WM_INITDIALOG:
 		return TRUE;
@@ -151,6 +155,7 @@ BOOL CMainScene::MyDlgProcForInputNickname(HWND hDlg, UINT uMsg, WPARAM wParam, 
 		switch (wParam)
 		{
 		case IDOK:
+			GetDlgItemText(hDlg, IDC_EDIT_INPUT_NICKNAME, str, 20);
 			EndDialog(hDlg, 0);
 			return TRUE;
 		case IDCANCEL:

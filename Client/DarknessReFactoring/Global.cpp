@@ -1,5 +1,5 @@
 #include"Common\d3dUtil.h"
-
+#include<string>
 ID3D11Device* md3dDevice = nullptr;
 ID3D11DeviceContext* md3dImmediateContext = nullptr;
 IDXGISwapChain* mSwapChain = nullptr;

@@ -8,6 +8,7 @@
 #include"Common\Camera.h"
 #include"Global.h"
 #include"RenderStates.h"
+#include"resource.h"
 #include<fstream>
 
 class CMainScene :
