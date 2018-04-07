@@ -11,7 +11,7 @@ InputNickDialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	return scene->MyDlgProcForInputNickname(hwnd, msg, wParam, lParam);
 }
 
-
+//02-2241-2385 성북구청 최혜영
 CMainScene::CMainScene()
 {
 }
@@ -24,10 +24,11 @@ CMainScene::~CMainScene()
 	mMainLogo.Shutdown();
 	mBackground.Shutdown();
 
+
 }
 
 
-std::string CMainScene::UpdateScene(const float dt, MSG& msg)
+int CMainScene::UpdateScene(const float dt, MSG& msg)
 {
 	//////////////////////////////////////////////////////////////////////////
 	//로고를 비추는 창을 켜주는 시간을 계산.
@@ -47,7 +48,7 @@ std::string CMainScene::UpdateScene(const float dt, MSG& msg)
 			//DialogBox(mhAppInst, MAKEINTRESOURCE(IDD_DIALOG_STARTSETTING), mhMainWnd, (DLGPROC)MainDialogProc);
 			playButton.isClicked = false;
 			DialogBox(mhAppInst, MAKEINTRESOURCE(IDD_DIALOG_INPUT_NICKNAME), mhMainWnd, (DLGPROC)InputNickDialogProc);
-			return "";
+			return 0;
 		}
 		else if (mExitButton.isClicked)
 		{
@@ -55,7 +56,7 @@ std::string CMainScene::UpdateScene(const float dt, MSG& msg)
 		}
 
 	}
-	return "";
+	return 0;
 }
 
 void CMainScene::OnMouseUp(WPARAM btnState, int x, int y)
@@ -156,6 +157,7 @@ BOOL CMainScene::MyDlgProcForInputNickname(HWND hDlg, UINT uMsg, WPARAM wParam, 
 		{
 		case IDOK:
 			GetDlgItemText(hDlg, IDC_EDIT_INPUT_NICKNAME, str, 20);
+			//NetworkMgr::SetIPAndPortAndNickName()
 			EndDialog(hDlg, 0);
 			return TRUE;
 		case IDCANCEL:

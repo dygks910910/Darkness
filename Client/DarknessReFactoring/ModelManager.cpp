@@ -38,10 +38,9 @@ CModelManager::~CModelManager()
 	}
 }
 
-void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device, ID3D11DeviceContext* dc, IDXGISwapChain* swapChain, ID3D11DepthStencilState* tDepthDisableState)
+void CModelManager::Init(TextureMgr& texMgr, Camera* cam)
 {
 	check = false;
-	mDevice = device;
 	mGridMat.Ambient = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
 	mGridMat.Diffuse = XMFLOAT4(0.6f, 0.6f, 0.6f, 1.0f);
 	mGridMat.Specular = XMFLOAT4(0.0f, 0.0f, 0.0f, 16.0f);
@@ -79,8 +78,8 @@ void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device, 
 		}
 		if (k == 2)
 		{
-			dc->IASetInputLayout(InputLayouts::PosTex);
-			dc->OMSetDepthStencilState(tDepthDisableState, 1);
+			md3dImmediateContext->IASetInputLayout(InputLayouts::PosTex);
+			md3dImmediateContext->OMSetDepthStencilState(RenderStates::DepthDisableState, 1);
 
 		}
 		mclipAnimbuf.insert(std::pair<std::string, std::vector<XMFLOAT4X4>*>(clipname[k], TestFinalTransforms));
@@ -92,7 +91,7 @@ void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device, 
 // 	dc->IASetInputLayout(InputLayouts::PosTex);
 // 	dc->OMSetDepthStencilState(tDepthDisableState, 1);
 
-	HR(swapChain->Present(0, 0));
+	HR(mSwapChain->Present(0, 0));
 
 	for (int i = 0; i < ANIMCNT; ++i)
 	{
@@ -107,48 +106,48 @@ void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device, 
 
 }
 
-void CModelManager::DrawStaticNormalModels(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMFLOAT4X4& shadowTransform, const Camera& cam)
+void CModelManager::DrawStaticNormalModels(ID3DX11EffectTechnique* tech, const XMFLOAT4X4& shadowTransform, const Camera& cam)
 {
 	UINT stride = sizeof(Vertex::PosNormalTexTan);
 	UINT  offset = 0;
 
-	dc->IASetInputLayout(InputLayouts::PosNormalTexTan);
-	dc->IASetVertexBuffers(0, 1, &mStaticNormalMappingObjectVB, &stride, &offset);
-	dc->IASetIndexBuffer(mStaticNormalMappingObjectIB, DXGI_FORMAT_R32_UINT, 0);
+	md3dImmediateContext->IASetInputLayout(InputLayouts::PosNormalTexTan);
+	md3dImmediateContext->IASetVertexBuffers(0, 1, &mStaticNormalMappingObjectVB, &stride, &offset);
+	md3dImmediateContext->IASetIndexBuffer(mStaticNormalMappingObjectIB, DXGI_FORMAT_R32_UINT, 0);
 
 	for (auto p : mStaticNormalModels)
 	{
-		p.Draw(dc, tech, shadowTransform, cam);
+		p.Draw(md3dImmediateContext, tech, shadowTransform, cam);
 	}
 }
 
-void CModelManager::DrawStaticSsaoNormalModels(ID3D11DeviceContext * dc, ID3DX11EffectTechnique * tech, const XMMATRIX & shadowTransform, const Camera & cam)
+void CModelManager::DrawStaticSsaoNormalModels(ID3DX11EffectTechnique* tech, const XMMATRIX& shadowTransform, const Camera& cam)
 {
 	UINT stride = sizeof(Vertex::PosNormalTexTan);
 	UINT  offset = 0;
 
-	dc->IASetInputLayout(InputLayouts::PosNormalTexTan);
-	dc->IASetVertexBuffers(0, 1, &mStaticNormalMappingObjectVB, &stride, &offset);
-	dc->IASetIndexBuffer(mStaticNormalMappingObjectIB, DXGI_FORMAT_R32_UINT, 0);
+	md3dImmediateContext->IASetInputLayout(InputLayouts::PosNormalTexTan);
+	md3dImmediateContext->IASetVertexBuffers(0, 1, &mStaticNormalMappingObjectVB, &stride, &offset);
+	md3dImmediateContext->IASetIndexBuffer(mStaticNormalMappingObjectIB, DXGI_FORMAT_R32_UINT, 0);
 
 	for (auto p : mStaticNormalModels)
 	{
-		p.DrawSsao(dc, tech, shadowTransform, cam);
+		p.DrawSsao(md3dImmediateContext, tech, shadowTransform, cam);
 	}
 	UINT stride2 = sizeof(Vertex::Basic32);
 	UINT  offset2 = 0;
-	dc->IASetInputLayout(InputLayouts::Basic32);
-	dc->IASetVertexBuffers(0, 1, &mStaticBasicObjectVB, &stride2, &offset2);
-	dc->IASetIndexBuffer(mStaticBasicObjectIB, DXGI_FORMAT_R32_UINT, 0);
+	md3dImmediateContext->IASetInputLayout(InputLayouts::Basic32);
+	md3dImmediateContext->IASetVertexBuffers(0, 1, &mStaticBasicObjectVB, &stride2, &offset2);
+	md3dImmediateContext->IASetIndexBuffer(mStaticBasicObjectIB, DXGI_FORMAT_R32_UINT, 0);
 	for (auto p : mStaticBasicModels)
 	{
-		p.DrawSsao(dc, tech, shadowTransform, cam);
+		p.DrawSsao(md3dImmediateContext, tech, shadowTransform, cam);
 	}
 }
 
-void CModelManager::DrawSkinnedModels(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMFLOAT4X4& shadowTransform, const Camera& cam)
+void CModelManager::DrawSkinnedModels(ID3DX11EffectTechnique* tech, const XMFLOAT4X4& shadowTransform, const Camera& cam)
 {
-	dc->IASetInputLayout(InputLayouts::PosNormalTexTanSkinned);
+	md3dImmediateContext->IASetInputLayout(InputLayouts::PosNormalTexTanSkinned);
 
 	XMMATRIX toTexSpace(
 		0.5f, 0.0f, 0.0f, 0.0f,
@@ -187,40 +186,40 @@ void CModelManager::DrawSkinnedModels(ID3D11DeviceContext* dc, ID3DX11EffectTech
 					Effects::NormalMapFX->SetDiffuseMap(mSkinnedModelInstance[i].Model->DiffuseMapSRV[mSkinnedModelInstance[i].selectedDiffuseMapIndex]);
 					Effects::NormalMapFX->SetNormalMap(mSkinnedModelInstance[i].Model->NormalMapSRV[subset]);
 
-					tech->GetPassByIndex(p)->Apply(0, dc);
-					mSkinnedModelInstance[i].Model->ModelMesh.Draw(dc, subset);
+					tech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
+					mSkinnedModelInstance[i].Model->ModelMesh.Draw(md3dImmediateContext, subset);
 				}
 			}
 		}
 	}
 }
 
-void CModelManager::DrawStaticBasicModels(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMFLOAT4X4& shadowTransform, const Camera& cam)
+void CModelManager::DrawStaticBasicModels(ID3DX11EffectTechnique* tech, const XMFLOAT4X4& shadowTransform, const Camera& cam)
 {
 	UINT stride = sizeof(Vertex::Basic32);
 	UINT  offset = 0;
-	dc->IASetInputLayout(InputLayouts::Basic32);
-	dc->IASetVertexBuffers(0, 1, &mStaticBasicObjectVB, &stride, &offset);
-	dc->IASetIndexBuffer(mStaticBasicObjectIB, DXGI_FORMAT_R32_UINT, 0);
+	md3dImmediateContext->IASetInputLayout(InputLayouts::Basic32);
+	md3dImmediateContext->IASetVertexBuffers(0, 1, &mStaticBasicObjectVB, &stride, &offset);
+	md3dImmediateContext->IASetIndexBuffer(mStaticBasicObjectIB, DXGI_FORMAT_R32_UINT, 0);
 	for (auto p : mStaticBasicModels)
 	{
-		p.Draw(dc, tech, shadowTransform, cam);
+		p.Draw(md3dImmediateContext, tech, shadowTransform, cam);
 	}
 
 	if (GetAsyncKeyState('1') & 0x8000) {
-		dc->RSSetState(RenderStates::WireframeRS);
+		md3dImmediateContext->RSSetState(RenderStates::WireframeRS);
 		for (auto p : mStaticBasicModels)
 		{
 #if DEBUG|_DEBUG
-			p.DrawBox(dc, tech, cam);
+			p.DrawBox(md3dImmediateContext, tech, cam);
 #endif
 		}
-		dc->RSSetState(RenderStates::SolidRS);
+		md3dImmediateContext->RSSetState(RenderStates::SolidRS);
 	}
 
 }
 
-void CModelManager::DrawToShadowMap(ID3D11DeviceContext * dc, ID3DX11EffectTechnique * tech,
+void CModelManager::DrawToShadowMap(ID3DX11EffectTechnique * tech,
 	const XMFLOAT4X4 & lightView, const XMFLOAT4X4 & lightProj)
 {
 	ID3DX11EffectTechnique* animatedSmapTech = Effects::BuildShadowMapFX->BuildShadowMapSkinnedTech;
@@ -228,13 +227,13 @@ void CModelManager::DrawToShadowMap(ID3D11DeviceContext * dc, ID3DX11EffectTechn
 	UINT stride = sizeof(Vertex::PosNormalTexTan);
 	UINT offset = 0;
 	if (GetAsyncKeyState('1') & 0x8000)
-		dc->RSSetState(RenderStates::WireframeRS);
-	dc->IASetInputLayout(InputLayouts::PosNormalTexTan);
-	dc->IASetVertexBuffers(0, 1, &mStaticNormalMappingObjectVB, &stride, &offset);
-	dc->IASetIndexBuffer(mStaticNormalMappingObjectIB, DXGI_FORMAT_R32_UINT, 0);
+		md3dImmediateContext->RSSetState(RenderStates::WireframeRS);
+	md3dImmediateContext->IASetInputLayout(InputLayouts::PosNormalTexTan);
+	md3dImmediateContext->IASetVertexBuffers(0, 1, &mStaticNormalMappingObjectVB, &stride, &offset);
+	md3dImmediateContext->IASetIndexBuffer(mStaticNormalMappingObjectIB, DXGI_FORMAT_R32_UINT, 0);
 	for (auto p : mStaticNormalModels)
 	{
-		p.DrawToShadowMap(dc, tech, lightView, lightProj);
+		p.DrawToShadowMap(md3dImmediateContext, tech, lightView, lightProj);
 	}
 	//////////////////////////////////////////////////////////////////////////애니메이션 객체 그림자
 	D3DX11_TECHNIQUE_DESC techDesc;
@@ -244,7 +243,7 @@ void CModelManager::DrawToShadowMap(ID3D11DeviceContext * dc, ID3DX11EffectTechn
 	XMMATRIX view = XMLoadFloat4x4(&lightView);
 	XMMATRIX proj = XMLoadFloat4x4(&lightProj);
 	animatedSmapTech->GetDesc(&techDesc);
-	dc->IASetInputLayout(InputLayouts::PosNormalTexTanSkinned);
+	md3dImmediateContext->IASetInputLayout(InputLayouts::PosNormalTexTanSkinned);
 
 	for (int i = 0; i < mSkinnedModelInstance.size(); ++i)
 	{
@@ -261,11 +260,11 @@ void CModelManager::DrawToShadowMap(ID3D11DeviceContext * dc, ID3DX11EffectTechn
 			Effects::BuildShadowMapFX->SetBoneTransforms(
 				&mSkinnedModelInstance[i].FinalTransforms[0],
 				mSkinnedModelInstance[i].FinalTransforms.size());
-			animatedSmapTech->GetPassByIndex(p)->Apply(0, dc);
+			animatedSmapTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
 
 			for (UINT subset = 0; subset < mSkinnedModelInstance[i].Model->SubsetCount; ++subset)
 			{
-				mSkinnedModelInstance[i].Model->ModelMesh.Draw(dc, subset);
+				mSkinnedModelInstance[i].Model->ModelMesh.Draw(md3dImmediateContext, subset);
 			}
 		}
 	}
@@ -273,18 +272,18 @@ void CModelManager::DrawToShadowMap(ID3D11DeviceContext * dc, ID3DX11EffectTechn
 	stride = sizeof(Vertex::Basic32);
 	offset = 0;
 
-	dc->IASetInputLayout(InputLayouts::Basic32);
-	dc->IASetVertexBuffers(0, 1, &mStaticBasicObjectVB, &stride, &offset);
-	dc->IASetIndexBuffer(mStaticBasicObjectIB, DXGI_FORMAT_R32_UINT, 0);
+	md3dImmediateContext->IASetInputLayout(InputLayouts::Basic32);
+	md3dImmediateContext->IASetVertexBuffers(0, 1, &mStaticBasicObjectVB, &stride, &offset);
+	md3dImmediateContext->IASetIndexBuffer(mStaticBasicObjectIB, DXGI_FORMAT_R32_UINT, 0);
 	for (auto p : mStaticBasicModels)
 	{
-		p.DrawToShadowMap(dc, tech, lightView, lightProj);
+		p.DrawToShadowMap(md3dImmediateContext, tech, lightView, lightProj);
 	}
 }
 
-void CModelManager::DrawInstancedModel(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMFLOAT4X4& shadowTransform, const Camera& cam)
+void CModelManager::DrawInstancedModel(ID3DX11EffectTechnique* tech, const XMFLOAT4X4& shadowTransform, const Camera& cam)
 {
-	dc->IASetInputLayout(InputLayouts::InstancedBasic32);
+	md3dImmediateContext->IASetInputLayout(InputLayouts::InstancedBasic32);
 
 	UINT instanceStride[2] = { sizeof(Vertex::Basic32), sizeof(XMFLOAT4X4) };
 	UINT instanceOffset[2] = { 0,0 };
@@ -293,9 +292,9 @@ void CModelManager::DrawInstancedModel(ID3D11DeviceContext* dc, ID3DX11EffectTec
 
 	for (int i = 0; i < mInstanceModels.size(); ++i)
 	{
-		dc->IASetVertexBuffers(0, 2, vbs, instanceStride, instanceOffset);
-		dc->IASetIndexBuffer(mStaticBasicObjectIB, DXGI_FORMAT_R32_UINT, 0);
-		mInstanceModels[i].Draw(dc, tech, shadowTransform, cam);
+		md3dImmediateContext->IASetVertexBuffers(0, 2, vbs, instanceStride, instanceOffset);
+		md3dImmediateContext->IASetIndexBuffer(mStaticBasicObjectIB, DXGI_FORMAT_R32_UINT, 0);
+		mInstanceModels[i].Draw(md3dImmediateContext, tech, shadowTransform, cam);
 	}
 
 }
@@ -685,7 +684,7 @@ void CModelManager::BuildShapeGeometryBuffers()
 	vbd.MiscFlags = 0;
 	D3D11_SUBRESOURCE_DATA vinitData;
 	vinitData.pSysMem = &vertices[0];
-	HR(mDevice->CreateBuffer(&vbd, &vinitData, &mStaticNormalMappingObjectVB));
+	HR(md3dDevice->CreateBuffer(&vbd, &vinitData, &mStaticNormalMappingObjectVB));
 
 	std::vector<UINT> indices;
 	indices.insert(indices.end(), box.Indices.begin(), box.Indices.end());
@@ -706,7 +705,7 @@ void CModelManager::BuildShapeGeometryBuffers()
 	ibd.MiscFlags = 0;
 	D3D11_SUBRESOURCE_DATA iinitData;
 	iinitData.pSysMem = &indices[0];
-	HR(mDevice->CreateBuffer(&ibd, &iinitData, &mStaticNormalMappingObjectIB));
+	HR(md3dDevice->CreateBuffer(&ibd, &iinitData, &mStaticNormalMappingObjectIB));
 
 	//////////////////////////////////////////////////////////////////////////
 	//basic데이터 추출
@@ -1016,7 +1015,7 @@ void CModelManager::BuildBasicGeometryBuffer()
 	basicvbd.MiscFlags = 0;
 	D3D11_SUBRESOURCE_DATA basicvinitData;
 	basicvinitData.pSysMem = &vertices[0];
-	HR(mDevice->CreateBuffer(&basicvbd, &basicvinitData, &mStaticBasicObjectVB));
+	HR(md3dDevice->CreateBuffer(&basicvbd, &basicvinitData, &mStaticBasicObjectVB));
 	//
 	// Pack the indices of all the meshes into one index buffer.
 	//
@@ -1054,7 +1053,7 @@ void CModelManager::BuildBasicGeometryBuffer()
 	ibd.MiscFlags = 0;
 	D3D11_SUBRESOURCE_DATA iinitData;
 	iinitData.pSysMem = &indices[0];
-	HR(mDevice->CreateBuffer(&ibd, &iinitData, &mStaticBasicObjectIB));
+	HR(md3dDevice->CreateBuffer(&ibd, &iinitData, &mStaticBasicObjectIB));
 
 }
 
@@ -1123,7 +1122,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				texMgr.CreateTexture(L"Textures\\angelStatue.png"),
 				"angelStatue",
 				angelStatueBox,
-				mDevice
+				md3dDevice
 			));
 		}
 		else if (!strcmp(objectName, "tower_corner"))
@@ -1143,7 +1142,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				texMgr.CreateTexture(L"Textures\\bricks_albedo.png"),
 				"tower_coner",
 				tower_cornerBox,
-				mDevice
+				md3dDevice
 			));
 		}
 		else if (!strcmp(objectName, "tower_round"))
@@ -1163,7 +1162,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				texMgr.CreateTexture(L"Textures\\bricks_albedo.png"),
 				"tower_round",
 				tower_roundBox,
-				mDevice
+				md3dDevice
 			));
 		}
 		else if (!strcmp(objectName, "Building_b"))
@@ -1183,7 +1182,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
 				"Building_b",
 				building_bBox,
-				mDevice
+				md3dDevice
 			));
 		}
 		else if (!strcmp(objectName, "Building_c"))
@@ -1203,7 +1202,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
 				"Building_c",
 				building_cBox,
-				mDevice
+				md3dDevice
 			));
 		}
 
@@ -1224,7 +1223,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
 				"Building_d",
 				building_dBox,
-				mDevice
+				md3dDevice
 			));
 		}
 		else if (!strcmp(objectName, "Building_e"))
@@ -1244,7 +1243,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
 				"Building_e",
 				building_eBox,
-				mDevice
+				md3dDevice
 			));
 		}
 		else if (!strcmp(objectName, "Well"))
@@ -1264,7 +1263,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
 				"Well",
 				wellBox,
-				mDevice
+				md3dDevice
 			));
 		}
 		else if (!strcmp(objectName, "Food_a"))
@@ -1284,7 +1283,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
 				"Food_a",
 				food_aBox,
-				mDevice
+				md3dDevice
 			));
 		}
 		else if (!strcmp(objectName, "Food_b"))
@@ -1304,7 +1303,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
 				"Food_b",
 				food_bBox,
-				mDevice
+				md3dDevice
 			));
 		}
 		else if (!strcmp(objectName, "Hay_a"))
@@ -1324,7 +1323,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
 				"Hay_a",
 				hay_aBox,
-				mDevice
+				md3dDevice
 			));
 		}
 		else if (!strcmp(objectName, "Hay_b"))
@@ -1344,7 +1343,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
 				"Hay_b",
 				hay_bBox,
-				mDevice
+				md3dDevice
 			));
 		}
 		else if (!strcmp(objectName, "Hay_c"))
@@ -1362,7 +1361,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				hay_c_VertexOffset,
 				hay_c_IndexOffset,
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
-				"Hay_c", hay_cBox, mDevice
+				"Hay_c", hay_cBox, md3dDevice
 			));
 		}
 		else if (!strcmp(objectName, "Hay_d"))
@@ -1380,7 +1379,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				hay_d_VertexOffset,
 				hay_d_IndexOffset,
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
-				"Hay_d", hay_dBox, mDevice
+				"Hay_d", hay_dBox, md3dDevice
 			));
 		}
 		else if (!strcmp(objectName, "Sack_a"))
@@ -1398,7 +1397,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				sack_a_VertexOffset,
 				sack_a_IndexOffset,
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
-				"Sack_a", sack_aBox, mDevice
+				"Sack_a", sack_aBox, md3dDevice
 			));
 		}
 		else if (!strcmp(objectName, "Sack_b"))
@@ -1416,7 +1415,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				sack_b_VertexOffset,
 				sack_b_IndexOffset,
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
-				"Sack_b", sack_bBox, mDevice
+				"Sack_b", sack_bBox, md3dDevice
 			));
 		}
 		else if (!strcmp(objectName, "Sewers_entrance"))
@@ -1434,7 +1433,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				sewers_entrance_VertexOffset,
 				sewers_entrance_IndexOffset,
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
-				"Sewers_entrance", sewers_entranceBox, mDevice
+				"Sewers_entrance", sewers_entranceBox, md3dDevice
 			));
 		}
 		else if (!strcmp(objectName, "Tent"))
@@ -1452,7 +1451,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				tent_VertexOffset,
 				tent_indexOffset,
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
-				"Tent", tentBox, mDevice
+				"Tent", tentBox, md3dDevice
 			));
 		}
 		else if (!strcmp(objectName, "Crate"))
@@ -1470,7 +1469,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				crate_VertexOffset,
 				crate_indexOffset,
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
-				"Crate", crateBox, mDevice
+				"Crate", crateBox, md3dDevice
 			));
 		}
 		else if (!strcmp(objectName, "Building_f"))
@@ -1488,7 +1487,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				building_f_VertexOffset,
 				building_f_IndexOffset,
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
-				"Building_f", building_fBox, mDevice
+				"Building_f", building_fBox, md3dDevice
 			));
 		}
 		else if (!strcmp(objectName, "Barrel"))
@@ -1506,7 +1505,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 				barrel_VertexOffset,
 				barrel_IndexOffset,
 				texMgr.CreateTexture(L"Textures\\Building_Texture.dds"),
-				"Barrel", barrelBox, mDevice
+				"Barrel", barrelBox, md3dDevice
 			));
 		}
 		//////////////////////////////////////////////////////////////////////////아직 추가 안함.
@@ -1544,7 +1543,7 @@ void CModelManager::ReadMapData(TextureMgr& texMgr, Camera& cam)
 	tempInstanceModelWall.SetDrawInfomation(wallIndexCount, wallVertexOffset, wallIndexOffset);
 	tempInstanceModelWall.SetMatrial(mObjectMaterial);
 	tempInstanceModelWall.SetSRV(texMgr.CreateTexture(L"Textures\\bricks_albedo.png"));
-	tempInstanceModelWall.BuildInstanceBuffer(mDevice);
+	tempInstanceModelWall.BuildInstanceBuffer(md3dDevice);
 	mInstanceModels.push_back(tempInstanceModelWall);
 
 	ifs >> cIgnore;

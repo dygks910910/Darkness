@@ -59,7 +59,7 @@ void CTestScene::OnKeyboardButtonDown(WPARAM wParam, UINT msg)
 
 }
 
-std::string CTestScene::UpdateScene(const float dt, MSG & msg)
+int CTestScene::UpdateScene(const float dt, MSG & msg)
 {
 	// Convert Spherical to Cartesian coordinates.
 	float x = mRadius*sinf(mPhi)*cosf(mTheta);
@@ -75,7 +75,7 @@ std::string CTestScene::UpdateScene(const float dt, MSG & msg)
 
 	XMMATRIX V = XMMatrixLookAtLH(pos, target, up);
 	XMStoreFloat4x4(&mView, V);
-	return std::string();
+	return 0;
 }
 
 void CTestScene::Draw()

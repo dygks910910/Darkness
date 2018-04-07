@@ -8,7 +8,7 @@
 #include "RenderStates.h"
 #include "SkinnedModel.h"
 #include "xnacollision.h"
-
+#include "Global.h"
 enum Axis
 {
 	x = 0,
@@ -34,14 +34,6 @@ enum Animstate
 	runnning = 3,
 	death = 4
 };
-
-const int MAX_BUF_SIZE = 4000;
-
-const int CS_UP = 1;
-const int CS_DOWN = 2;
-const int CS_LEFT = 3;
-const int CS_RIGHT = 4;
-const int CS_PACKET_START_ANIMATION = 5;
 
 //cs_packet
 struct cs_packet_player_move
@@ -71,16 +63,12 @@ struct cs_packet_player_anmation_start
 
 class CModelManager
 {
-
-
-	ID3D11Device* mDevice;
 	SkinnedModel* mCharacterModel;
 
 	ID3D11Buffer* mStaticNormalMappingObjectVB;
 	ID3D11Buffer* mStaticNormalMappingObjectIB;
 	ID3D11Buffer* mStaticBasicObjectVB;
 	ID3D11Buffer* mStaticBasicObjectIB;
-
 
 	std::vector<CStaticNomalModel> mStaticNormalModels;
 	std::vector<CStaticBasicModel> mStaticBasicModels;
@@ -174,21 +162,17 @@ public:
 	std::vector<CStaticBasicModel>& GetStaticBasicModels() { return mStaticBasicModels; }
 	std::vector<SkinnedModelInstance>& GetSkinnedInstanceModels() { return mSkinnedModelInstance; }
 
-	void Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device, ID3D11DeviceContext* dc, IDXGISwapChain* swapChain, ID3D11DepthStencilState* tDepthDisableState);
-	void DrawStaticNormalModels(ID3D11DeviceContext* dc,ID3DX11EffectTechnique* tech,const XMFLOAT4X4& shadowTransform,const Camera& cam);
-
-	void DrawStaticBasicModels(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMFLOAT4X4& shadowTransform, const Camera& cam);
-
-	void DrawStaticSsaoNormalModels(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMMATRIX& shadowTransform, const Camera& cam);
-	void DrawSkinnedModels(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMFLOAT4X4& shadowTransform, const Camera& cam);
-
-	void DrawToShadowMap(ID3D11DeviceContext * dc, ID3DX11EffectTechnique * tech,
+	void Init(TextureMgr& texMgr, Camera* cam);
+	void DrawStaticNormalModels(ID3DX11EffectTechnique* tech,const XMFLOAT4X4& shadowTransform,const Camera& cam);
+	void DrawStaticBasicModels(ID3DX11EffectTechnique* tech, const XMFLOAT4X4& shadowTransform, const Camera& cam);
+	void DrawStaticSsaoNormalModels(ID3DX11EffectTechnique* tech, const XMMATRIX& shadowTransform, const Camera& cam);
+	void DrawSkinnedModels(ID3DX11EffectTechnique* tech, const XMFLOAT4X4& shadowTransform, const Camera& cam);
+	void DrawToShadowMap(ID3DX11EffectTechnique * tech,
 		const XMFLOAT4X4 & lightView, const XMFLOAT4X4 & lightProj);
-	void DrawInstancedModel(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMFLOAT4X4& shadowTransform, const Camera& cam);
+	void DrawInstancedModel(ID3DX11EffectTechnique* tech, const XMFLOAT4X4& shadowTransform, const Camera& cam);
 	void UpdateModel(const float& dt, Camera& camera);
 
 
-	BYTE   send_buf[MAX_BUF_SIZE];
 
 	XMFLOAT4X4 boundworld;
 
@@ -208,17 +192,17 @@ public:
 
 	/////네트워크 initpos끝났는지 확인하는 변수
 	bool m_bFinishInit = false;
-
+	enum ANIMATION_INFO
+	{
+		IDLE,
+		WARK,
+		ATTACT,
+		RUN
+	};
 private:
 	void BuildShapeGeometryBuffers();
 	void BuildBasicGeometryBuffer();
 
 	void ReadMapData(TextureMgr& texMgr, Camera& cam);
 };
-enum ANIMATION_INFO
-{
-	IDLE,
-	WARK,
-	ATTACT,
-	RUN
-};
+

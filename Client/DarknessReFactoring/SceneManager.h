@@ -3,6 +3,7 @@
 #include"Global.h"
 #include"TestScene.h"
 #include"MainScene.h"
+#include"RoomScene.h"
 class CSceneManager
 {
 public:

@@ -34,7 +34,7 @@ public:
 	CMainScene();
 	virtual ~CMainScene();
 	
-	virtual std::string UpdateScene(const float dt, MSG& msg);
+	virtual int UpdateScene(const float dt, MSG& msg);
 	
 	virtual void OnMouseUp(WPARAM btnState, int x, int y) override;
 	virtual void OnMouseMove(WPARAM btnState, int x, int y)override;
