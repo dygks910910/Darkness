@@ -167,6 +167,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BasicModel.cpp" />
     <ClCompile Include="BitMap.cpp" />
     <ClCompile Include="ButtonClass.cpp" />
     <ClCompile Include="Common\Camera.cpp" />
@@ -183,15 +184,14 @@
     <ClCompile Include="DrawText.cpp" />
     <ClCompile Include="Effects.cpp" />
     <ClCompile Include="FbxLoader.cpp" />
-    <ClCompile Include="ffModel.cpp" />
-    <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Global.cpp" />
     <ClCompile Include="LoadM3d.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainScene.cpp" />
     <ClCompile Include="MeshGeometry.cpp" />
     <ClCompile Include="MiniMap.cpp" />
-    <ClCompile Include="ModelManager.cpp" />
+    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="ModelMgr.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="RenderStates.cpp" />
     <ClCompile Include="RoomScene.cpp" />
@@ -206,6 +206,7 @@
     <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BasicModel.h" />
     <ClInclude Include="BitMap.h" />
     <ClInclude Include="ButtonClass.h" />
     <ClInclude Include="Common\Camera.h" />
@@ -225,14 +226,13 @@
     <ClInclude Include="DrawText.h" />
     <ClInclude Include="Effects.h" />
     <ClInclude Include="FbxLoader.h" />
-    <ClInclude Include="ffModel.h" />
-    <ClInclude Include="GameScene.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="LoadM3d.h" />
     <ClInclude Include="MainScene.h" />
     <ClInclude Include="MeshGeometry.h" />
     <ClInclude Include="MiniMap.h" />
-    <ClInclude Include="ModelManager.h" />
+    <ClInclude Include="Model.h" />
+    <ClInclude Include="ModelMgr.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="RenderStates.h" />
     <ClInclude Include="resource.h" />
@@ -421,9 +421,6 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)FX\%(Filename).fxo</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)FX\%(Filename).fxo</ObjectFileOutput>
     </FxCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

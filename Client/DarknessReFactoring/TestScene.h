@@ -4,10 +4,15 @@
 #include"Vertex.h"
 #include"Effects.h"
 #include"RenderStates.h"
+#include "FbxLoader.h"
+#include "Camera.h"
+#include "ModelMgr.h"
 class CTestScene :
 	public Scene
 {
 public:
+	ModelMgr modelMgr;
+	Camera m_Cam;
 	CTestScene();
 	virtual ~CTestScene();
 	// Scene을(를) 통해 상속됨
@@ -23,6 +28,7 @@ public:
 	//멤버함수
 private:
 	void BuildGeometryBuffers();
+	void BuildFBXBuffers(const GeometryGenerator::MeshData& box);
 
 
 	//멤버변수
@@ -38,14 +44,14 @@ private:
 	XMFLOAT4X4 mTexTransform;
 	XMFLOAT4X4 mBoxWorld;
 
-	XMFLOAT4X4 mView;
-	XMFLOAT4X4 mProj;
+// 	XMFLOAT4X4 mView;
+// 	XMFLOAT4X4 mProj;
 
 	int mBoxVertexOffset;
 	UINT mBoxIndexOffset;
 	UINT mBoxIndexCount;
 
-	XMFLOAT3 mEyePosW;
+	/*XMFLOAT3 mEyePosW;*/
 
 	float mTheta;
 	float mPhi;

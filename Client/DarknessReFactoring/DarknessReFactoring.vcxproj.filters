@@ -78,9 +78,6 @@
     <ClCompile Include="TestScene.cpp">
       <Filter>소스 파일\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="ModelManager.cpp">
-      <Filter>소스 파일\Model</Filter>
-    </ClCompile>
     <ClCompile Include="SkinnedModel.cpp">
       <Filter>소스 파일\Model</Filter>
     </ClCompile>
@@ -92,9 +89,6 @@
     </ClCompile>
     <ClCompile Include="Common\TextureMgr.cpp">
       <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="ffModel.cpp">
-      <Filter>소스 파일\Model</Filter>
     </ClCompile>
     <ClCompile Include="SkinnedData.cpp">
       <Filter>소스 파일\Model</Filter>
@@ -144,8 +138,14 @@
     <ClCompile Include="Sky.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="GameScene.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="Model.cpp">
+      <Filter>소스 파일\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelMgr.cpp">
+      <Filter>소스 파일\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicModel.cpp">
+      <Filter>소스 파일\Model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -194,9 +194,6 @@
     <ClInclude Include="TestScene.h">
       <Filter>소스 파일\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="ModelManager.h">
-      <Filter>소스 파일\Model</Filter>
-    </ClInclude>
     <ClInclude Include="SkinnedModel.h">
       <Filter>소스 파일\Model</Filter>
     </ClInclude>
@@ -208,9 +205,6 @@
     </ClInclude>
     <ClInclude Include="Common\TextureMgr.h">
       <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="ffModel.h">
-      <Filter>소스 파일\Model</Filter>
     </ClInclude>
     <ClInclude Include="SkinnedData.h">
       <Filter>소스 파일\Model</Filter>
@@ -260,8 +254,14 @@
     <ClInclude Include="Sky.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="GameScene.h">
-      <Filter>헤더 파일</Filter>
+    <ClInclude Include="BasicModel.h">
+      <Filter>소스 파일\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>소스 파일\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelMgr.h">
+      <Filter>소스 파일\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -321,8 +321,5 @@
     <FxCompile Include="FX\color.fx">
       <Filter>FX</Filter>
     </FxCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

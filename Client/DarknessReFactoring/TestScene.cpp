@@ -4,20 +4,16 @@
 
 
 CTestScene::CTestScene():
-	mBoxVB(0), mBoxIB(0), mDiffuseMapSRV(0), mEyePosW(0.0f, 0.0f, 0.0f),
+	mBoxVB(0), mBoxIB(0), mDiffuseMapSRV(0),
 	mTheta(1.3f*MathHelper::Pi), mPhi(0.4f*MathHelper::Pi), mRadius(2.5f)
 {
-	Effects::InitAll(md3dDevice);
-	InputLayouts::InitAll(md3dDevice);
-
 	mLastMousePos.x = 0;
 	mLastMousePos.y = 0;
 
 	XMMATRIX I = XMMatrixIdentity();
 	XMStoreFloat4x4(&mBoxWorld, I);
 	XMStoreFloat4x4(&mTexTransform, I);
-	XMStoreFloat4x4(&mView, I);
-	XMStoreFloat4x4(&mProj, I);
+	
 
 	mDirLights[0].Ambient = XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
 	mDirLights[0].Diffuse = XMFLOAT4(0.8f, 0.8f, 0.8f, 1.0f);
@@ -32,6 +28,9 @@ CTestScene::CTestScene():
 	mBoxMat.Ambient = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
 	mBoxMat.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	mBoxMat.Specular = XMFLOAT4(0.6f, 0.6f, 0.6f, 16.0f);
+
+
+
 }
 
 
@@ -47,82 +46,83 @@ CTestScene::~CTestScene()
 
 bool CTestScene::Init()
 {
-	HR(D3DX11CreateShaderResourceViewFromFile(md3dDevice,
-		L"Textures/WoodCrate01.dds", 0, 0, &mDiffuseMapSRV, 0));
-
-	BuildGeometryBuffers();
+	m_Cam.SetPosition(0, 0, -5);
 	return true;
 }
 
 void CTestScene::OnKeyboardButtonDown(WPARAM wParam, UINT msg)
 {
-
+	switch (msg)
+	{
+	case VK_DOWN:
+		
+		break;
+	}
 }
 
 int CTestScene::UpdateScene(const float dt, MSG & msg)
 {
 	// Convert Spherical to Cartesian coordinates.
-	float x = mRadius*sinf(mPhi)*cosf(mTheta);
-	float z = mRadius*sinf(mPhi)*sinf(mTheta);
-	float y = mRadius*cosf(mPhi);
+// 	float x = mRadius*sinf(mPhi)*cosf(mTheta);
+// 	float z = mRadius*sinf(mPhi)*sinf(mTheta);
+// 	float y = mRadius*cosf(mPhi);
 
-	mEyePosW = XMFLOAT3(x, y, z);
+	//m_Cam.Strafe(1 * dt);
+	//m_Cam.RotateY(1*dt); 
 
-	// Build the view matrix.
-	XMVECTOR pos = XMVectorSet(x, y, z, 1.0f);
-	XMVECTOR target = XMVectorZero();
-	XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 
-	XMMATRIX V = XMMatrixLookAtLH(pos, target, up);
-	XMStoreFloat4x4(&mView, V);
+	XMMATRIX world = XMLoadFloat4x4(&mBoxWorld);
+	world = XMMatrixRotationX(1*dt)*world;
+	XMStoreFloat4x4(&mBoxWorld, world);
+	m_Cam.UpdateViewMatrix();
+
 	return 0;
 }
 
 void CTestScene::Draw()
 {
-	md3dImmediateContext->ClearRenderTargetView(mRenderTargetView, reinterpret_cast<const float*>(&Colors::LightSteelBlue));
-	md3dImmediateContext->ClearDepthStencilView(mDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	//md3dImmediateContext->ClearRenderTargetView(mRenderTargetView, reinterpret_cast<const float*>(&Colors::LightSteelBlue));
+	//md3dImmediateContext->ClearDepthStencilView(mDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
-	md3dImmediateContext->IASetInputLayout(InputLayouts::Basic32);
-	md3dImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	//md3dImmediateContext->IASetInputLayout(InputLayouts::Basic32);
+	//md3dImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	UINT stride = sizeof(Vertex::Basic32);
-	UINT offset = 0;
+	//UINT stride = sizeof(Vertex::Basic32);
+	//UINT offset = 0;
 
-	XMMATRIX view = XMLoadFloat4x4(&mView);
-	XMMATRIX proj = XMLoadFloat4x4(&mProj);
-	XMMATRIX viewProj = view*proj;
+	//XMMATRIX viewProj = m_Cam.Proj()*m_Cam.Proj();
 
-	// Set per frame constants.
-	Effects::BasicFX->SetDirLights(mDirLights);
-	Effects::BasicFX->SetEyePosW(mEyePosW);
+	//// Set per frame constants.
+	//Effects::BasicFX->SetDirLights(mDirLights);
+	//Effects::BasicFX->SetEyePosW(m_Cam.GetPosition());
 
-	ID3DX11EffectTechnique* activeTech = Effects::BasicFX->Light2TexTech;
-	
-	D3DX11_TECHNIQUE_DESC techDesc;
-	activeTech->GetDesc(&techDesc);
-	for (UINT p = 0; p < techDesc.Passes; ++p)
-	{
-		md3dImmediateContext->IASetVertexBuffers(0, 1, &mBoxVB, &stride, &offset);
-		md3dImmediateContext->IASetIndexBuffer(mBoxIB, DXGI_FORMAT_R32_UINT, 0);
+	//ID3DX11EffectTechnique* activeTech = Effects::BasicFX->Light2TexTech;
+	//
+	//D3DX11_TECHNIQUE_DESC techDesc;
+	//activeTech->GetDesc(&techDesc);
+	//for (UINT p = 0; p < techDesc.Passes; ++p)
+	//{
+	//	md3dImmediateContext->IASetVertexBuffers(0, 1, &mBoxVB, &stride, &offset);
+	//	md3dImmediateContext->IASetIndexBuffer(mBoxIB, DXGI_FORMAT_R32_UINT, 0);
 
-		// Draw the box.
-		XMMATRIX world = XMLoadFloat4x4(&mBoxWorld);
-		XMMATRIX worldInvTranspose = MathHelper::InverseTranspose(world);
-		XMMATRIX worldViewProj = world*view*proj;
+	//	// Draw the box.
+	//	XMMATRIX world = XMLoadFloat4x4(&mBoxWorld);
+	//	XMMATRIX worldInvTranspose = MathHelper::InverseTranspose(world);
+	//	XMMATRIX worldViewProj = world*m_Cam.View()*m_Cam.Proj();
 
-		Effects::BasicFX->SetWorld(world);
-		Effects::BasicFX->SetWorldInvTranspose(worldInvTranspose);
-		Effects::BasicFX->SetWorldViewProj(worldViewProj);
-		Effects::BasicFX->SetTexTransform(XMLoadFloat4x4(&mTexTransform));
-		Effects::BasicFX->SetMaterial(mBoxMat);
-		Effects::BasicFX->SetDiffuseMap(mDiffuseMapSRV);
+	//	Effects::BasicFX->SetWorld(world);
+	//	Effects::BasicFX->SetWorldInvTranspose(worldInvTranspose);
+	//	Effects::BasicFX->SetWorldViewProj(worldViewProj);
+	//	Effects::BasicFX->SetTexTransform(XMLoadFloat4x4(&mTexTransform));
+	//	Effects::BasicFX->SetMaterial(mBoxMat);
+	//	Effects::BasicFX->SetDiffuseMap(mDiffuseMapSRV);
 
-		activeTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
-		md3dImmediateContext->DrawIndexed(mBoxIndexCount, mBoxIndexOffset, mBoxVertexOffset);
-	}
+	//	activeTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
+	//	md3dImmediateContext->DrawIndexed(mBoxIndexCount, mBoxIndexOffset, mBoxVertexOffset);
+	//}
 
-	HR(mSwapChain->Present(0, 0));
+	//HR(mSwapChain->Present(0, 0));
+	modelMgr.DrawAll(m_Cam);
 }
 
 void CTestScene::OnMouseDown(WPARAM btnState, int x, int y)
@@ -174,8 +174,7 @@ void CTestScene::OnMouseMove(WPARAM btnState, int x, int y)
 
 void CTestScene::OnResize()
 {
-	XMMATRIX P = XMMatrixPerspectiveFovLH(0.25f*MathHelper::Pi, AspectRatio(), 1.0f, 1000.0f);
-	XMStoreFloat4x4(&mProj, P);
+	m_Cam.SetLens(0.36f*MathHelper::Pi, AspectRatio(), 0.01f, 1000.0f);
 }
 
 void CTestScene::BuildGeometryBuffers()
@@ -184,6 +183,65 @@ void CTestScene::BuildGeometryBuffers()
 
 	GeometryGenerator geoGen;
 	geoGen.CreateBox(1.0f, 1.0f, 1.0f, box);
+
+	// Cache the vertex offsets to each object in the concatenated vertex buffer.
+	mBoxVertexOffset = 0;
+
+	// Cache the index count of each object.
+	mBoxIndexCount = box.Indices.size();
+
+	// Cache the starting index for each object in the concatenated index buffer.
+	mBoxIndexOffset = 0;
+
+	UINT totalVertexCount = box.Vertices.size();
+
+	UINT totalIndexCount = mBoxIndexCount;
+
+	//
+	// Extract the vertex elements we are interested in and pack the
+	// vertices of all the meshes into one vertex buffer.
+	//
+
+	std::vector<Vertex::Basic32> vertices(totalVertexCount);
+
+	UINT k = 0;
+	for (size_t i = 0; i < box.Vertices.size(); ++i, ++k)
+	{
+		vertices[k].Pos = box.Vertices[i].Position;
+		vertices[k].Normal = box.Vertices[i].Normal;
+		vertices[k].Tex = box.Vertices[i].TexC;
+	}
+
+	D3D11_BUFFER_DESC vbd;
+	vbd.Usage = D3D11_USAGE_IMMUTABLE;
+	vbd.ByteWidth = sizeof(Vertex::Basic32) * totalVertexCount;
+	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	vbd.CPUAccessFlags = 0;
+	vbd.MiscFlags = 0;
+	D3D11_SUBRESOURCE_DATA vinitData;
+	vinitData.pSysMem = &vertices[0];
+	HR(md3dDevice->CreateBuffer(&vbd, &vinitData, &mBoxVB));
+
+	//
+	// Pack the indices of all the meshes into one index buffer.
+	//
+
+	std::vector<UINT> indices;
+	indices.insert(indices.end(), box.Indices.begin(), box.Indices.end());
+
+	D3D11_BUFFER_DESC ibd;
+	ibd.Usage = D3D11_USAGE_IMMUTABLE;
+	ibd.ByteWidth = sizeof(UINT) * totalIndexCount;
+	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	ibd.CPUAccessFlags = 0;
+	ibd.MiscFlags = 0;
+	D3D11_SUBRESOURCE_DATA iinitData;
+	iinitData.pSysMem = &indices[0];
+	HR(md3dDevice->CreateBuffer(&ibd, &iinitData, &mBoxIB));
+}
+
+void CTestScene::BuildFBXBuffers(const GeometryGenerator::MeshData& box)
+{
 
 	// Cache the vertex offsets to each object in the concatenated vertex buffer.
 	mBoxVertexOffset = 0;

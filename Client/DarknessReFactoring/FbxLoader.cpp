@@ -1,9 +1,5 @@
 
 #include "FbxLoader.h"
-extern XMFLOAT3 bextent;
-extern XMFLOAT3 bcenter;
-extern bool check;
-//std::ofstream fout("aabb.txt");
 
 CFbxLoader::CFbxLoader() :
 	mpManager(nullptr), mpScene(nullptr), mpImporter(nullptr), mRootNode(0),
@@ -85,65 +81,8 @@ void CFbxLoader::Init(const char * pFileName)
 
 }
 
-void CFbxLoader::Print()
-{
-	// Print the nodes of the scene and their attributes recursively.
-	// Note that we are not printing the root node because it should
-	// not contain any attributes.
-	mRootNode = mpScene->GetRootNode();
-#ifdef _DEBUG
-	std::cout << mRootNode->GetChildCount() << std::endl;
-#endif // _DEBUG
-	if (mRootNode)
-	{
-		for (int i = 0; i < mRootNode->GetChildCount(); i++)
-			PrintNode(mRootNode->GetChild(i));
-	}
-}
 
-void CFbxLoader::PrintVertex()
-{
-	// Print the nodes of the scene and their attributes recursively.
-	// Note that we are not printing the root node because it should
-	// not contain any attributes.
-	mRootNode = mpScene->GetRootNode();
-	std::cout << mRootNode->GetChildCount() << std::endl;
-	if (mRootNode)
-	{
-		for (int i = 0; i < mRootNode->GetChildCount(); i++)
-			PrintVertexByNode(mRootNode->GetChild(i));
-	}
-}
-
-void CFbxLoader::PrintVertexByNode(FbxNode* pNode)
-{
-	FbxMesh* pMesh = pNode->GetMesh();
-	if (!pMesh->GetNode())
-	{
-		std::cout << "mesh err" << std::endl;
-	}
-	int iPolygonVertexCount = pMesh->GetPolygonCount();
-	std::cout << "PolygonCount:" << iPolygonVertexCount << std::endl;
-	FbxVector4 lcurrentVertex;
-	FbxVector4* pcrtlPoint = pMesh->GetControlPoints();
-	float * lVertices = new float[iPolygonVertexCount * 4];
-	std::cout << "ControllPoint : " << std::endl;
-	for (int lIndex = 0; lIndex < iPolygonVertexCount; ++lIndex)
-	{
-		// Save the vertex position.
-		lcurrentVertex = pcrtlPoint[lIndex];
-		lVertices[lIndex * VERTEX_STRIDE] = static_cast<float>(lcurrentVertex[0]);
-		lVertices[lIndex * VERTEX_STRIDE + 1] = static_cast<float>(lcurrentVertex[1]);
-		lVertices[lIndex * VERTEX_STRIDE + 2] = static_cast<float>(lcurrentVertex[2]);
-		std::cout << "(" << lVertices[lIndex * VERTEX_STRIDE] << "," << lVertices[lIndex * VERTEX_STRIDE + 1] << "," <<
-			lVertices[lIndex * VERTEX_STRIDE + 2] << ")" << std::endl;
-	}
-
-
-	delete[] lVertices;
-}
-
-void CFbxLoader::LoadElement(const FbxMesh* pMesh,GeometryGenerator::MeshData& meshData)
+void CFbxLoader::LoadElement(const FbxMesh * pMesh, GeometryGenerator::MeshData & meshData, const float & scaleFactor)
 {
 	// pMesh가 NULL일 경우도 있기 때문에 NULL일 경우 return.
 	if (!pMesh)
@@ -160,8 +99,8 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh,GeometryGenerator::MeshData& m
 	FbxLayerElementArrayTemplate<int>* lMaterialIndice = NULL;
 	FbxGeometryElement::EMappingMode lMaterialMappingMode = FbxGeometryElement::eNone;
 
-		// Congregate all the data of a mesh to be cached in VBOs.
-		// If normal or UV is by polygon vertex, record all vertex attributes by polygon vertex.
+	// Congregate all the data of a mesh to be cached in VBOs.
+	// If normal or UV is by polygon vertex, record all vertex attributes by polygon vertex.
 	mHasNormal = pMesh->GetElementNormalCount() > 0;
 	mHasUV = pMesh->GetElementUVCount() > 0;
 	FbxGeometryElement::EMappingMode lNormalMappingMode = FbxGeometryElement::eNone;
@@ -282,8 +221,8 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh,GeometryGenerator::MeshData& m
 				meshData.Indices.push_back(static_cast<UINT>(lVertexCount));
 
 				lCurrentVertex = lControlPoints[lControlPointIndex];
-				tempVertex.x = static_cast<float>(lCurrentVertex[0] *-1.0f );
-				tempVertex.y = static_cast<float>(lCurrentVertex[1] );
+				tempVertex.x = static_cast<float>(lCurrentVertex[0] );
+				tempVertex.y = static_cast<float>(lCurrentVertex[1]);
 				tempVertex.z = static_cast<float>(lCurrentVertex[2]);
 
 				x.x = tempVertex.x;
@@ -317,7 +256,7 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh,GeometryGenerator::MeshData& m
 					pMesh->GetPolygonVertexNormal(lPolygonIndex, lVerticeIndex, lCurrentNormal);
 					tempNormal.x = static_cast<float>(lCurrentNormal[0]);
 					tempNormal.y = static_cast<float>(lCurrentNormal[1]);
-					tempNormal.z = static_cast<float>(lCurrentNormal[2]);
+					tempNormal.z = static_cast<float>(lCurrentNormal[2] * -1.0f);
 				}
 				if (mHasUV)
 				{
@@ -338,12 +277,12 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh,GeometryGenerator::MeshData& m
 			}
 
 			GeometryGenerator::Vertex temp4Insert;
-			temp4Insert.Position = tempVertex;
+			temp4Insert.Position = XMFLOAT3( tempVertex.x*scaleFactor, tempVertex.y * scaleFactor, tempVertex.z * scaleFactor);
 			temp4Insert.Normal = tempNormal;
-			temp4Insert.TexC= tempfloat2;
+			temp4Insert.TexC = tempfloat2;
 			//탄젠트 계산.
 			XMVECTOR tangent;
-			XMVECTOR c1 = XMVector3Cross(XMLoadFloat3(&tempNormal), XMVectorSet(0, 0, 1,0));
+			XMVECTOR c1 = XMVector3Cross(XMLoadFloat3(&tempNormal), XMVectorSet(0, 0, 1, 0));
 			XMVECTOR c2 = XMVector3Cross(XMLoadFloat3(&tempNormal), XMVectorSet(0, 1, 0, 0));
 
 			if (Length(c1) > Length(c2))
@@ -355,27 +294,12 @@ void CFbxLoader::LoadElement(const FbxMesh* pMesh,GeometryGenerator::MeshData& m
 				tangent = c2;
 			}
 			tangent = XMVector3Normalize(tangent);
-			XMStoreFloat3(&temp4Insert.TangentU,tangent);
+			XMStoreFloat3(&temp4Insert.TangentU, tangent);
 			meshData.Vertices.push_back(temp4Insert);
 			++lVertexCount;
 		}
 	}
-	XMFLOAT3 testextent;
-	XMFLOAT3 testcenter;
-	if (check)
-	{
-		XMStoreFloat3(&bcenter, 0.5f*(resultmax + resultmin));
-		XMStoreFloat3(&bextent, 0.5f*(resultmax - resultmin));
 
-
-#ifdef _DEBUG
-
-
-		std::cout << "extent " << bextent.x << ' ' << bextent.y << ' ' << bextent.z << std::endl;
-		std::cout << "center " << bcenter.x << ' ' << bcenter.y << ' ' << bcenter.z << std::endl;
-#endif // _DEBUG
-	}
-	GetUVName();
 }
 
 float CFbxLoader::Length(const XMVECTOR& c1)
@@ -449,100 +373,6 @@ void CFbxLoader::ProcessMaterialAttribute(FbxSurfaceMaterial* inMaterial, unsign
 	}
 }
 
-void CFbxLoader::GetUVName()
-{
-	int mcount = mRootNode->GetSrcObjectCount<FbxSurfaceMaterial>();
-	for (int index = 0; index < mcount; index++)
-	{
-		FbxSurfaceMaterial *material = (FbxSurfaceMaterial*)mRootNode->GetSrcObject<FbxSurfaceMaterial>(index);
-		if (material)
-		{
-			// This only gets the material of type sDiffuse, you probably need to traverse all Standard Material Property by its name to get all possible textures.
-			FbxProperty prop = material->FindProperty(FbxSurfaceMaterial::sDiffuse);
-
-			// Check if it's layeredtextures
-			int layered_texture_count = prop.GetSrcObjectCount<FbxLayeredTexture>();
-			if (layered_texture_count > 0)
-			{
-				for (int j = 0; j < layered_texture_count; j++)
-				{
-					FbxLayeredTexture* layered_texture = FbxCast<FbxLayeredTexture>(prop.GetSrcObject<FbxLayeredTexture>(j));
-					int lcount = layered_texture->GetSrcObjectCount<FbxTexture>();
-					for (int k = 0; k < lcount; k++)
-					{
-						FbxTexture* texture = FbxCast<FbxTexture>(layered_texture->GetSrcObject<FbxTexture>(k));
-						// Then, you can get all the properties of the texture, include its name
-						const char* texture_name = texture->GetName();
-#ifdef _DEBUG
-
-
-						std::cout << texture_name << std::endl;
-#endif // _DEBUG
-
-					}
-				}
-			}
-			else
-			{
-				// Directly get textures
-				int texture_count = prop.GetSrcObjectCount<FbxTexture>();
-				for (int j = 0; j < texture_count; j++)
-				{
-					const FbxTexture* texture = FbxCast<FbxTexture>(prop.GetSrcObject<FbxTexture>(j));
-					// Then, you can get all the properties of the texture, include its name
-					const char* texture_name = texture->GetName();
-#ifdef _DEBUG
-
-
-					std::cout << texture_name << std::endl;
-#endif // _DEBUG
-
-				}
-			}
-		}
-	}
-}
-
-void CFbxLoader::PrintNode(FbxNode * pNode)
-{
-	//PrintTabs();
-
-	const char* nodeName = pNode->GetName();
-	FbxDouble3 translation = pNode->LclTranslation.Get();
-	FbxDouble3 rotation = pNode->LclRotation.Get();
-	FbxDouble3 scaling = pNode->LclScaling.Get();
-
-	// Print the contents of the node.
-	printf("<node name='%s' translation='(%f, %f, %f)' rotation='(%f, %f, %f)' scaling='(%f, %f, %f)'>\n",
-		nodeName,
-		translation[0], translation[1], translation[2],
-		rotation[0], rotation[1], rotation[2],
-		scaling[0], scaling[1], scaling[2]
-	);
-	//numTabs++;
-
-	// Print the node's attributes.
-	for (int i = 0; i < pNode->GetNodeAttributeCount(); i++)
-		PrintAttribute(pNode->GetNodeAttributeByIndex(i));
-
-	// Recursively print the children.
-	for (int j = 0; j < pNode->GetChildCount(); j++)
-		PrintNode(pNode->GetChild(j));
-
-	/*numTabs--;
-	PrintTabs();*/
-	printf("</node>\n");
-}
-
-void CFbxLoader::PrintAttribute(FbxNodeAttribute * pAttribute)
-{
-	if (!pAttribute) return;
-
-	FbxString typeName = GetAttributeTypeName(pAttribute->GetAttributeType());
-	FbxString attrName = pAttribute->GetName();
-	// Note: to retrieve the character array of a FbxString, use its Buffer() method.
-	printf("<attribute type='%s' name='%s'/>\n", typeName.Buffer(), attrName.Buffer());
-}
 
 FbxString CFbxLoader::GetAttributeTypeName(FbxNodeAttribute::EType type)
 {
@@ -571,17 +401,6 @@ FbxString CFbxLoader::GetAttributeTypeName(FbxNodeAttribute::EType type)
 	}
 }
 
-void CFbxLoader::PrintElement()
-{
-	/*mRootNode = mpScene->GetRootNode();
-	std::cout << mRootNode->GetChildCount() << std::endl;
-	if (mRootNode)
-	{
-		for (int i = 0; i < mRootNode->GetChildCount(); i++)
-			LoadElement(mRootNode->GetChild(i)->GetMesh());*/
-			//}
-}
-
 void CFbxLoader::Destroy()
 {
 	/*
@@ -596,13 +415,12 @@ void CFbxLoader::Destroy()
 	if (mpManager)
 		mpManager->Destroy();
 
-	mMaterialLookUp.clear();
 
 
 
 }
 
-void CFbxLoader::LoadFBX(const char* pFileName, GeometryGenerator::MeshData& mesh)
+void CFbxLoader::LoadFBX(const char * pFileName, GeometryGenerator::MeshData & meshData, const float & scaleFactor)
 {
 	Init(pFileName);
 	//fout << "Name: " << pFileName << std::endl;
@@ -610,11 +428,11 @@ void CFbxLoader::LoadFBX(const char* pFileName, GeometryGenerator::MeshData& mes
 	if (mRootNode)
 	{
 		for (int i = 0; i < mRootNode->GetChildCount(); i++)
-			LoadElement(mRootNode->GetChild(i)->GetMesh(), mesh);
+			LoadElement(mRootNode->GetChild(i)->GetMesh(), meshData,scaleFactor);
 #ifdef _DEBUG
 
 
-		std::cout << mesh.Vertices.size() << std::endl;
+		std::cout << meshData.Vertices.size() << std::endl;
 #endif // _DEBUG
 
 	}

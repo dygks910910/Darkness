@@ -14,10 +14,6 @@ TextureMgr::~TextureMgr()
 	mTextureSRV.clear();
 }
 
-void TextureMgr::Init(ID3D11Device* device)
-{
-	md3dDevice = device;
-}
 
 ID3D11ShaderResourceView* TextureMgr::CreateTexture(std::wstring filename)
 {

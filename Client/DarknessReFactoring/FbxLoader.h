@@ -31,12 +31,10 @@ public:
 	작성자:박요한(dygks910910@daum.net)
 	설명:FbxManager,FbxScene,FBXImporter,RootNode Init.
 	*/
-	void Init(const char* pFileName);
-	void Print();
-	void PrintVertex();
-	void PrintElement();
+	
 	void Destroy();
-	void LoadFBX(const char* pFileName,GeometryGenerator::MeshData& meshData);
+	void LoadFBX(const char* pFileName, GeometryGenerator::MeshData& meshData,const float& scaleFactor);
+
 	template<class BOX>
 	void LoadFBX(const char* pFileName, GeometryGenerator::MeshData& meshData,BOX& box);
 
@@ -46,21 +44,18 @@ private:
 	FbxImporter* mpImporter;
 	FbxNode* mRootNode;
 	int mlFileMajor, mlFileMinor, mlFileRevision;
-	std::unordered_map<unsigned int, Material*> mMaterialLookUp;
 private:
-	void GetUVName();
-	void PrintNode(FbxNode* pNode);
-	void PrintAttribute(FbxNodeAttribute* pAttribute);
-	void PrintVertexByNode(FbxNode* pNode);
 	FbxString GetAttributeTypeName(FbxNodeAttribute::EType type);
-	void LoadElement(const FbxMesh* pMesh,GeometryGenerator::MeshData& meshData);
+	void LoadElement(const FbxMesh* pMesh, GeometryGenerator::MeshData& meshData,const float& scaleFactor);
+	float Length(const XMVECTOR& c1);
+
 	template<class BOX>
 	void LoadElement(const FbxMesh* pMesh, GeometryGenerator::MeshData& meshData,BOX& box );
 
-	float Length(const XMVECTOR& c1);
 	void ProcessMaterials(FbxNode* inNode, Material& material);
 	void ProcessMaterialAttribute(FbxSurfaceMaterial* inMaterial, unsigned int inMaterialIndex, Material& material);
-
+	void Init(const char* pFileName);
+	
 
 	bool mHasNormal;
 	bool mHasUV;
@@ -315,5 +310,4 @@ inline void CFbxLoader::LoadElement(const FbxMesh * pMesh, GeometryGenerator::Me
 		box.Extents = bextent;
  		std::cout << "extent " << bextent.x << ' ' << bextent.y << ' ' << bextent.z << std::endl;
  		std::cout << "center " << bcenter.x << ' ' << bcenter.y << ' ' << bcenter.z << std::endl;
-	GetUVName();
 }
