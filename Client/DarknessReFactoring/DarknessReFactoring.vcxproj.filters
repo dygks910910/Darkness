@@ -147,6 +147,9 @@
     <ClCompile Include="BasicModel.cpp">
       <Filter>소스 파일\Model</Filter>
     </ClCompile>
+    <ClCompile Include="NormalModel.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common\d3dApp.h">
@@ -263,6 +266,9 @@
     <ClInclude Include="ModelMgr.h">
       <Filter>소스 파일\Model</Filter>
     </ClInclude>
+    <ClInclude Include="NormalModel.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="PureDirectX11Framework.rc">
@@ -319,6 +325,9 @@
       <Filter>FX</Filter>
     </FxCompile>
     <FxCompile Include="FX\color.fx">
+      <Filter>FX</Filter>
+    </FxCompile>
+    <FxCompile Include="FX\InstacedNormal.fx">
       <Filter>FX</Filter>
     </FxCompile>
   </ItemGroup>

@@ -4,6 +4,7 @@
 
 Model::Model()
 {
+	mInstanceBuffer = nullptr;
 #if DEBUG | _DEBUG
 	mBoxVB = nullptr;
 	mBoxIB = nullptr;
@@ -36,4 +37,6 @@ void Model::BuildInstanceBuffer()
 void Model::AddInstance(const XMFLOAT4X4 & otherWorld)
 {
 	mInstanceWorld.push_back(otherWorld);
+	ReleaseCOM(mInstanceBuffer);
+	BuildInstanceBuffer();
 }

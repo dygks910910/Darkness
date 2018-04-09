@@ -192,6 +192,7 @@
     <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModelMgr.cpp" />
+    <ClCompile Include="NormalModel.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="RenderStates.cpp" />
     <ClCompile Include="RoomScene.cpp" />
@@ -233,6 +234,7 @@
     <ClInclude Include="MiniMap.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelMgr.h" />
+    <ClInclude Include="NormalModel.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="RenderStates.h" />
     <ClInclude Include="resource.h" />
@@ -300,6 +302,9 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)FX\%(Filename).fxo</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)FX\%(Filename).fxo</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="FX\InstacedNormal.fx">
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)FX\%(Filename).fxo</ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="FX\InstancedBasic.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>

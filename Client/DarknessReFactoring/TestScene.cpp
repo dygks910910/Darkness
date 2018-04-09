@@ -46,7 +46,7 @@ CTestScene::~CTestScene()
 
 bool CTestScene::Init()
 {
-	m_Cam.SetPosition(0, 0, -5);
+	m_Cam.SetPosition(0, 0, -10);
 	return true;
 }
 
@@ -71,9 +71,11 @@ int CTestScene::UpdateScene(const float dt, MSG & msg)
 	//m_Cam.RotateY(1*dt); 
 
 
-	XMMATRIX world = XMLoadFloat4x4(&mBoxWorld);
-	world = XMMatrixRotationX(1*dt)*world;
-	XMStoreFloat4x4(&mBoxWorld, world);
+// 	XMMATRIX world = XMLoadFloat4x4(&mBoxWorld);
+// 	world = XMMatrixRotationAxis(XMVectorSet(0,1,0,0),1*dt);
+// 	XMStoreFloat4x4(&mBoxWorld, world);
+	m_Cam.Strafe(4 * dt);
+	m_Cam.LookAt(m_Cam.GetPosition(), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 1, 0));
 	m_Cam.UpdateViewMatrix();
 
 	return 0;

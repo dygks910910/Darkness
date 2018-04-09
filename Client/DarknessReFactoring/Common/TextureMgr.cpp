@@ -10,7 +10,6 @@ TextureMgr::~TextureMgr()
     {
 		ReleaseCOM(it->second);
     }
-
 	mTextureSRV.clear();
 }
 

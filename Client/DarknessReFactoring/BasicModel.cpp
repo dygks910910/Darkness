@@ -28,6 +28,7 @@ void BasicModel::Draw(const Camera & cam, ID3D11Buffer* vb, ID3D11Buffer* ib)
 	XMMATRIX view = cam.View();
 	XMMATRIX proj = cam.Proj();
 	XMMATRIX viewProj = cam.ViewProj();
+
 	Effects::InstancedBasicFX->SetEyePosW(cam.GetPosition());
 
 	ID3DX11EffectTechnique* activeTech = Effects::InstancedBasicFX->Light0TexTech;
