@@ -7,6 +7,7 @@
 #include"BasicModel.h"
 #include "TextureMgr.h"
 #include "NormalModel.h"
+#include<map>
 class ModelMgr
 {
 
@@ -15,6 +16,8 @@ class ModelMgr
 
 	TextureMgr txtureMgr;
 	NormalModel* a;
+
+	std::map<std::string, Model*> models;
 	int vtxOff;
 	int idxCnt;
 	int idxOff;

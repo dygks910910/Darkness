@@ -31,4 +31,11 @@ ID3D11ShaderResourceView* TextureMgr::CreateTexture(std::wstring filename)
 	srv->AddRef();
 	return srv;
 }
+
+ID3D11ShaderResourceView * TextureMgr::CreateTexture(std::string filename)
+{
+	std::wstring wFileName;
+	wFileName.assign(filename.begin(), filename.end());
+	CreateTexture(wFileName);
+}
  

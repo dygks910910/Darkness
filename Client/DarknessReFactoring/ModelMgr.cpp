@@ -1,7 +1,7 @@
 #include "ModelMgr.h"
-
-
-
+#include <fstream>
+#include<string>
+#include<vector>
 ModelMgr::ModelMgr()
 {
 	//m_NomalVB = nullptr;
@@ -179,6 +179,41 @@ void ModelMgr::BuildFBXNormalBuffers(const GeometryGenerator::MeshData & box)
 
 void ModelMgr::ReadMapData()
 {
+	std::ifstream in;
+	in.open("AllNewMapData.txt", std::ios::in);
+	std::string ignore;
+	std::string objName;
 
+	std::string textureFilePath = "Texture\\";
+	std::string fbxFilePath = "Darkness fbx\\";
+
+	std::string objDiffuseFileName;
+	std::string objNormalFileName;
+
+	XMFLOAT3 T;
+	XMFLOAT4 R;
+	XMFLOAT3 S;
+
+	int objectCount = 0;
+	//fileFormat:
+	//ObjectCount: 259
+	in >> ignore >> objectCount;
+	//	tower_round
+	for (int i = 0; i < objectCount; ++i)
+	{
+		in >> objName;
+		//	T : -32 0 18.6
+		in >> ignore >> T.x >> T.y >> T.z;
+		//	R : -0.7071069 0 1.056469E-08 0.7071068
+		in >> ignore >> R.x >> R.y >> R.z >> R.w;
+		//	S : 1 1 1
+		in >> ignore >> S.x >> S.y >> S.z;
+		//	Abricks_albedo.jpg
+		in >> objDiffuseFileName;
+		//	Abricks_normals.jpg
+		in >> objNormalFileName;
+
+
+	}
 	
 }

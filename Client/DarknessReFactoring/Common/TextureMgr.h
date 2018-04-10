@@ -16,6 +16,8 @@ public:
 
 
 	ID3D11ShaderResourceView* CreateTexture(std::wstring filename);
+	ID3D11ShaderResourceView* CreateTexture(std::string filename);
+
 
 private:
 	TextureMgr(const TextureMgr& rhs);
