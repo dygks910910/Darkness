@@ -1,5 +1,6 @@
 #pragma once
 #include"Common\d3dUtil.h"
+//#include "Material.h"
 
 extern ID3D11Device* md3dDevice;
 extern ID3D11DeviceContext* md3dImmediateContext ;

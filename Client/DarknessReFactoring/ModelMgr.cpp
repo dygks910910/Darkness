@@ -4,7 +4,9 @@
 
 ModelMgr::ModelMgr()
 {
-	
+	//m_NomalVB = nullptr;
+	VB = nullptr;
+	IB = nullptr;
 
 	CFbxLoader loader;
 	GeometryGenerator::MeshData tmep;
@@ -32,12 +34,15 @@ ModelMgr::ModelMgr()
 
 ModelMgr::~ModelMgr()
 {
+	ReleaseCOM(VB);
+	ReleaseCOM(IB);
+
 	delete a;
 }
 
 void ModelMgr::DrawAll(const Camera& cam)
 {
-	a->Draw(cam, m_NomalVB, m_NomalIB);
+	a->Draw(cam, VB, IB);
 }
 
 void ModelMgr::Update(const float & dt)
@@ -152,7 +157,7 @@ void ModelMgr::BuildFBXNormalBuffers(const GeometryGenerator::MeshData & box)
 	vbd.MiscFlags = 0;
 	D3D11_SUBRESOURCE_DATA vinitData;
 	vinitData.pSysMem = &vertices[0];
-	HR(md3dDevice->CreateBuffer(&vbd, &vinitData, &m_NomalVB));
+	HR(md3dDevice->CreateBuffer(&vbd, &vinitData, &VB));
 
 	//
 	// Pack the indices of all the meshes into one index buffer.
@@ -169,5 +174,11 @@ void ModelMgr::BuildFBXNormalBuffers(const GeometryGenerator::MeshData & box)
 	ibd.MiscFlags = 0;
 	D3D11_SUBRESOURCE_DATA iinitData;
 	iinitData.pSysMem = &indices[0];
-	HR(md3dDevice->CreateBuffer(&ibd, &iinitData, &m_NomalIB));
+	HR(md3dDevice->CreateBuffer(&ibd, &iinitData, &IB));
+}
+
+void ModelMgr::ReadMapData()
+{
+
+	
 }

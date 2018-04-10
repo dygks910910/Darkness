@@ -9,6 +9,7 @@ Model::Model()
 	mBoxVB = nullptr;
 	mBoxIB = nullptr;
 #endif
+	
 }
 
 

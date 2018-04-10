@@ -9,11 +9,10 @@
 #include "NormalModel.h"
 class ModelMgr
 {
-	ID3D11Buffer* m_NomalVB;
-	ID3D11Buffer* m_NomalIB;
 
 	ID3D11Buffer* VB;
 	ID3D11Buffer* IB;
+
 	TextureMgr txtureMgr;
 	NormalModel* a;
 	int vtxOff;
@@ -27,6 +26,7 @@ public:
 	void tempLoad();
 	void BuildFBXBasic32Buffers(const GeometryGenerator::MeshData& box);
 	void BuildFBXNormalBuffers(const GeometryGenerator::MeshData& box);
+	void ReadMapData();
 
 
 };

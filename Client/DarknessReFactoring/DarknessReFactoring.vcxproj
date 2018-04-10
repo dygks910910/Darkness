@@ -183,11 +183,13 @@
     <ClCompile Include="Cordinate.cpp" />
     <ClCompile Include="DrawText.cpp" />
     <ClCompile Include="Effects.cpp" />
+    <ClCompile Include="enum.cpp" />
     <ClCompile Include="FbxLoader.cpp" />
     <ClCompile Include="Global.cpp" />
     <ClCompile Include="LoadM3d.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainScene.cpp" />
+    <ClCompile Include="Material.cpp" />
     <ClCompile Include="MeshGeometry.cpp" />
     <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="Model.cpp" />
@@ -226,10 +228,12 @@
     <ClInclude Include="Cordinate.h" />
     <ClInclude Include="DrawText.h" />
     <ClInclude Include="Effects.h" />
+    <ClInclude Include="enum.h" />
     <ClInclude Include="FbxLoader.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="LoadM3d.h" />
     <ClInclude Include="MainScene.h" />
+    <ClInclude Include="Material.h" />
     <ClInclude Include="MeshGeometry.h" />
     <ClInclude Include="MiniMap.h" />
     <ClInclude Include="Model.h" />

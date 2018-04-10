@@ -180,7 +180,7 @@ void Camera::Strafe(float d)
 
 void Camera::Walk(float d)
 {
-	// mPosition += d*mLook
+	//mPosition += d*mLook
 	XMVECTOR s = XMVectorReplicate(d);
 	XMVECTOR l = XMLoadFloat3(&mLook);
 	XMVECTOR p = XMLoadFloat3(&mPosition);

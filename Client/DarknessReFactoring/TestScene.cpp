@@ -4,7 +4,7 @@
 
 
 CTestScene::CTestScene():
-	mBoxVB(0), mBoxIB(0), mDiffuseMapSRV(0),
+	mBoxVB(0), mBoxIB(0),
 	mTheta(1.3f*MathHelper::Pi), mPhi(0.4f*MathHelper::Pi), mRadius(2.5f)
 {
 	mLastMousePos.x = 0;
@@ -29,8 +29,8 @@ CTestScene::CTestScene():
 	mBoxMat.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	mBoxMat.Specular = XMFLOAT4(0.6f, 0.6f, 0.6f, 16.0f);
 
-
-
+	Effects::InstancedNormalFX->SetDirLights(mDirLights);
+	Effects::InstancedBasicFX->SetDirLights(mDirLights);
 }
 
 
@@ -38,15 +38,13 @@ CTestScene::~CTestScene()
 {
 	ReleaseCOM(mBoxVB);
 	ReleaseCOM(mBoxIB);
-	ReleaseCOM(mDiffuseMapSRV);
 
-	Effects::DestroyAll();
-	InputLayouts::DestroyAll();
+	
 }
 
 bool CTestScene::Init()
 {
-	m_Cam.SetPosition(0, 0, -10);
+	m_Cam.SetPosition(0, 0, -2);
 	return true;
 }
 
@@ -54,7 +52,7 @@ void CTestScene::OnKeyboardButtonDown(WPARAM wParam, UINT msg)
 {
 	switch (msg)
 	{
-	case VK_DOWN:
+	case VK_UP:
 		
 		break;
 	}

@@ -66,6 +66,9 @@ struct SpotLight
 struct Material
 {
 	Material() { ZeroMemory(this, sizeof(this)); }
+	Material(XMFLOAT4 ambient, XMFLOAT4 diffuse, XMFLOAT4 rpecular, XMFLOAT4 reflect )
+		:Ambient(ambient),Diffuse(diffuse),Specular(rpecular),Reflect(reflect)
+	{}
 
 	XMFLOAT4 Ambient;
 	XMFLOAT4 Diffuse;

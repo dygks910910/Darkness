@@ -36,7 +36,6 @@ private:
 	ID3D11Buffer* mBoxVB;
 	ID3D11Buffer* mBoxIB;
 
-	ID3D11ShaderResourceView* mDiffuseMapSRV;
 
 	DirectionalLight mDirLights[3];
 	Material mBoxMat;

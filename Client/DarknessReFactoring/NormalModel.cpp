@@ -1,10 +1,11 @@
 #include "NormalModel.h"
-
+#include "Material.h"
 
 
 NormalModel::NormalModel()
 {
 	mTexNormalSRV = nullptr;
+	
 }
 
 
@@ -35,7 +36,7 @@ void NormalModel::Draw(const Camera & cam, ID3D11Buffer * vb, ID3D11Buffer * ib)
 	D3DX11_TECHNIQUE_DESC techDesc;
 	Effects::InstancedNormalFX->SetEyePosW(cam.GetPosition());
 
-	ID3DX11EffectTechnique *tech =  Effects::InstancedNormalFX->Light0TexTech;
+	ID3DX11EffectTechnique *tech =  Effects::InstancedNormalFX->Light3TexReflectTech;
 	tech->GetDesc(&techDesc);
 	for (UINT p = 0; p < techDesc.Passes; ++p)
 	{
@@ -50,6 +51,7 @@ void NormalModel::Draw(const Camera & cam, ID3D11Buffer * vb, ID3D11Buffer * ib)
 		//Effects::InstancedNormalFX->SetWorld(world);
 		Effects::InstancedNormalFX->SetWorldInvTranspose(worldInvTranspose);
 		//Effects::InstancedNormalFX->SetWorldViewProj(worldViewProj);
+		Effects::InstancedNormalFX->SetMaterial(MeterialList::Brick);
 		Effects::InstancedNormalFX->SetViewProj(viewProj);
 		Effects::InstancedNormalFX->SetTexTransform(XMMatrixIdentity());
 		Effects::InstancedNormalFX->SetDiffuseMap(mTexSRV);
