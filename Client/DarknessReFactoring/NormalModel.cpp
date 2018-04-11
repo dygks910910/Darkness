@@ -1,6 +1,6 @@
 #include "NormalModel.h"
 #include "Material.h"
-
+#include"ModelMgr.h"
 
 NormalModel::NormalModel()
 {
@@ -14,7 +14,7 @@ NormalModel::~NormalModel()
 	ReleaseCOM(mTexSRV);
 }
 
-void NormalModel::Draw(const Camera & cam, ID3D11Buffer * vb, ID3D11Buffer * ib)
+void NormalModel::Draw(const Camera & cam, const ModelMgr* mgr)
 {
 	md3dImmediateContext->ClearRenderTargetView(mRenderTargetView, reinterpret_cast<const float*>(&Colors::Silver));
 	md3dImmediateContext->ClearDepthStencilView(mDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
@@ -24,7 +24,7 @@ void NormalModel::Draw(const Camera & cam, ID3D11Buffer * vb, ID3D11Buffer * ib)
 
 	UINT instanceStride[2] = { sizeof(Vertex::PosNormalTexTan), sizeof(XMFLOAT4X4) };
 	UINT instanceOffset[2] = { 0,0 };
-	ID3D11Buffer* vbs[2] = { vb,mInstanceBuffer };
+	ID3D11Buffer* vbs[2] = { mgr->m_Basic_VB,mInstanceBuffer };
 
 	XMMATRIX worldInvTranspose;
 	XMMATRIX viewProj;
@@ -41,7 +41,7 @@ void NormalModel::Draw(const Camera & cam, ID3D11Buffer * vb, ID3D11Buffer * ib)
 	for (UINT p = 0; p < techDesc.Passes; ++p)
 	{
 		md3dImmediateContext->IASetVertexBuffers(0, 2, vbs, instanceStride, instanceOffset);
-		md3dImmediateContext->IASetIndexBuffer(ib, DXGI_FORMAT_R32_UINT, 0);
+		md3dImmediateContext->IASetIndexBuffer(mgr->m_IB , DXGI_FORMAT_R32_UINT, 0);
 		
 		XMMATRIX world = XMMatrixIdentity();
 
@@ -58,8 +58,8 @@ void NormalModel::Draw(const Camera & cam, ID3D11Buffer * vb, ID3D11Buffer * ib)
 		Effects::InstancedNormalFX->SetNormalMap(mTexNormalSRV);
 
 		tech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
-		md3dImmediateContext->DrawIndexedInstanced(mIndexCount, mInstanceWorld.size(),
-			mIndexOffset, mVertexOffset, 0);
+		md3dImmediateContext->DrawIndexedInstanced(m_Info.mIndexCount, m_Info.mInstanceWorld.size(),
+			m_Info.mIndexOffset, m_Info.mVertexOffset, 0);
 	}
 	HR(mSwapChain->Present(0, 0));
 

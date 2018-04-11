@@ -430,8 +430,6 @@ void CFbxLoader::LoadFBX(const char * pFileName, GeometryGenerator::MeshData & m
 		for (int i = 0; i < mRootNode->GetChildCount(); i++)
 			LoadElement(mRootNode->GetChild(i)->GetMesh(), meshData,scaleFactor);
 #ifdef _DEBUG
-
-
 		std::cout << meshData.Vertices.size() << std::endl;
 #endif // _DEBUG
 

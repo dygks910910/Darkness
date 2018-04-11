@@ -153,9 +153,6 @@
     <ClCompile Include="Material.cpp">
       <Filter>소스 파일\Global</Filter>
     </ClCompile>
-    <ClCompile Include="enum.cpp">
-      <Filter>소스 파일\Global</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common\d3dApp.h">
@@ -279,6 +276,9 @@
       <Filter>소스 파일\Global</Filter>
     </ClInclude>
     <ClInclude Include="enum.h">
+      <Filter>소스 파일\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="struct.h">
       <Filter>소스 파일\Global</Filter>
     </ClInclude>
   </ItemGroup>

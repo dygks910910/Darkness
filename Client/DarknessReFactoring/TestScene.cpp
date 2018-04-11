@@ -31,6 +31,7 @@ CTestScene::CTestScene():
 
 	Effects::InstancedNormalFX->SetDirLights(mDirLights);
 	Effects::InstancedBasicFX->SetDirLights(mDirLights);
+	modelMgr.ReadMapData("AllNewMapData.txt");
 }
 
 

@@ -183,7 +183,6 @@
     <ClCompile Include="Cordinate.cpp" />
     <ClCompile Include="DrawText.cpp" />
     <ClCompile Include="Effects.cpp" />
-    <ClCompile Include="enum.cpp" />
     <ClCompile Include="FbxLoader.cpp" />
     <ClCompile Include="Global.cpp" />
     <ClCompile Include="LoadM3d.cpp" />
@@ -249,6 +248,7 @@
     <ClInclude Include="SkinnedData.h" />
     <ClInclude Include="SkinnedModel.h" />
     <ClInclude Include="Sky.h" />
+    <ClInclude Include="struct.h" />
     <ClInclude Include="TestScene.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Vertex.h" />

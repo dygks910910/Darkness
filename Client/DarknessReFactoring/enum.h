@@ -1,5 +1,9 @@
 #pragma once
 
-
-extern enum ANIMATION_INFO;
-
+enum ANIMATION_INFO
+{
+	IDLE,
+	WARK,
+	ATTACT,
+	RUN
+};

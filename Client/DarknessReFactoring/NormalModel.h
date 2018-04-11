@@ -1,5 +1,7 @@
 #pragma once
 #include "BasicModel.h"
+
+class ModelMgr;
 class NormalModel :
 	public BasicModel
 {
@@ -7,7 +9,7 @@ class NormalModel :
 public:
 	NormalModel();
 	virtual ~NormalModel();
-	virtual void Draw(const Camera & cam, ID3D11Buffer* vb, ID3D11Buffer* ib) override;
+	virtual void Draw(const Camera & cam, const ModelMgr* mgr) override;
 
 	void SetTextNormalSRV(ID3D11ShaderResourceView* srv) { mTexNormalSRV = srv; };
 };
