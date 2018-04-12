@@ -15,7 +15,7 @@ class ModelMgr
 	ID3D11Buffer* m_IB;
 
 	TextureMgr txtureMgr;
-	//NormalModel* a;
+	NormalModel* a;
 
 	std::map<std::string, Model*> models;
 

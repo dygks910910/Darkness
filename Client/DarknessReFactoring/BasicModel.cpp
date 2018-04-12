@@ -14,9 +14,6 @@ BasicModel::~BasicModel()
 
 void BasicModel::Draw(const Camera & cam, const ModelMgr* mgr)
 {
-	md3dImmediateContext->ClearRenderTargetView(mRenderTargetView, reinterpret_cast<const float*>(&Colors::Silver));
-	md3dImmediateContext->ClearDepthStencilView(mDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-
 	
 	md3dImmediateContext->IASetInputLayout(InputLayouts::InstancedBasic32);
 	md3dImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -63,5 +60,4 @@ void BasicModel::Draw(const Camera & cam, const ModelMgr* mgr)
 		md3dImmediateContext->DrawIndexedInstanced(m_Info.mIndexCount, m_Info.mInstanceWorld.size(),
 			m_Info.mIndexOffset, m_Info.mVertexOffset, 0);
 	}
-	HR(mSwapChain->Present(0, 0));
 }

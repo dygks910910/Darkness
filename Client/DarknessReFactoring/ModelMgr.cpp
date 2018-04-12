@@ -5,32 +5,32 @@
 #include "ModelMgr.h"
 ModelMgr::ModelMgr()
 {
-	//m_NomalVB = nullptr;
+	m_Normal_VB = nullptr;
 	m_Basic_VB = nullptr;
 	m_IB = nullptr;
 
-	//CFbxLoader loader;
-	//GeometryGenerator::MeshData tmep;
-	//loader.LoadFBX("Darkness fbx\\house 1.fbx", tmep, 0.1f);
-	//XMFLOAT4X4 tempMtx;
-	//XMStoreFloat4x4(&tempMtx, XMMatrixIdentity());
-	//
-	//
-	////BuildFBXBasic32Buffers(tmep);
-	//BuildFBXNormalBuffers(tmep);
+	CFbxLoader loader;
+	GeometryGenerator::MeshData tmep;
+	loader.LoadFBX("Darkness fbx\\house 1.fbx", tmep, 0.1f);
+	XMFLOAT4X4 tempMtx;
+	XMStoreFloat4x4(&tempMtx, XMMatrixIdentity());
+	
+	
+	//BuildFBXBasic32Buffers(tmep);
+	BuildFBXNormalBuffers(tmep);
 
-// 	a = new NormalModel();
-// 
-// 	ModelInfo info;
-// 	info.mIndexOffset = idxOff;
-// 	info.mIndexCount = idxCnt;
-// 	info.mVertexOffset = vtxOff;
-// 	a->SetInfo(info);
-// 	a->SetTexture(txtureMgr.CreateTexture(L"Textures/bricks_albedo.png"));
-// 	a->SetTextNormalSRV(txtureMgr.CreateTexture(L"Textures/bricks_normals.png"));
-// 	a->AddInstance(tempMtx);
-// 	XMStoreFloat4x4(&tempMtx, XMMatrixTranslation(0, 3, 0));
-// 	a->AddInstance(tempMtx);
+ 	a = new NormalModel();
+ 
+ 	ModelInfo info;
+ 	info.mIndexOffset = idxOff;
+ 	info.mIndexCount = idxCnt;
+ 	info.mVertexOffset = vtxOff;
+ 	a->SetInfo(info);
+ 	a->SetTexture(txtureMgr.CreateTexture(L"Textures/bricks_albedo.png"));
+ 	a->SetTextNormalSRV(txtureMgr.CreateTexture(L"Textures/bricks_normals.png"));
+ 	a->AddInstance(tempMtx);
+ 	XMStoreFloat4x4(&tempMtx, XMMatrixTranslation(0, 3, 0));
+ 	a->AddInstance(tempMtx);
 }
 
 
@@ -45,10 +45,15 @@ ModelMgr::~ModelMgr()
 
 void ModelMgr::DrawAll(const Camera& cam)
 {
-	for (auto p = models.begin(); p != models.end(); ++p)
-	{
-		p->second->Draw(cam, this);
-	}
+	md3dImmediateContext->ClearRenderTargetView(mRenderTargetView, reinterpret_cast<const float*>(&Colors::Silver));
+	md3dImmediateContext->ClearDepthStencilView(mDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+// 	for (auto p = models.begin(); p != models.end(); ++p)
+// 	{
+// 		p->second->Draw(cam, this);
+// 	}
+	a->Draw(cam,this);
+	HR(mSwapChain->Present(0, 0));
+
 }
 
 void ModelMgr::Update(const float & dt)
@@ -208,7 +213,7 @@ void ModelMgr::ReadMapData(char* fileName)
 	std::vector<UINT> idxArr;
 
 	std::string textureFilePath = "Textures\\";
-	std::string fbxFilePath = "Darkness fbx\\";
+	std::string fbxFilePath = "Darkness fbx/";
 
 	std::string objDiffuseFileName;
 	std::string objNormalFileName;
@@ -256,20 +261,21 @@ void ModelMgr::ReadMapData(char* fileName)
 		in >> objDiffuseFileName;
 		//	Abricks_normals.jpg
 		in >> objNormalFileName;
-		if (models.end() != models.find(objName + ".fbx"))
+
+		//모델이 있으면?
+		if (models.end() != models.find(fbxFilePath + objName + ".fbx"))
 		{
-			//모델이 있으면?
 			tmpS = XMVectorSet(1, 1, 1, 1);
 			tmpR = XMLoadFloat4(&R);
 			tmpT = XMLoadFloat3(&T);
 			XMStoreFloat4x4(&M, XMMatrixAffineTransformation(tmpS, zero, tmpR, tmpT));
 
-			models[objName + ".fbx"]->AddInstance(M);
+			models[fbxFilePath + objName + ".fbx"]->AddInstance(M);
 		}
+		//모델이 없으면?
 		else
 		{
-			loader.LoadFBX(std::string(objName + ".fbx").c_str(), mesh, S.x);
-			//모델이 없으면?
+			loader.LoadFBX(std::string(fbxFilePath + objName + ".fbx").c_str(), mesh, S.x);
 			if (objNormalFileName == "normalIsNull")
 			{
 
@@ -285,7 +291,8 @@ void ModelMgr::ReadMapData(char* fileName)
 				XMStoreFloat4x4(&M, XMMatrixAffineTransformation(tmpS, zero, tmpR, tmpT));
 
 				basicModel->AddInstance(M);
-				models[objName + ".fbx"] = basicModel;
+				models[fbxFilePath + objName + ".fbx"] = basicModel;
+				
 				totalBasicVertexCount += mesh.Vertices.size();
 				totalIndexCount += mesh.Indices.size();
 
@@ -296,10 +303,7 @@ void ModelMgr::ReadMapData(char* fileName)
 					basicVtx.Normal = mesh.Vertices[i].Normal;
 					basicVtx.Tex = mesh.Vertices[i].TexC;
 					basicVtxArr.push_back(basicVtx);
-// 
-// 					basicVtxArr[k].Pos = mesh.Vertices[i].Position;
-// 					basicVtxArr[k].Normal = mesh.Vertices[i].Normal;
-// 					basicVtxArr[k].Tex = mesh.Vertices[i].TexC;
+
 				}
 				idxArr.insert(idxArr.end(), mesh.Indices.begin(), mesh.Indices.end());
 
@@ -319,7 +323,7 @@ void ModelMgr::ReadMapData(char* fileName)
 				XMStoreFloat4x4(&M, XMMatrixAffineTransformation(tmpS, zero, tmpR, tmpT));
 
 				norModel->AddInstance(M);
-				models[objName + ".fbx"] = norModel;
+				models[fbxFilePath + objName + ".fbx"] = norModel;
 
 				totalBasicVertexCount += mesh.Vertices.size();
 				totalIndexCount += mesh.Indices.size();
@@ -336,26 +340,19 @@ void ModelMgr::ReadMapData(char* fileName)
 						1.0f
 					);
 					normalVtxArr.push_back(posNormalTexTanVtx);
-					idxArr.insert(idxArr.end(), mesh.Indices.begin(), mesh.Indices.end());
-// 
-// 					normalVtxArr[k].Pos = mesh.Vertices[i].Position;
-// 					normalVtxArr[k].Normal = mesh.Vertices[i].Normal;
-// 					normalVtxArr[k].Tex = mesh.Vertices[i].TexC;
-// 					normalVtxArr[k].TangentU = XMFLOAT4(
-// 						mesh.Vertices[i].TangentU.x,
-// 						mesh.Vertices[i].TangentU.y,
-// 						mesh.Vertices[i].TangentU.z,
-// 						1.0f
-// 					);
 				}
+				idxArr.insert(idxArr.end(), mesh.Indices.begin(), mesh.Indices.end());
+				totalNormalVertexCount += mesh.Vertices.size();
+				totalIndexCount += mesh.Indices.size();
 			}
+			//직전에 값들업데이트
+			preIdxCnt += mesh.Indices.size();
+			preIdxOffset += modelInfo.mIndexOffset;
+			preVtxCnt += mesh.Vertices.size();
+			preVtxOffset += modelInfo.mVertexOffset;
 		}
 		
-		//직전에 값들업데이트
-		preIdxCnt += mesh.Indices.size();
-		preIdxOffset += modelInfo.mIndexOffset;
-		preVtxCnt += mesh.Vertices.size();
-		preVtxOffset += modelInfo.mVertexOffset;
+		
 	}
 	
 
@@ -371,18 +368,17 @@ void ModelMgr::ReadMapData(char* fileName)
 	vinitData.pSysMem = &basicVtxArr[0];
 	HR(md3dDevice->CreateBuffer(&vbd, &vinitData, &m_Basic_VB));
 
-	
-	vbd.Usage = D3D11_USAGE_IMMUTABLE;
-	vbd.ByteWidth = sizeof(Vertex::PosNormalTexTan) * totalNormalVertexCount;
-	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vbd.CPUAccessFlags = 0;
-	vbd.MiscFlags = 0;
-	vinitData.pSysMem = &normalVtxArr[0];
-	HR(md3dDevice->CreateBuffer(&vbd, &vinitData, &m_Normal_VB));
-	//
-	// Pack the indices of all the meshes into one index buffer.
-	//
 
+	D3D11_BUFFER_DESC vbdNormal;
+
+	vbdNormal.Usage = D3D11_USAGE_IMMUTABLE;
+	vbdNormal.ByteWidth = sizeof(Vertex::PosNormalTexTan) * totalNormalVertexCount;
+	vbdNormal.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	vbdNormal.CPUAccessFlags = 0;
+	vbdNormal.MiscFlags = 0;
+	D3D11_SUBRESOURCE_DATA vinitDataNormal;
+	vinitDataNormal.pSysMem = &normalVtxArr[0];
+	HR(md3dDevice->CreateBuffer(&vbdNormal, &vinitDataNormal, &m_Normal_VB));
 	
 
 	D3D11_BUFFER_DESC ibd;

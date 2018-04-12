@@ -137,7 +137,7 @@ void CFbxLoader::LoadElement(const FbxMesh * pMesh, GeometryGenerator::MeshData 
 		lPolygonVertexCount = lPolygonCount * TRIANGLE_VERTEX_COUNT;
 	}
 	meshData.Vertices.reserve(lPolygonVertexCount);
-	meshData.Indices.reserve(lPolygonCount * TRIANGLE_VERTEX_COUNT);
+	//meshData.Indices.reserve(lPolygonCount * TRIANGLE_VERTEX_COUNT);
 	float * lNormals = NULL;
 	float * lUVs = NULL;
 	FbxStringList lUVNames;
