@@ -9,28 +9,28 @@ ModelMgr::ModelMgr()
 	m_Basic_VB = nullptr;
 	m_IB = nullptr;
 
-	CFbxLoader loader;
-	GeometryGenerator::MeshData tmep;
-	loader.LoadFBX("Darkness fbx\\house 1.fbx", tmep, 0.1f);
-	XMFLOAT4X4 tempMtx;
-	XMStoreFloat4x4(&tempMtx, XMMatrixIdentity());
-	
-	
-	//BuildFBXBasic32Buffers(tmep);
-	BuildFBXNormalBuffers(tmep);
-
- 	a = new NormalModel();
- 
- 	ModelInfo info;
- 	info.mIndexOffset = idxOff;
- 	info.mIndexCount = idxCnt;
- 	info.mVertexOffset = vtxOff;
- 	a->SetInfo(info);
- 	a->SetTexture(txtureMgr.CreateTexture(L"Textures/bricks_albedo.png"));
- 	a->SetTextNormalSRV(txtureMgr.CreateTexture(L"Textures/bricks_normals.png"));
- 	a->AddInstance(tempMtx);
- 	XMStoreFloat4x4(&tempMtx, XMMatrixTranslation(0, 3, 0));
- 	a->AddInstance(tempMtx);
+	/*CFbxLoader loader;*/
+// 	GeometryGenerator::MeshData tmep;
+// 	/*loader.LoadFBX("Darkness fbx\\house 1.fbx", tmep, 0.1f);*/
+// 	XMFLOAT4X4 tempMtx;
+// 	XMStoreFloat4x4(&tempMtx, XMMatrixIdentity());
+// 	
+// 	
+// 	//BuildFBXBasic32Buffers(tmep);
+// 	BuildFBXNormalBuffers(tmep);
+// 
+//  	a = new NormalModel();
+//  
+//  	ModelInfo info;
+//  	info.mIndexOffset = idxOff;
+//  	info.mIndexCount = idxCnt;
+//  	info.mVertexOffset = vtxOff;
+//  	a->SetInfo(info);
+//  	a->SetTexture(txtureMgr.CreateTexture(L"Textures/bricks_albedo.png"));
+//  	a->SetTextNormalSRV(txtureMgr.CreateTexture(L"Textures/bricks_normals.png"));
+//  	a->AddInstance(tempMtx);
+//  	XMStoreFloat4x4(&tempMtx, XMMatrixTranslation(0, 3, 0));
+//  	a->AddInstance(tempMtx);
 }
 
 
@@ -190,18 +190,17 @@ void ModelMgr::BuildFBXNormalBuffers(const GeometryGenerator::MeshData & box)
 
 void ModelMgr::ReadMapData(char* fileName)
 {
-	CFbxLoader loader;
 	GeometryGenerator::MeshData mesh;
 
-	int preIdxCnt=0;
-	int preIdxOffset = 0;
-	int preVtxOffset = 0;
-	int preVtxCnt = 0;
+	unsigned int preIdxCnt=0;
+	unsigned int preIdxOffset = 0;
+	unsigned int preVtxOffset = 0;
+	unsigned int preVtxCnt = 0;
 
-	int totalBasicVertexCount=0;
+	unsigned int totalBasicVertexCount=0;
 
-	int totalNormalVertexCount=0;
-	int totalIndexCount=0;
+	unsigned int totalNormalVertexCount=0;
+	unsigned int totalIndexCount=0;
 
 	std::ifstream in;
 	in.open(fileName, std::ios::in);
@@ -275,7 +274,7 @@ void ModelMgr::ReadMapData(char* fileName)
 		//모델이 없으면?
 		else
 		{
-			loader.LoadFBX(std::string(fbxFilePath + objName + ".fbx").c_str(), mesh, S.x);
+			//loader.LoadFBX(std::string(fbxFilePath + objName + ".fbx").c_str(), mesh, S.x);
 			if (objNormalFileName == "normalIsNull")
 			{
 

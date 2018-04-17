@@ -2,14 +2,14 @@
 #include "Global.h"
 #include "Vertex.h"
 #include "Effects.h"
-#include "FbxLoader.h"
 #include "TextureMgr.h"
 #include "NormalModel.h"
 #include<string>
 #include<map>
+#include"Common\GeometryGenerator.h"
+
 class ModelMgr
 {
-
 	ID3D11Buffer* m_Normal_VB;
 	ID3D11Buffer* m_Basic_VB;
 	ID3D11Buffer* m_IB;

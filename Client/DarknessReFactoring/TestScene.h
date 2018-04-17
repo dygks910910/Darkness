@@ -4,7 +4,6 @@
 #include"Vertex.h"
 #include"Effects.h"
 #include"RenderStates.h"
-#include "FbxLoader.h"
 #include "Camera.h"
 #include "ModelMgr.h"
 class CTestScene :

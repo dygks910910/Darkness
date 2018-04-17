@@ -93,9 +93,6 @@
     <ClCompile Include="SkinnedData.cpp">
       <Filter>소스 파일\Model</Filter>
     </ClCompile>
-    <ClCompile Include="FbxLoader.cpp">
-      <Filter>소스 파일\Model</Filter>
-    </ClCompile>
     <ClCompile Include="LoadM3d.cpp">
       <Filter>소스 파일\Model</Filter>
     </ClCompile>
@@ -152,6 +149,12 @@
     </ClCompile>
     <ClCompile Include="Material.cpp">
       <Filter>소스 파일\Global</Filter>
+    </ClCompile>
+    <ClCompile Include="NewFBXLoader\NewFBXLoader.cpp">
+      <Filter>소스 파일\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="NewFBXLoader\structForFBX.cpp">
+      <Filter>소스 파일\Model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -213,9 +216,6 @@
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="SkinnedData.h">
-      <Filter>소스 파일\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="FbxLoader.h">
       <Filter>소스 파일\Model</Filter>
     </ClInclude>
     <ClInclude Include="LoadM3d.h">
@@ -280,6 +280,12 @@
     </ClInclude>
     <ClInclude Include="struct.h">
       <Filter>소스 파일\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="NewFBXLoader\NewFBXLoader.h">
+      <Filter>소스 파일\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="NewFBXLoader\structForFBX.h">
+      <Filter>소스 파일\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

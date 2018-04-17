@@ -183,7 +183,6 @@
     <ClCompile Include="Cordinate.cpp" />
     <ClCompile Include="DrawText.cpp" />
     <ClCompile Include="Effects.cpp" />
-    <ClCompile Include="FbxLoader.cpp" />
     <ClCompile Include="Global.cpp" />
     <ClCompile Include="LoadM3d.cpp" />
     <ClCompile Include="main.cpp" />
@@ -193,6 +192,8 @@
     <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModelMgr.cpp" />
+    <ClCompile Include="NewFBXLoader\NewFBXLoader.cpp" />
+    <ClCompile Include="NewFBXLoader\structForFBX.cpp" />
     <ClCompile Include="NormalModel.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="RenderStates.cpp" />
@@ -228,7 +229,6 @@
     <ClInclude Include="DrawText.h" />
     <ClInclude Include="Effects.h" />
     <ClInclude Include="enum.h" />
-    <ClInclude Include="FbxLoader.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="LoadM3d.h" />
     <ClInclude Include="MainScene.h" />
@@ -237,6 +237,8 @@
     <ClInclude Include="MiniMap.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelMgr.h" />
+    <ClInclude Include="NewFBXLoader\NewFBXLoader.h" />
+    <ClInclude Include="NewFBXLoader\structForFBX.h" />
     <ClInclude Include="NormalModel.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="RenderStates.h" />
