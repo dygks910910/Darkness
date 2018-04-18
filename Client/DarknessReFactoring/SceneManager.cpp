@@ -6,7 +6,7 @@ CSceneManager::CSceneManager()
 	Effects::InitAll(md3dDevice);
 	InputLayouts::InitAll(md3dDevice);
 	RenderStates::InitAll(md3dDevice);
-	scene = new CMainScene();
+	scene = new CTestScene();
 }
 
 

@@ -7,6 +7,7 @@
 #include<string>
 #include<map>
 #include"Common\GeometryGenerator.h"
+#include "NewFBXLoader\NewFBXLoader.h"
 
 class ModelMgr
 {
@@ -15,10 +16,10 @@ class ModelMgr
 	ID3D11Buffer* m_IB;
 
 	TextureMgr txtureMgr;
-	NormalModel* a;
 
 	std::map<std::string, Model*> models;
 
+	BasicModel* a;
 	int vtxOff;
 	int idxCnt;
 	int idxOff;

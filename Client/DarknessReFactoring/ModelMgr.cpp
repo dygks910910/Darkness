@@ -9,28 +9,27 @@ ModelMgr::ModelMgr()
 	m_Basic_VB = nullptr;
 	m_IB = nullptr;
 
-	/*CFbxLoader loader;*/
-// 	GeometryGenerator::MeshData tmep;
-// 	/*loader.LoadFBX("Darkness fbx\\house 1.fbx", tmep, 0.1f);*/
-// 	XMFLOAT4X4 tempMtx;
-// 	XMStoreFloat4x4(&tempMtx, XMMatrixIdentity());
-// 	
-// 	
-// 	//BuildFBXBasic32Buffers(tmep);
-// 	BuildFBXNormalBuffers(tmep);
-// 
-//  	a = new NormalModel();
-//  
-//  	ModelInfo info;
-//  	info.mIndexOffset = idxOff;
-//  	info.mIndexCount = idxCnt;
-//  	info.mVertexOffset = vtxOff;
-//  	a->SetInfo(info);
-//  	a->SetTexture(txtureMgr.CreateTexture(L"Textures/bricks_albedo.png"));
-//  	a->SetTextNormalSRV(txtureMgr.CreateTexture(L"Textures/bricks_normals.png"));
-//  	a->AddInstance(tempMtx);
-//  	XMStoreFloat4x4(&tempMtx, XMMatrixTranslation(0, 3, 0));
-//  	a->AddInstance(tempMtx);
+
+	NewFBXLoader loader;
+	GeometryGenerator::MeshData meshs;
+	loader.LoadFBX("Darkness fbx\\Eis.fbx", meshs, 0.01f);
+	BuildFBXBasic32Buffers(meshs);
+
+	XMFLOAT4X4 tempMtx;
+	XMStoreFloat4x4(&tempMtx, XMMatrixIdentity());
+	a = new BasicModel();
+
+	ModelInfo info;
+	info.mIndexOffset = idxOff;
+	info.mIndexCount = idxCnt;
+	info.mVertexOffset = vtxOff;
+	a->SetInfo(info);
+	a->SetTexture(txtureMgr.CreateTexture(L"Textures/bricks_albedo.png"));
+	//a->SetTextNormalSRV(txtureMgr.CreateTexture(L"Textures/bricks_normals.png"));
+	a->AddInstance(tempMtx);
+	XMStoreFloat4x4(&tempMtx, XMMatrixTranslation(0, 3, 0));
+	a->AddInstance(tempMtx);
+
 }
 
 
@@ -40,36 +39,36 @@ ModelMgr::~ModelMgr()
 	ReleaseCOM(m_Basic_VB);
 	ReleaseCOM(m_IB);
 
-	
+
 }
 
 void ModelMgr::DrawAll(const Camera& cam)
 {
 	md3dImmediateContext->ClearRenderTargetView(mRenderTargetView, reinterpret_cast<const float*>(&Colors::Silver));
 	md3dImmediateContext->ClearDepthStencilView(mDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-// 	for (auto p = models.begin(); p != models.end(); ++p)
-// 	{
-// 		p->second->Draw(cam, this);
-// 	}
-	a->Draw(cam,this);
+	// 	for (auto p = models.begin(); p != models.end(); ++p)
+	// 	{
+	// 		p->second->Draw(cam, this);
+	// 	}
+	a->Draw(cam, this);
 	HR(mSwapChain->Present(0, 0));
 
 }
 
 void ModelMgr::Update(const float & dt)
 {
-	
+
 }
 
 void ModelMgr::tempLoad()
 {
-	
+
 }
 
 void ModelMgr::BuildFBXBasic32Buffers(const GeometryGenerator::MeshData & box)
 {
 	// Cache the vertex offsets to each object in the concatenated vertex buffer.
-	vtxOff= 0;
+	vtxOff = 0;
 
 	// Cache the index count of each object.
 	idxCnt = box.Indices.size();
@@ -79,7 +78,7 @@ void ModelMgr::BuildFBXBasic32Buffers(const GeometryGenerator::MeshData & box)
 
 	UINT totalVertexCount = box.Vertices.size();
 
-	UINT totalIndexCount =idxCnt;
+	UINT totalIndexCount = idxCnt;
 
 	//
 	// Extract the vertex elements we are interested in and pack the
@@ -192,15 +191,15 @@ void ModelMgr::ReadMapData(char* fileName)
 {
 	GeometryGenerator::MeshData mesh;
 
-	unsigned int preIdxCnt=0;
+	unsigned int preIdxCnt = 0;
 	unsigned int preIdxOffset = 0;
 	unsigned int preVtxOffset = 0;
 	unsigned int preVtxCnt = 0;
 
-	unsigned int totalBasicVertexCount=0;
+	unsigned int totalBasicVertexCount = 0;
 
-	unsigned int totalNormalVertexCount=0;
-	unsigned int totalIndexCount=0;
+	unsigned int totalNormalVertexCount = 0;
+	unsigned int totalIndexCount = 0;
 
 	std::ifstream in;
 	in.open(fileName, std::ios::in);
@@ -221,7 +220,7 @@ void ModelMgr::ReadMapData(char* fileName)
 	NormalModel* norModel;
 	BasicModel* basicModel;
 	ModelInfo modelInfo;
-	
+
 
 
 	XMFLOAT3 T;
@@ -291,7 +290,7 @@ void ModelMgr::ReadMapData(char* fileName)
 
 				basicModel->AddInstance(M);
 				models[fbxFilePath + objName + ".fbx"] = basicModel;
-				
+
 				totalBasicVertexCount += mesh.Vertices.size();
 				totalIndexCount += mesh.Indices.size();
 
@@ -350,12 +349,12 @@ void ModelMgr::ReadMapData(char* fileName)
 			preVtxCnt += mesh.Vertices.size();
 			preVtxOffset += modelInfo.mVertexOffset;
 		}
-		
-		
-	}
-	
 
-	
+
+	}
+
+
+
 
 	D3D11_BUFFER_DESC vbd;
 	vbd.Usage = D3D11_USAGE_IMMUTABLE;
@@ -378,7 +377,7 @@ void ModelMgr::ReadMapData(char* fileName)
 	D3D11_SUBRESOURCE_DATA vinitDataNormal;
 	vinitDataNormal.pSysMem = &normalVtxArr[0];
 	HR(md3dDevice->CreateBuffer(&vbdNormal, &vinitDataNormal, &m_Normal_VB));
-	
+
 
 	D3D11_BUFFER_DESC ibd;
 	ibd.Usage = D3D11_USAGE_IMMUTABLE;

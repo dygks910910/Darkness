@@ -1,14 +1,12 @@
 #pragma once
-#pragma  comment(lib,"libfbxsdk-md.lib")
 #include<fbxsdk.h>
 #include<string>
 #include<iostream>
 #include<vector>
-#include<DirectXMath.h>
 #include<unordered_map>
 #include "structForFBX.h"
+#include "GeometryGenerator.h"
 class VertexHash;
-
 
 
 class NewFBXLoader
@@ -20,35 +18,33 @@ class NewFBXLoader
 
 
 	//임시로 위치만 담아논 배열.
-	std::vector<DirectX::XMFLOAT3> vtxArr;
-	//최종인덱스 버퍼
-	std::vector<unsigned int> m_Idx;
-	//최종 버텍스 버퍼
-	std::vector<Vertex> m_Vtx;
+	std::vector< XMFLOAT3> vtxArr;
 
-	std::unordered_map < Vertex, unsigned int ,VertexHash,VertexCompare> forMapping;
+	std::unordered_map < GeometryGenerator::Vertex, unsigned int ,VertexHash,VertexCompare> forMapping;
 
 public:
 	NewFBXLoader();
 	~NewFBXLoader();
 	
-	void Init(const char* fileName);
-	void ProcessAll();
-	void Destroy();
+	void LoadFBX(const char* fileName,GeometryGenerator::MeshData& outMesh,const float& scaleFactor=0.01f);
 private:
 	void ProcessControlPoint(FbxMesh* pMesh);
-	void ProcessNode(FbxNode* pNode);
-	DirectX::XMFLOAT3 ProcessNormal(FbxMesh* pMesh, const unsigned int& controlPointIndex, const unsigned int& vertexCount);
-	DirectX::XMFLOAT3 ProcessBinormal(FbxMesh* pMesh, const unsigned int& controlPointIndex, const unsigned int& vertexCount);
-	DirectX::XMFLOAT3 ProcessTangent(FbxMesh* pMesh, const unsigned int& controlPointIndex, const unsigned int& vertexCount);
-	DirectX::XMFLOAT2 ProcessUV(FbxMesh* pMesh, const unsigned int& controlPointIndex, const unsigned int& textureUVIndex);
+	void ProcessNode(FbxNode* pNode, GeometryGenerator::MeshData& outMesh,const float& scaleFactor);
+	 XMFLOAT3 ProcessNormal(FbxMesh* pMesh, const unsigned int& controlPointIndex, const unsigned int& vertexCount);
+	 XMFLOAT3 ProcessBinormal(FbxMesh* pMesh, const unsigned int& controlPointIndex, const unsigned int& vertexCount);
+	 XMFLOAT3 ProcessTangent(FbxMesh* pMesh, const unsigned int& controlPointIndex, const unsigned int& vertexCount);
+	 XMFLOAT2 ProcessUV(FbxMesh* pMesh, const unsigned int& controlPointIndex, const unsigned int& textureUVIndex);
 	FbxString GetAttributeTypeName(FbxNodeAttribute::EType type);
 	void PrintAttribute(FbxNodeAttribute* pAttribute);
-	bool InsertData(const DirectX::XMFLOAT3& pos, const DirectX::XMFLOAT3& tangent,
-		const DirectX::XMFLOAT3& normal, const DirectX::XMFLOAT2& tex);
-
+	bool InsertData(const  XMFLOAT3& pos, const  XMFLOAT3& tangent,
+		const  XMFLOAT3& normal, const  XMFLOAT2& tex, 
+		GeometryGenerator::MeshData& outMesh,const float& scaleFactor);
+	
+	void Init(const char* fileName);
+	void ProcessAll(GeometryGenerator::MeshData& outMesh,const float& scaleFactor);
+	void Destroy();
 };
 
-std::ostream& operator<<(std::ostream& os, const Vertex& vtx);
-std::ostream& operator<<(std::ostream& os, const DirectX::XMFLOAT3& vtx);
+/*std::ostream& operator<<(std::ostream& os, const Vertex& vtx);*/
+//std::ostream& operator<<(std::ostream& os, const  XMFLOAT3& vtx);
 
