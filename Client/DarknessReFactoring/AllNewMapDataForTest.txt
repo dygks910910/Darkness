@@ -1,0 +1,35 @@
+ObjectCount: 5
+wall
+T: 49.2 -0.04311371 -35.01999
+R: 0 0.7073474 0.7068661 0
+S: 1 1 1
+bricks_albedo.jpg
+bricks_normals.jpg
+
+wall
+T: -49.2 -0.04991913 45.23998
+R: -0.7068661 0 0 0.7073474
+S: 1 1 1
+bricks_albedo.jpg
+bricks_normals.jpg
+
+tower_corner
+T: -47.8 0 -47.8
+R: -0.7071068 0 0 0.7071067
+S: 1 0.9999997 0.9999997
+bricks_albedo.jpg
+bricks_normals.jpg
+
+wall
+T: -2.980007 -0.01725006 46.59999
+R: -0.4998298 0.5001702 0.4998297 0.5001702
+S: 1 1 1
+bricks_albedo.jpg
+bricks_normals.jpg
+
+Hay_a
+T: -33 -0.0250473 -11.00001
+R: -0.7071068 0 0 0.7071068
+S: 0.01 0.01 0.01
+Building_Texture.png
+normalIsNull

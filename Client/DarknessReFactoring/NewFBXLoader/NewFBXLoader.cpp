@@ -433,7 +433,7 @@ bool NewFBXLoader::InsertData(const  XMFLOAT3& pos, const  XMFLOAT3& tangent,
 		outMesh.Vertices.push_back(vtx);
 		outMesh.Indices.push_back(vtxArrLength);
 		forMapping.insert(std::make_pair(vtx, vtxArrLength));
-		std::cout << vtx.TexC.x << "     " << vtx.TexC.y << "\n";
+		//Sstd::cout << vtx.TexC.x << "     " << vtx.TexC.y << "\n";
 
 	}
 	else

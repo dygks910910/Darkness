@@ -44,7 +44,7 @@ void BasicModel::Draw(const Camera & cam, const ModelMgr* mgr)
 	for (UINT p = 0; p < techDesc.Passes; ++p)
 	{
 		md3dImmediateContext->IASetVertexBuffers(0, 2, vbs, instanceStride, instanceOffset);
-		md3dImmediateContext->IASetIndexBuffer(mgr->m_IB, DXGI_FORMAT_R32_UINT, 0);
+		md3dImmediateContext->IASetIndexBuffer(mgr->m_Basic_IB, DXGI_FORMAT_R32_UINT, 0);
 
 		XMMATRIX world = XMMatrixIdentity();
 		XMMATRIX worldInvTranspose = MathHelper::InverseTranspose(world);

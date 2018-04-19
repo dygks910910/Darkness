@@ -23,7 +23,7 @@ void NormalModel::Draw(const Camera & cam, const ModelMgr* mgr)
 
 	UINT instanceStride[2] = { sizeof(Vertex::PosNormalTexTan), sizeof(XMFLOAT4X4) };
 	UINT instanceOffset[2] = { 0,0 };
-	ID3D11Buffer* vbs[2] = { mgr->m_Basic_VB,mInstanceBuffer };
+	ID3D11Buffer* vbs[2] = { mgr->m_Normal_VB,mInstanceBuffer };
 
 	XMMATRIX worldInvTranspose;
 	XMMATRIX viewProj;
@@ -40,7 +40,7 @@ void NormalModel::Draw(const Camera & cam, const ModelMgr* mgr)
 	for (UINT p = 0; p < techDesc.Passes; ++p)
 	{
 		md3dImmediateContext->IASetVertexBuffers(0, 2, vbs, instanceStride, instanceOffset);
-		md3dImmediateContext->IASetIndexBuffer(mgr->m_IB , DXGI_FORMAT_R32_UINT, 0);
+		md3dImmediateContext->IASetIndexBuffer(mgr->m_Basic_IB , DXGI_FORMAT_R32_UINT, 0);
 		
 		XMMATRIX world = XMMatrixIdentity();
 

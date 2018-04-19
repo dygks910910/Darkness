@@ -144,9 +144,6 @@
     <ClCompile Include="BasicModel.cpp">
       <Filter>소스 파일\Model</Filter>
     </ClCompile>
-    <ClCompile Include="NormalModel.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Material.cpp">
       <Filter>소스 파일\Global</Filter>
     </ClCompile>
@@ -154,6 +151,9 @@
       <Filter>소스 파일\Model</Filter>
     </ClCompile>
     <ClCompile Include="NewFBXLoader\structForFBX.cpp">
+      <Filter>소스 파일\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="NormalModel.cpp">
       <Filter>소스 파일\Model</Filter>
     </ClCompile>
   </ItemGroup>
@@ -269,9 +269,6 @@
     <ClInclude Include="ModelMgr.h">
       <Filter>소스 파일\Model</Filter>
     </ClInclude>
-    <ClInclude Include="NormalModel.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Material.h">
       <Filter>소스 파일\Global</Filter>
     </ClInclude>
@@ -285,6 +282,9 @@
       <Filter>소스 파일\Model</Filter>
     </ClInclude>
     <ClInclude Include="NewFBXLoader\structForFBX.h">
+      <Filter>소스 파일\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="NormalModel.h">
       <Filter>소스 파일\Model</Filter>
     </ClInclude>
   </ItemGroup>

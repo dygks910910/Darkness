@@ -31,7 +31,7 @@ CTestScene::CTestScene():
 
 	Effects::InstancedNormalFX->SetDirLights(mDirLights);
 	Effects::InstancedBasicFX->SetDirLights(mDirLights);
-// 	modelMgr.ReadMapData("AllNewMapData.txt");
+ 	modelMgr.ReadMapData("AllNewMapData.txt");
 }
 
 
@@ -45,7 +45,7 @@ CTestScene::~CTestScene()
 
 bool CTestScene::Init()
 {
-	m_Cam.SetPosition(0, 0, -2);
+	m_Cam.SetPosition(0, 2, -3);
 	return true;
 }
 
@@ -53,8 +53,13 @@ void CTestScene::OnKeyboardButtonDown(WPARAM wParam, UINT msg)
 {
 	switch (msg)
 	{
-	case VK_UP:
-		
+	case WM_KEYDOWN:
+		if (VK_UP == wParam)
+			m_Cam.Strafe(1);
+		if (VK_DOWN == wParam)
+			m_Cam.Strafe(-1);
+		break;
+	default:
 		break;
 	}
 }
@@ -73,8 +78,7 @@ int CTestScene::UpdateScene(const float dt, MSG & msg)
 // 	XMMATRIX world = XMLoadFloat4x4(&mBoxWorld);
 // 	world = XMMatrixRotationAxis(XMVectorSet(0,1,0,0),1*dt);
 // 	XMStoreFloat4x4(&mBoxWorld, world);
-	m_Cam.Strafe(4 * dt);
-	m_Cam.LookAt(m_Cam.GetPosition(), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 1, 0));
+	/*m_Cam.RotateY(1 * dt);*/
 	m_Cam.UpdateViewMatrix();
 
 	return 0;
