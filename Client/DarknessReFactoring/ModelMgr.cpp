@@ -12,12 +12,12 @@ ModelMgr::ModelMgr()
 
 	NewFBXLoader loader;
 	GeometryGenerator::MeshData meshs;
-	loader.LoadFBX("Darkness fbx\\Eis.fbx", meshs, 0.01f);
-	BuildFBXBasic32Buffers(meshs);
-
+	loader.LoadFBX("Darkness fbx\\angelStatue.fbx", meshs, 0.3f);
+	//BuildFBXBasic32Buffers(meshs);
+	BuildFBXNormalBuffers(meshs);
 	XMFLOAT4X4 tempMtx;
 	XMStoreFloat4x4(&tempMtx, XMMatrixIdentity());
-	a = new BasicModel();
+	a = new NormalModel();
 
 	ModelInfo info;
 	info.mIndexOffset = idxOff;
@@ -25,10 +25,22 @@ ModelMgr::ModelMgr()
 	info.mVertexOffset = vtxOff;
 	a->SetInfo(info);
 	a->SetTexture(txtureMgr.CreateTexture(L"Textures/bricks_albedo.png"));
-	//a->SetTextNormalSRV(txtureMgr.CreateTexture(L"Textures/bricks_normals.png"));
+	a->SetTextNormalSRV(txtureMgr.CreateTexture(L"Textures/bricks_normals.png"));
 	a->AddInstance(tempMtx);
 	XMStoreFloat4x4(&tempMtx, XMMatrixTranslation(0, 3, 0));
 	a->AddInstance(tempMtx);
+
+	DirectionalLight mDirLights[4];
+	mDirLights[0].Ambient = XMFLOAT4(0.9f, 0.9f, 0.9f, 1.0f);
+	mDirLights[0].Diffuse = XMFLOAT4(0.7f, 0.7f, 0.6f, 1.0f);
+	mDirLights[0].Specular = XMFLOAT4(0.8f, 0.8f, 0.7f, 1.0f);
+	mDirLights[0].Direction = XMFLOAT3(-0.57735f, -0.57735f, 0.57735f);
+
+	Effects::InstancedNormalFX->SetDirLights(mDirLights);
+	Effects::InstancedNormalFX->SetFogColor(Colors::Silver);
+	Effects::InstancedNormalFX->SetFogRange(100);
+	Effects::InstancedNormalFX->SetFogStart(0);
+
 
 }
 

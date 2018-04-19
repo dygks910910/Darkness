@@ -57,7 +57,7 @@ void NewFBXLoader::ProcessAll(GeometryGenerator::MeshData& outMesh, const float&
 	{
 		for (int i = 0; i < nodeCounter; i++)
 		{
-			ProcessNode(mRootNode->GetChild(i),outMesh,scaleFactor);
+			ProcessNode(mRootNode->GetChild(i), outMesh, scaleFactor);
 		}
 	}
 }
@@ -68,31 +68,12 @@ void NewFBXLoader::Destroy()
 
 }
 
-void NewFBXLoader::ProcessControlPoint(FbxMesh * pMesh)
-{
-	 XMFLOAT3 vertex;
-	vtxArr.reserve(pMesh->GetControlPointsCount());
-	for (int i = 0; i < pMesh->GetControlPointsCount(); ++i)
-	{
-		vertex = 
-		{
-			static_cast<float>(pMesh->GetControlPointAt(i).mData[0]),
-			static_cast<float>(pMesh->GetControlPointAt(i).mData[1]),
-			static_cast<float>(pMesh->GetControlPointAt(i).mData[2])
-		};
-		//std::cout << std::setw(5) << vertex.pos;
-		vtxArr.push_back(vertex);
-	}
-	std::cout << "정점갯수:" << pMesh->GetControlPointsCount() << "\n";
-}
-
 void NewFBXLoader::ProcessNode(FbxNode * pNode, GeometryGenerator::MeshData& outMesh, const float& scaleFactor)
 {
-	 XMFLOAT3 normal;
-	 XMFLOAT3 tangent;
-	 XMFLOAT2 tex;
-	 XMFLOAT3 
-	
+	XMFLOAT3 normal;
+	XMFLOAT3 tangent;
+	XMFLOAT2 tex;
+	XMFLOAT3 pos;
 
 	FbxNodeAttribute* nodeAttribute = pNode->GetNodeAttribute();
 	unsigned int vertexCount = 0;
@@ -103,7 +84,6 @@ void NewFBXLoader::ProcessNode(FbxNode * pNode, GeometryGenerator::MeshData& out
 		{
 			//mesh속성을 가진 노드를 탐색한다.
 			FbxMesh* pMesh = pNode->GetMesh();
-			ProcessControlPoint(pMesh);
 
 			for (unsigned int triCount = 0; triCount < pMesh->GetPolygonCount(); ++triCount)
 			{
@@ -111,14 +91,13 @@ void NewFBXLoader::ProcessNode(FbxNode * pNode, GeometryGenerator::MeshData& out
 				for (unsigned int polygonIndex = 0; polygonIndex < 3; ++polygonIndex)
 				{
 					int controlPointIndex = pMesh->GetPolygonVertex(triCount, polygonIndex);
+
+					pos = ProcessPosistion(pMesh, controlPointIndex);
 					normal = ProcessNormal(pMesh, controlPointIndex, vertexCount);
 					tangent = ProcessTangent(pMesh, controlPointIndex, vertexCount);
-					tex = ProcessUV(pMesh, controlPointIndex, pMesh->GetTextureUVIndex(triCount, polygonIndex));
+					tex = ProcessUV(pMesh, vertexCount, pMesh->GetTextureUVIndex(triCount, polygonIndex));
 					pMesh->GetControlPointAt(controlPointIndex).mData[0];
-					outMesh.Indices.push_back(controlPointIndex);
-
-					 XMFLOAT3& currControllPoint = vtxArr[controlPointIndex];
-					InsertData(currControllPoint, tangent, normal, tex, outMesh,scaleFactor);
+					InsertData(pos, tangent, normal, tex, outMesh, scaleFactor);
 
 					vertexCount++;
 
@@ -132,12 +111,21 @@ void NewFBXLoader::ProcessNode(FbxNode * pNode, GeometryGenerator::MeshData& out
 	//노드 재귀탐색
 	for (int j = 0; j < pNode->GetChildCount(); j++)
 	{
-		ProcessNode(pNode->GetChild(j),outMesh,scaleFactor);
+		ProcessNode(pNode->GetChild(j), outMesh, scaleFactor);
 	}
 }
- XMFLOAT3 NewFBXLoader::ProcessNormal(FbxMesh * pMesh, const unsigned int & controlPointIndex, const unsigned int & vertexCount)
+XMFLOAT3 NewFBXLoader::ProcessPosistion(FbxMesh * pMesh, const unsigned int & controlPointIndex)
 {
-	 XMFLOAT3 float3;
+	return  XMFLOAT3
+	{
+		static_cast<float>(pMesh->GetControlPointAt(controlPointIndex).mData[0]),
+		static_cast<float>(pMesh->GetControlPointAt(controlPointIndex).mData[1]),
+		static_cast<float>(pMesh->GetControlPointAt(controlPointIndex).mData[2])
+	};
+}
+XMFLOAT3 NewFBXLoader::ProcessNormal(FbxMesh * pMesh, const unsigned int & controlPointIndex, const unsigned int & vertexCount)
+{
+	XMFLOAT3 float3;
 	if (pMesh->GetElementNormalCount() < 1)
 	{
 		std::cout << "normal이없음\n";
@@ -197,9 +185,9 @@ void NewFBXLoader::ProcessNode(FbxNode * pNode, GeometryGenerator::MeshData& out
 	}
 	return float3;
 }
- XMFLOAT3 NewFBXLoader::ProcessBinormal(FbxMesh * pMesh, const unsigned int & controlPointIndex, const unsigned int & vertexCount)
+XMFLOAT3 NewFBXLoader::ProcessBinormal(FbxMesh * pMesh, const unsigned int & controlPointIndex, const unsigned int & vertexCount)
 {
-	 XMFLOAT3 float3;
+	XMFLOAT3 float3;
 	if (pMesh->GetElementBinormalCount() < 1)
 	{
 		std::cout << "Binormal이없음\n";
@@ -260,14 +248,14 @@ void NewFBXLoader::ProcessNode(FbxNode * pNode, GeometryGenerator::MeshData& out
 	}
 	return float3;
 }
- XMFLOAT3 NewFBXLoader::ProcessTangent(FbxMesh * pMesh, const unsigned int & controlPointIndex, const unsigned int & vertexCount)
+XMFLOAT3 NewFBXLoader::ProcessTangent(FbxMesh * pMesh, const unsigned int & controlPointIndex, const unsigned int & vertexCount)
 {
-	 XMFLOAT3 float3;
+	XMFLOAT3 float3;
 	if (pMesh->GetElementTangentCount() < 1)
 	{
-		//std::cout << "Tangent이없음\n";
 		FbxStringList uvSetNames;
 		pMesh->GetUVSetNames(uvSetNames);
+		std::cout << uvSetNames[0] << "\n";
 		pMesh->GenerateTangentsData(uvSetNames[0]);
 
 	}
@@ -326,9 +314,9 @@ void NewFBXLoader::ProcessNode(FbxNode * pNode, GeometryGenerator::MeshData& out
 	}
 	return float3;
 }
- XMFLOAT2 NewFBXLoader::ProcessUV(FbxMesh * pMesh, const unsigned int & controlPointIndex, const unsigned int & textureUVIndex)
+XMFLOAT2 NewFBXLoader::ProcessUV(FbxMesh* pMesh, const unsigned int& vertexCount, const unsigned int& textureUVIndex)
 {
-	 XMFLOAT2 float2;
+	XMFLOAT2 float2;
 	if (pMesh->GetElementUVCount() < 1)
 	{
 		std::cout << "UVCount없음\n";
@@ -346,7 +334,7 @@ void NewFBXLoader::ProcessNode(FbxNode * pNode, GeometryGenerator::MeshData& out
 		case FbxGeometryElement::EReferenceMode::eIndexToDirect:
 		{
 			//여기서 controlPointIndex로 구하는 인덱스로 노멀을 가져온다.
-			int index = uv->GetIndexArray().GetAt(controlPointIndex);
+			int index = uv->GetIndexArray().GetAt(textureUVIndex);
 			float2.x = static_cast<float>(uv->GetDirectArray().GetAt(index).mData[0]);
 			float2.y = static_cast<float>(uv->GetDirectArray().GetAt(index).mData[1]);
 			break;
@@ -355,14 +343,14 @@ void NewFBXLoader::ProcessNode(FbxNode * pNode, GeometryGenerator::MeshData& out
 		case FbxGeometryElement::EReferenceMode::eDirect:
 		{
 			//controlPointIndex 로 그냥 가져온다.
-			float2.x = static_cast<float>(uv->GetDirectArray().GetAt(controlPointIndex).mData[0]);
-			float2.y = static_cast<float>(uv->GetDirectArray().GetAt(controlPointIndex).mData[1]);
+			float2.x = static_cast<float>(uv->GetDirectArray().GetAt(textureUVIndex).mData[0]);
+			float2.y = static_cast<float>(uv->GetDirectArray().GetAt(textureUVIndex).mData[1]);
 			break;
 		}
 		}
 		break;
 	}
-		//꼭지점마다 매핑좌표가 있음.
+	//꼭지점마다 매핑좌표가 있음.
 	case FbxGeometryElement::eByPolygonVertex:
 	{
 		switch (uv->GetReferenceMode())
@@ -370,7 +358,7 @@ void NewFBXLoader::ProcessNode(FbxNode * pNode, GeometryGenerator::MeshData& out
 		case FbxGeometryElement::EReferenceMode::eIndexToDirect:
 		{
 			//여기서 vertexCount로구하는 인덱스로 노멀을 가져온다.
-			int index = uv->GetIndexArray().GetAt(textureUVIndex);
+			int index = uv->GetIndexArray().GetAt(vertexCount);
 			float2.x = static_cast<float>(uv->GetDirectArray().GetAt(index).mData[0]);
 			float2.y = static_cast<float>(uv->GetDirectArray().GetAt(index).mData[1]);
 			break;
@@ -378,8 +366,8 @@ void NewFBXLoader::ProcessNode(FbxNode * pNode, GeometryGenerator::MeshData& out
 		case FbxGeometryElement::EReferenceMode::eDirect:
 		{
 			//vertexCount로 얻어온다.
-			float2.x = static_cast<float>(uv->GetDirectArray().GetAt(textureUVIndex).mData[0]);
-			float2.y = static_cast<float>(uv->GetDirectArray().GetAt(textureUVIndex).mData[1]);
+			float2.x = static_cast<float>(uv->GetDirectArray().GetAt(vertexCount).mData[0]);
+			float2.y = static_cast<float>(uv->GetDirectArray().GetAt(vertexCount).mData[1]);
 			break;
 		}
 		}
@@ -427,7 +415,7 @@ void NewFBXLoader::PrintAttribute(FbxNodeAttribute * pAttribute)
 
 bool NewFBXLoader::InsertData(const  XMFLOAT3& pos, const  XMFLOAT3& tangent,
 	const  XMFLOAT3& normal, const  XMFLOAT2& tex, GeometryGenerator::MeshData& outMesh,
-	 const float& scaleFactor)
+	const float& scaleFactor)
 {
 	XMFLOAT3 posScaled = {
 		pos.x * scaleFactor,
@@ -435,28 +423,28 @@ bool NewFBXLoader::InsertData(const  XMFLOAT3& pos, const  XMFLOAT3& tangent,
 		pos.z* scaleFactor
 	};
 
-	GeometryGenerator::Vertex vtx(posScaled,normal,tangent,tex);
+	GeometryGenerator::Vertex vtx(posScaled, normal, tangent, tex);
 
- 	auto finded = forMapping.find(vtx);
- 	if (finded == forMapping.end())
- 	{
-// 		//찾는 데이터가 없으면?
+	auto finded = forMapping.find(vtx);
+	if (finded == forMapping.end())
+	{
+		// 		//찾는 데이터가 없으면?
 		int vtxArrLength = outMesh.Vertices.size();
 		outMesh.Vertices.push_back(vtx);
-		//outMesh.Indices.push_back(vtxArrLength);
+		outMesh.Indices.push_back(vtxArrLength);
 		forMapping.insert(std::make_pair(vtx, vtxArrLength));
 		std::cout << vtx.TexC.x << "     " << vtx.TexC.y << "\n";
 
- 	}
- 	else
- 	{
- 		//찾는데이터가 있으면?
-		//outMesh.Indices.push_back(finded->second);
- 	}
+	}
+	else
+	{
+		//찾는데이터가 있으면?
+		outMesh.Indices.push_back(finded->second);
+	}
 	return true;
 }
 
-bool operator<( XMFLOAT3 a,  XMFLOAT3 b)
+bool operator<(XMFLOAT3 a, XMFLOAT3 b)
 {
 	return false;
 }

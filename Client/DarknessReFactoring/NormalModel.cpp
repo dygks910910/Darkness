@@ -35,7 +35,7 @@ void NormalModel::Draw(const Camera & cam, const ModelMgr* mgr)
 	D3DX11_TECHNIQUE_DESC techDesc;
 	Effects::InstancedNormalFX->SetEyePosW(cam.GetPosition());
 
-	ID3DX11EffectTechnique *tech =  Effects::InstancedNormalFX->Light3TexReflectTech;
+	ID3DX11EffectTechnique *tech =  Effects::InstancedNormalFX->Light3TexAlphaClipTech;
 	tech->GetDesc(&techDesc);
 	for (UINT p = 0; p < techDesc.Passes; ++p)
 	{

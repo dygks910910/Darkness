@@ -19,7 +19,7 @@ class ModelMgr
 
 	std::map<std::string, Model*> models;
 
-	BasicModel* a;
+	NormalModel* a;
 	int vtxOff;
 	int idxCnt;
 	int idxOff;

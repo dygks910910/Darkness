@@ -17,9 +17,6 @@ class NewFBXLoader
 	FbxNode* mRootNode = nullptr;
 
 
-	//임시로 위치만 담아논 배열.
-	std::vector< XMFLOAT3> vtxArr;
-
 	std::unordered_map < GeometryGenerator::Vertex, unsigned int ,VertexHash,VertexCompare> forMapping;
 
 public:
@@ -28,12 +25,13 @@ public:
 	
 	void LoadFBX(const char* fileName,GeometryGenerator::MeshData& outMesh,const float& scaleFactor=0.01f);
 private:
-	void ProcessControlPoint(FbxMesh* pMesh);
 	void ProcessNode(FbxNode* pNode, GeometryGenerator::MeshData& outMesh,const float& scaleFactor);
-	 XMFLOAT3 ProcessNormal(FbxMesh* pMesh, const unsigned int& controlPointIndex, const unsigned int& vertexCount);
+
+	XMFLOAT3 ProcessPosistion(FbxMesh* pMesh, const unsigned int& controlPointIndex);
+	XMFLOAT3 ProcessNormal(FbxMesh* pMesh, const unsigned int& controlPointIndex, const unsigned int& vertexCount);
 	 XMFLOAT3 ProcessBinormal(FbxMesh* pMesh, const unsigned int& controlPointIndex, const unsigned int& vertexCount);
 	 XMFLOAT3 ProcessTangent(FbxMesh* pMesh, const unsigned int& controlPointIndex, const unsigned int& vertexCount);
-	 XMFLOAT2 ProcessUV(FbxMesh* pMesh, const unsigned int& controlPointIndex, const unsigned int& textureUVIndex);
+	 XMFLOAT2 ProcessUV(FbxMesh* pMesh, const unsigned int& vertexCount, const unsigned int& textureUVIndex);
 	FbxString GetAttributeTypeName(FbxNodeAttribute::EType type);
 	void PrintAttribute(FbxNodeAttribute* pAttribute);
 	bool InsertData(const  XMFLOAT3& pos, const  XMFLOAT3& tangent,
