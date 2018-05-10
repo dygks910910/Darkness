@@ -38,7 +38,6 @@ public:
 	void ReadMapData(char* fileName);
 
 private:
-
 	Model *CreateNormalModel(const XMFLOAT3 & s, const XMFLOAT4 & r, const XMFLOAT3 & t,
 		const std::string & diffuseFileName, const std::string & normalFileName, 
 		const UINT& idxCount, const UINT& vtxOffset, const UINT& IdxOffset);

@@ -201,6 +201,9 @@ void ModelMgr::BuildFBXNormalBuffers(const GeometryGenerator::MeshData & box)
 
 void ModelMgr::ReadMapData(char* fileName)
 {
+	bool hasBasicModel = false;
+	bool hasNormalModel = false;
+
 	GeometryGenerator::MeshData mesh;
 
 	
@@ -301,7 +304,7 @@ void ModelMgr::ReadMapData(char* fileName)
 				MeshToArr(basicVtxArr, basicIdxArr, mesh);
 
 				totalBasicIndexCount += mesh.Indices.size();
-
+				hasBasicModel = true;
 			}
 			else
 			{
@@ -315,6 +318,7 @@ void ModelMgr::ReadMapData(char* fileName)
 				MeshToArr(normalVtxArr, normalIdxArr, mesh);
 				totalNormalVertexCount += mesh.Vertices.size();
 				totalNormalIndexCount += mesh.Indices.size();
+				hasNormalModel = true;
 			}
 			//직전에 값들업데이트
 		
@@ -327,46 +331,54 @@ void ModelMgr::ReadMapData(char* fileName)
 
 
 
-	D3D11_BUFFER_DESC vbd;
-	vbd.Usage = D3D11_USAGE_IMMUTABLE;
-	vbd.ByteWidth = sizeof(Vertex::Basic32) * totalBasicVertexCount;
-	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vbd.CPUAccessFlags = 0;
-	vbd.MiscFlags = 0;
-	D3D11_SUBRESOURCE_DATA vinitData;
-	vinitData.pSysMem = &basicVtxArr[0];
-	HR(md3dDevice->CreateBuffer(&vbd, &vinitData, &m_Basic_VB));
+	
+	if (hasBasicModel)
+	{
+		D3D11_BUFFER_DESC vbd;
+		D3D11_SUBRESOURCE_DATA vinitData;
+		vbd.Usage = D3D11_USAGE_IMMUTABLE;
+		vbd.ByteWidth = sizeof(Vertex::Basic32) * totalBasicVertexCount;
+		vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+		vbd.CPUAccessFlags = 0;
+		vbd.MiscFlags = 0;
+		vinitData.pSysMem = &basicVtxArr[0];
+		HR(md3dDevice->CreateBuffer(&vbd, &vinitData, &m_Basic_VB));
+
+		D3D11_BUFFER_DESC ibd;
+		ibd.Usage = D3D11_USAGE_IMMUTABLE;
+		ibd.ByteWidth = sizeof(UINT) * totalBasicIndexCount;
+		ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+		ibd.CPUAccessFlags = 0;
+		ibd.MiscFlags = 0;
+		D3D11_SUBRESOURCE_DATA iinitData;
+		iinitData.pSysMem = &basicIdxArr[0];
+		HR(md3dDevice->CreateBuffer(&ibd, &iinitData, &m_Basic_IB));
+	}
+	if (hasNormalModel)
+	{
+		D3D11_BUFFER_DESC vbdNormal;
+		vbdNormal.Usage = D3D11_USAGE_IMMUTABLE;
+		vbdNormal.ByteWidth = sizeof(Vertex::PosNormalTexTan) * totalNormalVertexCount;
+		vbdNormal.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+		vbdNormal.CPUAccessFlags = 0;
+		vbdNormal.MiscFlags = 0;
+		D3D11_SUBRESOURCE_DATA vinitDataNormal;
+		vinitDataNormal.pSysMem = &normalVtxArr[0];
+		HR(md3dDevice->CreateBuffer(&vbdNormal, &vinitDataNormal, &m_Normal_VB));
+
+		D3D11_BUFFER_DESC ibd;
+		ibd.Usage = D3D11_USAGE_IMMUTABLE;
+		ibd.ByteWidth = sizeof(UINT) * totalNormalIndexCount;
+		ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+		ibd.CPUAccessFlags = 0;
+		ibd.MiscFlags = 0;
+		D3D11_SUBRESOURCE_DATA iinitData;
+		iinitData.pSysMem = &normalIdxArr[0];
+		HR(md3dDevice->CreateBuffer(&ibd, &iinitData, &m_Normal_IB));
+	}
 
 
-	D3D11_BUFFER_DESC vbdNormal;
-
-	vbdNormal.Usage = D3D11_USAGE_IMMUTABLE;
-	vbdNormal.ByteWidth = sizeof(Vertex::PosNormalTexTan) * totalNormalVertexCount;
-	vbdNormal.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vbdNormal.CPUAccessFlags = 0;
-	vbdNormal.MiscFlags = 0;
-	D3D11_SUBRESOURCE_DATA vinitDataNormal;
-	vinitDataNormal.pSysMem = &normalVtxArr[0];
-	HR(md3dDevice->CreateBuffer(&vbdNormal, &vinitDataNormal, &m_Normal_VB));
-
-
-	D3D11_BUFFER_DESC ibd;
-	ibd.Usage = D3D11_USAGE_IMMUTABLE;
-	ibd.ByteWidth = sizeof(UINT) * totalBasicIndexCount;
-	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	ibd.CPUAccessFlags = 0;
-	ibd.MiscFlags = 0;
-	D3D11_SUBRESOURCE_DATA iinitData;
-	iinitData.pSysMem = &basicIdxArr[0];
-	HR(md3dDevice->CreateBuffer(&ibd, &iinitData, &m_Basic_IB));
-
-	ibd.Usage = D3D11_USAGE_IMMUTABLE;
-	ibd.ByteWidth = sizeof(UINT) * totalNormalIndexCount;
-	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	ibd.CPUAccessFlags = 0;
-	ibd.MiscFlags = 0;
-	iinitData.pSysMem = &normalIdxArr[0];
-	HR(md3dDevice->CreateBuffer(&ibd, &iinitData, &m_Normal_IB));
+	
 
 	std::cout << "sucessful LoadMapData" << std::endl;
 }
@@ -382,8 +394,11 @@ Model* ModelMgr::CreateNormalModel(const XMFLOAT3 & s, const XMFLOAT4 & r, const
 	modelInfo.mVertexOffset = vtxOffset;
 	modelInfo.mIndexOffset = IdxOffset;
 	norModel->SetInfo(modelInfo);
-	norModel->SetTexture(txtureMgr.CreateTexture(diffuseFileName));
-	norModel->SetTextNormalSRV(txtureMgr.CreateTexture(normalFileName));
+	ID3D11ShaderResourceView* diffuse = txtureMgr.CreateTexture(diffuseFileName);
+	ID3D11ShaderResourceView* normal = txtureMgr.CreateTexture(normalFileName);
+
+	norModel->SetTexture(diffuse);
+	norModel->SetTextNormalSRV(normal);
 
 	XMVECTOR zero = XMVectorSet(0, 0, 0, 0);
 	XMVECTOR tmpS, tmpR, tmpT;
@@ -407,7 +422,8 @@ Model * ModelMgr::CreateBasicModel(const XMFLOAT3 & s, const XMFLOAT4 & r, const
 	modelInfo.mVertexOffset = vtxOffset;
 	modelInfo.mIndexOffset = IdxOffset;
 	basicModel->SetInfo(modelInfo);
-	basicModel->SetTexture(txtureMgr.CreateTexture(diffuseFileName));
+	ID3D11ShaderResourceView* diffuse = txtureMgr.CreateTexture(diffuseFileName);
+	basicModel->SetTexture(diffuse);
 
 	XMVECTOR tmpS, tmpR, tmpT;
 	XMFLOAT4X4 M;

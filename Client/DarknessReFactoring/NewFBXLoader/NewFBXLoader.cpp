@@ -95,7 +95,7 @@ void NewFBXLoader::ProcessNode(FbxNode * pNode, GeometryGenerator::MeshData& out
 					pos = ProcessPosistion(pMesh, controlPointIndex);
 					normal = ProcessNormal(pMesh, controlPointIndex, vertexCount);
 					tangent = ProcessTangent(pMesh, controlPointIndex, vertexCount);
-					tex = ProcessUV(pMesh, vertexCount, pMesh->GetTextureUVIndex(triCount, polygonIndex));
+					tex = ProcessUV(pMesh, controlPointIndex, pMesh->GetTextureUVIndex(triCount, polygonIndex));
 					pMesh->GetControlPointAt(controlPointIndex).mData[0];
 					InsertData(pos, tangent, normal, tex, outMesh, scaleFactor);
 
@@ -314,7 +314,7 @@ XMFLOAT3 NewFBXLoader::ProcessTangent(FbxMesh * pMesh, const unsigned int & cont
 	}
 	return float3;
 }
-XMFLOAT2 NewFBXLoader::ProcessUV(FbxMesh* pMesh, const unsigned int& vertexCount, const unsigned int& textureUVIndex)
+XMFLOAT2 NewFBXLoader::ProcessUV(FbxMesh* pMesh, const unsigned int&controlPointIndex, const unsigned int& textureUVIndex)
 {
 	XMFLOAT2 float2;
 	if (pMesh->GetElementUVCount() < 1)
@@ -358,16 +358,16 @@ XMFLOAT2 NewFBXLoader::ProcessUV(FbxMesh* pMesh, const unsigned int& vertexCount
 		case FbxGeometryElement::EReferenceMode::eIndexToDirect:
 		{
 			//여기서 vertexCount로구하는 인덱스로 노멀을 가져온다.
-			int index = uv->GetIndexArray().GetAt(vertexCount);
-			float2.x = static_cast<float>(uv->GetDirectArray().GetAt(index).mData[0]);
-			float2.y = static_cast<float>(uv->GetDirectArray().GetAt(index).mData[1]);
+			int index = uv->GetIndexArray().GetAt(controlPointIndex);
+			float2.x = static_cast<float>(uv->GetDirectArray().GetAt(controlPointIndex).mData[0]);
+			float2.y = static_cast<float>(uv->GetDirectArray().GetAt(controlPointIndex).mData[1]);
 			break;
 		}
 		case FbxGeometryElement::EReferenceMode::eDirect:
 		{
 			//vertexCount로 얻어온다.
-			float2.x = static_cast<float>(uv->GetDirectArray().GetAt(vertexCount).mData[0]);
-			float2.y = static_cast<float>(uv->GetDirectArray().GetAt(vertexCount).mData[1]);
+			float2.x = static_cast<float>(uv->GetDirectArray().GetAt(controlPointIndex).mData[0]);
+			float2.y = static_cast<float>(uv->GetDirectArray().GetAt(controlPointIndex).mData[1]);
 			break;
 		}
 		}

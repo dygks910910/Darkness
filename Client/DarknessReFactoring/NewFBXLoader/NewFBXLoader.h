@@ -31,7 +31,7 @@ private:
 	XMFLOAT3 ProcessNormal(FbxMesh* pMesh, const unsigned int& controlPointIndex, const unsigned int& vertexCount);
 	 XMFLOAT3 ProcessBinormal(FbxMesh* pMesh, const unsigned int& controlPointIndex, const unsigned int& vertexCount);
 	 XMFLOAT3 ProcessTangent(FbxMesh* pMesh, const unsigned int& controlPointIndex, const unsigned int& vertexCount);
-	 XMFLOAT2 ProcessUV(FbxMesh* pMesh, const unsigned int& vertexCount, const unsigned int& textureUVIndex);
+	 XMFLOAT2 ProcessUV(FbxMesh* pMesh, const unsigned int&controlPointIndex, const unsigned int& textureUVIndex);
 	FbxString GetAttributeTypeName(FbxNodeAttribute::EType type);
 	void PrintAttribute(FbxNodeAttribute* pAttribute);
 	bool InsertData(const  XMFLOAT3& pos, const  XMFLOAT3& tangent,

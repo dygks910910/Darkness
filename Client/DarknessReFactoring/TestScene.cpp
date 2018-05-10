@@ -31,7 +31,7 @@ CTestScene::CTestScene():
 
 	Effects::InstancedNormalFX->SetDirLights(mDirLights);
 	Effects::InstancedBasicFX->SetDirLights(mDirLights);
- 	modelMgr.ReadMapData("AllNewMapData.txt");
+ 	modelMgr.ReadMapData("AllNewMapDataTest.txt");
 }
 
 
@@ -79,6 +79,7 @@ int CTestScene::UpdateScene(const float dt, MSG & msg)
 // 	world = XMMatrixRotationAxis(XMVectorSet(0,1,0,0),1*dt);
 // 	XMStoreFloat4x4(&mBoxWorld, world);
 	/*m_Cam.RotateY(1 * dt);*/
+	m_Cam.RotateY(1 * dt);
 	m_Cam.UpdateViewMatrix();
 
 	return 0;
