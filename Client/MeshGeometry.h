@@ -1,7 +1,7 @@
 #ifndef MESHGEOMETRY_H
 #define MESHGEOMETRY_H
 
-#include "d3dUtil.h"
+#include "Common/d3dUtil.h"
 #include "Vertex.h"
 class MeshGeometry
 {

@@ -6,8 +6,8 @@
 #include "Vertex.h"
 #include <math.h>
 #include<unordered_map>
-#include "LightHelper.h"
-#include "GeometryGenerator.h"
+#include "Common/LightHelper.h"
+#include "Common/GeometryGenerator.h"
 /*
 2017 / 1 / 7 / 5:33
 작성자:박요한(dygks910910@daum.net)

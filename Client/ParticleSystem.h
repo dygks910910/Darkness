@@ -5,7 +5,7 @@
 #ifndef PARTICLE_SYSTEM_H
 #define PARTICLE_SYSTEM_H
 
-#include "d3dUtil.h"
+#include "Common/d3dUtil.h"
 #include <string>
 #include <vector>
 

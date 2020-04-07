@@ -1,7 +1,7 @@
 #ifndef SKINNEDDATA_H
 #define SKINNEDDATA_H
 
-#include "d3dUtil.h"
+#include "Common/d3dUtil.h"
 #include <map>
 
 ///<summary>

@@ -8,7 +8,7 @@
 #ifndef EFFECTS_H
 #define EFFECTS_H
 
-#include "d3dUtil.h"
+#include "Common/d3dUtil.h"
 
 #pragma region Effect
 class Effect

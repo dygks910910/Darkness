@@ -1,6 +1,6 @@
 #pragma once
-#include"d3dUtil.h"
-#include "Camera.h"
+#include"Common/d3dUtil.h"
+#include "Common/Camera.h"
 #include "Sky.h"
 #include "ParticleSystem.h"
 #include "Terrain.h"

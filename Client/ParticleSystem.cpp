@@ -3,10 +3,10 @@
 //***************************************************************************************
 
 #include "ParticleSystem.h"
-#include "TextureMgr.h"
+#include "Common/TextureMgr.h"
 #include "Vertex.h"
 #include "Effects.h"
-#include "Camera.h"
+#include "Common/Camera.h"
  
 ParticleSystem::ParticleSystem()
 : mInitVB(0), mDrawVB(0), mStreamOutVB(0), mTexArraySRV(0), mRandomTexSRV(0)

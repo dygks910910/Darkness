@@ -7,8 +7,8 @@
 #ifndef SHADOW_MAPPER_H
 #define SHADOW_MAPPER_H
 
-#include "d3dUtil.h"
-#include "Camera.h"
+#include "Common/d3dUtil.h"
+#include "Common/Camera.h"
 
 class ShadowMap
 {

@@ -3,8 +3,8 @@
 //***************************************************************************************
 
 #include "Terrain.h"
-#include "Camera.h"
-#include "LightHelper.h"
+#include "Common/Camera.h"
+#include "Common/LightHelper.h"
 #include "Effects.h"
 #include "Vertex.h"
 #include <fstream>

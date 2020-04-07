@@ -2,7 +2,7 @@
 #define LOADM3D_H
 
 #include "MeshGeometry.h"
-#include "LightHelper.h"
+#include "Common/LightHelper.h"
 #include "SkinnedData.h"
 #include "Vertex.h"
 

@@ -1,11 +1,11 @@
 #pragma once
 #include "Vertex.h"
-#include "LightHelper.h"
+#include "Common/LightHelper.h"
 #include<string>
 #include"Effects.h"
-#include "Camera.h"
-#include "xnacollision.h"
-#include "GeometryGenerator.h"
+#include "Common/Camera.h"
+#include "Common/xnacollision.h"
+#include "Common/GeometryGenerator.h"
 #include "RenderStates.h"
 class CStaticBasicModel
 {

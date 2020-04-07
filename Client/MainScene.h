@@ -3,9 +3,9 @@
 #include<conio.h>
 #include "Scene.h"
 #include "ButtonClass.h"
-#include "xnacollision.h"
+#include "Common/xnacollision.h"
 #include "DrawText.h"
-#include "GameTimer.h"
+#include "Common/GameTimer.h"
 #include "Sound.h"
 #include<fstream>
 #define IPADDRESS "127.0.0.1"

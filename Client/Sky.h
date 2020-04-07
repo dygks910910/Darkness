@@ -7,7 +7,7 @@
 #ifndef SKY_H
 #define SKY_H
 
-#include "d3dUtil.h"
+#include "Common/d3dUtil.h"
 
 class Camera;
 

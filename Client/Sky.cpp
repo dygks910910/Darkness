@@ -3,8 +3,8 @@
 //***************************************************************************************
 
 #include "Sky.h"
-#include "GeometryGenerator.h"
-#include "Camera.h"
+#include "Common/GeometryGenerator.h"
+#include "Common/Camera.h"
 #include "Vertex.h"
 #include "Effects.h"
 

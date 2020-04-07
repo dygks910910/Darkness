@@ -1,13 +1,13 @@
 #pragma once
 #include "NetworkMgr.h"
 #include "Model.h"
-#include "GeometryGenerator.h"
+#include "Common/GeometryGenerator.h"
 #include "FbxLoader.h"
-#include "TextureMgr.h"
-#include "Camera.h"
+#include "Common/TextureMgr.h"
+#include "Common/Camera.h"
 #include "RenderStates.h"
 #include "SkinnedModel.h"
-#include "xnacollision.h"
+#include "Common/xnacollision.h"
 #include "ButtonClass.h"
 
 enum Axis

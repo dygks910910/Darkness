@@ -1,5 +1,5 @@
 #pragma once
-#include "d3dUtil.h"
+#include "Common/d3dUtil.h"
 #include "FW1FontWrapper.h"
 #include<tchar.h>
 

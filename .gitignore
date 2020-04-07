@@ -21,3 +21,6 @@ Client/Debug/BoxDemo.obj
 *.msi
 Client/Debug/*
 Client/x64/*
+Client/.vs/DarknessClient/v16/ipch/
+*.db-shm
+*.db-wal

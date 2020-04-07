@@ -3,7 +3,7 @@
 //***************************************************************************************
 
 #include "Ssao.h"
-#include "Camera.h"
+#include "Common/Camera.h"
 #include "Effects.h"
 #include "Vertex.h"
 

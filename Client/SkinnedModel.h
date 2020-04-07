@@ -3,9 +3,9 @@
 
 #include "SkinnedData.h"
 #include "MeshGeometry.h"
-#include "TextureMgr.h"
+#include "Common/TextureMgr.h"
 #include "Vertex.h"
-#include<Camera.h>
+#include"Common/Camera.h"
 
 class SkinnedModel
 {

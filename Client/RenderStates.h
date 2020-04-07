@@ -7,7 +7,7 @@
 #ifndef RENDERSTATES_H
 #define RENDERSTATES_H
 
-#include "d3dUtil.h"
+#include "Common/d3dUtil.h"
 
 class RenderStates
 {

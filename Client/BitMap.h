@@ -8,9 +8,9 @@
 ///////////////////////
 #include"Texture.h"
 #include "Effects.h"
-#include "Camera.h"
+#include "Common/Camera.h"
 #include "Vertex.h"
-#include "xnacollision.h"
+#include "Common/xnacollision.h"
 
 class CBitMap
 {
