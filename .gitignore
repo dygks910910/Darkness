@@ -24,3 +24,5 @@ Client/x64/*
 Client/.vs/DarknessClient/v16/ipch/
 *.db-shm
 *.db-wal
+DarknessMaptool(UnityProject)/Library/metadata/
+DarknessMaptool(UnityProject)/Library/ShaderCache/
