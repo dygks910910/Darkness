@@ -1,7 +1,9 @@
 #include "CModelClass.h"
 #include "Define.h"
 CModelClass::CModelClass():
-	m_vertexBuffer(nullptr),m_indexBuffer(nullptr)
+	m_vertexBuffer(nullptr)
+	,m_indexBuffer(nullptr)
+	,m_Texture(nullptr)
 {
 }
 
@@ -13,20 +15,22 @@ CModelClass::~CModelClass()
 {
 }
 
-bool CModelClass::Initialize(ID3D11Device* device)
+
+bool CModelClass::Initialize(ID3D11Device* device, const wchar_t* textureName)
 {
 	bool result;
 	// Initialize the vertex and index buffers.
 	result = InitializeBuffers(device);
 	IF_NOTX_RTFALSE(result);
-
+	result &= LoadTexture(device, textureName);
+	IF_NOTX_RTFALSE(result);
 	return true;
 }
 
 void CModelClass::Shutdown()
 {
+	ReleaseTexture();
 	ShutdownBuffers();
-
 }
 
 void CModelClass::Render(ID3D11DeviceContext* deviceContext)
@@ -38,6 +42,28 @@ void CModelClass::Render(ID3D11DeviceContext* deviceContext)
 int CModelClass::GetIndexCount()
 {
 	return m_indexCount;
+}
+
+ID3D11ShaderResourceView* CModelClass::GetTexture()
+{
+	return m_Texture->GetTexture();
+}
+
+bool CModelClass::LoadTexture(ID3D11Device* device, const wchar_t* fineName)
+{
+	bool result;
+	m_Texture = new CTextureClass;
+	IF_NOTX_RTFALSE(m_Texture);
+
+	result = m_Texture->Initialize(device, fineName);
+	IF_NOTX_RTFALSE(m_Texture);
+
+	return true;
+}
+
+void CModelClass::ReleaseTexture()
+{
+	SAFE_DELETE_SHUTDOWN(m_Texture);
 }
 
 bool CModelClass::InitializeBuffers(ID3D11Device* device)
@@ -65,13 +91,17 @@ bool CModelClass::InitializeBuffers(ID3D11Device* device)
 
 	// Load the vertex array with data.
 	vertices[0].position = D3DXVECTOR3(-1.0f, -1.0f, 0.0f);  // Bottom left.
-	vertices[0].color = D3DXVECTOR4(0.0f, 1.0f, 0.0f, 1.0f);
+	vertices[0].texture = D3DXVECTOR2(0.0f, 1.0f);
+	vertices[0].normal = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
 
 	vertices[1].position = D3DXVECTOR3(0.0f, 1.0f, 0.0f);  // Top middle.
-	vertices[1].color = D3DXVECTOR4(0.0f, 1.0f, 0.0f, 1.0f);
+	vertices[1].texture = D3DXVECTOR2(0.5f, 0.0f);
+	vertices[1].normal = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
 
 	vertices[2].position = D3DXVECTOR3(1.0f, -1.0f, 0.0f);  // Bottom right.
-	vertices[2].color = D3DXVECTOR4(0.0f, 1.0f, 0.0f, 1.0f);
+	vertices[2].texture = D3DXVECTOR2(1.0f, 1.0f);
+	vertices[2].normal = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
+
 
 	// Load the index array with data.
 	indices[0] = 0;  // Bottom left.

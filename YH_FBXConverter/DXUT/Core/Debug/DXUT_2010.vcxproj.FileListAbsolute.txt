@@ -1,0 +1,2 @@
+D:\Projects\Darkness\YH_FBXConverter\DXUT\Core\Debug\DXUT.lib
+D:\Projects\Darkness\YH_FBXConverter\DXUT\Core\Debug\DXUT.pdb

@@ -21,7 +21,7 @@ bool CColorShaderClass::Initialize(ID3D11Device* device, HWND hwnd)
 {
 	bool result;
 
-	//WCHAR* colorVSName = L"../Engine/color.vs";
+	//const wchar_t* colorVSName = L"../Engine/color.vs";
 
 	// Initialize the vertex and pixel shaders.
 	result = InitializeShader(device, hwnd, L"color.vs", L"color.ps");

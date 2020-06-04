@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Darkness_GamePlay_Server", 
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DarknessRefactoring", "..\DarknessRefactoring\DarknessRefactoring.vcxproj", "{78F56EC3-2278-4D9E-A10E-78B002FBDDC1}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "YH_FBXConverter", "..\YH_FBXConverter\YH_FBXConverter.vcxproj", "{0931B5D4-D8F6-469A-92FD-E334D984CB5A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -42,6 +44,14 @@ Global
 		{78F56EC3-2278-4D9E-A10E-78B002FBDDC1}.Release|Win32.Build.0 = Release|Win32
 		{78F56EC3-2278-4D9E-A10E-78B002FBDDC1}.Release|x64.ActiveCfg = Release|x64
 		{78F56EC3-2278-4D9E-A10E-78B002FBDDC1}.Release|x64.Build.0 = Release|x64
+		{0931B5D4-D8F6-469A-92FD-E334D984CB5A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0931B5D4-D8F6-469A-92FD-E334D984CB5A}.Debug|Win32.Build.0 = Debug|Win32
+		{0931B5D4-D8F6-469A-92FD-E334D984CB5A}.Debug|x64.ActiveCfg = Debug|x64
+		{0931B5D4-D8F6-469A-92FD-E334D984CB5A}.Debug|x64.Build.0 = Debug|x64
+		{0931B5D4-D8F6-469A-92FD-E334D984CB5A}.Release|Win32.ActiveCfg = Release|Win32
+		{0931B5D4-D8F6-469A-92FD-E334D984CB5A}.Release|Win32.Build.0 = Release|Win32
+		{0931B5D4-D8F6-469A-92FD-E334D984CB5A}.Release|x64.ActiveCfg = Release|x64
+		{0931B5D4-D8F6-469A-92FD-E334D984CB5A}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

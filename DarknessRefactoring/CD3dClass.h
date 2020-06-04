@@ -11,7 +11,6 @@
 #include <d3dcommon.h>
 #include <d3d11.h>
 #include <d3dx10math.h>
-#include"Define.h"
 
 
 class CD3dClass
@@ -21,10 +20,11 @@ public:
 	CD3dClass(const CD3dClass&);
 	~CD3dClass();
 
-	bool Initialize(int, int, bool, HWND, bool, float, float);
+	bool Initialize(int screenWidth, int screenHeight, bool vsync, HWND hwnd, bool fullscreen,
+		float screenDepth, float screenNear);
 	void Shutdown();
 
-	void BeginScene(float, float, float, float);
+	void BeginScene(float red, float green, float blue, float alpha);
 	void EndScene();
 
 	ID3D11Device* GetDevice();

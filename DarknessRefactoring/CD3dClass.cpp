@@ -1,4 +1,5 @@
 #include "CD3dClass.h"
+#include"Define.h"
 
 CD3dClass::CD3dClass() : 
   m_swapChain(nullptr)

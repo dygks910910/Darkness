@@ -146,8 +146,12 @@
     <ClInclude Include="CD3dClass.h" />
     <ClInclude Include="CGraphicsClass.h" />
     <ClInclude Include="CInputClass.h" />
+    <ClInclude Include="CLightClass.h" />
+    <ClInclude Include="CLightShaderClass.h" />
     <ClInclude Include="CModelClass.h" />
     <ClInclude Include="CSystemClass.h" />
+    <ClInclude Include="CTextureClass.h" />
+    <ClInclude Include="CTextureShaderClass.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
@@ -165,8 +169,12 @@
     <ClCompile Include="CD3dClass.cpp" />
     <ClCompile Include="CGraphicsClass.cpp" />
     <ClCompile Include="CInputClass.cpp" />
+    <ClCompile Include="CLightClass.cpp" />
+    <ClCompile Include="CLightShaderClass.cpp" />
     <ClCompile Include="CModelClass.cpp" />
     <ClCompile Include="CSystemClass.cpp" />
+    <ClCompile Include="CTextureClass.cpp" />
+    <ClCompile Include="CTextureShaderClass.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -184,6 +192,20 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="light.ps">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="light.vs">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="texture.ps">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="texture.vs">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -45,6 +45,18 @@
     <ClInclude Include="CCameraClass.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="CTextureClass.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CTextureShaderClass.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CLightShaderClass.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CLightClass.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DarknessRefactoring.rc">
@@ -84,9 +96,27 @@
     <ClCompile Include="CCameraClass.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="CTextureClass.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CTextureShaderClass.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CLightShaderClass.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CLightClass.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="color.vs" />
     <FxCompile Include="color.ps" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="texture.ps" />
+    <None Include="texture.vs" />
+    <None Include="light.ps" />
+    <None Include="light.vs" />
   </ItemGroup>
 </Project>
