@@ -16,14 +16,14 @@
     <Filter Include="DXUT">
       <UniqueIdentifier>{b62fc608-81ae-4b37-b66a-8b3261ccc698}</UniqueIdentifier>
     </Filter>
-    <Filter Include="openFBX">
-      <UniqueIdentifier>{2d1da78b-94e9-43f3-9347-553076c591f9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="imgui">
       <UniqueIdentifier>{bcad7195-83e2-45b1-ae46-d8ef465963b5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Shader">
       <UniqueIdentifier>{602bc043-e808-4728-bcb4-c7e5f16a20c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FBXExporter">
+      <UniqueIdentifier>{e87d79f0-2266-48cb-9247-bb3f5c19ff22}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -93,12 +93,6 @@
     <ClInclude Include="DXUT\Optional\DXUTguiIME.h">
       <Filter>DXUT</Filter>
     </ClInclude>
-    <ClInclude Include="OpenFBX\src\miniz.h">
-      <Filter>openFBX</Filter>
-    </ClInclude>
-    <ClInclude Include="OpenFBX\src\ofbx.h">
-      <Filter>openFBX</Filter>
-    </ClInclude>
     <ClInclude Include="COpenFBXWrraper.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -140,6 +134,21 @@
     </ClInclude>
     <ClInclude Include="CTextureClass.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="FbxExporter\FBXExporter.h">
+      <Filter>FBXExporter</Filter>
+    </ClInclude>
+    <ClInclude Include="FbxExporter\Material.h">
+      <Filter>FBXExporter</Filter>
+    </ClInclude>
+    <ClInclude Include="FbxExporter\MathHelper.h">
+      <Filter>FBXExporter</Filter>
+    </ClInclude>
+    <ClInclude Include="FbxExporter\Utilities.h">
+      <Filter>FBXExporter</Filter>
+    </ClInclude>
+    <ClInclude Include="FbxExporter\Vertex.h">
+      <Filter>FBXExporter</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -200,12 +209,6 @@
     <ClCompile Include="DXUT\Optional\SDKwavefile.cpp">
       <Filter>DXUT</Filter>
     </ClCompile>
-    <ClCompile Include="OpenFBX\src\miniz.c">
-      <Filter>openFBX</Filter>
-    </ClCompile>
-    <ClCompile Include="OpenFBX\src\ofbx.cpp">
-      <Filter>openFBX</Filter>
-    </ClCompile>
     <ClCompile Include="COpenFBXWrraper.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -238,6 +241,15 @@
     </ClCompile>
     <ClCompile Include="CTextureClass.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="FbxExporter\MathHelper.cpp">
+      <Filter>FBXExporter</Filter>
+    </ClCompile>
+    <ClCompile Include="FbxExporter\Utilities.cpp">
+      <Filter>FBXExporter</Filter>
+    </ClCompile>
+    <ClCompile Include="FbxExporter\FBXExporter.cpp">
+      <Filter>FBXExporter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

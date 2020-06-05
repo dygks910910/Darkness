@@ -28,7 +28,7 @@ bool CModelClass::Initialize(ID3D11Device* device, const wchar_t* textureName)
 }
 
 bool CModelClass::Initialize(ID3D11Device* device,
- const wchar_t* textureName, const std::vector<VertexType>& vertices, const  std::vector<UINT>& indices)
+ const wchar_t* textureName, const std::vector<VertexType>& vertices, const  std::vector<int>& indices)
 {
 	if (m_vertexBuffer != nullptr)
 		Shutdown();
@@ -165,7 +165,7 @@ bool CModelClass::InitializeBuffers(ID3D11Device* device)
 	return true;
 }
 
-bool CModelClass::InitializeBuffers(ID3D11Device* device, const std::vector<VertexType>& vertices, const  std::vector<UINT>& indices)
+bool CModelClass::InitializeBuffers(ID3D11Device* device, const std::vector<VertexType>& vertices, const  std::vector<int>& indices)
 {
 	//VertexType* vertices;
 	//unsigned long* indices;

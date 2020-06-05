@@ -102,13 +102,14 @@ void DXUTWrapper::OnD3D11DestroyDevice(void* pUserContext)
 //--------------------------------------------------------------------------------------
 void DXUTWrapper::OnD3D11FrameRender(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateContext, double fTime, float fElapsedTime, void* pUserContext)
 {
-    if (g_FBXrapper.GetScene() != nullptr)
-    {
+    if (g_FBXrapper.GetExporter()->GetisLoaded())
+     {
         std::vector<CModelClass::VertexType> vetices;
-        std::vector<UINT> indices;
+        std::vector<int> indices;
         g_FBXrapper.GetVertices(vetices);
         g_FBXrapper.GetIndices(indices);
         m_Model.Initialize(pd3dDevice, L"data/seafloor.dds", vetices, indices);
+        g_FBXrapper.GetExporter()->Shutdown();
     }
     // Clear render target and the depth stencil 
     float ClearColor[4] = { 0.176f, 0.196f, 0.667f, 0.0f };

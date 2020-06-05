@@ -1,9 +1,10 @@
 #include "COpenFBXWrraper.h"
 #include<cstdio>
 
-COpenFBXWrraper::COpenFBXWrraper():
-	m_pScene(nullptr)
+COpenFBXWrraper::COpenFBXWrraper()
+	:m_pExporter(new FBXExporter)
 {
+	
 }
 
 COpenFBXWrraper::COpenFBXWrraper(COpenFBXWrraper& other)
@@ -12,11 +13,19 @@ COpenFBXWrraper::COpenFBXWrraper(COpenFBXWrraper& other)
 
 COpenFBXWrraper::~COpenFBXWrraper()
 {
+	SAFE_DELETE(m_pExporter);
 }
 
 bool COpenFBXWrraper::LoadFBXFile(const char* fbxPath)
 {
-	if (m_pScene != nullptr)
+	if (m_pExporter->GetisLoaded())
+	{
+		m_pExporter->Shutdown();
+	}
+	m_pExporter->Initialize();
+	m_pExporter->LoadScene(fbxPath, "");
+	m_pExporter->ProcessFBX();
+	/*if (m_pScene != nullptr)
 	{
 		m_pScene->destroy();
 		m_pScene = nullptr;
@@ -36,13 +45,13 @@ bool COpenFBXWrraper::LoadFBXFile(const char* fbxPath)
 
 	delete[] content;
 	fclose(fp);
-
+	*/
 	return true;
 }
 
 bool COpenFBXWrraper::SaveAsOBJ(const char* path)
 {
-	FILE* fp = fopen(path, "wb");
+	/*FILE* fp = fopen(path, "wb");
 	if (!fp) return false;
 	int obj_idx = 0;
 	int indices_offset = 0;
@@ -131,71 +140,18 @@ bool COpenFBXWrraper::SaveAsOBJ(const char* path)
 		++obj_idx;
 	}
 	fclose(fp);
-
+	*/
 	return true;
 }
 
 bool COpenFBXWrraper::GetVertices(std::vector<CModelClass::VertexType>& container)
 {
-	/*m_pScene*/
-	if (m_pScene == nullptr)
-		return false;
-	int mesh_count = m_pScene->getMeshCount();
-	container.reserve(mesh_count);
-	for (int i = 0; i < mesh_count; ++i)
-	{
-		const ofbx::Mesh& mesh = *m_pScene->getMesh(i);
-		const ofbx::Geometry& geom = *mesh.getGeometry();
-		int vertex_count = geom.getVertexCount();
-		const ofbx::Vec3* vertices = geom.getVertices();
-		for (int i = 0; i < vertex_count; ++i)
-		{
-			CModelClass::VertexType v;
-			v.position.x = vertices[i].x;
-			v.position.y = vertices[i].y;
-			v.position.z = vertices[i].z;
-
-			v.normal.x = vertices[i].x;
-			v.normal.y = vertices[i].y;
-			v.normal.z = vertices[i].z;
-
-			v.texture.x =0.0f;
-			v.texture.y = 1.0f;
-			container.push_back(v);
-		}
-	}
-	return true;
+	return m_pExporter->GetVertex(container);
 }
 
-bool COpenFBXWrraper::GetIndices(std::vector<UINT>& container)
+bool COpenFBXWrraper::GetIndices(std::vector<int>& container)
 {
-	int mesh_count = m_pScene->getMeshCount();
-	container.reserve(mesh_count);
-	int indices_offset = 0;
-	for (int i = 0; i < mesh_count; ++i)
-	{
-		const ofbx::Mesh& mesh = *m_pScene->getMesh(i);
-		const ofbx::Geometry& geom = *mesh.getGeometry();
-		int vertex_count = geom.getVertexCount();
-		const ofbx::Vec3* vertices = geom.getVertices();
-	
-		const int* faceIndices = geom.getFaceIndices();
-		int index_count = geom.getIndexCount();
-		bool new_face = true;
-		for (int i = 0; i < index_count; ++i)
-		{
-			if (new_face)
-			{
-				new_face = false;
-			}
-			int idx = (faceIndices[i] < 0) ? -faceIndices[i] : (faceIndices[i] + 1);
-			int vertex_idx = indices_offset + idx;
-			container.push_back(vertex_idx);
-		indices_offset += vertex_count;
-		}
-	}
-
-	return true;
+	return m_pExporter->GetIndices(container);
 }
 
 std::string COpenFBXWrraper::GetFBXInfo()
