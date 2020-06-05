@@ -16,6 +16,15 @@
     <Filter Include="DXUT">
       <UniqueIdentifier>{b62fc608-81ae-4b37-b66a-8b3261ccc698}</UniqueIdentifier>
     </Filter>
+    <Filter Include="openFBX">
+      <UniqueIdentifier>{2d1da78b-94e9-43f3-9347-553076c591f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="imgui">
+      <UniqueIdentifier>{bcad7195-83e2-45b1-ae46-d8ef465963b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{602bc043-e808-4728-bcb4-c7e5f16a20c1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="YH_FBXConverter.h">
@@ -84,6 +93,54 @@
     <ClInclude Include="DXUT\Optional\DXUTguiIME.h">
       <Filter>DXUT</Filter>
     </ClInclude>
+    <ClInclude Include="OpenFBX\src\miniz.h">
+      <Filter>openFBX</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenFBX\src\ofbx.h">
+      <Filter>openFBX</Filter>
+    </ClInclude>
+    <ClInclude Include="COpenFBXWrraper.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="imGUI\imgui.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imGUI\imgui_internal.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imGUI\imstb_rectpack.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imGUI\imstb_textedit.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imGUI\imstb_truetype.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imGUI\imconfig.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="CImGUIWrapper.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="DXUTWrapper.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CLightClass.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CLightShaderClass.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Define.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CModelClass.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CTextureClass.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="YH_FBXConverter.cpp">
@@ -143,6 +200,45 @@
     <ClCompile Include="DXUT\Optional\SDKwavefile.cpp">
       <Filter>DXUT</Filter>
     </ClCompile>
+    <ClCompile Include="OpenFBX\src\miniz.c">
+      <Filter>openFBX</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenFBX\src\ofbx.cpp">
+      <Filter>openFBX</Filter>
+    </ClCompile>
+    <ClCompile Include="COpenFBXWrraper.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="imGUI\imgui.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imGUI\imgui_demo.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imGUI\imgui_draw.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imGUI\imgui_widgets.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="CImGUIWrapper.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="DXUTWrapper.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CLightClass.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CLightShaderClass.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CModelClass.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CTextureClass.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="YHFBXConverter.rc">
@@ -153,6 +249,13 @@
     <None Include="res\YHFBXConverter.rc2">
       <Filter>리소스 파일</Filter>
     </None>
+    <None Include="light.ps">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="light.vs">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\YH_FBXConverterDoc.ico">

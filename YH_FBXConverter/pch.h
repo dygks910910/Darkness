@@ -6,7 +6,7 @@
 
 #ifndef PCH_H
 #define PCH_H
-
+//링크 에러 해결
 #pragma comment( lib, "d3dx9" ) 
 #pragma comment( lib, "d3dx10" ) 
 #pragma comment( lib, "d3dx11d" ) 
@@ -21,8 +21,6 @@
 #pragma comment( lib, "version" )
 #pragma comment( lib, "d3dcompiler" ) 
 #pragma comment( lib, "legacy_stdio_definitions" ) 
-
-
 
 // 여기에 미리 컴파일하려는 헤더 추가
 #include "framework.h"

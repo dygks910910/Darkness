@@ -13,6 +13,8 @@
 #include "YH_FBXConverterDoc.h"
 
 #include <propkey.h>
+#include"COpenFBXWrraper.h"
+extern COpenFBXWrraper g_FBXrapper;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -136,3 +138,14 @@ void CYHFBXConverterDoc::Dump(CDumpContext& dc) const
 
 
 // CYHFBXConverterDoc 명령
+
+
+BOOL CYHFBXConverterDoc::OnOpenDocument(LPCTSTR lpszPathName)
+{
+	/*if (!CDocument::OnOpenDocument(lpszPathName))
+		return FALSE;*/
+
+	g_FBXrapper.LoadFBXFile(CT2A(lpszPathName));
+	// TODO:  여기에 특수화된 작성 코드를 추가합니다.
+	return TRUE;
+}

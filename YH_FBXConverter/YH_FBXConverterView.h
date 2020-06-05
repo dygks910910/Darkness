@@ -5,6 +5,12 @@
 #pragma once
 
 #include"YH_FBXConverterDoc.h"
+
+
+//--------------------------------------------------------------------------------------
+// Global Variables
+//--------------------------------------------------------------------------------------
+
 class CYHFBXConverterView : public CView
 {
 protected: // serialization에서만 만들어집니다.
@@ -33,8 +39,7 @@ public:
 #endif
 
 protected:
-
-// 생성된 메시지 맵 함수
+	
 protected:
 	DECLARE_MESSAGE_MAP()
 public:

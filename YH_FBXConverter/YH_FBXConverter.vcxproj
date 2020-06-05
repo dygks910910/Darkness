@@ -96,7 +96,7 @@
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>DXUT\Core;DXUT\Optional;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>DXUT\Core;DXUT\Optional;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <FloatingPointModel>Fast</FloatingPointModel>
@@ -191,7 +191,15 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CImGUIWrapper.h" />
+    <ClInclude Include="CLightClass.h" />
+    <ClInclude Include="CLightShaderClass.h" />
     <ClInclude Include="CMenuFormView.h" />
+    <ClInclude Include="CModelClass.h" />
+    <ClInclude Include="COpenFBXWrraper.h" />
+    <ClInclude Include="CTextureClass.h" />
+    <ClInclude Include="Define.h" />
+    <ClInclude Include="DXUTWrapper.h" />
     <ClInclude Include="DXUT\Core\DXUT.h" />
     <ClInclude Include="DXUT\Core\DXUTDevice11.h" />
     <ClInclude Include="DXUT\Core\DXUTDevice9.h" />
@@ -206,7 +214,15 @@
     <ClInclude Include="DXUT\Optional\SDKmisc.h" />
     <ClInclude Include="DXUT\Optional\SDKwavefile.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="imGUI\imconfig.h" />
+    <ClInclude Include="imGUI\imgui.h" />
+    <ClInclude Include="imGUI\imgui_internal.h" />
+    <ClInclude Include="imGUI\imstb_rectpack.h" />
+    <ClInclude Include="imGUI\imstb_textedit.h" />
+    <ClInclude Include="imGUI\imstb_truetype.h" />
     <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="OpenFBX\src\miniz.h" />
+    <ClInclude Include="OpenFBX\src\ofbx.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
@@ -215,7 +231,14 @@
     <ClInclude Include="YH_FBXConverterView.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CImGUIWrapper.cpp" />
+    <ClCompile Include="CLightClass.cpp" />
+    <ClCompile Include="CLightShaderClass.cpp" />
     <ClCompile Include="CMenuFormView.cpp" />
+    <ClCompile Include="CModelClass.cpp" />
+    <ClCompile Include="COpenFBXWrraper.cpp" />
+    <ClCompile Include="CTextureClass.cpp" />
+    <ClCompile Include="DXUTWrapper.cpp" />
     <ClCompile Include="DXUT\Core\DXUT.cpp" />
     <ClCompile Include="DXUT\Core\DXUTDevice11.cpp" />
     <ClCompile Include="DXUT\Core\DXUTDevice9.cpp" />
@@ -229,7 +252,13 @@
     <ClCompile Include="DXUT\Optional\SDKmesh.cpp" />
     <ClCompile Include="DXUT\Optional\SDKmisc.cpp" />
     <ClCompile Include="DXUT\Optional\SDKwavefile.cpp" />
+    <ClCompile Include="imGUI\imgui.cpp" />
+    <ClCompile Include="imGUI\imgui_demo.cpp" />
+    <ClCompile Include="imGUI\imgui_draw.cpp" />
+    <ClCompile Include="imGUI\imgui_widgets.cpp" />
     <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="OpenFBX\src\miniz.c" />
+    <ClCompile Include="OpenFBX\src\ofbx.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -244,6 +273,9 @@
     <ResourceCompile Include="YHFBXConverter.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+    <None Include="light.ps" />
+    <None Include="light.vs" />
     <None Include="res\YHFBXConverter.rc2" />
   </ItemGroup>
   <ItemGroup>
