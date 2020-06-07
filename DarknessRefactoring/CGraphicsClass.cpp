@@ -69,8 +69,12 @@ bool CGraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 	m_Light = new CLightClass;
 	IF_NOTX_RTFALSE(m_Light);
+	m_Light->SetAmbientColor(0.15f, 0.15f, 0.15f, 1.0f);
+	//m_Light->SetAmbientColor(0,0,0, 1.0f);
 	m_Light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
 	m_Light->SetDirection(0.0f, 0.0f, 1.0f);
+	m_Light->SetSpecularColor(1.0f, 1.0f, 1.0f, 1.0f);
+	m_Light->SetSpecularPower(32.0f);
 
 
 	return true;
@@ -91,7 +95,7 @@ bool CGraphicsClass::Frame()
 	bool bResult;
 	static float rotation = 0.0f;
 
-	rotation += (float)D3DX_PI * 0.01f;
+	rotation += (float)D3DX_PI * 0.001f;
 	if (rotation > 360.0f)
 		rotation -= 360.0f;
 
@@ -125,8 +129,10 @@ bool CGraphicsClass::Render(float rotation)
 	// Render the model using the color shader.
 	result = m_LightShader->Render(m_pD3d->GetDeviceContext(),
 		m_Model->GetIndexCount(),
-		worldMatrix, viewMatrix, projectionMatrix,m_Model->GetTexture(),
-		m_Light->GetDirection(),m_Light->GetDiffuseColor());
+		worldMatrix, viewMatrix, projectionMatrix, m_Model->GetTexture(),
+		m_Light->GetDirection(), m_Light->GetDiffuseColor(), m_Light->GetAmbientColor(), m_Camera->GetPosition()
+		,m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
+
 	IF_NOTX_RTFALSE(result);
 	// Present the rendered scene to the screen.
 	m_pD3d->EndScene();

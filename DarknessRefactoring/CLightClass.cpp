@@ -15,10 +15,25 @@ CLightClass::~CLightClass()
 }
 
 
+void CLightClass::SetAmbientColor(float red, float green, float blue, float alpha)
+{
+	m_ambientColor = XMFLOAT4(red, green, blue, alpha);
+}
+
 void CLightClass::SetDiffuseColor(float red, float green, float blue, float alpha)
 {
 	m_diffuseColor = XMFLOAT4(red, green, blue, alpha);
 	return;
+}
+
+void CLightClass::SetSpecularColor(float red, float green, float blue, float alpha)
+{
+	m_diffuseColor = XMFLOAT4(red, green, blue, alpha);
+}
+
+void CLightClass::SetSpecularPower(float power)
+{
+	m_specularPower = power;
 }
 
 
@@ -29,6 +44,11 @@ void CLightClass::SetDirection(float x, float y, float z)
 }
 
 
+XMFLOAT4 CLightClass::GetAmbientColor()
+{
+	return m_ambientColor;
+}
+
 XMFLOAT4 CLightClass::GetDiffuseColor()
 {
 	return m_diffuseColor;
@@ -38,4 +58,14 @@ XMFLOAT4 CLightClass::GetDiffuseColor()
 XMFLOAT3 CLightClass::GetDirection()
 {
 	return m_direction;
+}
+
+XMFLOAT4 CLightClass::GetSpecularColor()
+{
+	return m_specularColor;
+}
+
+float CLightClass::GetSpecularPower()
+{
+	return m_specularPower;
 }

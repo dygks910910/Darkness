@@ -115,11 +115,11 @@
   <ItemGroup>
     <FxCompile Include="color.vs" />
     <FxCompile Include="color.ps" />
+    <FxCompile Include="lightVS.hlsl" />
+    <FxCompile Include="lightPS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="texture.ps" />
     <None Include="texture.vs" />
-    <None Include="light.ps" />
-    <None Include="light.vs" />
   </ItemGroup>
 </Project>
