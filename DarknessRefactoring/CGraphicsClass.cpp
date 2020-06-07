@@ -54,7 +54,6 @@ bool CGraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
 		return false;
 	}
-
 	// Create the color shader object.
 	m_LightShader = new CLightShaderClass;
 	IF_NOTX_RTFALSE(m_LightShader);
@@ -64,6 +63,26 @@ bool CGraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the light shader object.", L"Error", MB_OK);
+		return false;
+	}
+
+
+	m_textureShader = new CTextureShaderClass;
+	IF_NOTX_RTFALSE(m_textureShader);
+
+	// Initialize the color shader object.
+	result = m_textureShader->Initialize(m_pD3d->GetDevice(), hwnd);
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the texture shader object.", L"Error", MB_OK);
+		return false;
+	}
+
+	m_Bitmap = new BitmapClass;
+	IF_NOTX_RTFALSE(m_Bitmap);
+	if (!m_Bitmap->Initialize(m_pD3d->GetDevice(), screenWidth, screenHeight, L"data/seafloor.dds", 256, 256))
+	{
+		MessageBox(hwnd, L"Could not initialize the bitmap object.", L"Error", MB_OK);
 		return false;
 	}
 
@@ -86,8 +105,10 @@ void CGraphicsClass::Shutdown()
 	SAFE_DELETE_SHUTDOWN(m_pD3d);
 	SAFE_DELETE_SHUTDOWN(m_Model);
 	SAFE_DELETE_SHUTDOWN(m_LightShader);
+	SAFE_DELETE_SHUTDOWN(m_textureShader);
 	SAFE_DELETE(m_Camera);
 	SAFE_DELETE(m_Light);
+	SAFE_DELETE(m_Bitmap);
 }
 
 bool CGraphicsClass::Frame()
@@ -116,11 +137,23 @@ bool CGraphicsClass::Render(float rotation)
 	m_Camera->Render();
 
 	// Get the world, view, and projection matrices from the camera and d3d objects.
-	XMMATRIX worldMatrix, viewMatrix, projectionMatrix;
+	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, othMatrix;
 	
 	m_Camera->GetViewMatrix(viewMatrix);
 	m_pD3d->GetWorldMatrix(worldMatrix);
 	m_pD3d->GetProjectionMatrix(projectionMatrix);
+	m_pD3d->GetOrthoMatrix(othMatrix);
+
+	m_pD3d->TurnZBufferOff();
+	
+
+	if (!m_Bitmap->Render(m_pD3d->GetDeviceContext(), 100, 100))
+		return false;
+	if (!m_textureShader->Render(m_pD3d->GetDeviceContext(), m_Bitmap->GetIndexCount(),
+		worldMatrix, viewMatrix, othMatrix, m_Bitmap->GetTexture()))
+		return false;
+
+	m_pD3d->TurnZBufferOn();
 
 	worldMatrix = XMMatrixRotationY(rotation);
 	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
@@ -131,7 +164,7 @@ bool CGraphicsClass::Render(float rotation)
 		m_Model->GetIndexCount(),
 		worldMatrix, viewMatrix, projectionMatrix, m_Model->GetTexture(),
 		m_Light->GetDirection(), m_Light->GetDiffuseColor(), m_Light->GetAmbientColor(), m_Camera->GetPosition()
-		,m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
+		, m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
 
 	IF_NOTX_RTFALSE(result);
 	// Present the rendered scene to the screen.
