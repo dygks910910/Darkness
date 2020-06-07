@@ -1,4 +1,5 @@
 #include "CGraphicsClass.h"
+#include"Define.h"
 CGraphicsClass::CGraphicsClass():
 	m_pD3d(nullptr)
 	,m_Camera(nullptr)
@@ -40,14 +41,14 @@ bool CGraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 
 	// Set the initial position of the camera.
-	m_Camera->SetPosition(0.0f, 0.0f, -10.0f);
+	m_Camera->SetPosition(0.0f, 0.0f, -6.0f);
 
 	// Create the model object.
 	m_Model = new CModelClass;
 	IF_NOTX_RTFALSE(m_Model);
 
 	// Initialize the model object.
-	result = m_Model->Initialize(m_pD3d->GetDevice(),L"data/seafloor.dds");
+	result = m_Model->Initialize(m_pD3d->GetDevice(),"data/cube.txt",L"data/seafloor.dds");
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
@@ -68,7 +69,7 @@ bool CGraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 	m_Light = new CLightClass;
 	IF_NOTX_RTFALSE(m_Light);
-	m_Light->SetDiffuseColor(1.0f, 0.0f, 1.0f, 1.0f);
+	m_Light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
 	m_Light->SetDirection(0.0f, 0.0f, 1.0f);
 
 
@@ -97,6 +98,7 @@ bool CGraphicsClass::Frame()
 	// Render the graphics scene.
 	bResult = Render(rotation);
 	IF_NOTX_RTFALSE(bResult);
+
 	return true;
 }
 
@@ -110,12 +112,13 @@ bool CGraphicsClass::Render(float rotation)
 	m_Camera->Render();
 
 	// Get the world, view, and projection matrices from the camera and d3d objects.
-	D3DXMATRIX worldMatrix, viewMatrix, projectionMatrix;
+	XMMATRIX worldMatrix, viewMatrix, projectionMatrix;
+	
 	m_Camera->GetViewMatrix(viewMatrix);
 	m_pD3d->GetWorldMatrix(worldMatrix);
 	m_pD3d->GetProjectionMatrix(projectionMatrix);
 
-	D3DXMatrixRotationY(&worldMatrix, rotation);
+	worldMatrix = XMMatrixRotationY(rotation);
 	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
 	m_Model->Render(m_pD3d->GetDeviceContext());
 

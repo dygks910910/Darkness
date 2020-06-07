@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AlignedAllocationPolicy.h" />
     <ClInclude Include="CCameraClass.h" />
     <ClInclude Include="CColorShaderClass.h" />
     <ClInclude Include="CD3dClass.h" />

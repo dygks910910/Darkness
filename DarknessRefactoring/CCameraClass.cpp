@@ -1,12 +1,8 @@
-#include "CCameraClass.h"
+﻿#include "CCameraClass.h"
 
-CCameraClass::CCameraClass() :
-	m_positionX(0)
-	, m_positionY(0)
-	, m_positionZ(0)
-	, m_rotationX(0)
-	, m_rotationY(0)
-	, m_rotationZ(0)
+CCameraClass::CCameraClass() 
+	:m_position(XMFLOAT3(0.0f, 0.0f, 0.0f))
+	, m_rotation(XMFLOAT3(0.0f, 0.0f, 0.0f))
 {
 }
 
@@ -20,77 +16,82 @@ CCameraClass::~CCameraClass()
 
 void CCameraClass::SetPosition(float x, float y, float z)
 {
-	m_positionX = x;
-	m_positionY = y;
-	m_positionZ = z;
+	m_position.x = x;
+	m_position.y = y;
+	m_position.z = z;
 
 }
 
 void CCameraClass::SetRotation(float x, float y, float z)
 {
-	m_rotationX = x;
-	m_rotationY = y;
-	m_rotationZ = z;
-	return;
+	m_rotation.x = x;
+	m_rotation.y = y;
+	m_rotation.z = z;
 }
 
-D3DXVECTOR3 CCameraClass::GetPosition()
+XMFLOAT3 CCameraClass::GetPosition()
 {
-	return D3DXVECTOR3(m_positionX, m_positionY, m_positionZ);
+	return m_position;
 }
 
 
-D3DXVECTOR3 CCameraClass::GetRotation()
+XMFLOAT3 CCameraClass::GetRotation()
 {
-	return D3DXVECTOR3(m_rotationX, m_rotationY, m_rotationZ);
+	return m_rotation;
 }
 
 
 void CCameraClass::Render()
 {
-	D3DXVECTOR3 up, position, lookAt;
+	XMFLOAT3 up, position, lookAt;
+	XMVECTOR upVector, positionVector, lookAtVector;
 	float yaw, pitch, roll;
-	D3DXMATRIX rotationMatrix;
+	XMMATRIX rotationMatrix;
 
 
-	// Setup the vector that points upwards.
+	// 위쪽을 가리키는 벡터를 설정합니다.
 	up.x = 0.0f;
 	up.y = 1.0f;
 	up.z = 0.0f;
 
-	// Setup the position of the camera in the world.
-	position.x = m_positionX;
-	position.y = m_positionY;
-	position.z = m_positionZ;
+	// XMVECTOR 구조체에 로드한다.
+	upVector = XMLoadFloat3(&up);
 
-	// Setup where the camera is looking by default.
+	// 3D월드에서 카메라의 위치를 ​​설정합니다.
+	position = m_position;
+
+	// XMVECTOR 구조체에 로드한다.
+	positionVector = XMLoadFloat3(&position);
+
+	// 기본적으로 카메라가 찾고있는 위치를 설정합니다.
 	lookAt.x = 0.0f;
 	lookAt.y = 0.0f;
 	lookAt.z = 1.0f;
 
-	// Set the yaw (Y axis), pitch (X axis), and roll (Z axis) rotations in radians.
-	pitch = m_rotationX * 0.0174532925f;
-	yaw = m_rotationY * 0.0174532925f;
-	roll = m_rotationZ * 0.0174532925f;
+	// XMVECTOR 구조체에 로드한다.
+	lookAtVector = XMLoadFloat3(&lookAt);
 
-	// Create the rotation matrix from the yaw, pitch, and roll values.
-	D3DXMatrixRotationYawPitchRoll(&rotationMatrix, yaw, pitch, roll);
+	// yaw (Y 축), pitch (X 축) 및 roll (Z 축)의 회전값을 라디안 단위로 설정합니다.
+	pitch = m_rotation.x * 0.0174532925f;
+	yaw = m_rotation.y * 0.0174532925f;
+	roll = m_rotation.z * 0.0174532925f;
 
-	// Transform the lookAt and up vector by the rotation matrix so the view is correctly rotated at the origin.
-	D3DXVec3TransformCoord(&lookAt, &lookAt, &rotationMatrix);
-	D3DXVec3TransformCoord(&up, &up, &rotationMatrix);
+	//  yaw, pitch, roll 값을 통해 회전 행렬을 만듭니다.
+	rotationMatrix = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
 
-	// Translate the rotated camera position to the location of the viewer.
-	lookAt = position + lookAt;
+	// lookAt 및 up 벡터를 회전 행렬로 변형하여 뷰가 원점에서 올바르게 회전되도록 합니다.
+	lookAtVector = XMVector3TransformCoord(lookAtVector, rotationMatrix);
+	upVector = XMVector3TransformCoord(upVector, rotationMatrix);
 
-	// Finally create the view matrix from the three updated vectors.
-	D3DXMatrixLookAtLH(&m_viewMatrix, &position, &lookAt, &up);
+	// 회전 된 카메라 위치를 뷰어 위치로 변환합니다.
+	lookAtVector = XMVectorAdd(positionVector, lookAtVector);
 
-	return;
+	// 마지막으로 세 개의 업데이트 된 벡터에서 뷰 행렬을 만듭니다.
+	m_viewMatrix = XMMatrixLookAtLH(positionVector, lookAtVector, upVector);
 }
 
 
-void CCameraClass::GetViewMatrix(D3DXMATRIX& viewMatrix)
+void CCameraClass::GetViewMatrix(XMMATRIX& viewMatrix)
 {
 	viewMatrix = m_viewMatrix;
 	return;

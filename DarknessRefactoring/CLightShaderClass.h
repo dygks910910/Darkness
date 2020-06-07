@@ -1,7 +1,8 @@
 #pragma once
 
 #include <d3d11.h>
-#include <d3dx10math.h>
+#include <xnamath.h>
+
 #include <d3dx11async.h>
 #include <fstream>
 class CLightShaderClass
@@ -9,15 +10,15 @@ class CLightShaderClass
 private:
 	struct MatrixBufferType
 	{
-		D3DXMATRIX world;
-		D3DXMATRIX view;
-		D3DXMATRIX projection;
+		XMMATRIX world;
+		XMMATRIX view;
+		XMMATRIX projection;
 	};
 
 	struct LightBufferType
 	{
-		D3DXVECTOR4 diffuseColor;
-		D3DXVECTOR3 lightDirection;
+		XMFLOAT4 diffuseColor;
+		XMFLOAT3 lightDirection;
 		float padding;  // Added extra padding so structure is a multiple of 16 for CreateBuffer function requirements.
 	};
 
@@ -28,14 +29,16 @@ public:
 
 	bool Initialize(ID3D11Device*, HWND);
 	void Shutdown();
-	bool Render(ID3D11DeviceContext*, int, D3DXMATRIX, D3DXMATRIX, D3DXMATRIX, ID3D11ShaderResourceView*, D3DXVECTOR3, D3DXVECTOR4);
+	bool Render(ID3D11DeviceContext*, int, XMMATRIX, XMMATRIX, XMMATRIX, ID3D11ShaderResourceView*,
+		XMFLOAT3, XMFLOAT4);
 
 private:
 	bool InitializeShader(ID3D11Device*, HWND, const wchar_t*, const wchar_t*);
 	void ShutdownShader();
 	void OutputShaderErrorMessage(ID3D10Blob*, HWND, const wchar_t*);
 
-	bool SetShaderParameters(ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX, D3DXMATRIX, ID3D11ShaderResourceView*, D3DXVECTOR3, D3DXVECTOR4);
+	bool SetShaderParameters(ID3D11DeviceContext*, XMMATRIX, XMMATRIX, XMMATRIX, ID3D11ShaderResourceView*, 
+		XMFLOAT3, XMFLOAT4);
 	void RenderShader(ID3D11DeviceContext*, int);
 
 private:

@@ -1,5 +1,6 @@
 #include "CModelClass.h"
 #include "Define.h"
+#include <fstream>
 CModelClass::CModelClass():
 	m_vertexBuffer(nullptr)
 	,m_indexBuffer(nullptr)
@@ -25,6 +26,24 @@ bool CModelClass::Initialize(ID3D11Device* device, const wchar_t* textureName)
 	result &= LoadTexture(device, textureName);
 	IF_NOTX_RTFALSE(result);
 	return true;
+}
+
+bool CModelClass::Initialize(ID3D11Device* device,const char* modelFilename, const wchar_t* textureName)
+{
+	// 모델 데이터를 로드합니다.
+	if (!LoadModel(modelFilename))
+	{
+		return false;
+	}
+
+	// 정점 및 인덱스 버퍼를 초기화합니다.
+	if (!InitializeBuffers(device))
+	{
+		return false;
+	}
+
+	// 이 모델의 텍스처를 로드합니다.
+	return LoadTexture(device, textureName);
 }
 
 void CModelClass::Shutdown()
@@ -68,47 +87,32 @@ void CModelClass::ReleaseTexture()
 
 bool CModelClass::InitializeBuffers(ID3D11Device* device)
 {
-	VertexType* vertices;
-	unsigned long* indices;
-	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
-	D3D11_SUBRESOURCE_DATA vertexData, indexData;
-	HRESULT result;
+	// 정점 배열을 만듭니다.
+	VertexType* vertices = new VertexType[m_vertexCount];
+	if (!vertices)
+	{
+		return false;
+	}
 
+	// 인덱스 배열을 만듭니다.
+	unsigned long* indices = new unsigned long[m_indexCount];
+	if (!indices)
+	{
+		return false;
+	}
 
-	// Set the number of vertices in the vertex array.
-	m_vertexCount = 3;
+	// 정점 배열과 인덱스 배열을 데이터로 읽어옵니다.
+	for (int i = 0; i < m_vertexCount; i++)
+	{
+		vertices[i].position = XMFLOAT3(m_model[i].x, m_model[i].y, m_model[i].z);
+		vertices[i].texture = XMFLOAT2(m_model[i].tu, m_model[i].tv);
+		vertices[i].normal = XMFLOAT3(m_model[i].nx, m_model[i].ny, m_model[i].nz);
 
-	// Set the number of indices in the index array.
-	m_indexCount = 3;
+		indices[i] = i;
+	}
 
-	// Create the vertex array.
-	vertices = new VertexType[m_vertexCount];
-	IF_NOTX_RTFALSE(vertices);
-
-	// Create the index array.
-	indices = new unsigned long[m_indexCount];
-	IF_NOTX_RTFALSE(indices);
-
-	// Load the vertex array with data.
-	vertices[0].position = D3DXVECTOR3(-1.0f, -1.0f, 0.0f);  // Bottom left.
-	vertices[0].texture = D3DXVECTOR2(0.0f, 1.0f);
-	vertices[0].normal = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
-
-	vertices[1].position = D3DXVECTOR3(0.0f, 1.0f, 0.0f);  // Top middle.
-	vertices[1].texture = D3DXVECTOR2(0.5f, 0.0f);
-	vertices[1].normal = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
-
-	vertices[2].position = D3DXVECTOR3(1.0f, -1.0f, 0.0f);  // Bottom right.
-	vertices[2].texture = D3DXVECTOR2(1.0f, 1.0f);
-	vertices[2].normal = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
-
-
-	// Load the index array with data.
-	indices[0] = 0;  // Bottom left.
-	indices[1] = 1;  // Top middle.
-	indices[2] = 2;  // Bottom right.
-
-	// Set up the description of the static vertex buffer.
+	// 정적 정점 버퍼의 구조체를 설정합니다.
+	D3D11_BUFFER_DESC vertexBufferDesc;
 	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
 	vertexBufferDesc.ByteWidth = sizeof(VertexType) * m_vertexCount;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -116,16 +120,20 @@ bool CModelClass::InitializeBuffers(ID3D11Device* device)
 	vertexBufferDesc.MiscFlags = 0;
 	vertexBufferDesc.StructureByteStride = 0;
 
-	// Give the subresource structure a pointer to the vertex data.
+	// subresource 구조에 정점 데이터에 대한 포인터를 제공합니다.
+	D3D11_SUBRESOURCE_DATA vertexData;
 	vertexData.pSysMem = vertices;
 	vertexData.SysMemPitch = 0;
 	vertexData.SysMemSlicePitch = 0;
 
-	// Now create the vertex buffer.
-	result = device->CreateBuffer(&vertexBufferDesc, &vertexData, &m_vertexBuffer);
-	IF_FAILED_RTFALSE(result);
+	// 이제 정점 버퍼를 만듭니다.
+	if (FAILED(device->CreateBuffer(&vertexBufferDesc, &vertexData, &m_vertexBuffer)))
+	{
+		return false;
+	}
 
-	// Set up the description of the static index buffer.
+	// 정적 인덱스 버퍼의 구조체를 설정합니다.
+	D3D11_BUFFER_DESC indexBufferDesc;
 	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
 	indexBufferDesc.ByteWidth = sizeof(unsigned long) * m_indexCount;
 	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
@@ -133,18 +141,24 @@ bool CModelClass::InitializeBuffers(ID3D11Device* device)
 	indexBufferDesc.MiscFlags = 0;
 	indexBufferDesc.StructureByteStride = 0;
 
-	// Give the subresource structure a pointer to the index data.
+	// 인덱스 데이터를 가리키는 보조 리소스 구조체를 작성합니다.
+	D3D11_SUBRESOURCE_DATA indexData;
 	indexData.pSysMem = indices;
 	indexData.SysMemPitch = 0;
 	indexData.SysMemSlicePitch = 0;
 
-	// Create the index buffer.
-	result = device->CreateBuffer(&indexBufferDesc, &indexData, &m_indexBuffer);
-	IF_FAILED_RTFALSE(result);
+	// 인덱스 버퍼를 생성합니다.
+	if (FAILED(device->CreateBuffer(&indexBufferDesc, &indexData, &m_indexBuffer)))
+	{
+		return false;
+	}
 
-	// Release the arrays now that the vertex and index buffers have been created and loaded.
-	SAFE_DELETE_ARR(vertices);
-	SAFE_DELETE_ARR(indices);
+	// 생성되고 값이 할당된 정점 버퍼와 인덱스 버퍼를 해제합니다.
+	delete[] vertices;
+	vertices = 0;
+
+	delete[] indices;
+	indices = 0;
 
 	return true;
 }
@@ -174,4 +188,65 @@ void CModelClass::RenderBuffers(ID3D11DeviceContext* deviceContext)
 
 	// Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+}
+
+bool CModelClass::LoadModel(const char* filename)
+{
+	// 모델 파일을 엽니다.
+	std::ifstream fin;
+	fin.open(filename);
+
+	// 파일을 열 수 없으면 종료합니다.
+	if (fin.fail())
+	{
+		return false;
+	}
+
+	// 버텍스 카운트의 값까지 읽는다.
+	char input = 0;
+	fin.get(input);
+	while (input != ':')
+	{
+		fin.get(input);
+	}
+
+	// 버텍스 카운트를 읽는다.
+	fin >> m_vertexCount;
+
+	// 인덱스의 수를 정점 수와 같게 설정합니다.
+	m_indexCount = m_vertexCount;
+
+	// 읽어 들인 정점 개수를 사용하여 모델을 만듭니다.
+	m_model = new ModelType[m_vertexCount];
+	if (!m_model)
+	{
+		return false;
+	}
+
+	// 데이터의 시작 부분까지 읽는다.
+	fin.get(input);
+	while (input != ':')
+	{
+		fin.get(input);
+	}
+	fin.get(input);
+	fin.get(input);
+
+	// 버텍스 데이터를 읽습니다.
+	for (int i = 0; i < m_vertexCount; i++)
+	{
+		fin >> m_model[i].x >> m_model[i].y >> m_model[i].z;
+		fin >> m_model[i].tu >> m_model[i].tv;
+		fin >> m_model[i].nx >> m_model[i].ny >> m_model[i].nz;
+	}
+
+	// 모델 파일을 닫는다.
+	fin.close();
+
+	return true;
+}
+
+void CModelClass::ReleaseModel()
+{
+	SAFE_DELETE_ARR(m_model);
 }
