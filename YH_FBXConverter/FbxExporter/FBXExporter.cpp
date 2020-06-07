@@ -4,7 +4,8 @@
 #include <sstream>
 #include <iomanip>
 #include<fbxsdk/utils/fbxgeometryconverter.h>
-FBXExporter::FBXExporter()
+FBXExporter::FBXExporter():
+	mGeometryConverter(nullptr)
 {
 	mFBXManager = nullptr;
 	mFBXScene = nullptr;
@@ -29,7 +30,13 @@ bool FBXExporter::Initialize()
 	mFBXManager->SetIOSettings(fbxIOSettings);
 
 	mFBXScene = FbxScene::Create(mFBXManager, "myScene");
+	//ÁÂÇ¥Ãà º¯È¯.
+	FbxAxisSystem axis = mFBXScene->GetGlobalSettings().GetAxisSystem();
+	FbxAxisSystem::MayaYUp.ConvertScene(mFBXScene);
 
+	FbxGeometryConverter geometryConverter(mFBXManager);
+	mGeometryConverter = geometryConverter;
+	
 	return true;
 }
 
@@ -134,13 +141,13 @@ bool FBXExporter::GetIndices(std::vector<int>& indices)
 {
 	if (mTriangleCount == 0)
 		return false;
-	indices.reserve(mTriangleCount);
-	for (unsigned int i = 0; i < mTriangleCount; i+=3)
+	indices.reserve(mTriangleCount * 3);
+	for (unsigned int i = 0; i < mTriangleCount ; ++i)
 	{
 		// We need to change the culling order
-		indices.push_back(i + 2);
-		indices.push_back(i + 1);
-		indices.push_back(i);
+		indices.push_back(mTriangles[i].mIndices[0]);
+		indices.push_back(mTriangles[i].mIndices[2]);
+		indices.push_back(mTriangles[i].mIndices[1]);
 		//inStream << "\t\t<tri>" << mTriangles[i].mIndices[0] << "," << mTriangles[i].mIndices[2] << "," << mTriangles[i].mIndices[1] << "</tri>" << std::endl;
 	}
 	return true;
@@ -182,14 +189,7 @@ bool FBXExporter::GetVertex(std::vector<CModelClass::VertexType>& vertices)
 
 bool FBXExporter::Shutdown()
 {
-	/*if(mFBXManager)
-	mFBXManager->Destroy();
-	if (mFBXScene)
-		mFBXScene->Destroy();
-		mControlPoints.clear();
-		mTriangles.clear();
-		mVertices.clear();
-	mMaterialLookUp.clear();*/
+	CleanupFbxManager();
 	isLoadedFbx = false;
 	return false;
 }
@@ -368,7 +368,10 @@ unsigned int FBXExporter::FindJointIndexUsingName(const std::string& inJointName
 
 void FBXExporter::ProcessMesh(FbxNode* inNode)
 {
-	FbxMesh* currMesh = inNode->GetMesh();
+	//FbxMesh* currMesh = inNode->GetMesh();
+	FbxMesh* currMesh =  (FbxMesh*)mGeometryConverter.Triangulate(inNode->GetNodeAttribute(), true);
+	/*FbxGeometryConverter lConverter(inNode->GetFbxManager());
+	lConverter.Triangulate(inNode, true);*/
 
 	mTriangleCount = currMesh->GetPolygonCount();
 	int vertexCounter = 0;
@@ -432,7 +435,8 @@ void FBXExporter::ReadUV(FbxMesh* inMesh, int inCtrlPointIndex, int inTextureUVI
 {
 	if(inUVLayer >= 2 || inMesh->GetElementUVCount() <= inUVLayer)
 	{
-		throw std::exception("Invalid UV Layer Number");
+		return;
+		//throw std::exception("Invalid UV Layer Number");
 	}
 	FbxGeometryElementUV* vertexUV = inMesh->GetElementUV(inUVLayer);
 

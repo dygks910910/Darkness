@@ -34,7 +34,7 @@ private:
 	std::string mAnimationName;
 	LARGE_INTEGER mCPUFreq;
 	bool isLoadedFbx = false;
-
+	FbxGeometryConverter mGeometryConverter;
 private:
 	void ProcessGeometry(FbxNode* inNode);
 	void ProcessSkeletonHierarchy(FbxNode* inRootNode);
@@ -43,6 +43,7 @@ private:
 	void ProcessJointsAndAnimations(FbxNode* inNode);
 	unsigned int FindJointIndexUsingName(const std::string& inJointName);
 	void ProcessMesh(FbxNode* inNode);
+
 	void ReadUV(FbxMesh* inMesh, int inCtrlPointIndex, int inTextureUVIndex, int inUVLayer, XMFLOAT2& outUV);
 	void ReadNormal(FbxMesh* inMesh, int inCtrlPointIndex, int inVertexCounter, XMFLOAT3& outNormal);
 	void ReadBinormal(FbxMesh* inMesh, int inCtrlPointIndex, int inVertexCounter, XMFLOAT3& outBinormal);

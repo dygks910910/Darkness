@@ -31,13 +31,12 @@ public:
 		bool bSideButton1Down, bool bSideButton2Down, int nMouseWheelDelta,
 		int xPos, int yPos, void* pUserContext);
 	static bool CALLBACK OnDeviceRemoved(void* pUserContext);
-
 private:
 	static CLightShaderClass		m_LightShader;
 	static CLightClass					m_Light;
 	static CModelClass					m_Model;
 	static CModelViewerCamera m_Camera;                   // A model viewing camera
-
 private:
+	static ID3D11RasterizerState* m_rasterState;
 
 };

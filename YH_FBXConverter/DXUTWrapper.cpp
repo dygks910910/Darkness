@@ -6,6 +6,8 @@ CModelClass DXUTWrapper::m_Model;
 CModelViewerCamera DXUTWrapper::m_Camera;
 
 COpenFBXWrraper g_FBXrapper;
+ID3D11RasterizerState* DXUTWrapper::m_rasterState = nullptr;
+
 DXUTWrapper::DXUTWrapper()
 {
     
@@ -64,6 +66,22 @@ HRESULT DXUTWrapper::OnD3D11CreateDevice(ID3D11Device* pd3dDevice, const DXGI_SU
     D3DXVECTOR3 vecAt(0.0f, 0.0f, -0.0f);
     m_Camera.SetViewParams(&vecEye, &vecAt);
     //m_Camera.SetViewParams()
+    D3D11_RASTERIZER_DESC rasterDesc;
+    // Setup the raster description which will determine how and what polygons will be drawn.
+    rasterDesc.AntialiasedLineEnable = false;
+    rasterDesc.CullMode = D3D11_CULL_NONE;
+    rasterDesc.DepthBias = 0;
+    rasterDesc.DepthBiasClamp = 0.0f;
+    rasterDesc.DepthClipEnable = true;
+    rasterDesc.FillMode = D3D11_FILL_WIREFRAME;
+    rasterDesc.FrontCounterClockwise = false;
+    rasterDesc.MultisampleEnable = false;
+    rasterDesc.ScissorEnable = false;
+    rasterDesc.SlopeScaledDepthBias = 0.0f;
+    HRESULT result;
+    // Create the rasterizer state from the description we just filled out.
+    result = pd3dDevice->CreateRasterizerState(&rasterDesc, &m_rasterState);
+    
     return S_OK;
 }
 
@@ -104,6 +122,7 @@ void DXUTWrapper::OnD3D11FrameRender(ID3D11Device* pd3dDevice, ID3D11DeviceConte
 {
     if (g_FBXrapper.GetExporter()->GetisLoaded())
      {
+        m_Model.Shutdown();
         std::vector<CModelClass::VertexType> vetices;
         std::vector<int> indices;
         g_FBXrapper.GetVertices(vetices);
@@ -111,6 +130,7 @@ void DXUTWrapper::OnD3D11FrameRender(ID3D11Device* pd3dDevice, ID3D11DeviceConte
         m_Model.Initialize(pd3dDevice, L"data/seafloor.dds", vetices, indices);
         g_FBXrapper.GetExporter()->Shutdown();
     }
+    pd3dImmediateContext->RSSetState(m_rasterState);
     // Clear render target and the depth stencil 
     float ClearColor[4] = { 0.176f, 0.196f, 0.667f, 0.0f };
 
