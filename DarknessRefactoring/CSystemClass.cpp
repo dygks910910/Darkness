@@ -1,5 +1,11 @@
+#include"stdafx.h"
 #include "CSystemClass.h"
-
+#include"CInputClass.h"
+#include"CGraphicsClass.h"
+#include"SoundClass.h"
+#include"FpsClass.h"
+#include"TimerClass.h"
+#include"CpuClass.h"
 CSystemClass::CSystemClass()
 	:m_pInput(nullptr),m_pGraphics(nullptr)
 {
@@ -22,26 +28,52 @@ bool CSystemClass::Initialize()
 	InitializeWindows(nScreenWidth, nScreenHeight);
 
 	m_pInput = new CInputClass;
-
+	IF_NOTX_RTFALSE(m_pInput);
+	if (!m_pInput->Initialize(m_hInstance, m_hWnd, nScreenWidth, nScreenHeight))
+	{
+		MessageBox(m_hWnd, L"could not initialize the input obj", L"Error", MB_OK);
+		return false;
+	}
 	m_pGraphics = new CGraphicsClass;
 	IF_NOTX_RTFALSE(m_pGraphics);
 
 	result = m_pGraphics->Initialize(nScreenWidth, nScreenHeight,m_hWnd);
 	IF_NOTX_RTFALSE(result);
-	m_pInput->Initialize();
-	
+	m_pInput->Initialize(m_hInstance, m_hWnd,nScreenWidth,nScreenHeight);
+	m_Sound = new SoundClass;
+	if (!m_Sound->Initialize(m_hWnd))
+	{
+		MessageBox(m_hWnd, L"could not initialize the Sound obj", L"Error", MB_OK);
+		return false;
+	}
+	m_Fps = new FpsClass;
+	IF_NOTX_RTFALSE(m_Fps);
+	m_Fps->Initialize();
+
+	m_Cpu = new CpuClass;
+	IF_NOTX_RTFALSE(m_Cpu);
+	m_Cpu->Initialize();
+
+	m_Timer = new TimerClass;
+	IF_NOTX_RTFALSE(m_Timer);
+	if (!m_Timer->Initialize())
+	{
+		MessageBox(m_hWnd, L"could not initialize the Timer obj", L"Error", MB_OK);
+		return false;
+
+	}
 	return true;
 }
 
 void CSystemClass::Shutdown()
 {
-	if (m_pGraphics)
-	{
-		m_pGraphics->Shutdown();
-		SAFE_DELETE(m_pGraphics);
-	}
-	if (m_pInput)
-		SAFE_DELETE(m_pInput);
+	SAFE_DELETE_SHUTDOWN(m_pGraphics);
+	SAFE_DELETE_SHUTDOWN(m_pInput);
+	SAFE_DELETE_SHUTDOWN(m_Sound);
+	SAFE_DELETE_SHUTDOWN(m_Cpu);
+	SAFE_DELETE(m_Fps);
+	SAFE_DELETE(m_Timer);
+
 
 	ShutdownWindows();
 
@@ -56,55 +88,51 @@ void CSystemClass::Run()
 	ZeroMemory(&msg, sizeof(MSG));
 	bDone = false;
 
-	while (!bDone)
+	while (true)
 	{
 		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
 		{
+			if (msg.message == WM_QUIT)
+				break;
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-		if (msg.message == WM_QUIT)
-			bDone = true;
 		else
 		{
-			bResult = Frame();
-			if (!bResult)
-				bDone = true;
+			if (!Frame())
+			{
+				MessageBox(m_hWnd, L"Frame Processing faild", L"Error", MB_OK);
+				break;
+			}
 		}
+		if (m_pInput->IsEscapePressed())
+			break;
 	}
 }
 
 LRESULT CSystemClass::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam)
 { 
-	switch (umsg)
-	{
-	case WM_KEYDOWN:
-	{
-		m_pInput->KeyDown((unsigned int)wparam);
-		return 0;
-	}
-	case WM_KEYUP:
-	{
-		m_pInput->KeyUp((unsigned int)wparam);
-		return 0;
-	}
-	default:
-		return DefWindowProc(hwnd, umsg, wparam, lparam);
-	}
-
-	return LRESULT();
+	
+	return DefWindowProc(hwnd,umsg,wparam,lparam);
 }
 
 bool CSystemClass::Frame()
 {
 	bool bResult;
-	if (m_pInput->IsKeyDown(VK_ESCAPE))
-		return false;
+	int mouseX = 0, mouseY = 0;
 
-	bResult = m_pGraphics->Frame();
+	m_Timer->Frame();
+	m_Fps->Frame();
+	m_Cpu->Frame();
+
+	if (!m_pInput->Frame())
+		return false;
+	m_pInput->GetMouseLocation(mouseX, mouseY);
+	
+	bResult = m_pGraphics->Frame(mouseX, mouseY, m_Cpu->GetCpuPercentage(),m_Fps->GetFps() ,m_Timer->GetTime() );
 	IF_NOTX_RTFALSE(bResult);
 
-	return true;
+	return m_pGraphics->Render();
 }
 
 void CSystemClass::InitializeWindows(int& screenWidth, int& screenHeight)

@@ -1,5 +1,17 @@
+#include"stdafx.h"
 #include "CGraphicsClass.h"
-#include"Define.h"
+#include"CD3dClass.h"
+#include"CCameraClass.h"
+#include"CModelClass.h"
+#include"CColorShaderClass.h"
+#include"CTextureShaderClass.h"
+#include"CLightShaderClass.h"
+#include"CLightClass.h"
+#include"BitmapClass.h"
+#include"TextClass.h"
+
+float CGraphicsClass::m_Rotation = 0;
+
 CGraphicsClass::CGraphicsClass():
 	m_pD3d(nullptr)
 	,m_Camera(nullptr)
@@ -26,7 +38,13 @@ bool CGraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	IF_NOTX_RTFALSE(m_pD3d);
 	
 	// Initialize the Direct3D object.
-	result = m_pD3d->Initialize(screenWidth, screenHeight, VSYNC_ENABLED, hwnd, FULL_SCREEN, SCREEN_DEPTH, SCREEN_NEAR);
+	//수직동기화 사용.
+	//result = m_pD3d->Initialize(screenWidth, screenHeight, VSYNC_ENABLED, hwnd, FULL_SCREEN, SCREEN_DEPTH, SCREEN_NEAR);
+	//수직동기화 사용안함
+	result = m_pD3d->Initialize(screenWidth, screenHeight, !VSYNC_ENABLED, hwnd, FULL_SCREEN, SCREEN_DEPTH, SCREEN_NEAR);
+
+
+
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize Direct3D.", L"Error", MB_OK);
@@ -86,6 +104,20 @@ bool CGraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return false;
 	}
 
+	XMMATRIX baseViewMatrix;
+	m_Camera->SetPosition(0, 0, -1.0f);
+	m_Camera->Render();
+	m_Camera->GetViewMatrix(baseViewMatrix);
+
+	m_Text = new TextClass;
+	IF_NOTX_RTFALSE(m_Text);
+	if (!m_Text->Initialize(m_pD3d->GetDevice(),m_pD3d->GetDeviceContext(),
+		hwnd,screenWidth,screenHeight, baseViewMatrix))
+	{
+		MessageBox(hwnd, L"Could not initialize the Text object.", L"Error", MB_OK);
+		return false;
+	}
+	
 	m_Light = new CLightClass;
 	IF_NOTX_RTFALSE(m_Light);
 	m_Light->SetAmbientColor(0.15f, 0.15f, 0.15f, 1.0f);
@@ -106,31 +138,40 @@ void CGraphicsClass::Shutdown()
 	SAFE_DELETE_SHUTDOWN(m_Model);
 	SAFE_DELETE_SHUTDOWN(m_LightShader);
 	SAFE_DELETE_SHUTDOWN(m_textureShader);
+	SAFE_DELETE_SHUTDOWN(m_Text);
 	SAFE_DELETE(m_Camera);
 	SAFE_DELETE(m_Light);
 	SAFE_DELETE(m_Bitmap);
+	SAFE_DELETE_SHUTDOWN(m_Text);
+
 }
 
-bool CGraphicsClass::Frame()
+bool CGraphicsClass::Frame(int mouseX, int mouseY, int cpu, int fps, float frameTime)
 {
-	bool bResult;
-	static float rotation = 0.0f;
+	bool bResult = false;
 
-	rotation += (float)D3DX_PI * 0.001f;
-	if (rotation > 360.0f)
-		rotation -= 360.0f;
+	m_Rotation += (float)XM_PI * 0.001f * frameTime;
+	if (m_Rotation > 360.0f)
+		m_Rotation -= 360.0f;
 
 	// Render the graphics scene.
-	bResult = Render(rotation);
-	IF_NOTX_RTFALSE(bResult);
+	//bResult = Render();
+	//IF_NOTX_RTFALSE(bResult);
+	if (!m_Text->SetMousePosition(mouseX, mouseY, m_pD3d->GetDeviceContext()))
+		return false;
+	if (!m_Text->SetCpu(cpu, m_pD3d->GetDeviceContext()))
+		return false;
+	if (!m_Text->SetFps(fps, m_pD3d->GetDeviceContext()))
+		return false;
 
+	m_Camera->SetPosition(0, 0, -10.0f);
 	return true;
 }
 
-bool CGraphicsClass::Render(float rotation)
+bool CGraphicsClass::Render()
 {
 	// Clear the buffers to begin the scene.
-	m_pD3d->BeginScene(0.5f, 0.5f, 0.5f, 1.0f);
+	m_pD3d->BeginScene(0, 0,0, 1.0f);
 	bool result;
 
 	// Generate the view matrix based on the camera's position.
@@ -145,17 +186,21 @@ bool CGraphicsClass::Render(float rotation)
 	m_pD3d->GetOrthoMatrix(othMatrix);
 
 	m_pD3d->TurnZBufferOff();
-	
+	m_pD3d->TurnOnAlphaBlending();
 
-	if (!m_Bitmap->Render(m_pD3d->GetDeviceContext(), 100, 100))
+	if (!m_Text->Render(m_pD3d->GetDeviceContext(), worldMatrix, othMatrix))
+		return false;
+
+	if (!m_Bitmap->Render(m_pD3d->GetDeviceContext(), 100,100))
 		return false;
 	if (!m_textureShader->Render(m_pD3d->GetDeviceContext(), m_Bitmap->GetIndexCount(),
 		worldMatrix, viewMatrix, othMatrix, m_Bitmap->GetTexture()))
 		return false;
 
+	m_pD3d->TurnOffAlphaBlending();
 	m_pD3d->TurnZBufferOn();
 
-	worldMatrix = XMMatrixRotationY(rotation);
+	worldMatrix = XMMatrixRotationY(m_Rotation);
 	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
 	m_Model->Render(m_pD3d->GetDeviceContext());
 
@@ -170,4 +215,102 @@ bool CGraphicsClass::Render(float rotation)
 	// Present the rendered scene to the screen.
 	m_pD3d->EndScene();
 	return true;
+}
+
+bool TextClass::SetMousePosition(int mouseX, int mouseY, ID3D11DeviceContext* deviceContext)
+{
+	// mouseX 정수를 문자열 형식으로 변환합니다.
+	char tempString[16] = { 0, };
+	_itoa_s(mouseX, tempString, 10);
+
+	// mouseX 문자열을 설정합니다.
+	char mouseString[16] = { 0, };
+	strcpy_s(mouseString, "Mouse X: ");
+	strcat_s(mouseString, tempString);
+
+	// 문장 정점 버퍼를 새 문자열 정보로 업데이트합니다.
+	if (!UpdateSentence(m_sentence1, mouseString, 20, 20, 1.0f, 1.0f, 1.0f, deviceContext))
+	{
+		return false;
+	}
+
+	// mouseY 정수를 문자열 형식으로 변환합니다.
+	_itoa_s(mouseY, tempString, 10);
+
+	// mouseY 문자열을 설정합니다.
+	strcpy_s(mouseString, "Mouse Y: ");
+	strcat_s(mouseString, tempString);
+
+	// 문장 정점 버퍼를 새 문자열 정보로 업데이트합니다.
+	if (!UpdateSentence(m_sentence2, mouseString, 20, 40, 1.0f, 1.0f, 1.0f, deviceContext))
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool TextClass::SetFps(int fps, ID3D11DeviceContext* deviceContext)
+{
+	// fps를 10,000 이하로 자릅니다.
+	if (fps > 9999)
+	{
+		fps = 9999;
+	}
+
+	// fps 정수를 문자열 형식으로 변환합니다.
+	char tempString[16] = { 0, };
+	_itoa_s(fps, tempString, 10);
+
+	// fps 문자열을 설정합니다.
+	char fpsString[16] = { 0, };
+	strcpy_s(fpsString, "Fps: ");
+	strcat_s(fpsString, tempString);
+
+	float red = 0;
+	float green = 0;
+	float blue = 0;
+
+	// fps가 60 이상이면 fps 색상을 녹색으로 설정합니다.
+	if (fps >= 60)
+	{
+		red = 0.0f;
+		green = 1.0f;
+		blue = 0.0f;
+	}
+
+	// fps가 60보다 작은 경우 fps 색상을 노란색으로 설정합니다.
+	if (fps < 60)
+	{
+		red = 1.0f;
+		green = 1.0f;
+		blue = 0.0f;
+	}
+
+	// fps가 30 미만이면 fps 색상을 빨간색으로 설정합니다.
+	if (fps < 30)
+	{
+		red = 1.0f;
+		green = 0.0f;
+		blue = 0.0f;
+	}
+
+	// 문장 정점 버퍼를 새 문자열 정보로 업데이트합니다.
+	return UpdateSentence(m_sentence3, fpsString, 20, 60, red, green, blue, deviceContext);
+}
+
+bool TextClass::SetCpu(int cpu, ID3D11DeviceContext* deviceContext)
+{
+	// cpu 정수를 문자열 형식으로 변환합니다.
+	char tempString[16] = { 0, };
+	_itoa_s(cpu, tempString, 10);
+
+	// cpu 문자열을 설정합니다.
+	char cpuString[16] = { 0, };
+	strcpy_s(cpuString, "Cpu: ");
+	strcat_s(cpuString, tempString);
+	strcat_s(cpuString, "%");
+
+	// 문장 정점 버퍼를 새 문자열 정보로 업데이트합니다.
+	return UpdateSentence(m_sentence4, cpuString, 20, 80, 0.0f, 1.0f, 0.0f, deviceContext);
 }

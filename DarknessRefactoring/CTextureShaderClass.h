@@ -1,12 +1,6 @@
 #pragma once
 
-#include <d3d11.h>
-#include <d3dx10math.h>
-#include <xnamath.h>
 
-#include <d3dx11async.h>
-#include <fstream>
-using namespace std;
 
 class CTextureShaderClass
 {

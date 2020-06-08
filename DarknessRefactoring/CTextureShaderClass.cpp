@@ -1,5 +1,7 @@
+#include"stdafx.h"
 #include "CTextureShaderClass.h"
-#include"Define.h"
+#include <fstream>
+using namespace std;
 
 CTextureShaderClass::CTextureShaderClass() : 
 	m_vertexShader(nullptr)

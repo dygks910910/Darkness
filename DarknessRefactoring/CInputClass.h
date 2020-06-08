@@ -6,12 +6,28 @@ public:
 	CInputClass(const CInputClass&);
 	~CInputClass();
 
-	void Initialize();
-	void KeyDown(unsigned int);
-	void KeyUp(unsigned int);
-	bool IsKeyDown(unsigned int);
+	bool Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight);
+	void Shutdown();
+	bool Frame();
+
+	bool IsEscapePressed();
+	void GetMouseLocation(int&, int&);
+private:
+	bool ReadKeyboard();
+	bool ReadMouse();
+	void ProcessInput();
 
 private:
-	bool m_bKeys[256];
+	IDirectInput8* m_directInput = nullptr;
+	IDirectInputDevice8* m_keyboard = nullptr;
+	IDirectInputDevice8* m_mouse = nullptr;
+
+	unsigned char m_keyboardState[256] = { 0, };
+	DIMOUSESTATE m_mouseState;
+
+	int m_screenWidth = 0;
+	int m_screenHeight = 0;
+	int m_mouseX = 0;
+	int m_mouseY = 0;
 };
 

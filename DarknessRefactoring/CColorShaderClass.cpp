@@ -1,5 +1,6 @@
+#include"stdafx.h"
 #include "CColorShaderClass.h"
-#include"Define.h"
+#include <fstream>
 CColorShaderClass::CColorShaderClass():
 	m_vertexShader(nullptr)
 	,m_pixelShader(nullptr)

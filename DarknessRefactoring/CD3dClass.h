@@ -1,17 +1,5 @@
 #pragma once
 
-// LINKING //
-#pragma comment(lib, "dxgi.lib")
-#pragma comment(lib, "d3d11.lib")
-#pragma comment(lib, "d3dx11.lib")
-#pragma comment(lib, "d3dx10.lib")
-
-// INCLUDES //
-#include <dxgi.h>
-#include <d3dcommon.h>
-#include <d3d11.h>
-#include<xnamath.h>
-
 
 class CD3dClass
 {
@@ -37,6 +25,10 @@ public:
 	void GetVideoCardInfo(char*, int&);
 	void TurnZBufferOn();
 	void TurnZBufferOff();
+
+
+	void TurnOnAlphaBlending();
+	void TurnOffAlphaBlending();
 private:
 	bool m_vsync_enabled;
 	int m_videoCardMemory;
@@ -53,6 +45,8 @@ private:
 	XMMATRIX m_worldMatrix;
 	XMMATRIX m_orthoMatrix;
 	ID3D11DepthStencilState* m_depthDisabledStencilState;
+	ID3D11BlendState* m_alphaEnableBlendingState = nullptr;
+	ID3D11BlendState* m_alphaDisableBlendingState = nullptr;
 
 };
 

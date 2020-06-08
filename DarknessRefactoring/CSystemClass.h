@@ -1,9 +1,12 @@
 #pragma once
-#include<Windows.h>
-#include"CInputClass.h"
-#include"CGraphicsClass.h"
-#include"Define.h"
 
+
+class CInputClass;
+class CGraphicsClass;
+class SoundClass;
+class FpsClass;
+class CpuClass;
+class TimerClass;
 
 class CSystemClass
 {
@@ -27,9 +30,12 @@ private:
 	HINSTANCE m_hInstance;
 	HWND m_hWnd;
 
-	CInputClass* m_pInput;
-	CGraphicsClass* m_pGraphics;
-
+	CInputClass* m_pInput = nullptr;
+	CGraphicsClass* m_pGraphics = nullptr;
+	SoundClass* m_Sound = nullptr;
+	FpsClass* m_Fps = nullptr;
+	CpuClass* m_Cpu = nullptr;
+	TimerClass* m_Timer = nullptr;
 };
 
 static LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);

@@ -90,7 +90,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -152,15 +152,22 @@
     <ClInclude Include="CLightClass.h" />
     <ClInclude Include="CLightShaderClass.h" />
     <ClInclude Include="CModelClass.h" />
+    <ClInclude Include="CpuClass.h" />
     <ClInclude Include="CSystemClass.h" />
     <ClInclude Include="CTextureClass.h" />
     <ClInclude Include="CTextureShaderClass.h" />
     <ClInclude Include="DDSTextureLoader.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="DxDefine.h" />
+    <ClInclude Include="FontClass.h" />
+    <ClInclude Include="FontShaderClass.h" />
+    <ClInclude Include="FpsClass.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="SoundClass.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TextClass.h" />
+    <ClInclude Include="TimerClass.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DarknessRefactoring.rc" />
@@ -175,16 +182,23 @@
     <ClCompile Include="CColorShaderClass.cpp" />
     <ClCompile Include="CD3dClass.cpp" />
     <ClCompile Include="CGraphicsClass.cpp" />
-    <ClCompile Include="CInputClass.cpp" />
+    <ClCompile Include="CINPUTCLASS.CPP" />
     <ClCompile Include="CLightClass.cpp" />
     <ClCompile Include="CLightShaderClass.cpp" />
     <ClCompile Include="CModelClass.cpp" />
+    <ClCompile Include="CpuClass.cpp" />
     <ClCompile Include="CSystemClass.cpp" />
     <ClCompile Include="CTextureClass.cpp" />
     <ClCompile Include="CTextureShaderClass.cpp" />
     <ClCompile Include="DDSTextureLoader.cpp" />
+    <ClCompile Include="FontClass.cpp" />
+    <ClCompile Include="FontShaderClass.cpp" />
+    <ClCompile Include="FpsClass.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="SoundClass.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="TextClass.cpp" />
+    <ClCompile Include="TimerClass.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="color.vs">
@@ -203,12 +217,14 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <FileType>Document</FileType>
     </None>
+    <None Include="texture.ps" />
+    <None Include="texture.vs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="texture.ps">
+    <None Include="fontPS.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </None>
-    <None Include="texture.vs">
+    <None Include="fontVS.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </None>
   </ItemGroup>

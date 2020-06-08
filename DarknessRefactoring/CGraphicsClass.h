@@ -1,16 +1,18 @@
 #pragma once
-#include"CD3dClass.h"
-#include"CCameraClass.h"
-#include"CModelClass.h"
-#include"CColorShaderClass.h"
-#include"CTextureShaderClass.h"
-#include"CLightShaderClass.h"
-#include"CLightClass.h"
-#include"BitmapClass.h"
+
 const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = true;
 const float SCREEN_DEPTH = 1000.0f;
 const float SCREEN_NEAR = 0.1f;
+
+class CD3dClass;
+class CCameraClass;
+class CModelClass;
+class CLightShaderClass;
+class CLightClass;
+class CTextureShaderClass;
+class BitmapClass;
+class TextClass;
 
 
 class CGraphicsClass
@@ -22,9 +24,9 @@ public:
 
 	bool Initialize(int, int, HWND);
 	void Shutdown();
-	bool Frame();
+	bool Frame(int mouseX, int mouseY, int cpu, int fps, float frameTime);
+	bool Render();
 private:
-	bool Render(float rotation);
 private:
 	CD3dClass* m_pD3d = nullptr;
 	CCameraClass* m_Camera = nullptr;
@@ -34,6 +36,9 @@ private:
 
 	CTextureShaderClass* m_textureShader = nullptr;
 	BitmapClass* m_Bitmap = nullptr;
+	TextClass* m_Text = nullptr;
+
+	static float m_Rotation;
 
 };
 

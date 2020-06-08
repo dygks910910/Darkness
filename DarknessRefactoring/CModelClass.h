@@ -1,8 +1,5 @@
 #pragma once
 
-#include<d3d11.h>
-#include<xnamath.h>
-
 #include"AlignedAllocationPolicy.h"
 #include"CTextureClass.h"
 class CModelClass : public AlignedAllocationPolicy<16>

@@ -1,5 +1,6 @@
-﻿#include "CLightShaderClass.h"
-#include "Define.h"
+﻿#include"stdafx.h"
+#include "CLightShaderClass.h"
+#include <fstream>
 
 CLightShaderClass::CLightShaderClass():
 	m_vertexShader(nullptr)

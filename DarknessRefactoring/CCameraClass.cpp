@@ -1,4 +1,5 @@
-﻿#include "CCameraClass.h"
+﻿#include"stdafx.h"
+#include "CCameraClass.h"
 
 CCameraClass::CCameraClass() 
 	:m_position(XMFLOAT3(0.0f, 0.0f, 0.0f))

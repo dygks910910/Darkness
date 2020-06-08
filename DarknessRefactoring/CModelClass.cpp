@@ -1,5 +1,5 @@
+#include"stdafx.h"
 #include "CModelClass.h"
-#include "Define.h"
 #include <fstream>
 CModelClass::CModelClass():
 	m_vertexBuffer(nullptr)

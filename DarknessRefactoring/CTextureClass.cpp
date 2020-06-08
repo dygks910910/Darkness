@@ -1,5 +1,5 @@
+#include"stdafx.h"
 #include "CTextureClass.h"
-#include "Define.h"
 CTextureClass::CTextureClass():
 	m_texture(nullptr)
 {

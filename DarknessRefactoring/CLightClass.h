@@ -1,6 +1,6 @@
 #pragma once
-#include <d3dx10math.h>
-#include<xnamath.h>
+
+
 class CLightClass
 {
 public:

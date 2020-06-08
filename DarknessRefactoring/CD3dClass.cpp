@@ -1,5 +1,5 @@
+#include"stdafx.h"
 #include "CD3dClass.h"
-#include"Define.h"
 
 CD3dClass::CD3dClass() : 
   m_swapChain(nullptr)
@@ -348,6 +348,26 @@ bool CD3dClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND h
 	// 장치를 사용하여 상태를 만듭니다.
 	IF_FAILED_RTFALSE(m_device->CreateDepthStencilState(&depthDisabledStencilDesc, &m_depthDisabledStencilState));
 
+	// Clear the blend state description.
+	D3D11_BLEND_DESC blendStateDescription;
+	ZeroMemory(&blendStateDescription, sizeof(D3D11_BLEND_DESC));
+
+	// Create an alpha enabled blend state description.
+	blendStateDescription.RenderTarget[0].BlendEnable = TRUE;
+	blendStateDescription.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
+	blendStateDescription.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+	blendStateDescription.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	blendStateDescription.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+	blendStateDescription.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+	blendStateDescription.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	blendStateDescription.RenderTarget[0].RenderTargetWriteMask = 0x0f;
+
+	// Create the blend state using the description.
+	IF_FAILED_RTFALSE(m_device->CreateBlendState(&blendStateDescription, &m_alphaEnableBlendingState));
+	// Modify the description to create an alpha disabled blend state description.
+	blendStateDescription.RenderTarget[0].BlendEnable = FALSE;
+	// Create the blend state using the description.
+	IF_FAILED_RTFALSE(m_device->CreateBlendState(&blendStateDescription, &m_alphaDisableBlendingState));
 	return true;
 }
 
@@ -367,6 +387,9 @@ void CD3dClass::Shutdown()
 	SAFE_RELEASE_D3D(m_device);
 	SAFE_RELEASE_D3D(m_swapChain);
 	SAFE_RELEASE_D3D(m_depthDisabledStencilState);
+	SAFE_RELEASE_D3D(m_alphaEnableBlendingState);
+	SAFE_RELEASE_D3D(m_alphaDisableBlendingState);
+
 
 }
 
@@ -444,4 +467,23 @@ void CD3dClass::TurnZBufferOn()
 void CD3dClass::TurnZBufferOff()
 {
 	m_deviceContext->OMSetDepthStencilState(m_depthDisabledStencilState, 1);
+}
+
+void CD3dClass::TurnOnAlphaBlending()
+{
+	// Setup the blend factor.
+	float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+	// Turn on the alpha blending.
+	m_deviceContext->OMSetBlendState(m_alphaEnableBlendingState, blendFactor, 0xffffffff);
+}
+
+
+void CD3dClass::TurnOffAlphaBlending()
+{
+	// Setup the blend factor.
+	float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+	// Turn off the alpha blending.
+	m_deviceContext->OMSetBlendState(m_alphaDisableBlendingState, blendFactor, 0xffffffff);
 }
