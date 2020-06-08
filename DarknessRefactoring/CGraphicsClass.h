@@ -28,15 +28,17 @@ public:
 	bool Render();
 private:
 private:
-	CD3dClass* m_pD3d = nullptr;
-	CCameraClass* m_Camera = nullptr;
-	CModelClass* m_Model = nullptr;
-	CLightShaderClass* m_LightShader;
-	CLightClass* m_Light;
+	CD3dClass* m_pD3d							 = nullptr;
+	CCameraClass* m_Camera				= nullptr;
+	CCameraClass* m_CameraTop			= nullptr;
 
-	CTextureShaderClass* m_textureShader = nullptr;
-	BitmapClass* m_Bitmap = nullptr;
-	TextClass* m_Text = nullptr;
+	CModelClass* m_Model						 = nullptr;
+	CLightShaderClass* m_LightShader = nullptr;
+	CLightClass* m_Light						= nullptr;
+
+	CTextureShaderClass* m_textureShader		 = nullptr;
+	BitmapClass* m_Bitmap								 = nullptr;
+	TextClass* m_Text											= nullptr;
 
 	static float m_Rotation;
 

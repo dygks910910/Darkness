@@ -60,7 +60,13 @@ bool CGraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 	// Set the initial position of the camera.
 	m_Camera->SetPosition(0.0f, 0.0f, -6.0f);
-
+	m_CameraTop = new CCameraClass;
+	if (!m_CameraTop)
+	{
+		return false;
+	}
+	m_CameraTop->SetPosition(0.0f, 6.0f, -10.0f);
+	m_CameraTop->Render(XMFLOAT3(0,-0.5f,0.5f));
 	// Create the model object.
 	m_Model = new CModelClass;
 	IF_NOTX_RTFALSE(m_Model);
@@ -105,7 +111,7 @@ bool CGraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 
 	XMMATRIX baseViewMatrix;
-	m_Camera->SetPosition(0, 0, -1.0f);
+	//m_Camera->SetPosition(0, 0, -1.0f);
 	m_Camera->Render();
 	m_Camera->GetViewMatrix(baseViewMatrix);
 
@@ -143,7 +149,7 @@ void CGraphicsClass::Shutdown()
 	SAFE_DELETE(m_Light);
 	SAFE_DELETE(m_Bitmap);
 	SAFE_DELETE_SHUTDOWN(m_Text);
-
+	SAFE_DELETE(m_CameraTop);
 }
 
 bool CGraphicsClass::Frame(int mouseX, int mouseY, int cpu, int fps, float frameTime)
@@ -165,6 +171,8 @@ bool CGraphicsClass::Frame(int mouseX, int mouseY, int cpu, int fps, float frame
 		return false;
 
 	m_Camera->SetPosition(0, 0, -10.0f);
+	m_CameraTop->SetPosition(0.0f, 6.0f, -10.0f);
+
 	return true;
 }
 
@@ -175,6 +183,7 @@ bool CGraphicsClass::Render()
 	bool result;
 
 	// Generate the view matrix based on the camera's position.
+	m_pD3d->SetFirstViewport();
 	m_Camera->Render();
 
 	// Get the world, view, and projection matrices from the camera and d3d objects.
@@ -211,7 +220,23 @@ bool CGraphicsClass::Render()
 		m_Light->GetDirection(), m_Light->GetDiffuseColor(), m_Light->GetAmbientColor(), m_Camera->GetPosition()
 		, m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
 
+#ifdef _DEBUG
+	m_pD3d->SetSecondViewport();
+	//worldMatrix = XMMatrixRotationY(m_Rotation);
+	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
+	m_Model->Render(m_pD3d->GetDeviceContext());
+
+	// Render the model using the color shader.
+	m_CameraTop->GetViewMatrix(viewMatrix);
+	result = m_LightShader->Render(m_pD3d->GetDeviceContext(),
+		m_Model->GetIndexCount(),
+		worldMatrix, viewMatrix, projectionMatrix, m_Model->GetTexture(),
+		m_Light->GetDirection(), m_Light->GetDiffuseColor(), m_Light->GetAmbientColor(), m_CameraTop->GetPosition()
+		, m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
+#endif
+
 	IF_NOTX_RTFALSE(result);
+
 	// Present the rendered scene to the screen.
 	m_pD3d->EndScene();
 	return true;

@@ -3377,13 +3377,13 @@ HRESULT DXUTFindD3D9AdapterFormat( UINT AdapterOrdinal, D3DDEVTYPE DeviceType, D
 }
 
 //--------------------------------------------------------------------------------------
-// Sets the viewport, render target view, and depth stencil view.
+// Sets the m_viewports, render target view, and depth stencil view.
 //--------------------------------------------------------------------------------------
 HRESULT WINAPI DXUTSetupD3D11Views( ID3D11DeviceContext* pd3dDeviceContext )
 {
     HRESULT hr = S_OK;
 
-    // Setup the viewport to match the backbuffer
+    // Setup the m_viewports to match the backbuffer
     D3D11_VIEWPORT vp;
     vp.Width = (FLOAT)DXUTGetDXGIBackBufferSurfaceDesc()->Width;
     vp.Height = (FLOAT)DXUTGetDXGIBackBufferSurfaceDesc()->Height;
@@ -3681,7 +3681,7 @@ HRESULT DXUTCreate3DEnvironment11( ID3D11Device* pd3d11DeviceFromApp )
     }
     GetDXUTState().SetDeviceObjectsCreated( true );
 
-    // Setup the render target view and viewport
+    // Setup the render target view and m_viewports
     hr = DXUTCreateD3D11Views( pd3d11Device, pd3dImmediateContext, pNewDeviceSettings );
     if( FAILED( hr ) )
     {
@@ -4781,7 +4781,7 @@ void DXUTResizeDXGIBuffers( UINT Width, UINT Height, BOOL bFullScreen )
     // Update the device stats text
     DXUTUpdateStaticFrameStats();
 
-    // Setup the render target view and viewport
+    // Setup the render target view and m_viewports
     hr = DXUTCreateD3D11Views( pd3dDevice, pd3dImmediateContext, pDevSettings );
     if( FAILED( hr ) )
     {

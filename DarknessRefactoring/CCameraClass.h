@@ -12,7 +12,7 @@ public:
 	XMFLOAT3 GetPosition();
 	XMFLOAT3 GetRotation();
 
-	void Render();
+	void Render(XMFLOAT3 lookat = XMFLOAT3(0,0,1));
 	void GetViewMatrix(XMMATRIX&);
 
 private:

@@ -29,6 +29,19 @@ public:
 
 	void TurnOnAlphaBlending();
 	void TurnOffAlphaBlending();
+	void SetFirstViewport();
+	void SetSecondViewport();
+
+private:
+	bool CreateSwapChain(int screenW,int screenH,unsigned int numerator,
+		unsigned int denominator,bool fullscreen,HWND hwnd);
+	bool CreateRenderTargerView();
+	bool CreateDepthBuffer(int screenWidth, int screenHeight);
+	bool CreateDepthStencilState();
+	bool CreateDepthStencilView();
+	bool CreateRasterizeState();
+	bool CreateDepthDisableStencilState();
+	bool CreateBlendState();
 private:
 	bool m_vsync_enabled;
 	int m_videoCardMemory;
@@ -41,12 +54,13 @@ private:
 	ID3D11DepthStencilState*	m_depthStencilState;
 	ID3D11DepthStencilView*		m_depthStencilView;
 	ID3D11RasterizerState*			m_rasterState;
-	XMMATRIX m_projectionMatrix;
-	XMMATRIX m_worldMatrix;
-	XMMATRIX m_orthoMatrix;
-	ID3D11DepthStencilState* m_depthDisabledStencilState;
-	ID3D11BlendState* m_alphaEnableBlendingState = nullptr;
-	ID3D11BlendState* m_alphaDisableBlendingState = nullptr;
+	XMMATRIX								m_projectionMatrix;
+	XMMATRIX								m_worldMatrix;
+	XMMATRIX								m_orthoMatrix;
+	ID3D11DepthStencilState*	m_depthDisabledStencilState;
+	ID3D11BlendState*					m_alphaEnableBlendingState = nullptr;
+	ID3D11BlendState*					m_alphaDisableBlendingState = nullptr;
+	D3D11_VIEWPORT m_viewports[2];
 
 };
 

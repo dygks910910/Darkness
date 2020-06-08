@@ -42,7 +42,7 @@ XMFLOAT3 CCameraClass::GetRotation()
 }
 
 
-void CCameraClass::Render()
+void CCameraClass::Render(XMFLOAT3 lookat)
 {
 	XMFLOAT3 up, position, lookAt;
 	XMVECTOR upVector, positionVector, lookAtVector;
@@ -65,9 +65,9 @@ void CCameraClass::Render()
 	positionVector = XMLoadFloat3(&position);
 
 	// 기본적으로 카메라가 찾고있는 위치를 설정합니다.
-	lookAt.x = 0.0f;
-	lookAt.y = 0.0f;
-	lookAt.z = 1.0f;
+	lookAt.x = lookat.x;
+	lookAt.y = lookat.y;
+	lookAt.z = lookat.z;
 
 	// XMVECTOR 구조체에 로드한다.
 	lookAtVector = XMLoadFloat3(&lookAt);
