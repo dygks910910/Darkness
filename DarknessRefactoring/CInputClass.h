@@ -10,6 +10,9 @@ public:
 	void Shutdown();
 	bool Frame();
 
+
+	bool IsLeftArrowPressed();
+	bool IsRightArrowPressed();
 	bool IsEscapePressed();
 	void GetMouseLocation(int&, int&);
 private:

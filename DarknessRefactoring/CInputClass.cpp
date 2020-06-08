@@ -195,6 +195,25 @@ void CInputClass::ProcessInput()
 }
 
 
+bool CInputClass::IsLeftArrowPressed()
+{
+	if (m_keyboardState[DIK_LEFT] & 0x80)
+	{
+		return true;
+	}
+	return false;
+}
+
+bool CInputClass::IsRightArrowPressed()
+{
+	if(m_keyboardState[DIK_RIGHT] & 0x80)
+	{
+		return true;
+	}
+
+	return false;
+}
+
 bool CInputClass::IsEscapePressed()
 {
 	// escape 키가 현재 눌려지고 있는지 bit값을 계산하여 확인한다.

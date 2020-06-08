@@ -13,7 +13,8 @@ class CLightClass;
 class CTextureShaderClass;
 class BitmapClass;
 class TextClass;
-
+class ModelListClass;
+class FrustumClass;
 
 class CGraphicsClass
 {
@@ -24,9 +25,10 @@ public:
 
 	bool Initialize(int, int, HWND);
 	void Shutdown();
-	bool Frame(int mouseX, int mouseY, int cpu, int fps, float frameTime);
+	bool Frame(int mouseX, int mouseY, int cpu, int fps, float frameTime, float rotateY);
 	bool Render();
 private:
+	bool DebugRender();
 private:
 	CD3dClass* m_pD3d							 = nullptr;
 	CCameraClass* m_Camera				= nullptr;
@@ -39,6 +41,9 @@ private:
 	CTextureShaderClass* m_textureShader		 = nullptr;
 	BitmapClass* m_Bitmap								 = nullptr;
 	TextClass* m_Text											= nullptr;
+	ModelListClass* m_ModelList = nullptr;
+	FrustumClass* m_Frustum = nullptr;
+
 
 	static float m_Rotation;
 

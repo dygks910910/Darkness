@@ -9,7 +9,8 @@
 #include"CLightClass.h"
 #include"BitmapClass.h"
 #include"TextClass.h"
-
+#include"ModelListClass.h"
+#include"FrustumClass.h"
 float CGraphicsClass::m_Rotation = 0;
 
 CGraphicsClass::CGraphicsClass():
@@ -72,7 +73,7 @@ bool CGraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	IF_NOTX_RTFALSE(m_Model);
 
 	// Initialize the model object.
-	result = m_Model->Initialize(m_pD3d->GetDevice(),"data/cube.txt",L"data/seafloor.dds");
+	result = m_Model->Initialize(m_pD3d->GetDevice(),"data/sphere.txt",L"data/seafloor.dds");
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
@@ -133,6 +134,16 @@ bool CGraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_Light->SetSpecularColor(1.0f, 1.0f, 1.0f, 1.0f);
 	m_Light->SetSpecularPower(32.0f);
 
+	m_ModelList = new ModelListClass;
+	IF_NOTX_RTFALSE(m_ModelList);
+	if (!m_ModelList->Initialize(25))
+	{
+		MessageBox(hwnd, L"Could not initialize the ModelList object.", L"Error", MB_OK);
+		return false;
+	}
+
+	m_Frustum = new FrustumClass;
+	IF_NOTX_RTFALSE(m_Frustum);
 
 	return true;
 }
@@ -150,9 +161,12 @@ void CGraphicsClass::Shutdown()
 	SAFE_DELETE(m_Bitmap);
 	SAFE_DELETE_SHUTDOWN(m_Text);
 	SAFE_DELETE(m_CameraTop);
+	SAFE_DELETE_SHUTDOWN(m_ModelList);
+	SAFE_DELETE(m_Frustum);
+
 }
 
-bool CGraphicsClass::Frame(int mouseX, int mouseY, int cpu, int fps, float frameTime)
+bool CGraphicsClass::Frame(int mouseX, int mouseY, int cpu, int fps, float frameTime, float rotateY)
 {
 	bool bResult = false;
 
@@ -170,14 +184,21 @@ bool CGraphicsClass::Frame(int mouseX, int mouseY, int cpu, int fps, float frame
 	if (!m_Text->SetFps(fps, m_pD3d->GetDeviceContext()))
 		return false;
 
-	m_Camera->SetPosition(0, 0, -10.0f);
-	m_CameraTop->SetPosition(0.0f, 6.0f, -10.0f);
+	m_Camera->SetPosition(0, 0, -20.0f);
+	m_Camera->SetRotation(0, rotateY, 0);
+	m_CameraTop->SetPosition(0.0f, 6.0f, -20.0f);
 
 	return true;
 }
 
 bool CGraphicsClass::Render()
 {
+
+	float positionX = 0;
+	float positionY = 0;
+	float positionZ = 0;
+	float radius= 1.0f;
+	XMFLOAT4 color;
 	// Clear the buffers to begin the scene.
 	m_pD3d->BeginScene(0, 0,0, 1.0f);
 	bool result;
@@ -197,22 +218,41 @@ bool CGraphicsClass::Render()
 	m_pD3d->TurnZBufferOff();
 	m_pD3d->TurnOnAlphaBlending();
 
+	
+	
 	if (!m_Text->Render(m_pD3d->GetDeviceContext(), worldMatrix, othMatrix))
 		return false;
 
-	if (!m_Bitmap->Render(m_pD3d->GetDeviceContext(), 100,100))
+	/*if (!m_Bitmap->Render(m_pD3d->GetDeviceContext(), 100,100))
 		return false;
 	if (!m_textureShader->Render(m_pD3d->GetDeviceContext(), m_Bitmap->GetIndexCount(),
 		worldMatrix, viewMatrix, othMatrix, m_Bitmap->GetTexture()))
-		return false;
+		return false;*/
 
 	m_pD3d->TurnOffAlphaBlending();
 	m_pD3d->TurnZBufferOn();
 
+	m_Frustum->ConstructFrustum(SCREEN_DEPTH, projectionMatrix, viewMatrix);
+	int nModelCount = m_ModelList->GetModelCount();
+	int renderCount = 0;
+
+	for (int index = 0; index < nModelCount; ++index)
+	{
+		m_ModelList->GetData(index, positionX, positionY, positionZ, color);
+		if (m_Frustum->CheckSphere(positionX, positionY, positionZ, radius))
+		{
+			worldMatrix = XMMatrixTranslation(positionX, positionY, positionZ);
+			m_Model->Render(m_pD3d->GetDeviceContext());
+			m_LightShader->Render(m_pD3d->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+				m_Model->GetTexture(), m_Light->GetDirection(), m_Light->GetAmbientColor(), m_Light->GetDiffuseColor(), m_Camera->GetPosition(),
+				m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
+			m_pD3d->GetWorldMatrix(worldMatrix);
+			renderCount++;
+		}
+	}
 	worldMatrix = XMMatrixRotationY(m_Rotation);
 	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
-	m_Model->Render(m_pD3d->GetDeviceContext());
-
+	
 	// Render the model using the color shader.
 	result = m_LightShader->Render(m_pD3d->GetDeviceContext(),
 		m_Model->GetIndexCount(),
@@ -221,24 +261,67 @@ bool CGraphicsClass::Render()
 		, m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
 
 #ifdef _DEBUG
-	m_pD3d->SetSecondViewport();
-	//worldMatrix = XMMatrixRotationY(m_Rotation);
-	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
-	m_Model->Render(m_pD3d->GetDeviceContext());
-
-	// Render the model using the color shader.
-	m_CameraTop->GetViewMatrix(viewMatrix);
-	result = m_LightShader->Render(m_pD3d->GetDeviceContext(),
-		m_Model->GetIndexCount(),
-		worldMatrix, viewMatrix, projectionMatrix, m_Model->GetTexture(),
-		m_Light->GetDirection(), m_Light->GetDiffuseColor(), m_Light->GetAmbientColor(), m_CameraTop->GetPosition()
-		, m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
+	DebugRender();
 #endif
 
 	IF_NOTX_RTFALSE(result);
 
 	// Present the rendered scene to the screen.
 	m_pD3d->EndScene();
+	return true;
+}
+
+bool CGraphicsClass::DebugRender()
+{
+	float positionX = 0;
+	float positionY = 0;
+	float positionZ = 0;
+	float radius = 1.0f;
+	XMFLOAT4 color;
+
+	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, othMatrix;
+
+	m_Camera->GetViewMatrix(viewMatrix);
+	m_pD3d->GetWorldMatrix(worldMatrix);
+	m_pD3d->GetProjectionMatrix(projectionMatrix);
+	m_pD3d->GetOrthoMatrix(othMatrix);
+
+	m_pD3d->SetSecondViewport();
+	//worldMatrix = XMMatrixRotationY(m_Rotation);
+	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
+	m_Model->Render(m_pD3d->GetDeviceContext());
+	bool result = true;
+
+	m_CameraTop->Render();
+	// Render the model using the color shader.
+	m_CameraTop->GetViewMatrix(viewMatrix);
+	worldMatrix = XMMatrixRotationY(m_Rotation);
+	result = m_LightShader->Render(m_pD3d->GetDeviceContext(),
+		m_Model->GetIndexCount(),
+		worldMatrix, viewMatrix, projectionMatrix, m_Model->GetTexture(),
+		m_Light->GetDirection(), m_Light->GetDiffuseColor(), m_Light->GetAmbientColor(), m_CameraTop->GetPosition()
+		, m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
+
+	IF_NOTX_RTFALSE(result);
+	int nModelCount = m_ModelList->GetModelCount();
+
+	int renderCount = 0;
+	m_Model->Render(m_pD3d->GetDeviceContext());
+	for (int index = 0; index < nModelCount; ++index)
+	{
+		m_ModelList->GetData(index, positionX, positionY, positionZ, color);
+		if (m_Frustum->CheckCube(positionX, positionY, positionZ, radius))
+		{
+			worldMatrix = XMMatrixTranslation(positionX, positionY, positionZ);
+			m_Model->Render(m_pD3d->GetDeviceContext());
+			result = m_LightShader->Render(m_pD3d->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+				m_Model->GetTexture(), m_Light->GetDirection(), m_Light->GetAmbientColor(), m_Light->GetDiffuseColor(), m_Camera->GetPosition(),
+				m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
+			m_pD3d->GetWorldMatrix(worldMatrix);
+			IF_NOTX_RTFALSE(result);
+			renderCount++;
+		}
+	}
 	return true;
 }
 

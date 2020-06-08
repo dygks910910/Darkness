@@ -1,6 +1,6 @@
 #pragma once
 
-class CCameraClass
+class CCameraClass : public AlignedAllocationPolicy<16>
 {
 public:
 	CCameraClass();

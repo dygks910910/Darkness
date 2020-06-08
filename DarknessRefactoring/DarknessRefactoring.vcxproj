@@ -162,6 +162,9 @@
     <ClInclude Include="FontClass.h" />
     <ClInclude Include="FontShaderClass.h" />
     <ClInclude Include="FpsClass.h" />
+    <ClInclude Include="FrustumClass.h" />
+    <ClInclude Include="ModelListClass.h" />
+    <ClInclude Include="PositionClass.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SoundClass.h" />
     <ClInclude Include="stdafx.h" />
@@ -194,7 +197,10 @@
     <ClCompile Include="FontClass.cpp" />
     <ClCompile Include="FontShaderClass.cpp" />
     <ClCompile Include="FpsClass.cpp" />
+    <ClCompile Include="FrustumClass.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ModelListClass.cpp" />
+    <ClCompile Include="PositionClass.cpp" />
     <ClCompile Include="SoundClass.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="TextClass.cpp" />

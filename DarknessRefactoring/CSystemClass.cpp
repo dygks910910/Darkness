@@ -6,6 +6,7 @@
 #include"FpsClass.h"
 #include"TimerClass.h"
 #include"CpuClass.h"
+#include"PositionClass.h"
 CSystemClass::CSystemClass()
 	:m_pInput(nullptr),m_pGraphics(nullptr)
 {
@@ -60,8 +61,10 @@ bool CSystemClass::Initialize()
 	{
 		MessageBox(m_hWnd, L"could not initialize the Timer obj", L"Error", MB_OK);
 		return false;
-
 	}
+	m_Position = new PositionClass();
+	IF_NOTX_RTFALSE(m_Position);
+	
 	return true;
 }
 
@@ -73,6 +76,7 @@ void CSystemClass::Shutdown()
 	SAFE_DELETE_SHUTDOWN(m_Cpu);
 	SAFE_DELETE(m_Fps);
 	SAFE_DELETE(m_Timer);
+	SAFE_DELETE(m_Position);
 
 
 	ShutdownWindows();
@@ -83,10 +87,7 @@ void CSystemClass::Shutdown()
 void CSystemClass::Run()
 {
 	MSG msg;
-	bool bDone, bResult;
-
 	ZeroMemory(&msg, sizeof(MSG));
-	bDone = false;
 
 	while (true)
 	{
@@ -125,13 +126,25 @@ bool CSystemClass::Frame()
 	m_Fps->Frame();
 	m_Cpu->Frame();
 
+	m_Position->SetFrameTime(m_Timer->GetTime());
 	if (!m_pInput->Frame())
 		return false;
 	m_pInput->GetMouseLocation(mouseX, mouseY);
 	
-	bResult = m_pGraphics->Frame(mouseX, mouseY, m_Cpu->GetCpuPercentage(),m_Fps->GetFps() ,m_Timer->GetTime() );
-	IF_NOTX_RTFALSE(bResult);
 
+	bool keyDown = m_pInput->IsRightArrowPressed();
+	m_Position->TurnRight(keyDown);
+
+	keyDown = m_pInput->IsLeftArrowPressed();
+	m_Position->TurnLeft(keyDown);
+
+	float rotationY = 0;
+	m_Position->GetRotation(rotationY);
+
+	bResult = m_pGraphics->Frame(mouseX, mouseY, m_Cpu->GetCpuPercentage(),
+ m_Fps->GetFps(),
+		m_Timer->GetTime(), rotationY);
+	IF_NOTX_RTFALSE(bResult);
 	return m_pGraphics->Render();
 }
 

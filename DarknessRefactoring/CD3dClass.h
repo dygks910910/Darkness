@@ -1,7 +1,7 @@
 #pragma once
 
 
-class CD3dClass
+class CD3dClass : public AlignedAllocationPolicy<16>
 {
 public:
 	CD3dClass();
