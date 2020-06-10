@@ -54,7 +54,6 @@ bool CMainGame::Init()
 		mSwapChain, mRenderTargetView, &mScreenViewport, mDepthStencilView,
 		mClientWidth, mClientHeight);
 
-
 	return true;
 }
 

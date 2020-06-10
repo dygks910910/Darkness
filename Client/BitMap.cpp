@@ -66,11 +66,13 @@ void CBitMap::Shutdown()
 }
 
 bool CBitMap::Render(ID3D11DeviceContext* deviceContext,
-	int positionX, int positionY)
+	int positionX, int positionY, bool isFullScreen, const float& scaleX, const float& scaleY)
 {
+	mScaleX = scaleX;
+	mScaleY = scaleY;
 	bool result;
 	// Re-build the dynamic vertex buffer for rendering to possibly a different location on the screen.
-	result = UpdateBuffers(deviceContext, positionX, positionY);
+	result = UpdateBuffers(deviceContext, positionX, positionY, isFullScreen);
 	if (!result)
 	{
 		return false;
@@ -105,7 +107,7 @@ ID3D11ShaderResourceView * CBitMap::GetTexture()
 
 bool CBitMap::InitializeBuffers(ID3D11Device* device)
 {
-	Vertex::Basic32* vertices;
+	Vertex::PosTex* vertices;
 	unsigned long* indices;
 	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
 	D3D11_SUBRESOURCE_DATA vertexData, indexData;
@@ -120,7 +122,7 @@ bool CBitMap::InitializeBuffers(ID3D11Device* device)
 	m_indexCount = m_vertexCount;
 
 	// Create the vertex array.
-	vertices = new Vertex::Basic32[m_vertexCount];
+	vertices = new Vertex::PosTex[m_vertexCount];
 	if (!vertices)
 	{
 		return false;
@@ -211,7 +213,7 @@ void CBitMap::ShutdownBuffers()
 	return;
 }
 
-bool CBitMap::UpdateBuffers(ID3D11DeviceContext * deviceContext, int positionX, int positionY)
+bool CBitMap::UpdateBuffers(ID3D11DeviceContext * deviceContext, int positionX, int positionY, bool isFullscreen)
 {
 	float left, right, top, bottom;
 	Vertex::PosTex* vertices;
@@ -234,13 +236,18 @@ bool CBitMap::UpdateBuffers(ID3D11DeviceContext * deviceContext, int positionX, 
 	left = (float)((m_screenWidth / 2) * -1) + (float)positionX;
 
 	// Calculate the screen coordinates of the right side of the bitmap.
-	right = left + (float)m_bitmapWidth;
+	right = (left + (float)m_bitmapWidth) * mScaleX;
+	if(isFullscreen)
+		right = left + m_screenWidth;
 
 	// Calculate the screen coordinates of the top of the bitmap.
 	top = (float)(m_screenHeight / 2) - (float)positionY;
 
 	// Calculate the screen coordinates of the bottom of the bitmap.
-	bottom = top - (float)m_bitmapHeight;
+	bottom = (top - (float)m_bitmapHeight)*mScaleY;
+	if (isFullscreen)
+		bottom = top - m_screenHeight;
+
 
 	// Create the vertex array.
 	vertices = new Vertex::PosTex[m_vertexCount];
@@ -272,19 +279,19 @@ bool CBitMap::UpdateBuffers(ID3D11DeviceContext * deviceContext, int positionX, 
 	vertices[5].Tex = XMFLOAT2(1.0f, 1.0f);
 
 
-	XMFLOAT3 vMinf3(+MathHelper::Infinity, +MathHelper::Infinity, +MathHelper::Infinity);
-	XMFLOAT3 vMaxf3(-MathHelper::Infinity, -MathHelper::Infinity, -MathHelper::Infinity);
-	XMVECTOR vMin = XMLoadFloat3(&vMinf3);
-	XMVECTOR vMax = XMLoadFloat3(&vMaxf3);
-	for (UINT i = 0; i < 6; ++i)
-	{
-		XMVECTOR P = XMLoadFloat3(&vertices[i].Pos);
-		vMin = XMVectorMin(vMin, P);
-		vMax = XMVectorMax(vMax, P);
-	}
+	//XMFLOAT3 vMinf3(+MathHelper::Infinity, +MathHelper::Infinity, +MathHelper::Infinity);
+	//XMFLOAT3 vMaxf3(-MathHelper::Infinity, -MathHelper::Infinity, -MathHelper::Infinity);
+	//XMVECTOR vMin = XMLoadFloat3(&vMinf3);
+	//XMVECTOR vMax = XMLoadFloat3(&vMaxf3);
+	//for (UINT i = 0; i < 6; ++i)
+	//{
+	//	XMVECTOR P = XMLoadFloat3(&vertices[i].Pos);
+	//	vMin = XMVectorMin(vMin, P);
+	//	vMax = XMVectorMax(vMax, P);
+	//}
 
-	XMStoreFloat3(&mMeshBox.Center, 0.5f*(vMin + vMax));
-	XMStoreFloat3(&mMeshBox.Extents, 0.5f*(vMax - vMin));
+	//XMStoreFloat3(&mMeshBox.Center, 0.5f*(vMin + vMax));
+	//XMStoreFloat3(&mMeshBox.Extents, 0.5f*(vMax - vMin));
 
 	// Lock the vertex buffer so it can be written to.
 	result = deviceContext->Map(m_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
@@ -308,7 +315,6 @@ bool CBitMap::UpdateBuffers(ID3D11DeviceContext * deviceContext, int positionX, 
 
 	return true;
 }
-
 void CBitMap::RenderBuffers(ID3D11DeviceContext* deviceContext)
 {
 	unsigned int stride;

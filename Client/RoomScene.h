@@ -60,8 +60,6 @@ class CRoomScene :
 	bool m_bFocusOnPort;
 	bool m_bFocusOnNickName;
 
-	ID3D11DepthStencilState* mDepthDisableState;
-	ID3D11DepthStencilState* mDepthStencilState;
 // 
 // 	const int LOGO_X = 100;
 // 	const int LOGO_Y = -70;
@@ -72,7 +70,7 @@ class CRoomScene :
 
 	//닉네임
 	const int PLAYER1_NICKNAME_LOCATION_X = 390 * 0.8f;
-	const int PLAYER1_NICKNAME_LOCATION_Y = 90;
+	const int PLAYER1_NICKNAME_LOCATION_Y = 85;
 
 	const int PLAYER2_NICKNAME_LOCATION_X = 390 * 0.8f;
 	const int PLAYER2_NICKNAME_LOCATION_Y = 170;
@@ -109,7 +107,7 @@ class CRoomScene :
 	const int KINGLOGO_SIZE_Y = 30 * 1.13777f;
 
 	const int KINGLOGO_LOCATION_X = 150 * 0.8f;
-	const int KINGLOGO_LOCATION_Y = 180;
+	const int KINGLOGO_LOCATION_Y = 180 * 0.9f;
 
 	//화살표버튼 맨왼쪽
 	const int LEFT1_BUTTON_X = 970 * 0.8f;

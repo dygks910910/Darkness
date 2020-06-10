@@ -23,7 +23,6 @@
 #include <WinSock2.h>
 #pragma comment(lib, "ws2_32.lib")
 
-
 #include <thread>
 #include <vector>
 #include <iostream>

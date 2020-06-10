@@ -36,6 +36,9 @@ class CMainScene :
 	CBitMap mInputNickname;
 	CButtonClass mLobbyConnectButton;
 	CButtonClass mReturnButton;
+	CButtonClass mNicknameButton;
+
+
 
 	std::wstring mIpString;
 	std::wstring mPortString;
@@ -43,9 +46,6 @@ class CMainScene :
 
 	bool bActivedInputBoard;
 	bool m_bFocusOnNickName;
-
-	ID3D11DepthStencilState* mDepthDisableState;
-	ID3D11DepthStencilState* mDepthStencilState;
 
 	const int LOGO_X = 100;
 	const int LOGO_Y = -70;

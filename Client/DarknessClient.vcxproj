@@ -74,12 +74,14 @@
     <IncludePath>$(DXSDK_DIR)\Include;$(MSBuildProjectDirectory)\Common;$(FBXSDK_DIR)\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(DXSDK_DIR)\Lib\x86;$(MSBuildProjectDirectory)\Common;$(MSBuildProjectDirectory)\Lib;$(LibraryPath)</LibraryPath>
     <ExecutablePath>$(ExecutablePath)</ExecutablePath>
+    <OutDir>$(SolutionDir)</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(DXSDK_DIR)\Include;$(MSBuildProjectDirectory)\Common;$(IncludePath)</IncludePath>
     <LibraryPath>$(DXSDK_DIR)\Lib\x64;$(MSBuildProjectDirectory)\Common;$(LibraryPath)</LibraryPath>
     <ExecutablePath>$(ExecutablePath)</ExecutablePath>
+    <OutDir>$(SolutionDir)</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>

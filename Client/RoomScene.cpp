@@ -12,8 +12,8 @@ CRoomScene::~CRoomScene()
 	mBackgroundPicture.Shutdown();
 	mKingLogo.Shutdown();
 	mMainLogo.Shutdown();
-	ReleaseCOM(mDepthDisableState);
-	ReleaseCOM(mDepthStencilState);
+	/*ReleaseCOM(mDepthDisableState);
+	ReleaseCOM(mDepthStencilState);*/
 
 }
 
@@ -31,7 +31,7 @@ bool CRoomScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	mClientWidth = clientWidth;
 	mClientHeight = clientHeight;
 
-	mCam.SetPosition(0, 0, 0);
+	mCam.SetPosition(0, 0, -10);
 	XMStoreFloat4x4(&mWorldMtx, XMMatrixTranslation(0, 0, 7));
 
 
@@ -42,66 +42,13 @@ bool CRoomScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	mKingLogo.Initialize(device, mClientWidth, mClientHeight, L"UITextures/CreaterMark.png", KINGLOGO_SIZE_X, KINGLOGO_SIZE_Y);
 
 
-	mStartButton.Init(device, BUTTON_SIZE_X, BUTTON_SIZE_Y, L"UITextures/Start.png", START_BUTTON_X, START_BUTTON_Y, mClientWidth, mClientHeight);
+	mStartButton.Init(device, BUTTON_SIZE_X, BUTTON_SIZE_Y, L"UITextures/Start.png", mClientWidth, mClientHeight);
 
 	
 
 	m_bStartCheck = false;
 	
-	// Clear the second depth stencil state before setting the parameters.
-
-
-	D3D11_DEPTH_STENCIL_DESC depthDisabledStencilDesc;
-	ZeroMemory(&depthDisabledStencilDesc, sizeof(depthDisabledStencilDesc));
-
-	// Now create a second depth stencil state which turns off the Z buffer for 2D rendering.  The only difference is 
-	// that DepthEnable is set to false, all other parameters are the same as the other depth stencil state.
-	depthDisabledStencilDesc.DepthEnable = false;
-	depthDisabledStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-	depthDisabledStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
-	depthDisabledStencilDesc.StencilEnable = true;
-	depthDisabledStencilDesc.StencilReadMask = 0xFF;
-	depthDisabledStencilDesc.StencilWriteMask = 0xFF;
-	depthDisabledStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-	depthDisabledStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
-	depthDisabledStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-	depthDisabledStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-	depthDisabledStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-	depthDisabledStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
-	depthDisabledStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-	depthDisabledStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-
-	HR(device->CreateDepthStencilState(&depthDisabledStencilDesc, &mDepthDisableState));
-	depthDisabledStencilDesc.DepthEnable = true;
-
-	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
-	// Initialize the description of the stencil state.
-	ZeroMemory(&depthStencilDesc, sizeof(depthStencilDesc));
-
-	// Set up the description of the stencil state.
-	depthStencilDesc.DepthEnable = true;
-	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-	depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
-
-	depthStencilDesc.StencilEnable = true;
-	depthStencilDesc.StencilReadMask = 0xFF;
-	depthStencilDesc.StencilWriteMask = 0xFF;
-
-	// Stencil operations if pixel is front-facing.
-	depthStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-	depthStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
-	depthStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-	depthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-
-	// Stencil operations if pixel is back-facing.
-	depthStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-	depthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
-	depthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-	depthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-
-	// Create the depth stencil state.
-	HR(device->CreateDepthStencilState(&depthStencilDesc, &mDepthStencilState));
-	dc->OMSetDepthStencilState(mDepthStencilState, 1);
+	CreateZbufferState(device);
 
 	bActivedInputBoard = false;
 	m_bFocusOnIP = false;
@@ -125,7 +72,7 @@ std::string CRoomScene::UpdateScene(const float dt, MSG& msg)
 		CModelManager::GetInstance()->mIsStart = false;
 		return SceneName::gameScene;
 	}
-
+	mCam.UpdateViewMatrix();
 	return "";
 }
 
@@ -138,20 +85,31 @@ void CRoomScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 		dc->ClearRenderTargetView(rtv, reinterpret_cast<const float*>(&Colors::Silver));
 		dc->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 		dc->IASetInputLayout(InputLayouts::PosTex);
-		dc->OMSetDepthStencilState(mDepthDisableState, 1);
+		//dc->OMSetDepthStencilState(mDepthDisableState, 1);
 		bool result;
 
 		// center Sky about eye in world space
 		XMFLOAT3 eyePos = mCam.GetPosition();
 		XMMATRIX world = XMLoadFloat4x4(&mWorldMtx);
-		XMMATRIX WVP = XMMatrixMultiply(world, world*mCam.Proj()*mCam.othMtx());
+		XMMATRIX WVP = XMMatrixMultiply(world, world*mCam.View()*mCam.othMtx());
 
 		Effects::TextureFX->SetWorldViewProj(WVP);
 		Effects::TextureFX->SetDiffuseMap(mBackgroundPicture.GetTexture());
 		dc->RSSetState(0);
 		//////////////////////////////////////////////////////////////////////////
 		//기본메인화면.
-		mBackgroundPicture.Render(dc, 0, 0);
+		TurnZBuffOff(dc);
+		dc->IASetInputLayout(InputLayouts::PosTex);
+		mStartButton.Draw(dc, mClientWidth *0.6f, mClientHeight * 0.7f);
+
+		//화살표 버튼
+
+		mBackgroundPicture.Render(dc, 0, 0, true);
+
+
+		//방장 왕관표시
+		mKingLogo.Render(dc, KINGLOGO_LOCATION_X, KINGLOGO_LOCATION_Y, false);
+		TurnZBuffOn(dc);
 
 		for (int i = 0; i < 8; ++i)
 		{
@@ -193,14 +151,7 @@ void CRoomScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 			mDrawText(NetworkMgr::GetInstance()->mNickName, 30, PLAYER8_NICKNAME_LOCATION_X, PLAYER8_NICKNAME_LOCATION_Y + OUTPUT_Y_OFFSET, FontColorForFW::GOLD);
 
 		//스타트 버튼
-		mStartButton.Draw(dc);
-
-		//화살표 버튼
 		
-
-
-		//방장 왕관표시
-		mKingLogo.Render(dc, KINGLOGO_LOCATION_X, KINGLOGO_LOCATION_Y);
 
 		
 		dc->RSSetState(0);

@@ -312,13 +312,15 @@ bool D3DApp::InitMainWindow()
 		MessageBox(0, L"RegisterClass Failed.", 0, 0);
 		return false;
 	}
-	mClientWidth = GetSystemMetrics(SM_CXSCREEN);
-	mClientHeight = GetSystemMetrics(SM_CYSCREEN);
+	/*mClientWidth = GetSystemMetrics(SM_CXSCREEN);
+	mClientHeight = GetSystemMetrics(SM_CYSCREEN);*/
+	mClientWidth = 1366;
+	mClientHeight = 768; 
 
-	RECT R = { 0, 0, mClientWidth, mClientHeight };
+	RECT R ;
 	DEVMODE dmScreenSettings;
 
-#define FULL_SCREEN true
+#define FULL_SCREEN false
 	int width;
 	int height;
 	if (FULL_SCREEN)
@@ -338,6 +340,7 @@ bool D3DApp::InitMainWindow()
 		width =height  = 0;
 	}
 	else {
+		R = { 0, 0, 1366,768};
 		// Compute window rectangle dimensions based on requested client area dimensions.
 		AdjustWindowRect(&R, WS_OVERLAPPEDWINDOW, false);
 		width = R.right - R.left;

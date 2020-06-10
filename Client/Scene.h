@@ -37,5 +37,16 @@ public:
 	virtual ~CScene();
 	float AspectRatio() const;
 
+	void TurnZBuffOff(ID3D11DeviceContext* deviceContext);
+	void TurnZBuffOn(ID3D11DeviceContext* deviceContext);
+
+private:
+	static ID3D11DepthStencilState* m_depthDisableStencilState;
+	static ID3D11DepthStencilState* m_depthStencilState;
+protected:
+	void ReleaseZbufferState();
+	bool CreateZbufferState(ID3D11Device* device);
+
+
 };
 

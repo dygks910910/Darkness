@@ -15,6 +15,7 @@ class BitmapClass;
 class TextClass;
 class ModelListClass;
 class FrustumClass;
+class CEffect;
 
 class CGraphicsClass
 {
@@ -29,6 +30,7 @@ public:
 	bool Render();
 private:
 	bool DebugRender();
+	bool RenderTest();
 private:
 	CD3dClass* m_pD3d							 = nullptr;
 	CCameraClass* m_Camera				= nullptr;
@@ -43,8 +45,6 @@ private:
 	TextClass* m_Text											= nullptr;
 	ModelListClass* m_ModelList = nullptr;
 	FrustumClass* m_Frustum = nullptr;
-
-
 	static float m_Rotation;
 
 };

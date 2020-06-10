@@ -1404,7 +1404,7 @@ HRESULT CDXUTDirectionWidget::StaticOnD3D11CreateDevice( ID3D11Device* pd3dDevic
 
     //const char* g_strBuffer =
     //    "float4 g_MaterialDiffuseColor;      // Material's diffuse color\r\n"
-    //    "float4 g_LightDir;                  // Light's direction in world space\r\n"
+    //    "float4 g_LightDir;                  // m_LightBasic's direction in world space\r\n"
     //    "float4x4 g_mWorld;                  // World matrix for object\r\n"
     //    "float4x4 g_mWorldViewProjection;    // World * View * Projection matrix\r\n"
     //    "\r\n"

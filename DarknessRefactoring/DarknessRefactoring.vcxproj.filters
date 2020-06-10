@@ -102,6 +102,21 @@
     <ClInclude Include="PositionClass.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="CEffect.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="dxerr.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="d3dx11effect.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="d3dxGlobal.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CInputLayouts.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DarknessRefactoring.rc">
@@ -192,6 +207,15 @@
     <ClCompile Include="PositionClass.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="CEffect.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="dxerr.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CInputLayouts.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="color.vs" />
@@ -202,5 +226,6 @@
     <None Include="fontVS.hlsl" />
     <None Include="texture.ps" />
     <None Include="texture.vs" />
+    <None Include="Light.hlsl" />
   </ItemGroup>
 </Project>

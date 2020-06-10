@@ -11,6 +11,7 @@
 #include"TextClass.h"
 #include"ModelListClass.h"
 #include"FrustumClass.h"
+#include"CEffect.h"
 float CGraphicsClass::m_Rotation = 0;
 
 CGraphicsClass::CGraphicsClass():
@@ -32,7 +33,6 @@ CGraphicsClass::~CGraphicsClass()
 bool CGraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 {
 	bool result;
-
 
 	// Create the Direct3D object.
 	m_pD3d = new CD3dClass;
@@ -145,6 +145,8 @@ bool CGraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_Frustum = new FrustumClass;
 	IF_NOTX_RTFALSE(m_Frustum);
 
+	CEffects::InitAll(m_pD3d->GetDevice());
+
 	return true;
 }
 
@@ -163,6 +165,8 @@ void CGraphicsClass::Shutdown()
 	SAFE_DELETE(m_CameraTop);
 	SAFE_DELETE_SHUTDOWN(m_ModelList);
 	SAFE_DELETE(m_Frustum);
+	CEffects::DestroyAll();
+
 
 }
 
@@ -232,7 +236,7 @@ bool CGraphicsClass::Render()
 	m_pD3d->TurnOffAlphaBlending();
 	m_pD3d->TurnZBufferOn();
 
-	m_Frustum->ConstructFrustum(SCREEN_DEPTH, projectionMatrix, viewMatrix);
+	/*m_Frustum->ConstructFrustum(SCREEN_DEPTH, projectionMatrix, viewMatrix);
 	int nModelCount = m_ModelList->GetModelCount();
 	int renderCount = 0;
 
@@ -249,11 +253,12 @@ bool CGraphicsClass::Render()
 			m_pD3d->GetWorldMatrix(worldMatrix);
 			renderCount++;
 		}
-	}
+	}*/
 	worldMatrix = XMMatrixRotationY(m_Rotation);
 	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
 	
 	// Render the model using the color shader.
+	m_Model->Render(m_pD3d->GetDeviceContext());
 	result = m_LightShader->Render(m_pD3d->GetDeviceContext(),
 		m_Model->GetIndexCount(),
 		worldMatrix, viewMatrix, projectionMatrix, m_Model->GetTexture(),
@@ -262,6 +267,7 @@ bool CGraphicsClass::Render()
 
 #ifdef _DEBUG
 	DebugRender();
+	RenderTest();
 #endif
 
 	IF_NOTX_RTFALSE(result);
@@ -323,6 +329,54 @@ bool CGraphicsClass::DebugRender()
 		}
 	}
 	return true;
+}
+
+bool CGraphicsClass::RenderTest()
+{
+	m_pD3d->SetSecondViewport();
+	static float rotationY = 0;
+	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, othMatrix;
+
+	m_CameraTop->GetViewMatrix(viewMatrix);
+	m_pD3d->GetWorldMatrix(worldMatrix);
+	m_pD3d->GetProjectionMatrix(projectionMatrix);
+
+	XMVECTOR tmpV = XMVectorZero();
+	m_Model->Render(m_pD3d->GetDeviceContext());
+	m_CameraTop->Render();
+	CEffects::LightFX->SetLightDir(m_Light->GetDirection());
+	tmpV = XMLoadFloat4(&m_Light->GetAmbientColor());
+	CEffects::LightFX->SetAmbientColor(tmpV);
+	tmpV = XMLoadFloat4(&m_Light->GetDiffuseColor());
+	CEffects::LightFX->SetDiffuseColor(tmpV);
+	tmpV = XMLoadFloat4(&m_Light->GetDiffuseColor());
+
+	CEffects::LightFX->SetSpecularColor(tmpV);
+	CEffects::LightFX->SetSpecularPower(m_Light->GetSpecularPower());
+	CEffects::LightFX->SetCamPos(m_CameraTop->GetPosition());
+
+	D3DX11_TECHNIQUE_DESC techDesc;
+
+	//
+	// Draw the box with alpha clipping.
+	// 
+
+	ID3DX11EffectTechnique* boxTech = CEffects::LightFX->LightTexTech;
+	boxTech->GetDesc(&techDesc);
+	for (UINT p = 0; p < techDesc.Passes; ++p)
+	{
+		m_Model->Render(m_pD3d->GetDeviceContext());
+		CEffects::LightFX->SetWorld(worldMatrix);
+		CEffects::LightFX->SetView(viewMatrix);
+		CEffects::LightFX->SetProj(projectionMatrix);
+		CEffects::LightFX->SetDiffuseMap(m_Model->GetTexture());
+
+		boxTech->GetPassByIndex(p)->Apply(0, m_pD3d->GetDeviceContext());
+
+		// Restore default render state.
+		m_pD3d->GetDeviceContext()->DrawIndexed(m_Model->GetIndexCount(), 0, 0);
+	}
+	return false;
 }
 
 bool TextClass::SetMousePosition(int mouseX, int mouseY, ID3D11DeviceContext* deviceContext)

@@ -55,13 +55,13 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	dc->IASetInputLayout(InputLayouts::PosTex);
 	dc->OMSetDepthStencilState(mDepthDisableState, 1);
 	mLoadingScene.Initialize(device, 1280, 800, L"UITextures/loading1.png", 1280, 800);
-	mLoadingScene.Render(dc, 0, 0);
+	mLoadingScene.Render(dc, 0, 0,true);
 	HR(swapChain->Present(0, 0));
 	
 	//ZbufferOff();
 
 	mLoadingScene.Initialize(device, 1280, 800, L"UITextures/loading2.png", 1280, 800);
-	mLoadingScene.Render(dc, 0, 0);
+	mLoadingScene.Render(dc, 0, 0, true);
 	HR(swapChain->Present(0, 0));
 
 

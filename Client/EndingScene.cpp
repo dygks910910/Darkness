@@ -29,7 +29,7 @@ bool CEndingScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	//////////////////////////////////////////////////////////////////////////
 	//로고화면 초기화.
 	mResultBoard.Initialize(device, mClientWidth, mClientHeight, TEXT("UITextures/gameResultBoard.png"), mClientWidth, mClientHeight);
-	mHomeButton.Init(device, 100, 100, TEXT("UITextures/HomeButton.png"), HOME_BUTTON_X, HOME_BUTTON_Y, mClientWidth, mClientHeight);
+	mHomeButton.Init(device, 100, 100, TEXT("UITextures/HomeButton.png"), mClientWidth, mClientHeight);
 	// Clear the second depth stencil state before setting the parameters.
  	
  	D3D11_DEPTH_STENCIL_DESC depthDisabledStencilDesc;
@@ -160,10 +160,10 @@ void CEndingScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 	Effects::TextureFX->SetWorldViewProj(WVP);
 
-	mResultBoard.Render(dc, 0, 0);
+	mResultBoard.Render(dc, 0, 0, false);
 
 	DrawAllScore();
-	mHomeButton.Draw(dc);
+	mHomeButton.Draw(dc, 100,100 );
 	dc->RSSetState(0);
 
 // restore default states.

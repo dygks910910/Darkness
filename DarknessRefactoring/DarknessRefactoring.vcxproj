@@ -72,7 +72,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(DXSDK_DIR)\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath);$(DXSDK_DIR)\include</IncludePath>
     <LibraryPath>$(DXSDK_DIR)\Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -91,10 +91,13 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Create</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -147,8 +150,10 @@
     <ClInclude Include="CCameraClass.h" />
     <ClInclude Include="CColorShaderClass.h" />
     <ClInclude Include="CD3dClass.h" />
+    <ClInclude Include="CEffect.h" />
     <ClInclude Include="CGraphicsClass.h" />
     <ClInclude Include="CInputClass.h" />
+    <ClInclude Include="CInputLayouts.h" />
     <ClInclude Include="CLightClass.h" />
     <ClInclude Include="CLightShaderClass.h" />
     <ClInclude Include="CModelClass.h" />
@@ -156,9 +161,12 @@
     <ClInclude Include="CSystemClass.h" />
     <ClInclude Include="CTextureClass.h" />
     <ClInclude Include="CTextureShaderClass.h" />
+    <ClInclude Include="d3dx11effect.h" />
+    <ClInclude Include="d3dxGlobal.h" />
     <ClInclude Include="DDSTextureLoader.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="DxDefine.h" />
+    <ClInclude Include="dxerr.h" />
     <ClInclude Include="FontClass.h" />
     <ClInclude Include="FontShaderClass.h" />
     <ClInclude Include="FpsClass.h" />
@@ -184,8 +192,10 @@
     <ClCompile Include="CCameraClass.cpp" />
     <ClCompile Include="CColorShaderClass.cpp" />
     <ClCompile Include="CD3dClass.cpp" />
+    <ClCompile Include="CEffect.cpp" />
     <ClCompile Include="CGraphicsClass.cpp" />
     <ClCompile Include="CINPUTCLASS.CPP" />
+    <ClCompile Include="CInputLayouts.cpp" />
     <ClCompile Include="CLightClass.cpp" />
     <ClCompile Include="CLightShaderClass.cpp" />
     <ClCompile Include="CModelClass.cpp" />
@@ -194,6 +204,7 @@
     <ClCompile Include="CTextureClass.cpp" />
     <ClCompile Include="CTextureShaderClass.cpp" />
     <ClCompile Include="DDSTextureLoader.cpp" />
+    <ClCompile Include="dxerr.cpp" />
     <ClCompile Include="FontClass.cpp" />
     <ClCompile Include="FontShaderClass.cpp" />
     <ClCompile Include="FpsClass.cpp" />
@@ -247,6 +258,19 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Light.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
       <FileType>Document</FileType>
     </None>
   </ItemGroup>

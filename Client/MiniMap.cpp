@@ -20,8 +20,8 @@ bool CMiniMap::Initialize(ID3D11Device * device, int screenWidth, int screenHeig
 	XMMATRIX viewMatrix, float terrainWidth, float terrainHeight)
 {
 	bool result;
-	m_worldMtx = XMMatrixTranslation(0, 1, 9.5f);
-	
+	//m_worldMtx = XMMatrixTranslation(0, 1, 9.5f);
+	m_worldMtx = XMMatrixIdentity();
 	// Set the size of the mini-map.
 	m_mapSizeX = 200;
 	m_mapSizeY = 200;
@@ -99,8 +99,9 @@ bool CMiniMap::Render(ID3D11DeviceContext * deviceContext, const Camera & camera
 	// center Sky about eye in world space
 	XMFLOAT3 eyePos = camera.GetPosition();
 
-	XMMATRIX WVP = XMMatrixMultiply(m_worldMtx, m_worldMtx*camera.Proj()*camera.othMtx());
+	XMMATRIX WVP = XMMatrixMultiply(m_worldMtx, m_worldMtx*camera.View()*camera.othMtx());
 	Effects::TextureFX->SetWorldViewProj(WVP);
+	Effects::TextureFX->SetDiffuseMap(m_MiniMapBitmap->GetTexture());
 
 	D3DX11_TECHNIQUE_DESC techDesc;
 	Effects::TextureFX->Tech->GetDesc(&techDesc);
@@ -109,14 +110,12 @@ bool CMiniMap::Render(ID3D11DeviceContext * deviceContext, const Camera & camera
 	{
 		ID3DX11EffectPass* pass = Effects::TextureFX->Tech->GetPassByIndex(p);
 		pass->Apply(0, deviceContext);
-
 		deviceContext->DrawIndexed(6, 0, 0);
 	}
 	// Render the border bitmap using the texture shader.
-	Effects::TextureFX->SetDiffuseMap(m_MiniMapBitmap->GetTexture());
 
 	// Put the mini-map bitmap vertex and index buffers on the graphics pipeline to prepare them for drawing.
-	result = m_MiniMapBitmap->Render(deviceContext, m_mapLocationX, m_mapLocationY);
+	result = m_MiniMapBitmap->Render(deviceContext, m_mapLocationX, m_mapLocationY, false);
 	if (!result)
 	{
 		return false;
@@ -132,7 +131,7 @@ bool CMiniMap::Render(ID3D11DeviceContext * deviceContext, const Camera & camera
 	Effects::BasicFX->SetDiffuseMap(m_Point->GetTexture());
 
 	// Put the point bitmap vertex and index buffers on the graphics pipeline to prepare them for drawing.
-	result = m_Point->Render(deviceContext, m_pointLocationX, m_pointLocationY);
+	result = m_Point->Render(deviceContext, m_pointLocationX, m_pointLocationY, false);
 	if (!result)
 	{
 		return false;

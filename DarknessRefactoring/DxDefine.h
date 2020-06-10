@@ -6,6 +6,7 @@
 //#pragma comment(lib, "d3d11.lib")
 //#pragma comment(lib, "dxgi.lib")
 //#pragma comment(lib, "d3dcompiler.lib")
+#pragma comment(lib, "Effects11d.lib")
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dx11.lib")
@@ -14,6 +15,8 @@
 #pragma comment(lib, "dinput8.lib")
 #pragma comment(lib, "winmm.lib")
 #pragma comment(lib, "dsound.lib")
+
+
 
 //////////////
 // INCLUDES //
@@ -29,10 +32,33 @@
 #include<dinput.h>
 #include <mmsystem.h>
 #include <dsound.h>
+#include"dxerr.h"
+#include"d3dx11effect.h"
+
 using namespace DirectX;
+
+
+#if defined(DEBUG) | defined(_DEBUG)
+#ifndef HR
+#define HR(x)                                              \
+	{                                                          \
+		HRESULT hr = (x);                                      \
+		if(FAILED(hr))                                         \
+		{                                                      \
+			DXTrace(WFILE, (DWORD)__LINE__, hr, L#x, true); \
+		}                                                      \
+	}
+#endif
+
+#else
+#ifndef HR
+#define HR(x) (x)
+#endif
+#endif 
 
 
 ///////////////////////////
 //  warning C4316 Ã³¸®¿ë  //
 ///////////////////////////
 #include "AlignedAllocationPolicy.h"
+

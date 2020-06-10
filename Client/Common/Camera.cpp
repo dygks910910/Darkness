@@ -11,7 +11,7 @@ Camera::Camera()
 	  mLook(0.0f, 0.0f, 1.0f)
 {
 	SetLens(0.25f*MathHelper::Pi, 1.0f,0.3f, 1000.0f);
-	mOthomtx = XMMatrixOrthographicLH(100, 100, SCREEN_NEAR, SCREEN_DEPTH);
+	mOthomtx = XMMatrixOrthographicLH(1366,768, SCREEN_NEAR, SCREEN_DEPTH);
 }
 
 Camera::~Camera()

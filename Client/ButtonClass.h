@@ -20,7 +20,10 @@ private:
 	int mClientWidth;
 	int mClientHeight;
 	bool isMouseOnThisButton;
+	bool isSingleImg;
 public:
+	float m_fScaleX = 1;
+	float m_fScaleY = 1;
 	XMFLOAT4X4 mWorld;
 	/*
 	2017 / 4 / 6 / 17:40
@@ -28,10 +31,13 @@ public:
 	설명:무조건 비트맵 이미지가 세개여야 하고 connect.png 를 매개변수로 입력하면 
 	connect1.png,connect2.png,connect3.png 가 로드됨.
 	*/
-	void Init(ID3D11Device* device, const int& bitmapWidth,
-		const int& bitmapHeight, const WCHAR* filename,const int& locationX, 
-		const int& locationY, const int& clientWidth, const int& clientHeight);
-	void Draw(ID3D11DeviceContext* dc);
+	void Init(ID3D11Device* device,
+		const int& bitmapWidth,
+		const int& bitmapHeight, const WCHAR* filename,
+		const int& clientWidth,
+		const int& clientHeight,const float& scaleX = 1.0f, const float& scaleY = 1.0f, bool singleImg = false);
+	void Draw(ID3D11DeviceContext* dc, const int& locationX , const int& locationY);
+
 	void Update();
 	void OnMouseDown(const int& x, const int& y);
 	void OnMouseMove(const int& x, const int& y);
@@ -42,8 +48,8 @@ public:
 	XNA::AxisAlignedBox GetBox() { return mButton[0].mMeshBox; }
 	int GetLocationX() { return mLocationX; };
 	int GetLocationY() { return mLocationY; };
-	int GetBitmapWidth() { return mBitmapWidth; }
-	int GetBitmapHeight() { return mBitmapHeight; }
+	int GetBitmapWidth() { return mBitmapWidth*m_fScaleX; }
+	int GetBitmapHeight() { return mBitmapHeight * m_fScaleY; }
 
 	bool isClicked;
 
