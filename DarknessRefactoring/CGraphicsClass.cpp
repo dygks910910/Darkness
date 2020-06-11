@@ -204,7 +204,7 @@ bool CGraphicsClass::Render()
 	float radius= 1.0f;
 	XMFLOAT4 color;
 	// Clear the buffers to begin the scene.
-	m_pD3d->BeginScene(0, 0,0, 1.0f);
+	m_pD3d->BeginScene(1, 1,1, 1.0f);
 	bool result;
 
 	// Generate the view matrix based on the camera's position.
@@ -222,16 +222,21 @@ bool CGraphicsClass::Render()
 	m_pD3d->TurnZBufferOff();
 	m_pD3d->TurnOnAlphaBlending();
 
-	
+
 	
 	if (!m_Text->Render(m_pD3d->GetDeviceContext(), worldMatrix, othMatrix))
 		return false;
 
-	/*if (!m_Bitmap->Render(m_pD3d->GetDeviceContext(), 100,100))
+	if (!m_Bitmap->Render(m_pD3d->GetDeviceContext(), 100,100))
 		return false;
 	if (!m_textureShader->Render(m_pD3d->GetDeviceContext(), m_Bitmap->GetIndexCount(),
 		worldMatrix, viewMatrix, othMatrix, m_Bitmap->GetTexture()))
-		return false;*/
+		return false;
+	if (!m_Bitmap->Render(m_pD3d->GetDeviceContext(), 200, 200))
+		return false;
+	if (!m_textureShader->Render(m_pD3d->GetDeviceContext(), m_Bitmap->GetIndexCount(),
+		worldMatrix, viewMatrix, othMatrix, m_Bitmap->GetTexture()))
+		return false;
 
 	m_pD3d->TurnOffAlphaBlending();
 	m_pD3d->TurnZBufferOn();

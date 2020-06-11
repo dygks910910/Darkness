@@ -38,11 +38,8 @@ bool CRoomScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	//////////////////////////////////////////////////////////////////////////
 	//방화면 초기화.
 	mBackgroundPicture.Initialize(device, mClientWidth, mClientHeight, L"UITextures/RoomScene2.png", mClientWidth, mClientHeight);
-
 	mKingLogo.Initialize(device, mClientWidth, mClientHeight, L"UITextures/CreaterMark.png", KINGLOGO_SIZE_X, KINGLOGO_SIZE_Y);
-
-
-	mStartButton.Init(device, BUTTON_SIZE_X, BUTTON_SIZE_Y, L"UITextures/Start.png", mClientWidth, mClientHeight);
+	mStartButton.Init(device, 100, 150, L"UITextures/Start.png", mClientWidth, mClientHeight);
 
 	
 
@@ -95,22 +92,20 @@ void CRoomScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 		Effects::TextureFX->SetWorldViewProj(WVP);
 		Effects::TextureFX->SetDiffuseMap(mBackgroundPicture.GetTexture());
-		dc->RSSetState(0);
+	//	dc->RSSetState(0);
 		//////////////////////////////////////////////////////////////////////////
 		//기본메인화면.
-		TurnZBuffOff(dc);
 		dc->IASetInputLayout(InputLayouts::PosTex);
-		mStartButton.Draw(dc, mClientWidth *0.6f, mClientHeight * 0.7f);
-
+		TurnZBuffOff(dc);
+		TurnAlphaOn(dc);
 		//화살표 버튼
-
 		mBackgroundPicture.Render(dc, 0, 0, true);
-
-
+		mStartButton.Draw(dc, mClientWidth * 0.6f, mClientHeight * 0.7f);
 		//방장 왕관표시
 		mKingLogo.Render(dc, KINGLOGO_LOCATION_X, KINGLOGO_LOCATION_Y, false);
-		TurnZBuffOn(dc);
 
+		TurnZBuffOn(dc);
+		TurnAlphaOff(dc);
 		for (int i = 0; i < 8; ++i)
 		{
 			if (!CModelManager::GetInstance()->mMyNick[i].empty() && NetworkMgr::GetInstance()->mPlayerExist[i] == true)
@@ -151,8 +146,6 @@ void CRoomScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 			mDrawText(NetworkMgr::GetInstance()->mNickName, 30, PLAYER8_NICKNAME_LOCATION_X, PLAYER8_NICKNAME_LOCATION_Y + OUTPUT_Y_OFFSET, FontColorForFW::GOLD);
 
 		//스타트 버튼
-		
-
 		
 		dc->RSSetState(0);
 		dc->OMSetDepthStencilState(0, 0);

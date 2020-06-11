@@ -12,7 +12,7 @@ cbuffer MatrixBuffer
 };
 
 Texture2D shaderTexture;
-SamplerState SampleType;
+//SamplerState SampleType;
 //////////////
 // TYPEDEFS //
 //////////////
@@ -27,7 +27,17 @@ struct PixelInputType
 	float4 position : SV_POSITION;
     float2 tex : TEXCOORD;
 };
-
+ 
+SamplerState SampleType
+{
+	Filter = MIN_MAG_MIP_LINEAR;
+	AddressU = WRAP;
+	AddressV = WRAP;
+    AddressW = WRAP;
+    ComparisonFunc = ALWAYS;
+    MaxAnisotropy = 1;
+    MinLOD = 0;
+};
 
 ////////////////////////////////////////////////////////////////////////////////
 // Vertex Shader

@@ -83,9 +83,10 @@ void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device, 
 		/*	dc->IASetInputLayout(InputLayouts::PosTex);
 			dc->OMSetDepthStencilState(tDepthDisableState, 1);*/
 
-			mLoadingScene2.Initialize(device, 1280, 800, L"UITextures/loading3.png", 1280, 800);
+			mLoadingScene2.Initialize(device, 1500, 900, L"UITextures/loading3.png", 1500, 900);
 			mLoadingScene2.Render(dc, 0, 0, true);
 			HR(swapChain->Present(0, 0));
+			mLoadingScene2.Shutdown();
 		}
 		mclipAnimbuf.insert(std::pair<std::string, std::vector<XMFLOAT4X4>*>(clipname[k], TestFinalTransforms));
 
@@ -96,9 +97,10 @@ void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device, 
 // 	dc->IASetInputLayout(InputLayouts::PosTex);
 // 	dc->OMSetDepthStencilState(tDepthDisableState, 1);
 
-	mLoadingScene2.Initialize(device, 1280, 800, L"UITextures/loading4.png", 1280, 800);
+	mLoadingScene2.Initialize(device, 1500, 900, L"UITextures/loading4.png", 1500, 900);
 	mLoadingScene2.Render(dc, 0, 0, true);
 	HR(swapChain->Present(0, 0));
+	mLoadingScene2.Shutdown();
 
 	for (int i = 0; i < ANIMCNT; ++i)
 	{
@@ -108,9 +110,10 @@ void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device, 
 	BuildBasicGeometryBuffer();
 	BuildShapeGeometryBuffers();
 
-	mLoadingScene2.Initialize(device, 1280, 800, L"UITextures/loading5.png", 1280, 800);
+	mLoadingScene2.Initialize(device, 1500, 900, L"UITextures/loading5.png", 1500, 900);
 	mLoadingScene2.Render(dc, 0, 0, true);
 	HR(swapChain->Present(0, 0));
+	mLoadingScene2.Shutdown();
 
 	ReadMapData(texMgr, *cam);
 	send_wsa_buf.buf = reinterpret_cast<char*>(send_buf);

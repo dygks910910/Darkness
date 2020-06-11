@@ -53,17 +53,19 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	camset = false;
 	//////////////////////////////////////////////////////////////////////
 	//로딩화면 초기화
-	dc->IASetInputLayout(InputLayouts::PosTex);
+	dc->IASetInputLayout(InputLayouts::PosTex); 
 	dc->OMSetDepthStencilState(mDepthDisableState, 1);
-	mLoadingScene.Initialize(device, 1280, 800, L"UITextures/loading1.png", 1280, 800);
+	mLoadingScene.Initialize(device, 1500, 900, L"UITextures/loading1.png", 1500, 900);
 	mLoadingScene.Render(dc, 0, 0,true);
 	HR(swapChain->Present(0, 0));
-	
+	mLoadingScene.Shutdown();
+
 	//ZbufferOff();
 
-	mLoadingScene.Initialize(device, 1280, 800, L"UITextures/loading2.png", 1280, 800);
+	mLoadingScene.Initialize(device, 1500, 900, L"UITextures/loading2.png", 1500, 900);
 	mLoadingScene.Render(dc, 0, 0, true);
 	HR(swapChain->Present(0, 0));
+	mLoadingScene.Shutdown();
 
 
 	//////////////////////////////////////////////
@@ -493,7 +495,9 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 		mSky->Draw(dc, mCam);
 
 
-		dc->OMSetBlendState(0, blendFactor, 0xffffffff); // restore default
+		//dc->OMSetBlendState(0, blendFactor, 0xffffffff); // restore default
+		TurnAlphaOn(dc);
+
 		dc->IASetInputLayout(InputLayouts::Particle);
 		dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 		mRain.SetEyePos(mCam.GetPosition());
@@ -516,9 +520,9 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 		mDrawText(timerString, 75, mClientWidth / 2 - 100, 0, FontColorForFW::RED);
 		TurnZBuffOff(dc);
 		dc->IASetInputLayout(InputLayouts::PosTex);
+		TurnAlphaOff(dc);
 		mMinimap.Render(dc, mCam);
 		TurnZBuffOn(dc);
-
 		if (NetworkMgr::GetInstance()->isGameStart)
 		{
 			//std::cout << "게임이 시작됨.";

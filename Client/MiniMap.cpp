@@ -50,6 +50,7 @@ bool CMiniMap::Initialize(ID3D11Device * device, int screenWidth, int screenHeig
 	}
 
 	// Initialize the mini-map bitmap object.
+	
 	result = m_MiniMapBitmap->Initialize(device, screenWidth, screenHeight,
  L"UITextures/minimapImage.PNG", 200,200);
 	if (!result)
@@ -110,11 +111,7 @@ bool CMiniMap::Render(ID3D11DeviceContext * deviceContext, const Camera & camera
 	D3DX11_TECHNIQUE_DESC techDesc;
 	Effects::TextureFX->Tech->GetDesc(&techDesc);
 
-	result = m_Point->Render(deviceContext, m_pointLocationX, m_pointLocationY, false);
-	if (!result)
-	{
-		return false;
-	}
+	
 	// Put the mini-map bitmap vertex and index buffers on the graphics pipeline to prepare them for drawing.
 	result = m_MiniMapBitmap->Render(deviceContext, m_mapLocationX, m_mapLocationY, false,scaleX, scaleY);
 	if (!result)
@@ -122,7 +119,11 @@ bool CMiniMap::Render(ID3D11DeviceContext * deviceContext, const Camera & camera
 		return false;
 	}
 	// Put the point bitmap vertex and index buffers on the graphics pipeline to prepare them for drawing.
-	
+	result = m_Point->Render(deviceContext, m_pointLocationX, m_pointLocationY, false);
+	if (!result)
+	{
+		return false;
+	}
 
 	return true;
 }

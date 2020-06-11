@@ -23,16 +23,14 @@ bool CMainScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	mClientWidth = clientWidth;
 	mClientHeight = clientHeight;
 	mCam.SetPosition(0, 0, -10);
+	mCam.UpdateViewMatrix();
 	XMStoreFloat4x4(&mWorldMtx, XMMatrixTranslation(0, 0, 7));
 
 	CModelManager::GetInstance()->m_bFinishInit = false;
 	NetworkMgr::GetInstance()->mCheckPacket = false;
 	NetworkMgr::GetInstance()->isGameOver = false;
 	NetworkMgr::GetInstance()->isGameStart = false;
-	if (!CreateZbufferState(device))
-	{
-		return false;
-	}
+
 
 	//////////////////////////////////////////////////////////////////////////
 	//로고화면 초기화.
@@ -114,7 +112,14 @@ bool CMainScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
  	//// Create the depth stencil state.
  	//HR(device->CreateDepthStencilState(&depthStencilDesc, &mDepthStencilState));
  	//dc->OMSetDepthStencilState(mDepthStencilState, 1);
-
+	if (!CreateZbufferState(device))
+	{
+		return false;
+	}
+	if (!CreateAlphaBlendingState(device))
+	{
+		return false;
+	}
 	bActivedInputBoard = false;
 	m_bFocusOnNickName = false;
 	m_bLogoTime = true;
@@ -127,6 +132,8 @@ bool CMainScene::Init(ID3D11Device * device, ID3D11DeviceContext * dc,
 	mTimeForLogo.Start();
 	mTimeForLogo.Reset();
 	OnResize();
+
+
 	return true;
 }
 
@@ -190,7 +197,7 @@ std::string CMainScene::UpdateScene(const float dt, MSG& msg)
 		{
 		}
 	}
-	mCam.UpdateViewMatrix();
+	//mCam.UpdateViewMatrix();
 
 	return "";
 }
@@ -199,20 +206,41 @@ void CMainScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 	IDXGISwapChain* swapChain, ID3D11RenderTargetView* rtv,
 	ID3D11DepthStencilView* dsv, D3D11_VIEWPORT* viewPort)
 {
-	TurnZBuffOff(dc);
-	dc->ClearRenderTargetView(rtv, reinterpret_cast<const float*>(&Colors::Silver));
-	dc->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	
+	dc->ClearRenderTargetView(rtv, reinterpret_cast<const float*>(&Colors::White));
+	dc->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH, 1.0f, 0);
+	
 	dc->IASetInputLayout(InputLayouts::PosTex);
 	
 	//dc->OMSetDepthStencilState(mDepthDisableState, 1);
 	// center Sky about eye in world space
 	XMFLOAT3 eyePos = mCam.GetPosition();
 	XMMATRIX world = XMLoadFloat4x4(&mWorldMtx);
-	XMMATRIX WVP = XMMatrixMultiply(world, (world * mCam.View()) *mCam.othMtx() );
+	XMMATRIX WVP = world * mCam.View() * mCam.othMtx();
+
+	//XMMATRIX worldTp = XMMatrixTranspose(world);
+	//XMMATRIX viewTp = XMMatrixTranspose(mCam.View());
+	//XMMATRIX projTp = XMMatrixTranspose(mCam.othMtx());
+	//XMMATRIX WVPTp = XMMatrixMultiply(worldTp, (worldTp * viewTp) * projTp);
 
 	Effects::TextureFX->SetWorldViewProj(WVP);
 	Effects::TextureFX->SetDiffuseMap(mBackgroundPicture.GetTexture());
 	//dc->RSSetState(0);
+	//dc->RSSetState(RenderStates::SolidRS);
+	TurnZBuffOff(dc);
+	TurnAlphaOn(dc);
+	
+	//////////////////////////////////////////////////////////////////////////
+	/*if (m_bLogoTime)
+	{
+		mMainLogo.Render(dc, 0, 0, true);
+	}*/
+	//////////////////////////////////////////////////////////////////////////
+	//기본메인화면.
+	
+	mBackgroundPicture.Render(dc, 0, 0, true);
+	mExitButton.Draw(dc, mClientWidth * 0.8f, mClientHeight * 0.7f + mConnectButton.GetBitmapHeight());
+	mConnectButton.Draw(dc, mClientWidth * 0.8f, mClientHeight * 0.7f);
 
 	if (bActivedInputBoard)
 	{
@@ -221,37 +249,25 @@ void CMainScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 		mInputBoard.GetBmpWidth(bmpwidth);
 		mInputBoard.GetBmpHeight(bmpheight);
 
+		mInputBoard.Render(dc, mClientWidth * 0.3f, mClientHeight * 0.3f, false, 0.4f, 0.4f);
 		mNicknameButton.Draw(dc, x, y + bmpheight / 2);
-		mLobbyConnectButton.Draw(dc, x , y + bmpheight - mLobbyConnectButton.GetBitmapHeight());
+		mLobbyConnectButton.Draw(dc, x, y + bmpheight - mLobbyConnectButton.GetBitmapHeight());
 		mReturnButton.Draw(dc, x + bmpwidth - mReturnButton.GetBitmapWidth(), y + bmpheight - mReturnButton.GetBitmapHeight());
+		DrawText(mNicknameString, mNicknameButton.GetBitmapHeight() / 2,
+			mNicknameButton.GetLocationX() + (x / 4), mNicknameButton.GetLocationY() + mNicknameButton.GetBitmapHeight() * 0.3f);
 
-		mInputBoard.Render(dc, mClientWidth *0.3f, mClientHeight * 0.3f, false,0.4f, 0.4f);
-
-		DrawText(mNicknameString,mNicknameButton.GetBitmapHeight()/2,
-			mNicknameButton.GetLocationX()+(x/4), mNicknameButton.GetLocationY()+mNicknameButton.GetBitmapHeight()*0.3f);
-	
 	}
-	//////////////////////////////////////////////////////////////////////////
-	/*if (m_bLogoTime)
-	{
-		mMainLogo.Render(dc, 0, 0, true);
-	}*/
-	//////////////////////////////////////////////////////////////////////////
-	//기본메인화면.
-	mConnectButton.Draw(dc, mClientWidth*0.8f, mClientHeight * 0.7f);
-	mExitButton.Draw(dc, mClientWidth * 0.8f, mClientHeight * 0.7f + mConnectButton.GetBitmapHeight());
-	mBackgroundPicture.Render(dc, 0, 0,true);
-	
+	TurnAlphaOff(dc);
+	TurnZBuffOn(dc);
 	//////////////////////////////////////////////////////////////////////////
 	
 
 
 // restore default states.
-//	dc->RSSetState(0);
 	//dc->OMSetDepthStencilState(0, 0);
 
 	HR(swapChain->Present(0, 0));
-	TurnZBuffOn(dc);
+	//TurnZBuffOn(dc);
 
 }
 

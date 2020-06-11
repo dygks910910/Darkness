@@ -4,9 +4,10 @@ CScene::~CScene()
 {
 }
 
-ID3D11DepthStencilState* CScene::m_depthDisableStencilState;
-ID3D11DepthStencilState* CScene::m_depthStencilState;
-
+ID3D11DepthStencilState* CScene::m_depthDisableStencilState = nullptr;
+ID3D11DepthStencilState* CScene::m_depthStencilState = nullptr;
+ID3D11BlendState* CScene::m_alphaEnableBlendingState = nullptr;
+ID3D11BlendState* CScene::m_alphaDisableBlendingState = nullptr;
 float CScene::AspectRatio() const
 {
 	return static_cast<float>(mClientWidth) / mClientHeight;
@@ -14,12 +15,30 @@ float CScene::AspectRatio() const
 
 void CScene::TurnZBuffOff(ID3D11DeviceContext* deviceContext)
 {
-	deviceContext->OMSetDepthStencilState(m_depthStencilState, 1);
+	deviceContext->OMSetDepthStencilState(m_depthDisableStencilState, 1);
 }
 
 void CScene::TurnZBuffOn(ID3D11DeviceContext* deviceContext)
 {
-	deviceContext->OMSetDepthStencilState(m_depthDisableStencilState, 1);
+	deviceContext->OMSetDepthStencilState(m_depthStencilState, 1);
+}
+
+void CScene::TurnAlphaOn(ID3D11DeviceContext* deviceContext)
+{
+	// Setup the blend factor.
+	float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+	// Turn on the alpha blending.
+	deviceContext->OMSetBlendState(m_alphaEnableBlendingState, blendFactor, 0xffffffff);
+}
+
+void CScene::TurnAlphaOff(ID3D11DeviceContext* deviceContext)
+{
+	// Setup the blend factor.
+	float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+	// Turn off the alpha blending.
+	deviceContext->OMSetBlendState(m_alphaDisableBlendingState, blendFactor, 0xffffffff);
 }
 
 void CScene::ReleaseZbufferState()
@@ -88,4 +107,32 @@ bool CScene::CreateZbufferState(ID3D11Device* device)
 		}
 
 		return true;
+}
+
+bool CScene::CreateAlphaBlendingState(ID3D11Device* device)
+{
+	// Clear the blend state description.
+	D3D11_BLEND_DESC blendStateDescription;
+	ZeroMemory(&blendStateDescription, sizeof(D3D11_BLEND_DESC));
+
+	// Create an alpha enabled blend state description.
+	blendStateDescription.RenderTarget[0].BlendEnable = TRUE;
+	blendStateDescription.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
+	blendStateDescription.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+	blendStateDescription.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	blendStateDescription.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+	blendStateDescription.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+	blendStateDescription.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	blendStateDescription.RenderTarget[0].RenderTargetWriteMask = 0x0f;
+
+	// Create the blend state using the description.
+	if(FAILED(device->CreateBlendState(&blendStateDescription, &m_alphaEnableBlendingState)))
+		return false;
+	// Modify the description to create an alpha disabled blend state description.
+	blendStateDescription.RenderTarget[0].BlendEnable = FALSE;
+	// Create the blend state using the description.
+	if (FAILED(device->CreateBlendState(&blendStateDescription, &m_alphaDisableBlendingState)))
+		return false;
+
+	return true;
 }

@@ -80,6 +80,7 @@ bool CBitMap::Render(ID3D11DeviceContext* deviceContext,
 	// Put the vertex and index buffers on the graphics pipeline to prepare them for drawing.
 	RenderBuffers(deviceContext);
 	Effects::TextureFX->SetDiffuseMap(GetTexture());
+
 	D3DX11_TECHNIQUE_DESC techDesc;
 	Effects::TextureFX->Tech->GetDesc(&techDesc);
 
