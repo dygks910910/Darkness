@@ -220,11 +220,12 @@ void CMainScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 		mInputBoard.GetPos(x, y);
 		mInputBoard.GetBmpWidth(bmpwidth);
 		mInputBoard.GetBmpHeight(bmpheight);
-		mNicknameButton.Draw(dc, x, y + bmpheight / 2);
-		mLobbyConnectButton.Draw(dc, x , y + bmpheight);
-		mReturnButton.Draw(dc, x + bmpwidth, y + bmpheight);
 
-		mInputBoard.Render(dc, mClientWidth / 2 - mClientWidth / 2 / 3, mClientHeight / 2 - mClientWidth / 2 / 4, false,0.3f, 0.3f);
+		mNicknameButton.Draw(dc, x, y + bmpheight / 2);
+		mLobbyConnectButton.Draw(dc, x , y + bmpheight - mLobbyConnectButton.GetBitmapHeight());
+		mReturnButton.Draw(dc, x + bmpwidth - mReturnButton.GetBitmapWidth(), y + bmpheight - mReturnButton.GetBitmapHeight());
+
+		mInputBoard.Render(dc, mClientWidth *0.3f, mClientHeight * 0.3f, false,0.4f, 0.4f);
 
 		DrawText(mNicknameString,mNicknameButton.GetBitmapHeight()/2,
 			mNicknameButton.GetLocationX()+(x/4), mNicknameButton.GetLocationY()+mNicknameButton.GetBitmapHeight()*0.3f);

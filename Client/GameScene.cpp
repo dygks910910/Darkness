@@ -44,7 +44,8 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	const D3D11_VIEWPORT& viewPort, const int& clientWidth, const int& clientHeight)
 {
 	mDevice = device;
-	mCam.SetPosition(0, 0, 0);
+	mCam.SetPosition(0, 0, -1);
+	mCam.UpdateViewMatrix();
 	CreateDepthStencilState(device);
 	XMStoreFloat4x4(&mWorldMtx, XMMatrixTranslation(0, 0, 7));
 
@@ -219,7 +220,7 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	mTimer.Reset();
 	mTimer.Start();
 
-	mMinimap.Initialize(device, mClientWidth, mClientHeight, mCam.othMtx(), 100, 100);
+	mMinimap.Initialize(device, mClientWidth, mClientHeight, mCam.View(), 100, 100);
 	mDrawText.Init(device, dc);
 
 	PlaySound(L"bgm.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
@@ -236,7 +237,7 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	if (ret_val == SOCKET_ERROR)
 		std::cout << " [error] WSASend() " << std::endl;
 
-
+	//CreateZbufferState(device);
 	return true;
 }
 bool testcamera = true;
@@ -513,8 +514,11 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 
 		mDrawText(timerString, 75, mClientWidth / 2 - 100, 0, FontColorForFW::RED);
+		TurnZBuffOff(dc);
 		dc->IASetInputLayout(InputLayouts::PosTex);
 		mMinimap.Render(dc, mCam);
+		TurnZBuffOn(dc);
+
 		if (NetworkMgr::GetInstance()->isGameStart)
 		{
 			//std::cout << "게임이 시작됨.";
@@ -623,7 +627,7 @@ void CGameScene::OnMouseMove(WPARAM btnState, int x, int y)
 			campos.x = dist.x + objectpos.x;
 			campos.y = dist.y + objectpos.y;
 			campos.z = dist.z + objectpos.z;
-			std::cout << objectpos.x - campos.x << ' ' << objectpos.y - campos.y << ' ' << objectpos.z - campos.z << std::endl;
+			//std::cout << objectpos.x - campos.x << ' ' << objectpos.y - campos.y << ' ' << objectpos.z - campos.z << std::endl;
 			mCam.LookAt(campos, objectpos, up);
 			///////////////////////////////////////////
 		}

@@ -38,7 +38,8 @@ CModelManager::~CModelManager()
 	}
 }
 
-void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device, ID3D11DeviceContext* dc, IDXGISwapChain* swapChain, ID3D11DepthStencilState* tDepthDisableState)
+void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device, ID3D11DeviceContext* dc,
+	IDXGISwapChain* swapChain, ID3D11DepthStencilState* tDepthDisableState)
 {
 	check = false;
 	mDevice = device;
@@ -79,8 +80,8 @@ void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device, 
 		}
 		if (k == 2)
 		{
-			dc->IASetInputLayout(InputLayouts::PosTex);
-			dc->OMSetDepthStencilState(tDepthDisableState, 1);
+		/*	dc->IASetInputLayout(InputLayouts::PosTex);
+			dc->OMSetDepthStencilState(tDepthDisableState, 1);*/
 
 			mLoadingScene2.Initialize(device, 1280, 800, L"UITextures/loading3.png", 1280, 800);
 			mLoadingScene2.Render(dc, 0, 0, true);
@@ -114,8 +115,6 @@ void CModelManager::Init(TextureMgr& texMgr, Camera* cam, ID3D11Device* device, 
 	ReadMapData(texMgr, *cam);
 	send_wsa_buf.buf = reinterpret_cast<char*>(send_buf);
 	send_wsa_buf.len = MAX_BUF_SIZE;
-
-
 }
 
 void CModelManager::DrawStaticNormalModels(ID3D11DeviceContext* dc, ID3DX11EffectTechnique* tech, const XMFLOAT4X4& shadowTransform, const Camera& cam)

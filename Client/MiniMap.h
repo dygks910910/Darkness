@@ -14,7 +14,7 @@ public:
 		int screenWidth, int screenHeight, XMMATRIX viewMatrix, float terrainWidth,
 		float terrainHeight);
 	void Shutdown();
-	bool Render(ID3D11DeviceContext*deviceContext, const Camera& camera);
+	bool Render(ID3D11DeviceContext*deviceContext, const Camera& camera, const int& scaleX =1, const int& scaleY = 1);
 
 	void PositionUpdate(float positionX, float positionZ);
 private:
