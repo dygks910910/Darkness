@@ -299,7 +299,8 @@ void CModelManager::DrawInstancedModel(ID3D11DeviceContext* dc, ID3DX11EffectTec
 
 	UINT instanceStride[2] = { sizeof(Vertex::Basic32), sizeof(XMFLOAT4X4) };
 	UINT instanceOffset[2] = { 0,0 };
-	ID3D11Buffer* vbs[2] = { mStaticBasicObjectVB,mInstanceModels[0].GetInstanceBuffer() };
+	ID3D11Buffer* vbs[2] = { mStaticBasicObjectVB,mInstanceModels[0].
+		Buffer() };
 
 
 	for (int i = 0; i < mInstanceModels.size(); ++i)

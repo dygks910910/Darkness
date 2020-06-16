@@ -2,29 +2,13 @@
 #include "FrustumClass.h"
 
 
-FrustumClass::FrustumClass()
-{
-}
 
-
-FrustumClass::FrustumClass(const FrustumClass& other)
-{
-}
-
-
-FrustumClass::~FrustumClass()
-{
-}
-
-
-
-
-void FrustumClass::ConstructFrustum(float screenDepth, XMMATRIX projectionMatrix, XMMATRIX viewMatrix)
+void CFrustum::CreateFrustum(float screenDepth, CXMMATRIX projectionMatrix, CXMMATRIX viewMatrix)
 {
 	// 투영 행렬을 XMFLOAT4X4 유형으로 변환합니다.
 	XMFLOAT4X4 pMatrix;
 	XMStoreFloat4x4(&pMatrix, projectionMatrix);
-
+	XMMATRIX projMtx;
 	// 절두체에서 최소 Z 거리를 계산합니다.
 	float zMinimum = -pMatrix._43 / pMatrix._33;
 	float r = screenDepth / (screenDepth - zMinimum);
@@ -32,10 +16,10 @@ void FrustumClass::ConstructFrustum(float screenDepth, XMMATRIX projectionMatrix
 	// 업데이트 된 값을 다시 투영 행렬에 설정합니다.
 	pMatrix._33 = r;
 	pMatrix._43 = -r * zMinimum;
-	projectionMatrix = XMLoadFloat4x4(&pMatrix);
+	projMtx = XMLoadFloat4x4(&pMatrix);
 
 	// 뷰 매트릭스와 업데이트 된 프로젝션 매트릭스에서 절두체 매트릭스를 만듭니다.
-	XMMATRIX finalMatrix = XMMatrixMultiply(viewMatrix, projectionMatrix);
+	XMMATRIX finalMatrix = XMMatrixMultiply(viewMatrix, projMtx);
 
 	// 최종 행렬을 XMFLOAT4X4 유형으로 변환합니다.
 	XMFLOAT4X4 matrix;
@@ -91,7 +75,7 @@ void FrustumClass::ConstructFrustum(float screenDepth, XMMATRIX projectionMatrix
 }
 
 
-bool FrustumClass::CheckPoint(float x, float y, float z)
+bool CFrustum::CheckPoint(float x, float y, float z)
 {
 	for (int i = 0; i<6; i++)
 	{
@@ -103,9 +87,9 @@ bool FrustumClass::CheckPoint(float x, float y, float z)
 	return true;
 }
 
-bool FrustumClass::CheckCube(float xCenter, float yCenter, float zCenter, float radius)
+bool CFrustum::CheckCube(float xCenter, float yCenter, float zCenter, float radius)
 {
-	// 뷰 프러스 텀에 큐브의 한 점이 있는지 확인합니다.
+	// 절두체 6면에 대해 큐브가 속해있는지 확인
 	for (int i = 0; i<6; i++)
 	{
 		if (XMVectorGetX(XMPlaneDotCoord(m_planes[i], XMVectorSet((xCenter - radius), (yCenter - radius), (zCenter - radius), 1.0f))) >= 0.0f)
@@ -139,7 +123,7 @@ bool FrustumClass::CheckCube(float xCenter, float yCenter, float zCenter, float 
 }
 
 
-bool FrustumClass::CheckSphere(float xCenter, float yCenter, float zCenter, float radius)
+bool CFrustum::CheckSphere(float xCenter, float yCenter, float zCenter, float radius)
 {
 	for (int i = 0; i<6; i++)
 	{
@@ -152,7 +136,7 @@ bool FrustumClass::CheckSphere(float xCenter, float yCenter, float zCenter, floa
 }
 
 
-bool FrustumClass::CheckRectangle(float xCenter, float yCenter, float zCenter, float xSize, float ySize, float zSize)
+bool CFrustum::CheckRectangle(float xCenter, float yCenter, float zCenter, float xSize, float ySize, float zSize)
 {
 	// 사각형의 6 개의 평면 중 하나가 뷰 frustum 안에 있는지 확인합니다.
 	for (int i = 0; i<6; i++)

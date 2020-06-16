@@ -4,8 +4,8 @@
 
 void CDrawText::Init(ID3D11Device* device, ID3D11DeviceContext *context)
 {
-	this->pDevice = device;
-	this->pContext = context;
+	this->m_pDevice = device;
+	this->m_pDeviceContext = context;
 	HRESULT hResult = FW1CreateFactory(FW1_VERSION, &pFW1Factory);
 	hResult = pFW1Factory->CreateFontWrapper(device, L"Arial", &pFontWrapper);
 }
@@ -22,7 +22,7 @@ void CDrawText::operator()(std::wstring text, const float & fontSize, const floa
 {
 
 	pFontWrapper->DrawString(
-		pContext,
+		m_pDeviceContext,
 		text.c_str(),// String
 		fontSize,// Font size
 		posX,// X position
@@ -37,7 +37,7 @@ void CDrawText::operator()(std::wstring text, const float & fontSize, const floa
 void CDrawText::operator()(std::wstring text, const float & fontSize, const float & posX, const float & posY, const UINT & color)
 {
 	pFontWrapper->DrawString(
-		pContext,
+		m_pDeviceContext,
 		text.c_str(),// String
 		fontSize,// Font size
 		posX,// X position

@@ -54,9 +54,7 @@ void NetworkMgr::Release()
 void NetworkMgr::ReadPacket(const SOCKET& sock)
 {
 	DWORD io_byte, io_flag = 0;
-
 	int retval = WSARecv(sock, &recv_wsa_buf, 1, &io_byte, &io_flag, NULL, NULL);
-
 	if (retval == SOCKET_ERROR)
 	{
 #ifdef _DEBUG	
@@ -64,34 +62,26 @@ void NetworkMgr::ReadPacket(const SOCKET& sock)
 #endif
 		return;
 	}
-
 	// 메세지를 받는다
 	// 다 읽을때까지 받는다.
 	// 메세지 사이즈를 먼저 읽는다.
-
 	BYTE* ptr = recv_buf;
-
-	while (io_byte != 0) {
-
+	while (io_byte != 0) 
+	{
 		if (recv_size == 0)
 			recv_size = ptr[0];
-
 		if (io_byte + saved_size >= recv_size)
 		{
 			memcpy(packet_buf + saved_size, ptr, recv_size - saved_size);
-
 			ProcessPacket(packet_buf);
 			ptr += recv_size - saved_size;
 			io_byte -= recv_size - saved_size;
-
 			recv_size = 0;
 			saved_size = 0;
 		}
-
 		else
 		{
 			memcpy(packet_buf + saved_size, ptr, io_byte);
-
 			saved_size += io_byte;
 			io_byte = 0;
 		}
@@ -154,7 +144,6 @@ void NetworkMgr::ProcessPacket(BYTE* packet)
 	{
 		sc_packet_game_start game_start;
 		memcpy(&game_start, packet, packet[0]);
-
 		CModelManager::GetInstance()->mIsStart = true;
 	}
 	break;

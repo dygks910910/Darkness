@@ -113,6 +113,7 @@ void DXUTWrapper::OnD3D11DestroyDevice(void* pUserContext)
 {
     m_Model.Shutdown();
     m_LightShader.Shutdown();
+    SAFE_RELEASE(m_rasterState);
 }
 
 //--------------------------------------------------------------------------------------

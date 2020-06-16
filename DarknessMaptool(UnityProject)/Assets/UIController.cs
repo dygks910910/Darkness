@@ -13,7 +13,6 @@ public class UIController : MonoBehaviour
     public void WriteWallAABB()
     {
         GameObject[] staticObjects = GameObject.FindGameObjectsWithTag("AABB");
-        string str = "";
         FileStream f = new FileStream(m_strPath + "\\NewAABBData.txt", FileMode.Create, FileAccess.Write);
         StreamWriter writer = new StreamWriter(f);
 

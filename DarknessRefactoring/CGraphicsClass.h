@@ -14,7 +14,7 @@ class CTextureShaderClass;
 class BitmapClass;
 class TextClass;
 class ModelListClass;
-class FrustumClass;
+class CFrustum;
 class CEffect;
 
 class CGraphicsClass
@@ -44,7 +44,7 @@ private:
 	BitmapClass* m_Bitmap								 = nullptr;
 	TextClass* m_Text											= nullptr;
 	ModelListClass* m_ModelList = nullptr;
-	FrustumClass* m_Frustum = nullptr;
+	CFrustum* m_Frustum = nullptr;
 	static float m_Rotation;
 
 };

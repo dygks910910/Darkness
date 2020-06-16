@@ -31,8 +31,8 @@ const int SC_PACKET_ROOM_DATA = 7;
 const int SC_PACKET_GAME_START = 8;
 const int SC_PACKET_TIME = 9;
 const int SC_PACKET_PLAYER_REMOVE = 10;
-
 const int CS_PACKET_SHUTDOWN = 9;
+const int CS_PACKET_CLEINT_NICKNAME = 6;
 
 #pragma pack(push, 1)
 // sc_packet
@@ -43,14 +43,11 @@ struct sc_packet_put_user
 	WORD id;
 	WORD IsCreater;
 };
-const int CS_PACKET_CLEINT_NICKNAME = 6;
-
 struct sc_packet_timer_start
 {
 	BYTE size;
 	BYTE type;
 };
-
 struct cs_packet_player_nickname
 {
 	BYTE size;
@@ -58,15 +55,12 @@ struct cs_packet_player_nickname
 	WORD id;
 	WCHAR nickName[20];
 };
-
-
 struct cs_packet_shutdown
 {
 	BYTE size;
 	BYTE type;
 	WORD id;
 };
-
 struct sc_packet_playgame_init_pos
 {
 	BYTE size;

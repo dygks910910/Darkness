@@ -18,7 +18,7 @@ public:
 	void Shutdown();
 
 	int GetModelCount();
-	void GetData(int, float&, float&, float&, XMFLOAT4&);
+	void GetData(int index, float& positionX, float& positionY, float& positionZ, XMFLOAT4& color);
 
 private:
 	int m_modelCount = 0;

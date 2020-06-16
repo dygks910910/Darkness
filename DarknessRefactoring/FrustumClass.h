@@ -1,18 +1,16 @@
 #pragma once
 
-class FrustumClass : public AlignedAllocationPolicy<16>
+class CFrustum : public AlignedAllocationPolicy<16>
 {
 public:
-	FrustumClass();
-	FrustumClass(const FrustumClass&);
-	~FrustumClass();
 
-	void ConstructFrustum(float, XMMATRIX, XMMATRIX);
 
-	bool CheckPoint(float, float, float);
-	bool CheckCube(float, float, float, float);
-	bool CheckSphere(float, float, float, float);
-	bool CheckRectangle(float, float, float, float, float, float);
+	void CreateFrustum(float, CXMMATRIX projectionMatrix, CXMMATRIX viewMatrix);
+
+	bool CheckPoint(float x, float y, float z);
+	bool CheckCube(float xCenter, float yCenter, float zCenter, float radius);
+	bool CheckSphere(float xCenter, float yCenter, float zCenter, float radius);
+	bool CheckRectangle(float xCenter, float yCenter, float zCenter, float xSize, float ySize, float zSize);
 
 private:
 	XMVECTOR m_planes[6];

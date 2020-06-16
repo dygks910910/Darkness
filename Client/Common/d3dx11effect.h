@@ -1101,7 +1101,7 @@ extern "C" {
 //      Length of the data blob
 //  FXFlags
 //      Flags pertaining to Effect creation
-//  pDevice
+//  m_pDevice
 //      Pointer to the D3D11 device on which to create Effect resources
 //  srcName [optional]
 //      ASCII string to use for debug object naming
@@ -1133,7 +1133,7 @@ HRESULT WINAPI D3DX11CreateEffectFromMemory( _In_reads_bytes_(DataLength) LPCVOI
 //      Compiled effect file
 //  FXFlags
 //      Flags pertaining to Effect creation
-//  pDevice
+//  m_pDevice
 //      Pointer to the D3D11 device on which to create Effect resources
 //
 // [out]
@@ -1171,7 +1171,7 @@ HRESULT WINAPI D3DX11CreateEffectFromFile( _In_z_ LPCWSTR pFileName,
 //     HLSL compile options (see D3DCOMPILE flags)
 //  FXFlags
 //      Flags pertaining to Effect compilation (see D3DCOMPILE_EFFECT flags)
-//  pDevice
+//  m_pDevice
 //      Pointer to the D3D11 device on which to create Effect resources
 //
 // [out]
@@ -1211,7 +1211,7 @@ HRESULT D3DX11CompileEffectFromMemory( _In_reads_bytes_(DataLength) LPCVOID pDat
 //     HLSL compile options (see D3DCOMPILE flags)
 //  FXFlags
 //      Flags pertaining to Effect compilation (see D3DCOMPILE_EFFECT flags)
-//  pDevice
+//  m_pDevice
 //      Pointer to the D3D11 device on which to create Effect resources
 //
 // [out]

@@ -339,7 +339,7 @@ MIDL_INTERFACE("60CAB266-C805-461d-82C0-392472EECEFA") IFW1GlyphSheet : public I
 		/// <summary>Set the sheet shader resources on the provided context.</summary>
 		/// <remarks>This method sets the sheet texture as a pixelshader resource for slot 0, and optionally the coord buffer as geometryshader resource for slot 0.</remarks>
 		/// <returns>Standard HRESULT error code.</returns>
-		/// <param name="pContext">The context to set the sheet shader resources on.</param>
+		/// <param name="m_pDeviceContext">The context to set the sheet shader resources on.</param>
 		/// <param name="Flags">This parameter can include zero or more of the following values, ORd together. Any additional values are ignored.<br/>
 		/// FW1_NOGEOMETRYSHADER: don't bind the coord buffer as a shader-resource for the geometry shader, even if it's available.
 		/// </param>
@@ -374,7 +374,7 @@ MIDL_INTERFACE("60CAB266-C805-461d-82C0-392472EECEFA") IFW1GlyphSheet : public I
 		/// <remarks>When glyphs are inserted into the sheet only the CPU-memory resources are updated.
 		/// In order for these to be available for use by the GPU, they must be flushed to the device using a device-context.</remarks>
 		/// <returns>No return value.</returns>
-		/// <param name="pContext">The context to use when updating device resources.</param>
+		/// <param name="m_pDeviceContext">The context to use when updating device resources.</param>
 		virtual void STDMETHODCALLTYPE Flush(
 			__in ID3D11DeviceContext *pContext
 		) = 0;
@@ -424,7 +424,7 @@ MIDL_INTERFACE("A31EB6A2-7458-4e24-82B3-945A95623B1F") IFW1GlyphAtlas : public I
 	/// <summary>Bind a sheet's shader resources on a device context.</summary>
 	/// <remarks></remarks>
 	/// <returns>Standard HRESULT error code.</returns>
-	/// <param name="pContext">The context to set the shader resources on.</param>
+	/// <param name="m_pDeviceContext">The context to set the shader resources on.</param>
 	/// <param name="SheetIndex">The index of the sheet to bind.</param>
 	/// <param name="Flags">Flags that specify whether to set the geometry shader coord buffer. See IFW1GlyphSheet::BindSheet.</param>
 	virtual HRESULT STDMETHODCALLTYPE BindSheet(
@@ -460,7 +460,7 @@ MIDL_INTERFACE("A31EB6A2-7458-4e24-82B3-945A95623B1F") IFW1GlyphAtlas : public I
 	/// <summary>Flush all new or internally updated sheets.</summary>
 	/// <remarks>See IFW1GlyphSheet::Flush.</remarks>
 	/// <returns>No return value.</returns>
-	/// <param name="pContext">The context to use when updating device resources.</param>
+	/// <param name="m_pDeviceContext">The context to use when updating device resources.</param>
 	virtual void STDMETHODCALLTYPE Flush(
 		__in ID3D11DeviceContext *pContext
 	) = 0;
@@ -686,7 +686,7 @@ MIDL_INTERFACE("906928B6-79D8-4b42-8CE4-DC7D7046F206") IFW1GlyphRenderStates : p
 	/// <summary>Set the internal states on a context.</summary>
 	/// <remarks></remarks>
 	/// <returns>No return value.</returns>
-	/// <param name="pContext">The context to set the states on.</param>
+	/// <param name="m_pDeviceContext">The context to set the states on.</param>
 	/// <param name="Flags">Can include zero or more of the following values, ORd together. Any additional values are ignored.<br/>
 	/// FW1_NOGEOMETRYSHADER - States are set up to draw indexed quads instead of constructing quads in the geometry shader.<br/>
 	/// FW1_CLIPRECT - Shaders will be set up to clip any drawn glyphs to the clip-rect set in IFW1GlyphRenderStates::UpdateShaderConstants.
@@ -699,7 +699,7 @@ MIDL_INTERFACE("906928B6-79D8-4b42-8CE4-DC7D7046F206") IFW1GlyphRenderStates : p
 	/// <summary>Update the internal constant buffer.</summary>
 	/// <remarks></remarks>
 	/// <returns>No return value.</returns>
-	/// <param name="pContext">The context to use to update the constant buffer.</param>
+	/// <param name="m_pDeviceContext">The context to use to update the constant buffer.</param>
 	/// <param name="pClipRect">A pointer to a rectangle to clip drawn glyphs to.</param>
 	/// <param name="pTransformMatrix">An array of 16 floats, representing a matrix which all glyph vertices will be multiplied with, in the geometry or vertex shader.</param>
 	virtual void STDMETHODCALLTYPE UpdateShaderConstants(
@@ -730,7 +730,7 @@ MIDL_INTERFACE("E6CD7A32-5B59-463c-9B1B-D44074FF655B") IFW1GlyphVertexDrawer : p
 	/// <summary>Upload the specified vertices to the device buffers and draw them.</summary>
 	/// <remarks></remarks>
 	/// <returns>Returns the index of the sheet in the atlas that was last bound to the device context during the operation.</returns>
-	/// <param name="pContext">The context to use to draw.</param>
+	/// <param name="m_pDeviceContext">The context to use to draw.</param>
 	/// <param name="pGlyphAtlas">The glyph atlas containg the glyphs referenced by the vertices.</param>
 	/// <param name="pVertexData">Pointer to an FW1_VERTEXDATA structure, containing vertices to be drawn, sorted by glyph sheet.
 	/// These are easiest obtained from an IFW1TextGeometry object.</param>
@@ -804,9 +804,9 @@ MIDL_INTERFACE("83347A5C-B0B1-460e-A35C-427E8B85F9F4") IFW1FontWrapper : public 
 	
 	/// <summary>Draw a DirectWrite text layout.</summary>
 	/// <remarks>Consult the DirectWrite documentation for details on how to construct a text-layout.<br/>
-	/// The pContext parameter can be NULL only if the FW1_NOFLUSH and either the FW1_ANALYZEONLY or the FW1_CACHEONLY flags are specified.</remarks>
+	/// The m_pDeviceContext parameter can be NULL only if the FW1_NOFLUSH and either the FW1_ANALYZEONLY or the FW1_CACHEONLY flags are specified.</remarks>
 	/// <returns>No return value.</returns>
-	/// <param name="pContext">The device context to draw on.</param>
+	/// <param name="m_pDeviceContext">The device context to draw on.</param>
 	/// <param name="pTextLayout">The text layout to draw.</param>
 	/// <param name="OriginX">The X origin of the text in the layout.</param>
 	/// <param name="OriginY">The Y origin of the text in the layout.</param>
@@ -823,9 +823,9 @@ MIDL_INTERFACE("83347A5C-B0B1-460e-A35C-427E8B85F9F4") IFW1FontWrapper : public 
 	
 	/// <summary>Draw a DirectWrite text layout.</summary>
 	/// <remarks>Consult the DirectWrite documentation for details on how to construct a text-layout.<br/>
-	/// The pContext parameter can be NULL only if the FW1_NOFLUSH and either the FW1_ANALYZEONLY or the FW1_CACHEONLY flags are specified.</remarks>
+	/// The m_pDeviceContext parameter can be NULL only if the FW1_NOFLUSH and either the FW1_ANALYZEONLY or the FW1_CACHEONLY flags are specified.</remarks>
 	/// <returns>No return value.</returns>
-	/// <param name="pContext">The device context to draw on.</param>
+	/// <param name="m_pDeviceContext">The device context to draw on.</param>
 	/// <param name="pTextLayout">The text layout to draw.</param>
 	/// <param name="OriginX">The X origin of the text in the layout.</param>
 	/// <param name="OriginY">The Y origin of the text in the layout.</param>
@@ -845,9 +845,9 @@ MIDL_INTERFACE("83347A5C-B0B1-460e-A35C-427E8B85F9F4") IFW1FontWrapper : public 
 	) = 0;
 	
 	/// <summary>Draw a string.</summary>
-	/// <remarks>The pContext parameter can be NULL only if the FW1_NOFLUSH and either the FW1_ANALYZEONLY or the FW1_CACHEONLY flags are specified.</remarks>
+	/// <remarks>The m_pDeviceContext parameter can be NULL only if the FW1_NOFLUSH and either the FW1_ANALYZEONLY or the FW1_CACHEONLY flags are specified.</remarks>
 	/// <returns>No return value.</returns>
-	/// <param name="pContext">The device context to draw on.</param>
+	/// <param name="m_pDeviceContext">The device context to draw on.</param>
 	/// <param name="pszString">The NULL-terminated string to draw.</param>
 	/// <param name="FontSize">The size of the font.</param>
 	/// <param name="X">The X origin of the text.</param>
@@ -865,9 +865,9 @@ MIDL_INTERFACE("83347A5C-B0B1-460e-A35C-427E8B85F9F4") IFW1FontWrapper : public 
 	) = 0;
 	
 	/// <summary>Draw a string.</summary>
-	/// <remarks>The pContext parameter can be NULL only if the FW1_NOFLUSH and either the FW1_ANALYZEONLY or the FW1_CACHEONLY flags are specified.</remarks>
+	/// <remarks>The m_pDeviceContext parameter can be NULL only if the FW1_NOFLUSH and either the FW1_ANALYZEONLY or the FW1_CACHEONLY flags are specified.</remarks>
 	/// <returns>No return value.</returns>
-	/// <param name="pContext">The device context to draw on.</param>
+	/// <param name="m_pDeviceContext">The device context to draw on.</param>
 	/// <param name="pszString">The NULL-terminated string to draw.</param>
 	/// <param name="pszFontFamily">The font family to use, such as Arial or Courier New.</param>
 	/// <param name="FontSize">The size of the font.</param>
@@ -887,9 +887,9 @@ MIDL_INTERFACE("83347A5C-B0B1-460e-A35C-427E8B85F9F4") IFW1FontWrapper : public 
 	) = 0;
 	
 	/// <summary>Draw a string.</summary>
-	/// <remarks>The pContext parameter can be NULL only if the FW1_NOFLUSH and either the FW1_ANALYZEONLY or the FW1_CACHEONLY flags are specified.</remarks>
+	/// <remarks>The m_pDeviceContext parameter can be NULL only if the FW1_NOFLUSH and either the FW1_ANALYZEONLY or the FW1_CACHEONLY flags are specified.</remarks>
 	/// <returns>No return value.</returns>
-	/// <param name="pContext">The device context to draw on.</param>
+	/// <param name="m_pDeviceContext">The device context to draw on.</param>
 	/// <param name="pszString">The NULL-terminated string to draw.</param>
 	/// <param name="pszFontFamily">The font family to use, such as Arial or Courier New.</param>
 	/// <param name="FontSize">The size of the font.</param>
@@ -928,9 +928,9 @@ MIDL_INTERFACE("83347A5C-B0B1-460e-A35C-427E8B85F9F4") IFW1FontWrapper : public 
 	
 	/// <summary>Analyze a string and generate geometry to draw it.</summary>
 	/// <remarks>pTextGeometry can be NULL if the FW1_ANALYZEONLY or FW1_CACHEONLY flags are specified, as no actual geometry will be generated.
-	/// pContext can be NULL if the FW1_NOFLUSH flag is used, as any new glyphs will not be flushed to the device buffers.</remarks>
+	/// m_pDeviceContext can be NULL if the FW1_NOFLUSH flag is used, as any new glyphs will not be flushed to the device buffers.</remarks>
 	/// <returns>No return value.</returns>
-	/// <param name="pContext">A device context to use to update device buffers when new glyphs are added to the glyph-atlas.</param>
+	/// <param name="m_pDeviceContext">A device context to use to update device buffers when new glyphs are added to the glyph-atlas.</param>
 	/// <param name="pszString">The NULL-terminated string to create geometry from.</param>
 	/// <param name="pszFontFamily">The font family to use, such as Arial or Courier New.</param>
 	/// <param name="FontSize">The size of the font.</param>
@@ -952,9 +952,9 @@ MIDL_INTERFACE("83347A5C-B0B1-460e-A35C-427E8B85F9F4") IFW1FontWrapper : public 
 	/// <summary>Analyze a text layout and generate geometry to draw it.</summary>
 	/// <remarks>Consult the DirectWrite documentation for details on how to construct a text-layout.
 	/// pTextGeometry can be NULL if the FW1_ANALYZEONLY or FW1_CACHEONLY flags are specified, as no actual geometry will be generated.
-	/// pContext can be NULL if the FW1_NOFLUSH flag is used, as any new glyphs will not be flushed to the device buffers.</remarks>
+	/// m_pDeviceContext can be NULL if the FW1_NOFLUSH flag is used, as any new glyphs will not be flushed to the device buffers.</remarks>
 	/// <returns>No return value.</returns>
-	/// <param name="pContext">A device context to use to update device buffers when new glyphs are added to the glyph-atlas.</param>
+	/// <param name="m_pDeviceContext">A device context to use to update device buffers when new glyphs are added to the glyph-atlas.</param>
 	/// <param name="pTextLayout">The DirectWrite text layout to create geometry from.</param>
 	/// <param name="OriginX">The X origin of the text in the layout.</param>
 	/// <param name="OriginY">The Y origin of the text in the layout.</param>
@@ -974,7 +974,7 @@ MIDL_INTERFACE("83347A5C-B0B1-460e-A35C-427E8B85F9F4") IFW1FontWrapper : public 
 	/// <summary>Draw geometry.</summary>
 	/// <remarks></remarks>
 	/// <returns>No return value.</returns>
-	/// <param name="pContext">The device context to draw on.</param>
+	/// <param name="m_pDeviceContext">The device context to draw on.</param>
 	/// <param name="pGeometry">The geometry to draw.</param>
 	/// <param name="pClipRect">A pointer to a rectangle to clip the text to if also using the FW1_CLIPRECT flag, or NULL to not clip. This rect is in text-space, and clipping is performed prior to any transformation.</param>
 	/// <param name="pTransformMatrix">An array of 16 floats, representing a matrix which the text will be transformed by, or NULL to draw in screen-space.</param>
@@ -991,7 +991,7 @@ MIDL_INTERFACE("83347A5C-B0B1-460e-A35C-427E8B85F9F4") IFW1FontWrapper : public 
 	/// <remarks>This method calls IFW1GlyphAtlas::Flush to flush any newly cached glyphs.
 	/// This method is only needed if drawing text using the FW1_NOFLUSH flag and delaying flushing data to the device, as otherwise it is implicitly called whenever a string is drawn. See IFW1GlyphAtlas::Flush.</remarks>
 	/// <returns>No return value.</returns>
-	/// <param name="pContext">The device context to use to update device resources.</param>
+	/// <param name="m_pDeviceContext">The device context to use to update device resources.</param>
 	virtual void STDMETHODCALLTYPE Flush(
 		__in ID3D11DeviceContext *pContext
 	) = 0;
@@ -1011,7 +1011,7 @@ MIDL_INTERFACE("8004DB2B-B5F9-4420-A6A2-E17E15E4C336") IFW1Factory : public IUnk
 		/// <summary>Create an IFW1FontWrapper object with default settings.</summary>
 		/// <returns>Standard HRESULT error code.</returns>
 		/// <remarks></remarks>
-		/// <param name="pDevice">The ID3D11Device the font-wrapper will be used with.</param>
+		/// <param name="m_pDevice">The ID3D11Device the font-wrapper will be used with.</param>
 		/// <param name="pszFontFamily">The default font-family to use when drawing strings.
 		/// Valid values include for example L"Arial" and L"Courier New", provided that the fonts are installed on the system.
 		/// Font-fallback will automatically choose a different font if the specified one is not available.</param>
@@ -1025,7 +1025,7 @@ MIDL_INTERFACE("8004DB2B-B5F9-4420-A6A2-E17E15E4C336") IFW1Factory : public IUnk
 		/// <summary>Create an IFW1FontWrapper object.</summary>
 		/// <remarks></remarks>
 		/// <returns>Standard HRESULT error code.</returns>
-		/// <param name="pDevice">The ID3D11Device that the font-wrapper will be used with.</param>
+		/// <param name="m_pDevice">The ID3D11Device that the font-wrapper will be used with.</param>
 		/// <param name="pCreateParams">Pointer to an FW1_FONTWRAPPERCREATEPARAMS structure that describes the settings for the new font-wrapper.</param>
 		/// <param name="ppFontWrapper">Address of a pointer to a font-wrapper (See IFW1FontWrapper).</param>
 		virtual HRESULT STDMETHODCALLTYPE CreateFontWrapper(
@@ -1038,7 +1038,7 @@ MIDL_INTERFACE("8004DB2B-B5F9-4420-A6A2-E17E15E4C336") IFW1Factory : public IUnk
 		/// <summary>Create an IFW1FontWrapper object.</summary>
 		/// <remarks></remarks>
 		/// <returns>Standard HRESULT error code.</returns>
-		/// <param name="pDevice">The ID3D11Device that the font-wrapper will be used with.</param>
+		/// <param name="m_pDevice">The ID3D11Device that the font-wrapper will be used with.</param>
 		/// <param name="pGlyphAtlas">An IFW1GlyphAtlas that glyph-images will be stored in.</param>
 		/// <param name="pGlyphProvider">An IFW1GlyphProvider that handles fonts and glyphmaps.</param>
 		/// <param name="pGlyphVertexDrawer">An IFW1GlyphVertexDrawer that handles drawing glyph-vertices.</param>
@@ -1061,7 +1061,7 @@ MIDL_INTERFACE("8004DB2B-B5F9-4420-A6A2-E17E15E4C336") IFW1Factory : public IUnk
 		/// <summary>Create an IFW1GlyphVertexDrawer object.</summary>
 		/// <remarks></remarks>
 		/// <returns>Standard HRESULT error code.</returns>
-		/// <param name="pDevice">The ID3D11Device that the vertex drawer will be used with.</param>
+		/// <param name="m_pDevice">The ID3D11Device that the vertex drawer will be used with.</param>
 		/// <param name="VertexBufferSize">The size in bytes of the dynamic vertex buffer. An index buffer will be created with a matching size.</param>
 		/// <param name="ppGlyphVertexDrawer">Address of a pointer to a glyph-vertex drawer (See IFW1GlyphVertexDrawer).</param>
 		virtual HRESULT STDMETHODCALLTYPE CreateGlyphVertexDrawer(
@@ -1073,7 +1073,7 @@ MIDL_INTERFACE("8004DB2B-B5F9-4420-A6A2-E17E15E4C336") IFW1Factory : public IUnk
 		/// <summary>Create an IFW1GlyphRenderStates object.</summary>
 		/// <remarks></remarks>
 		/// <returns>Standard HRESULT error code.</returns>
-		/// <param name="pDevice">The ID3D11Device that the render-states will be used with.</param>
+		/// <param name="m_pDevice">The ID3D11Device that the render-states will be used with.</param>
 		/// <param name="DisableGeometryShader">If TRUE, no geometry shader will be created.</param>
 		/// <param name="AnisotropicFiltering">If TRUE, a sampler state enabling anisotropic filtering will be created.</param>
 		/// <param name="ppGlyphRenderStates">Address of a pointer to a glyph render-states object (See IFW1GlyphRenderStates).</param>
@@ -1137,7 +1137,7 @@ MIDL_INTERFACE("8004DB2B-B5F9-4420-A6A2-E17E15E4C336") IFW1Factory : public IUnk
 		/// <summary>Create an IFW1GlyphAtlas object.</summary>
 		/// <remarks></remarks>
 		/// <returns>Standard HRESULT error code.</returns>
-		/// <param name="pDevice">A D3D11 device used to create device resources.</param>
+		/// <param name="m_pDevice">A D3D11 device used to create device resources.</param>
 		/// <param name="GlyphSheetWidth">Width of the atlas textures.</param>
 		/// <param name="GlyphSheetHeight">Height of the atlas textures.</param>
 		/// <param name="HardwareCoordBuffer">If TRUE, create a D3D11 buffer with glyph coordinates for each sheet, for use with the geometry shader.</param>
@@ -1161,7 +1161,7 @@ MIDL_INTERFACE("8004DB2B-B5F9-4420-A6A2-E17E15E4C336") IFW1Factory : public IUnk
 		/// <summary>Create an IFW1GlyphSheet object.</summary>
 		/// <remarks></remarks>
 		/// <returns>Standard HRESULT error code.</returns>
-		/// <param name="pDevice">A D3D11 device used to create device resources.</param>
+		/// <param name="m_pDevice">A D3D11 device used to create device resources.</param>
 		/// <param name="GlyphSheetWidth">Width of the sheet texture.</param>
 		/// <param name="GlyphSheetHeight">Height of the sheet texture.</param>
 		/// <param name="HardwareCoordBuffer">If TRUE, create a D3D11 buffer with glyph coordinates, for use with the geometry shader.</param>

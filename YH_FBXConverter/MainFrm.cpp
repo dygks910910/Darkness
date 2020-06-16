@@ -37,11 +37,11 @@ CMainFrame::~CMainFrame()
 BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/,
 	CCreateContext* pContext)
 {
-	//return m_wndSplitter.Create(this,
-	//	2, 2,               // TODO: 행 및 열의 개수를 조정합니다.
-	//	CSize(10, 10),      // TODO: 최소 창 크기를 조정합니다.
-	//	pContext);
-	CRect rect;
+	return m_wndSplitter.Create(this,
+		2, 2,               // TODO: 행 및 열의 개수를 조정합니다.
+		CSize(10, 10),      // TODO: 최소 창 크기를 조정합니다.
+		pContext);
+	/*CRect rect;
 	if (!m_wndSplitter.CreateStatic(this, 1, 2))
 		return false;
 	GetClientRect(&rect);
@@ -52,7 +52,7 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/,
 	if (!m_wndSplitter.CreateView(0, 1, RUNTIME_CLASS(CMenuFormView), CSize(nMenuSize, 0), pContext))
 		return false;
 
-	return true;
+	return true;*/
 	//g_pView = static_cast<CFBXConverterView*>( m_wndSplitter.GetPane(0, 0));
 }
 
@@ -62,7 +62,7 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 		return FALSE;
 
 	cs.style &= ~FWS_ADDTOTITLE;
-	SetTitle(_T("FBX Converter"));
+	SetTitle(_T("FBX Importer"));
 	// TODO: CREATESTRUCT cs를 수정하여 여기에서
 	//  Window 클래스 또는 스타일을 수정합니다.
 

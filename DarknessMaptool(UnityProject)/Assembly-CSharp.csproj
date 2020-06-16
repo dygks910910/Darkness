@@ -51,6 +51,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Maptool\MapFileWrriter.cs" />
+     <Compile Include="Assets\Maptool\MaptoolEditor.cs" />
+     <Compile Include="Assets\Maptool\MapToolExporterWindow.cs" />
+     <Compile Include="Assets\Maptool\PopupWindow.cs" />
      <Compile Include="Assets\MedievalTownExteriors\Scripts\ProtectCameraFromWallClip.cs" />
      <Compile Include="Assets\Navi.cs" />
      <Compile Include="Assets\UIController.cs" />

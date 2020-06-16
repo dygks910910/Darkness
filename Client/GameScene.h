@@ -41,6 +41,8 @@ struct BoundingSphere
 class CGameScene :
 	public CScene
 {
+#define GET_SKINED_INSTANCE_MODELS	CModelManager::GetInstance()->GetSkinnedInstanceModels
+#define GET_NETWORK_ID NetworkMgr::GetInstance()->getId
 	ID3D11Device* mDevice;
 	/*
 	2017 / 3 / 22 / 16:13

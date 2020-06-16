@@ -90,7 +90,9 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	//////////////////////////////////////////////////////////////////////////
 	//재질,텍스처불러오기.
 	mTexMgr.Init(device);
-	CModelManager::GetInstance()->Init(mTexMgr, &mCam, device, dc, swapChain, mDepthDisableState);
+	CModelManager::
+		
+		()->Init(mTexMgr, &mCam, device, dc, swapChain, mDepthDisableState);
 	
 
 	//////////////////////////////////////////////////////////////////////////
@@ -243,21 +245,18 @@ bool CGameScene::Init(ID3D11Device* device, ID3D11DeviceContext* dc,
 	return true;
 }
 bool testcamera = true;
+#include<functional>
 std::string CGameScene::UpdateScene(const float dt, MSG& msg)
 {
-
+	
 	if (NetworkMgr::GetInstance()->mCheckPacket == true)
 	{
 		if (CModelManager::GetInstance()->m_bFinishInit == true)
 		{
-			//미니맵 위치 없데이트.
-			//임시로 사용하는 스키니드모델배열의 5번째 모델.즉 플레이어임.
-			mMinimap.PositionUpdate(CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._41,
-				CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._43);
+			//위치 없데이트.
+			mMinimap.PositionUpdate(GET_SKINED_INSTANCE_MODELS()[GET_NETWORK_ID()].World._41,
+				GET_SKINED_INSTANCE_MODELS()[GET_NETWORK_ID()].World._43);
 			mTimer.Tick();
-			//
-			// Control the camera.
-			//
 
 			if (GetAsyncKeyState(VK_UP) & 0x8000)
 				mCam.Walk(20.0f*dt);
@@ -361,8 +360,6 @@ std::string CGameScene::UpdateScene(const float dt, MSG& msg)
 					}
 				}
 			}
-			
-
 			mSpotLight.Position = mCam.GetPosition();
 			XMStoreFloat3(&mSpotLight.Direction, XMVector3Normalize(mCam.GetLookXM()));
 			mCam.UpdateViewMatrix();
@@ -390,9 +387,9 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 			up.y = 1;
 			up.z = 0;
 
-			charpo.x = CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._41;
-			charpo.y = CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._42 + 1;
-			charpo.z = CModelManager::GetInstance()->GetSkinnedInstanceModels()[NetworkMgr::GetInstance()->getId()].World._43;
+			charpo.x = GET_SKINED_INSTANCE_MODELS()[GET_NETWORK_ID()].World._41;
+			charpo.y = GET_SKINED_INSTANCE_MODELS()[GET_NETWORK_ID()].World._42 + 1;
+			charpo.z = GET_SKINED_INSTANCE_MODELS()[GET_NETWORK_ID()].World._43;
 
 			mCam.SetPosition(camtest);
 			mCam.LookAt(camtest, charpo, up);
@@ -401,8 +398,6 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 
 
 		}
-
-
 		mSmap->BindDsvAndSetNullRenderTarget(dc);
 
 		DrawSceneToShadowMap(dc);
@@ -442,7 +437,6 @@ void CGameScene::Draw(ID3D11Device* device, ID3D11DeviceContext* dc,
 		Effects::BasicFX->SetSsaoMap(mSsao->AmbientSRV());
 		Effects::BasicFX->PointLight->SetRawValue(&mPointLight, 0, sizeof(mPointLight));
 		Effects::BasicFX->SpotLight->SetRawValue(&mSpotLight, 0, sizeof(mSpotLight));
-
 
 		Effects::NormalMapFX->SetDirLights(mDirLights);
 		Effects::NormalMapFX->SetEyePosW(mCam.GetPosition());

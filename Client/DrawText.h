@@ -1,14 +1,16 @@
 #pragma once
 #include "Common/d3dUtil.h"
+
+
 #include "FW1FontWrapper.h"
 #include<tchar.h>
 
 class CDrawText
 {
-	ID3D11Device* pDevice;
-	ID3D11DeviceContext *pContext;
-	IFW1Factory *pFW1Factory;
-	IFW1FontWrapper *pFontWrapper;
+	ID3D11Device* m_pDevice = nullptr;
+	ID3D11DeviceContext *m_pDeviceContext = nullptr;
+	IFW1Factory *pFW1Factory = nullptr;
+	IFW1FontWrapper *pFontWrapper = nullptr;
 public:
 	CDrawText() {};
 	~CDrawText();
