@@ -228,4 +228,7 @@
     <None Include="texture.vs" />
     <None Include="Light.hlsl" />
   </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="multiTexture.hlsl" />
+  </ItemGroup>
 </Project>

@@ -1,0 +1,2 @@
+D:\Projects\Darkness\DarknessRefactoring\Debug\DarknessRefactoring.exe
+D:\Projects\Darkness\DarknessRefactoring\Debug\DarknessRefactoring.pdb
