@@ -7,21 +7,21 @@
 #include"TimerClass.h"
 #include"CpuClass.h"
 #include"PositionClass.h"
-CSystemClass::CSystemClass()
+SystemClass::SystemClass()
 	:m_pInput(nullptr),m_pGraphics(nullptr)
 {
 	
 }
 
-CSystemClass::CSystemClass(const CSystemClass&)
+SystemClass::SystemClass(const SystemClass&)
 {
 }
 
-CSystemClass::~CSystemClass()
+SystemClass::~SystemClass()
 {
 }
 
-bool CSystemClass::Initialize()
+bool SystemClass::Initialize()
 {
 	int nScreenWidth = 0, nScreenHeight = 0;
 	bool result;
@@ -68,7 +68,7 @@ bool CSystemClass::Initialize()
 	return true;
 }
 
-void CSystemClass::Shutdown()
+void SystemClass::Shutdown()
 {
 	SAFE_DELETE_SHUTDOWN(m_pGraphics);
 	SAFE_DELETE_SHUTDOWN(m_pInput);
@@ -84,7 +84,7 @@ void CSystemClass::Shutdown()
 	return;
 }
 
-void CSystemClass::Run()
+void SystemClass::Run()
 {
 	MSG msg;
 	ZeroMemory(&msg, sizeof(MSG));
@@ -111,13 +111,13 @@ void CSystemClass::Run()
 	}
 }
 
-LRESULT CSystemClass::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam)
+LRESULT SystemClass::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam)
 { 
 	
 	return DefWindowProc(hwnd,umsg,wparam,lparam);
 }
 
-bool CSystemClass::Frame()
+bool SystemClass::Frame()
 {
 	bool bResult;
 	int mouseX = 0, mouseY = 0;
@@ -140,13 +140,12 @@ bool CSystemClass::Frame()
 
 	float rotationY = 0;
 	m_Position->GetRotation(rotationY);
-
-	bResult = m_pGraphics->Frame();
-	IF_NOTX_RTFALSE(bResult);
+	
+	IF_NOTX_RTFALSE(m_pGraphics->Frame(m_Timer->GetTime()));
 	return m_pGraphics->Render();
 }
 
-void CSystemClass::InitializeWindows(int& screenWidth, int& screenHeight)
+void SystemClass::InitializeWindows(int& screenWidth, int& screenHeight)
 {
 	WNDCLASSEX wc; 
 	DEVMODE dmScreenSettings; 
@@ -207,7 +206,7 @@ void CSystemClass::InitializeWindows(int& screenWidth, int& screenHeight)
 	
 }
 
-void CSystemClass::ShutdownWindows()
+void SystemClass::ShutdownWindows()
 {
 	// 마우스 커서를 표시합니다. 
 	ShowCursor(true); 

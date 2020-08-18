@@ -4,7 +4,8 @@
 #include "CModelClass.h"
 #include "CTextureShaderClass.h"
 #include "RenderTextureClass.h"
-#include "ReflectionShaderClass.h"
+#include "BitmapClass.h"
+#include "FadeShaderClass.h"
 #include "CGraphicsClass.h"
 
 
@@ -87,31 +88,43 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return false;
 	}
 
-	// Create the floor model object.
-	m_FloorModel = new ModelClass;
-	if (!m_FloorModel)
+	// 비트 맵 객체를 만듭니다.
+	m_Bitmap = new BitmapClass;
+	if (!m_Bitmap)
 	{
 		return false;
 	}
 
-	// Initialize the floor model object.
-	if (!m_FloorModel->Initialize(m_Direct3D->GetDevice(), (WCHAR*)L"data/blue01.dds", (char*)"data/floor.txt"))
+	// 비트 맵 객체를 초기화합니다.
+	if (!m_Bitmap->Initialize(m_Direct3D->GetDevice(), screenWidth, screenHeight, screenWidth, screenHeight))
 	{
-		MessageBox(hwnd, L"Could not initialize the floor model object.", L"Error", MB_OK);
+		MessageBox(hwnd, L"Could not initialize the bitmap object.", L"Error", MB_OK);
 		return false;
 	}
 
-	// Create the reflection shader object.
-	m_ReflectionShader = new ReflectionShaderClass;
-	if (!m_ReflectionShader)
+	// 페이드 인 타임을 3000 밀리 초로 설정합니다.
+	m_fadeInTime = 3000.0f;
+
+	// 누적 된 시간을 0 밀리 초로 초기화합니다.
+	m_accumulatedTime = 0;
+
+	// 페이드 백분율을 처음에 0으로 초기화하여 장면이 검게 표시됩니다.
+	m_fadePercentage = 0;
+
+	// 효과가 사라지도록 설정합니다.
+	m_fadeDone = false;
+
+	// 페이드 셰이더 개체를 만듭니다.
+	m_FadeShader = new FadeShaderClass;
+	if (!m_FadeShader)
 	{
 		return false;
 	}
 
-	// Initialize the reflection shader object.
-	if (!m_ReflectionShader->Initialize(m_Direct3D->GetDevice(), hwnd))
+	// 페이드 셰이더 개체를 초기화합니다.
+	if (!m_FadeShader->Initialize(m_Direct3D->GetDevice(), hwnd))
 	{
-		MessageBox(hwnd, L"Could not initialize the reflection shader object.", L"Error", MB_OK);
+		MessageBox(hwnd, L"Could not initialize the fade shader object.", L"Error", MB_OK);
 		return false;
 	}
 
@@ -121,20 +134,20 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 void GraphicsClass::Shutdown()
 {
-	// Release the reflection shader object.
-	if (m_ReflectionShader)
+	// 페이드 셰이더 개체를 해제하십시오.
+	if (m_FadeShader)
 	{
-		m_ReflectionShader->Shutdown();
-		delete m_ReflectionShader;
-		m_ReflectionShader = 0;
+		m_FadeShader->Shutdown();
+		delete m_FadeShader;
+		m_FadeShader = 0;
 	}
 
-	// Release the floor model object.
-	if (m_FloorModel)
+	// 비트 맵 객체를 해제합니다.
+	if (m_Bitmap)
 	{
-		m_FloorModel->Shutdown();
-		delete m_FloorModel;
-		m_FloorModel = 0;
+		m_Bitmap->Shutdown();
+		delete m_Bitmap;
+		m_Bitmap = 0;
 	}
 
 	// 렌더를 텍스쳐 객체로 릴리즈한다.
@@ -178,10 +191,31 @@ void GraphicsClass::Shutdown()
 }
 
 
-bool GraphicsClass::Frame()
+bool GraphicsClass::Frame(float frameTime)
 {
-	// 카메라 위치 설정
-	m_Camera->SetPosition(0.0f, 0.0f, -10.0f);
+	if (!m_fadeDone)
+	{
+		// 누적 된 시간을 여분의 프레임 시간 추가로 업데이트하십시오.
+		m_accumulatedTime += frameTime;
+
+		// 시간이 갈수록 각 프레임을 통과하는 시간만큼 페이드 수가 증가합니다.
+		if (m_accumulatedTime < m_fadeInTime)
+		{
+			// 누적 된 시간을 기준으로 화면이 희미해질 비율을 계산합니다.
+			m_fadePercentage = m_accumulatedTime / m_fadeInTime;
+		}
+		else
+		{
+			// 페이드 인 타임이 완료되면 페이드 효과를 끄고 장면을 정상적으로 렌더링합니다.
+			m_fadeDone = true;
+
+			// 백분율을 100 %로 설정합니다.
+			m_fadePercentage = 1.0f;
+		}
+	}
+
+	// 카메라 위치를 설정합니다.
+	m_Camera->SetPosition(0.0f, 0.0f, -6.0f);
 
 	return true;
 }
@@ -189,57 +223,67 @@ bool GraphicsClass::Frame()
 
 bool GraphicsClass::Render()
 {
-	// 전체 장면을 먼저 텍스처로 렌더링합니다.
-	if (!RenderToTexture())
-	{
-		return false;
-	}
-
-
-
-	// 백 버퍼의 장면을 정상적으로 렌더링합니다.
-	if (!RenderScene())
-	{
-		return false;
-	}
-
-	return true;
-}
-
-bool GraphicsClass::RenderToTexture()
-{
-	XMMATRIX worldMatrix, reflectionViewMatrix, projectionMatrix;
-
-	// Set the render target to be the render to texture.
-	m_RenderTexture->SetRenderTarget(m_Direct3D->GetDeviceContext(), m_Direct3D->GetDepthStencilView());
-
-	// Clear the render to texture.
-	m_RenderTexture->ClearRenderTarget(m_Direct3D->GetDeviceContext(), m_Direct3D->GetDepthStencilView(), 0.0f, 0.0f, 0.0f, 1.0f);
-
-	// Use the camera to calculate the reflection matrix.
-	m_Camera->RenderReflection(-1.5f);
-
-	// Get the camera reflection view matrix instead of the normal view matrix.
-	reflectionViewMatrix = m_Camera->GetReflectionViewMatrix();
-
-	// Get the world and projection matrices.
-	m_Direct3D->GetWorldMatrix(worldMatrix);
-	m_Direct3D->GetProjectionMatrix(projectionMatrix);
-
-	// Update the rotation variable each frame.
+	bool result;
 	static float rotation = 0.0f;
+
+
+	// 각 프레임의 rotation 변수를 업데이트합니다.
 	rotation += (float)XM_PI * 0.005f;
 	if (rotation > 360.0f)
 	{
 		rotation -= 360.0f;
 	}
+
+	if (m_fadeDone)
+	{
+		// 페이드 인이 완료되면 백 버퍼를 사용하여 장면을 정상적으로 렌더링합니다.
+		RenderNormalScene(rotation);
+	}
+	else
+	{
+		// 페이드 인이 완료되지 않은 경우 장면을 텍스처로 렌더링하고 텍스처를 페이드 인합니다.
+		result = RenderToTexture(rotation);
+		if (!result)
+		{
+			return false;
+		}
+
+		result = RenderFadingScene();
+		if (!result)
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
+bool GraphicsClass::RenderToTexture(float rotation)
+{
+	XMMATRIX worldMatrix, viewMatrix, projectionMatrix;
+
+	// 렌더링 대상을 렌더링에 맞게 설정합니다.
+	m_RenderTexture->SetRenderTarget(m_Direct3D->GetDeviceContext(), m_Direct3D->GetDepthStencilView());
+
+	// 렌더링을 텍스처에 지 웁니다.
+	m_RenderTexture->ClearRenderTarget(m_Direct3D->GetDeviceContext(), m_Direct3D->GetDepthStencilView(), 0.0f, 0.0f, 0.0f, 1.0f);
+
+	// 카메라의 위치에 따라 뷰 행렬을 생성합니다.
+	m_Camera->Render();
+
+	// 카메라 및 d3d 객체에서 월드, 뷰 및 투영 행렬을 가져옵니다.
+	m_Direct3D->GetWorldMatrix(worldMatrix);
+	m_Camera->GetViewMatrix(viewMatrix);
+	m_Direct3D->GetProjectionMatrix(projectionMatrix);
+
+	// 회전에 의해 월드 행렬에 곱합니다.
 	worldMatrix = XMMatrixRotationY(rotation);
 
-	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
+	// 모델 버텍스와 인덱스 버퍼를 그래픽 파이프 라인에 배치하여 드로잉을 준비합니다.
 	m_Model->Render(m_Direct3D->GetDeviceContext());
 
-	// Render the model using the texture shader and the reflection view matrix.
-	m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, reflectionViewMatrix,
+	// 텍스처 쉐이더로 모델을 렌더링한다.
+	m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix,
 		projectionMatrix, m_Model->GetTexture());
 
 	// 렌더링 대상을 원래의 백 버퍼로 다시 설정하고 렌더링에 대한 렌더링을 더 이상 다시 설정하지 않습니다.
@@ -249,59 +293,80 @@ bool GraphicsClass::RenderToTexture()
 }
 
 
-bool GraphicsClass::RenderScene()
+bool GraphicsClass::RenderFadingScene()
 {
-	// 씬을 그리기 위해 버퍼를 지웁니다
+	XMMATRIX worldMatrix, viewMatrix, orthoMatrix;
+	bool result;
+
+
+	// 장면을 시작할 버퍼를 지운다.
 	m_Direct3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 
-	// 카메라의 위치에 따라 뷰 행렬을 생성합니다
+	// 카메라의 위치에 따라 뷰 행렬을 생성합니다.
 	m_Camera->Render();
 
-	// 카메라 및 d3d 객체에서 월드, 뷰 및 투영 행렬을 가져옵니다
+	// 카메라 및 d3d 객체에서 월드, 뷰 및 오쏘 (ortho) 행렬을 가져옵니다.
+	m_Direct3D->GetWorldMatrix(worldMatrix);
+	m_Camera->GetViewMatrix(viewMatrix);
+	m_Direct3D->GetOrthoMatrix(orthoMatrix);
+
+	// 모든 2D 렌더링을 시작하려면 Z 버퍼를 끕니다.
+	m_Direct3D->TurnZBufferOff();
+
+	// 비트 맵 버텍스와 인덱스 버퍼를 그래픽 파이프 라인에 배치하여 그리기를 준비합니다.
+	result = m_Bitmap->Render(m_Direct3D->GetDeviceContext(), 0, 0);
+	if (!result)
+	{
+		return false;
+	}
+
+	// 페이드 셰이더를 사용하여 비트 맵을 렌더링합니다.
+	result = m_FadeShader->Render(m_Direct3D->GetDeviceContext(), m_Bitmap->GetIndexCount(), worldMatrix, viewMatrix, orthoMatrix,
+		m_RenderTexture->GetShaderResourceView(), m_fadePercentage);
+	if (!result)
+	{
+		return false;
+	}
+
+	// 모든 2D 렌더링이 완료되었으므로 Z 버퍼를 다시 켜십시오.
+	m_Direct3D->TurnZBufferOn();
+
+	// 렌더링 된 장면을 화면에 표시합니다.
+	m_Direct3D->EndScene();
+
+	return true;
+}
+
+
+bool GraphicsClass::RenderNormalScene(float rotation)
+{
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix;
+
+	// 장면을 시작할 버퍼를 지운다.
+	m_Direct3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
+
+	// 카메라의 위치에 따라 뷰 행렬을 생성합니다.
+	m_Camera->Render();
+
+	// 카메라 및 d3d 객체에서 월드, 뷰 및 투영 행렬을 가져옵니다.
 	m_Direct3D->GetWorldMatrix(worldMatrix);
 	m_Camera->GetViewMatrix(viewMatrix);
 	m_Direct3D->GetProjectionMatrix(projectionMatrix);
 
-	// 각 프레임의 rotation 변수를 업데이트합니다.
-	static float rotation = 0.0f;
-	rotation += (float)XM_PI * 0.005f;
-	if (rotation > 360.0f)
-	{
-		rotation -= 360.0f;
-	}
-
-	// 회전 값으로 월드 행렬을 회전합니다.
+	// 회전에 의해 월드 행렬에 곱합니다.
 	worldMatrix = XMMatrixRotationY(rotation);
 
-	// 모델 버텍스와 인덱스 버퍼를 그래픽 파이프 라인에 배치하여 렌더링 합니다.
+	// 모델 버텍스와 인덱스 버퍼를 그래픽 파이프 라인에 배치하여 드로잉을 준비합니다.
 	m_Model->Render(m_Direct3D->GetDeviceContext());
 
-	// Render the model with the texture shader.
+	// 텍스처 쉐이더로 모델을 렌더링한다.
 	if (!m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix,
 		projectionMatrix, m_Model->GetTexture()))
 	{
 		return false;
 	}
 
-	// Get the world matrix again and translate down for the floor model to render underneath the cube.
-	m_Direct3D->GetWorldMatrix(worldMatrix);
-	worldMatrix = XMMatrixTranslation(0.0f, -1.5f, 0.0f);
-
-	// Get the camera reflection view matrix.
-	XMMATRIX reflectionMatrix = m_Camera->GetReflectionViewMatrix();
-
-	// Put the floor model vertex and index buffers on the graphics pipeline to prepare them for drawing.
-	m_FloorModel->Render(m_Direct3D->GetDeviceContext());
-
-	// Render the floor model using the reflection shader, reflection texture, and reflection view matrix.
-	if (!m_ReflectionShader->Render(m_Direct3D->GetDeviceContext(), m_FloorModel->GetIndexCount(), worldMatrix, viewMatrix,
-		projectionMatrix, m_FloorModel->GetTexture(), m_RenderTexture->GetShaderResourceView(), reflectionMatrix))
-	{
-		return false;
-	}
-
-	// Present the rendered scene to the screen.
+	// 렌더링 된 장면을 화면에 표시합니다.
 	m_Direct3D->EndScene();
 
 	return true;

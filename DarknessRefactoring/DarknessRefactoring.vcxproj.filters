@@ -156,6 +156,9 @@
     <ClInclude Include="ReflectionShaderClass.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="FadeShaderClass.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DarknessRefactoring.rc">
@@ -294,6 +297,9 @@
     <ClCompile Include="ReflectionShaderClass.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="FadeShaderClass.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="color.vs" />
@@ -324,5 +330,9 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="multiTexture.hlsl" />
+    <FxCompile Include="ps_fade.hlsl" />
+    <FxCompile Include="ps_texture.hlsl" />
+    <FxCompile Include="vs_fade.hlsl" />
+    <FxCompile Include="vs_texture.hlsl" />
   </ItemGroup>
 </Project>

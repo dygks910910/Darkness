@@ -28,6 +28,8 @@ class ClipPlaneShaderClass;
 class TranslateShaderClass;
 class TransparentShaderClass;
 class ReflectionShaderClass;
+class FadeShaderClass;
+
 class GraphicsClass
 {
 public:
@@ -37,12 +39,13 @@ public:
 
 	bool Initialize(int, int, HWND);
 	void Shutdown();
-	bool Frame();
+	bool Frame(float);
 	bool Render();
 
 private:
-	bool RenderToTexture();
-	bool RenderScene();
+	bool RenderToTexture(float);
+	bool RenderFadingScene();
+	bool RenderNormalScene(float);
 
 private:
 	D3DClass* m_Direct3D = nullptr;
@@ -50,6 +53,10 @@ private:
 	ModelClass* m_Model = nullptr;
 	TextureShaderClass* m_TextureShader = nullptr;
 	RenderTextureClass* m_RenderTexture = nullptr;
-	ModelClass* m_FloorModel = nullptr;
-	ReflectionShaderClass* m_ReflectionShader = nullptr;
+	BitmapClass* m_Bitmap = nullptr;
+	FadeShaderClass* m_FadeShader = nullptr;
+	float m_fadeInTime = 0;
+	float m_accumulatedTime = 0;
+	float m_fadePercentage = 0;
+	bool m_fadeDone = false;
 };

@@ -4,10 +4,10 @@
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow) 
 { 
-	CSystemClass* System;
+	SystemClass* System;
 	bool result; 
 	// system 객체를 생성한다.
-	System = new CSystemClass;
+	System = new SystemClass;
 	if(!System) { return 0; } 
 	// system 객체를 초기화하고 run을 호출한다. 
 	result = System->Initialize(); 

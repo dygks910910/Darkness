@@ -1,7 +1,5 @@
 #pragma once
 
-class TextureClass;
-
 class BitmapClass
 {
 private:
@@ -16,12 +14,11 @@ public:
 	BitmapClass(const BitmapClass&);
 	~BitmapClass();
 
-	bool Initialize(ID3D11Device*, int, int, const wchar_t*, int, int);
+	bool Initialize(ID3D11Device*, int, int, int, int);
 	void Shutdown();
 	bool Render(ID3D11DeviceContext*, int, int);
 
 	int GetIndexCount();
-	ID3D11ShaderResourceView* GetTexture();
 
 private:
 	bool InitializeBuffers(ID3D11Device*);
@@ -29,7 +26,7 @@ private:
 	bool UpdateBuffers(ID3D11DeviceContext*, int, int);
 	void RenderBuffers(ID3D11DeviceContext*);
 
-	bool LoadTexture(ID3D11Device*, const wchar_t*);
+	bool LoadTexture(ID3D11Device*, WCHAR*);
 	void ReleaseTexture();
 
 private:
@@ -37,7 +34,6 @@ private:
 	ID3D11Buffer* m_indexBuffer = nullptr;
 	int m_vertexCount = 0;
 	int m_indexCount = 0;
-	TextureClass* m_Texture = nullptr;
 	int m_screenWidth = 0;
 	int m_screenHeight = 0;
 	int m_bitmapWidth = 0;

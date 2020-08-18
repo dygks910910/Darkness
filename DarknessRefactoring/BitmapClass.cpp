@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "CTextureClass.h"
 #include "BitmapClass.h"
 
 
@@ -18,7 +17,7 @@ BitmapClass::~BitmapClass()
 }
 
 
-bool BitmapClass::Initialize(ID3D11Device* device, int screenWidth, int screenHeight, const wchar_t* textureFilename, int bitmapWidth, int bitmapHeight)
+bool BitmapClass::Initialize(ID3D11Device* device, int screenWidth, int screenHeight, int bitmapWidth, int bitmapHeight)
 {
 	// 화면 크기를 멤버변수에 저장
 	m_screenWidth = screenWidth;
@@ -38,16 +37,12 @@ bool BitmapClass::Initialize(ID3D11Device* device, int screenWidth, int screenHe
 		return false;
 	}
 
-	// 이 모델의 텍스처를 로드합니다.
-	return LoadTexture(device, textureFilename);
+	return true;
 }
 
 
 void BitmapClass::Shutdown()
 {
-	// 모델 텍스쳐를 반환합니다.
-	ReleaseTexture();
-
 	// 버텍스 및 인덱스 버퍼를 종료합니다.
 	ShutdownBuffers();
 }
@@ -56,7 +51,7 @@ void BitmapClass::Shutdown()
 bool BitmapClass::Render(ID3D11DeviceContext* deviceContext, int positionX, int positionY)
 {
 	// 화면의 다른 위치로 렌더링하기 위해 동적 정점 버퍼를 다시 빌드합니다.
-	if(!UpdateBuffers(deviceContext, positionX, positionY))
+	if (!UpdateBuffers(deviceContext, positionX, positionY))
 	{
 		return false;
 	}
@@ -71,12 +66,6 @@ bool BitmapClass::Render(ID3D11DeviceContext* deviceContext, int positionX, int 
 int BitmapClass::GetIndexCount()
 {
 	return m_indexCount;
-}
-
-
-ID3D11ShaderResourceView* BitmapClass::GetTexture()
-{
-	return m_Texture->GetTexture();
 }
 
 
@@ -110,11 +99,11 @@ bool BitmapClass::InitializeBuffers(ID3D11Device* device)
 
 	// 정적 정점 버퍼의 구조체를 설정합니다.
 	D3D11_BUFFER_DESC vertexBufferDesc;
-    vertexBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-    vertexBufferDesc.ByteWidth = sizeof(VertexType) * m_vertexCount;
-    vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-    vertexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-    vertexBufferDesc.MiscFlags = 0;
+	vertexBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	vertexBufferDesc.ByteWidth = sizeof(VertexType) * m_vertexCount;
+	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	vertexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	vertexBufferDesc.MiscFlags = 0;
 	vertexBufferDesc.StructureByteStride = 0;
 
 	// subresource 구조에 정점 데이터에 대한 포인터를 제공합니다.
@@ -189,11 +178,11 @@ bool BitmapClass::UpdateBuffers(ID3D11DeviceContext* deviceContext, int position
 
 	// 이 비트맵을 렌더링 할 위치가 변경되지 않은 경우 정점 버퍼를 업데이트 하지 마십시오.
 	// 현재 올바른 매개 변수가 있습니다.
-	if((positionX == m_previousPosX) && (positionY == m_previousPosY))
+	if ((positionX == m_previousPosX) && (positionY == m_previousPosY))
 	{
 		return true;
 	}
-	
+
 	// 변경된 경우 렌더링되는 위치를 업데이트합니다.
 	m_previousPosX = positionX;
 	m_previousPosY = positionY;
@@ -212,7 +201,7 @@ bool BitmapClass::UpdateBuffers(ID3D11DeviceContext* deviceContext, int position
 
 	// 정점 배열을 만듭니다.
 	vertices = new VertexType[m_vertexCount];
-	if(!vertices)
+	if (!vertices)
 	{
 		return false;
 	}
@@ -240,7 +229,7 @@ bool BitmapClass::UpdateBuffers(ID3D11DeviceContext* deviceContext, int position
 
 	// 버텍스 버퍼를 쓸 수 있도록 잠급니다.
 	result = deviceContext->Map(m_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	if(FAILED(result))
+	if (FAILED(result))
 	{
 		return false;
 	}
@@ -255,7 +244,7 @@ bool BitmapClass::UpdateBuffers(ID3D11DeviceContext* deviceContext, int position
 	deviceContext->Unmap(m_vertexBuffer, 0);
 
 	// 더 이상 필요하지 않은 꼭지점 배열을 해제합니다.
-	delete [] vertices;
+	delete[] vertices;
 	vertices = 0;
 
 	return true;
@@ -275,30 +264,4 @@ void BitmapClass::RenderBuffers(ID3D11DeviceContext* deviceContext)
 
 	// 정점 버퍼로 그릴 기본형을 설정합니다. 여기서는 삼각형으로 설정합니다.
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-}
-
-
-bool BitmapClass::LoadTexture(ID3D11Device* device, const wchar_t* filename)
-{
-	// 텍스처 오브젝트를 생성한다.
-	m_Texture = new TextureClass;
-	if (!m_Texture)
-	{
-		return false;
-	}
-
-	// 텍스처 오브젝트를 초기화한다.
-	return m_Texture->Initialize(device, filename);
-}
-
-
-void BitmapClass::ReleaseTexture()
-{
-	// 텍스처 오브젝트를 릴리즈한다.
-	if (m_Texture)
-	{
-		m_Texture->Shutdown();
-		delete m_Texture;
-		m_Texture = 0;
-	}
 }

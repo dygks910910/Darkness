@@ -8,12 +8,13 @@ class FpsClass;
 class CpuClass;
 class TimerClass;
 class PositionClass;
-class CSystemClass
+
+class SystemClass
 {
 public:
-	CSystemClass();
-	CSystemClass(const CSystemClass&);
-	~CSystemClass();
+	SystemClass();
+	SystemClass(const SystemClass&);
+	~SystemClass();
 
 	bool Initialize();
 	void Shutdown();
@@ -41,4 +42,4 @@ private:
 
 static LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
-static CSystemClass* g_ApplicationHandle = 0;
+static SystemClass* g_ApplicationHandle = 0;
