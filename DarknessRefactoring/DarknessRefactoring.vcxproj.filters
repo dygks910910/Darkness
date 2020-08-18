@@ -123,6 +123,9 @@
     <ClInclude Include="TextureArrayClass.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="LightMapShaderClass.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DarknessRefactoring.rc">
@@ -228,6 +231,9 @@
     <ClCompile Include="TextureArrayClass.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="LightMapShaderClass.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="color.vs" />
@@ -241,6 +247,8 @@
     <None Include="Light.hlsl" />
     <None Include="multitexture.ps" />
     <None Include="multitexture.vs" />
+    <None Include="lightmap.ps" />
+    <None Include="lightmap.vs" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="multiTexture.hlsl" />

@@ -2,7 +2,7 @@
 #include "CD3dClass.h"
 #include "CCameraClass.h"
 #include "CModelClass.h"
-#include "MultiTextureShaderClass.h"
+#include "LightMapShaderClass.h"
 #include "CGraphicsClass.h"
 
 
@@ -58,22 +58,23 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 
 	// 모델 객체 초기화
-	if (!m_Model->Initialize(m_Direct3D->GetDevice(), (char*)"data/square.txt",
-		(WCHAR*)L"data/stone01.dds", (WCHAR*)L"data/dirt01.dds"))
+	if (!m_Model->Initialize(m_Direct3D->GetDevice(), (char*)"data/square.txt", (WCHAR*)L"data/stone01.dds", (WCHAR*)L"data/light01.dds"))
 	{
 		MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
 		return false;
 	}
 
-	// 멀티 텍스처 쉐이더 객체 생성
-	m_MultiTextureShader = new MultiTextureShaderClass;
-	if (!m_MultiTextureShader)
-		return false;
-
-	// 멀티 텍스처 쉐이더 객체 초기화
-	if (!m_MultiTextureShader->Initialize(m_Direct3D->GetDevice(), hwnd))
+	// 라이트 맵 쉐이더 객체를 만듭니다.
+	m_LightMapShader = new LightMapShaderClass;
+	if (!m_LightMapShader)
 	{
-		MessageBox(hwnd, L"Could not initialize the multitexture shader object.", L"Error", MB_OK);
+		return false;
+	}
+
+	// 라이트 맵 셰이더 객체를 초기화합니다.
+	if (!m_LightMapShader->Initialize(m_Direct3D->GetDevice(), hwnd))
+	{
+		MessageBox(hwnd, L"Could not initialize the light map shader object.", L"Error", MB_OK);
 		return false;
 	}
 
@@ -83,12 +84,12 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 void GraphicsClass::Shutdown()
 {
-	// 멀티 텍스처 쉐이더 객체 반환
-	if (m_MultiTextureShader)
+	// 라이트 맵 셰이더 객체를 해제합니다.
+	if (m_LightMapShader)
 	{
-		m_MultiTextureShader->Shutdown();
-		delete m_MultiTextureShader;
-		m_MultiTextureShader = 0;
+		m_LightMapShader->Shutdown();
+		delete m_LightMapShader;
+		m_LightMapShader = 0;
 	}
 
 	// 모델 객체 반환
@@ -145,8 +146,8 @@ bool GraphicsClass::Render()
 	m_Model->Render(m_Direct3D->GetDeviceContext());
 
 
-	// 멀티 텍스처 셰이더를 사용하여 모델을 렌더링 합니다.
-	m_MultiTextureShader->Render(m_Direct3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+	// 라이트 맵 셰이더를 사용하여 모델을 렌더링합니다.
+	m_LightMapShader->Render(m_Direct3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
 		m_Model->GetTextureArray());
 
 	// 버퍼의 내용을 화면에 출력합니다

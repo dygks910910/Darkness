@@ -171,6 +171,7 @@
     <ClInclude Include="FontShaderClass.h" />
     <ClInclude Include="FpsClass.h" />
     <ClInclude Include="FrustumClass.h" />
+    <ClInclude Include="LightMapShaderClass.h" />
     <ClInclude Include="ModelListClass.h" />
     <ClInclude Include="MultiTextureShaderClass.h" />
     <ClInclude Include="PositionClass.h" />
@@ -211,6 +212,7 @@
     <ClCompile Include="FontShaderClass.cpp" />
     <ClCompile Include="FpsClass.cpp" />
     <ClCompile Include="FrustumClass.cpp" />
+    <ClCompile Include="LightMapShaderClass.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ModelListClass.cpp" />
     <ClCompile Include="MultiTextureShaderClass.cpp" />
@@ -244,6 +246,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
+    <None Include="lightmap.ps" />
+    <None Include="lightmap.vs" />
     <None Include="multitexture.ps">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>

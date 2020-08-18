@@ -17,7 +17,7 @@ class ModelListClass;
 class FrustumClass;
 class CEffect;
 class MultiTextureShaderClass;
-
+class LightMapShaderClass;
 class GraphicsClass
 {
 public:
@@ -34,6 +34,5 @@ private:
 	D3DClass* m_Direct3D = nullptr;
 	CameraClass* m_Camera = nullptr;
 	ModelClass* m_Model = nullptr;
-	MultiTextureShaderClass* m_MultiTextureShader = nullptr;
-
+	LightMapShaderClass* m_LightMapShader = nullptr;
 };
