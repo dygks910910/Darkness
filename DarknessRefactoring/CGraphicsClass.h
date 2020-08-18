@@ -26,6 +26,8 @@ class DebugWindowClass;
 class FogShaderClass;
 class ClipPlaneShaderClass;
 class TranslateShaderClass;
+class TransparentShaderClass;
+
 class GraphicsClass
 {
 public:
@@ -41,6 +43,8 @@ public:
 private:
 	D3DClass* m_Direct3D = nullptr;
 	CameraClass* m_Camera = nullptr;
-	ModelClass* m_Model = nullptr;
-	TranslateShaderClass* m_TranslateShader = nullptr;
+	ModelClass* m_Model1 = nullptr;
+	ModelClass* m_Model2 = nullptr;
+	TextureShaderClass* m_TextureShader = nullptr;
+	TransparentShaderClass* m_TransparentShader = nullptr;
 };

@@ -2,7 +2,8 @@
 #include "CD3dClass.h"
 #include "CCameraClass.h"
 #include "CModelClass.h"
-#include "TranslateShaderClass.h"
+#include "CTextureShaderClass.h"
+#include "TransparentShaderClass.h"
 #include "CGraphicsClass.h"
 
 
@@ -44,31 +45,59 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return false;
 	}
 
-	// 모델 객체 생성
-	m_Model = new ModelClass;
-	if (!m_Model)
+	// 첫 번째 모델 객체를 만듭니다.
+	m_Model1 = new ModelClass;
+	if (!m_Model1)
 	{
 		return false;
 	}
 
-	// 모델 객체 초기화
-	if (!m_Model->Initialize(m_Direct3D->GetDevice(), (WCHAR*)L"data/seafloor.dds", (char*)"data/triangle.txt"))
+	// 첫 번째 모델 객체를 초기화합니다.
+	if (!m_Model1->Initialize(m_Direct3D->GetDevice(), (WCHAR*)L"data/dirt01.dds", (char*)"data/square.txt"))
 	{
-		MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
+		MessageBox(hwnd, L"Could not initialize the first model object.", L"Error", MB_OK);
 		return false;
 	}
 
-	// m_TranslateShader 객체를 생성합니다.
-	m_TranslateShader = new TranslateShaderClass;
-	if (!m_TranslateShader)
+	// 두 번째 모델 객체를 만듭니다.
+	m_Model2 = new ModelClass;
+	if (!m_Model2)
 	{
 		return false;
 	}
 
-	// m_TranslateShader 객체를 초기화합니다.
-	if (!m_TranslateShader->Initialize(m_Direct3D->GetDevice(), hwnd))
+	// 두 번째 모델 객체를 초기화합니다.
+	if (!m_Model2->Initialize(m_Direct3D->GetDevice(), (WCHAR*)L"data/stone01.dds", (char*)"data/square.txt"))
 	{
-		MessageBox(hwnd, L"Could not initialize the texture translation shader object.", L"Error", MB_OK);
+		MessageBox(hwnd, L"Could not initialize the second model object.", L"Error", MB_OK);
+		return false;
+	}
+
+	// 텍스처 쉐이더 객체를 생성한다.
+	m_TextureShader = new TextureShaderClass;
+	if (!m_TextureShader)
+	{
+		return false;
+	}
+
+	// 텍스처 쉐이더 객체를 초기화한다.
+	if (!m_TextureShader->Initialize(m_Direct3D->GetDevice(), hwnd))
+	{
+		MessageBox(hwnd, L"Could not initialize the texture shader object.", L"Error", MB_OK);
+		return false;
+	}
+
+	// 투명한 셰이더 개체를 만듭니다.
+	m_TransparentShader = new TransparentShaderClass;
+	if (!m_TransparentShader)
+	{
+		return false;
+	}
+
+	// 투명 쉐이더 객체를 초기화합니다.
+	if (!m_TransparentShader->Initialize(m_Direct3D->GetDevice(), hwnd))
+	{
+		MessageBox(hwnd, L"Could not initialize the transparent shader object.", L"Error", MB_OK);
 		return false;
 	}
 
@@ -78,20 +107,36 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 void GraphicsClass::Shutdown()
 {
-	// m_TranslateShader 객체 반환
-	if (m_TranslateShader)
+	// 투명 쉐이더 객체를 해제합니다.
+	if (m_TransparentShader)
 	{
-		m_TranslateShader->Shutdown();
-		delete m_TranslateShader;
-		m_TranslateShader = 0;
+		m_TransparentShader->Shutdown();
+		delete m_TransparentShader;
+		m_TransparentShader = 0;
 	}
 
-	// 모델 객체 반환
-	if (m_Model)
+	// 텍스처 쉐이더 객체를 해제한다.
+	if (m_TextureShader)
 	{
-		m_Model->Shutdown();
-		delete m_Model;
-		m_Model = 0;
+		m_TextureShader->Shutdown();
+		delete m_TextureShader;
+		m_TextureShader = 0;
+	}
+
+	// 두 번째 모델 객체를 해제합니다.
+	if (m_Model2)
+	{
+		m_Model2->Shutdown();
+		delete m_Model2;
+		m_Model2 = 0;
+	}
+
+	// 첫 번째 모델 객체를 해제합니다.
+	if (m_Model1)
+	{
+		m_Model1->Shutdown();
+		delete m_Model1;
+		m_Model1 = 0;
 	}
 
 	// m_Camera 객체 반환
@@ -122,14 +167,8 @@ bool GraphicsClass::Frame()
 
 bool GraphicsClass::Render()
 {
-	static float textureTranslation = 0.0f;
-
-	// 텍스처 변환 위치를 증가시킵니다.
-	textureTranslation += 0.005f;
-	if (textureTranslation > 1.0f)
-	{
-		textureTranslation -= 1.0f;
-	}
+	// 블렌딩 양을 50% 설정합니다.
+	float blendAmount = 0.5f;
 
 	// 씬을 그리기 위해 버퍼를 지웁니다
 	m_Direct3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
@@ -143,15 +182,34 @@ bool GraphicsClass::Render()
 	m_Camera->GetViewMatrix(viewMatrix);
 	m_Direct3D->GetProjectionMatrix(projectionMatrix);
 
-	// 모델 버텍스와 인덱스 버퍼를 그래픽 파이프 라인에 배치하여 렌더링 합니다.
-	m_Model->Render(m_Direct3D->GetDeviceContext());
+	// 모델 버텍스와 인덱스 버퍼를 그래픽 파이프 라인에 배치하여 드로잉을 준비합니다.
+	m_Model1->Render(m_Direct3D->GetDeviceContext());
 
-	// 텍스처 번역 셰이더로 모델을 렌더링합니다.
-	if (!m_TranslateShader->Render(m_Direct3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix,
-		projectionMatrix, m_Model->GetTexture(), textureTranslation))
+	// 텍스처 쉐이더로 모델을 렌더링한다.
+	if (!m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_Model1->GetIndexCount(), worldMatrix, viewMatrix,
+		projectionMatrix, m_Model1->GetTexture()))
 	{
 		return false;
 	}
+
+	// 하나의 단위로 오른쪽으로 번역하고 하나의 단위로 카메라로 번역합니다.
+	worldMatrix = XMMatrixTranslation(1.0f, 0.0f, -1.0f);
+
+	// 투명도가 작동하도록 알파 블렌드를 켭니다.
+	m_Direct3D->TurnOnAlphaBlending();
+
+	// 두 번째 사각형 모델을 그래픽 파이프 라인에 배치합니다.
+	m_Model2->Render(m_Direct3D->GetDeviceContext());
+
+	// 돌 텍스처로 두 번째 사각형 모델을 렌더링하고 투명도를 위해 50 %의 혼합량을 사용합니다.
+	if (!m_TransparentShader->Render(m_Direct3D->GetDeviceContext(), m_Model2->GetIndexCount(), worldMatrix, viewMatrix,
+		projectionMatrix, m_Model2->GetTexture(), blendAmount))
+	{
+		return false;
+	}
+
+	// 알파 블렌딩을 끕니다.
+	m_Direct3D->TurnOffAlphaBlending();
 
 	// 버퍼의 내용을 화면에 출력합니다
 	m_Direct3D->EndScene();

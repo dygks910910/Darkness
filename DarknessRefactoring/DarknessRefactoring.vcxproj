@@ -190,6 +190,7 @@
     <ClInclude Include="TextureArrayClass.h" />
     <ClInclude Include="TimerClass.h" />
     <ClInclude Include="TranslateShaderClass.h" />
+    <ClInclude Include="TransparentShaderClass.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DarknessRefactoring.rc" />
@@ -238,6 +239,7 @@
     <ClCompile Include="TextureArrayClass.cpp" />
     <ClCompile Include="TimerClass.cpp" />
     <ClCompile Include="TranslateShaderClass.cpp" />
+    <ClCompile Include="TransparentShaderClass.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="alphamap.ps" />
