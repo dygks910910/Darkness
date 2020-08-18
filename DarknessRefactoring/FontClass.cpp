@@ -102,7 +102,7 @@ void FontClass::ReleaseFontData()
 bool FontClass::LoadTexture(ID3D11Device* device, const WCHAR* filename)
 {
 	// Create the texture object.
-	m_Texture = new CTextureClass;
+	m_Texture = new TextureClass;
 	if (!m_Texture)
 	{
 		return false;

@@ -1,29 +1,21 @@
-#include"stdafx.h"
+#include "stdafx.h"
 #include "CD3dClass.h"
 
-D3DClass::D3DClass() : 
-  m_swapChain(nullptr)
-, m_device(nullptr)
-, m_deviceContext(nullptr)
-, m_renderTargetView(nullptr)
-, m_depthStencilBuffer(nullptr)
-, m_depthStencilState(nullptr)
-, m_depthStencilView(nullptr)
-, m_rasterState(nullptr)
-, m_depthDisabledStencilState(nullptr)
 
+D3DClass::D3DClass()
 {
 }
 
-D3DClass::D3DClass(const D3DClass&)
+
+D3DClass::D3DClass(const D3DClass& other)
 {
 }
-
 
 
 D3DClass::~D3DClass()
 {
 }
+
 
 bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hwnd, bool fullscreen,
 	float screenDepth, float screenNear)
@@ -106,211 +98,22 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 	}
 
 	// 디스플레이 모드 리스트를 해제합니다
-	SAFE_DELETE_ARR(displayModeList);
+	delete[] displayModeList;
+	displayModeList = 0;
 
 	// 출력 어뎁터를 해제합니다
-	SAFE_RELEASE_D3D(adapterOutput);
+	adapterOutput->Release();
+	adapterOutput = 0;
 
 	// 어뎁터를 해제합니다
-	SAFE_RELEASE_D3D(adapter);
+	adapter->Release();
+	adapter = 0;
+
 	// 팩토리 객체를 해제합니다
-	SAFE_RELEASE_D3D(factory);
+	factory->Release();
+	factory = 0;
 
-	// 스왑체인 생성.
-	IF_NOTX_RTFALSE(CreateSwapChain(screenWidth,screenHeight,numerator,denominator,fullscreen,hwnd));
-	
-	//렌더 타겟뷰 생성.
-	IF_NOTX_RTFALSE(CreateRenderTargerView());
-
-	//깊이버퍼 생성.
-	IF_NOTX_RTFALSE(CreateDepthBuffer(screenWidth,screenHeight));
-	
-	IF_NOTX_RTFALSE(CreateDepthStencilState());
-
-
-	// 깊이 스텐실 상태를 설정합니다
-	m_deviceContext->OMSetDepthStencilState(m_depthStencilState, 1);
-
-	//깊이 스텐실 뷰 생성.
-	IF_NOTX_RTFALSE(CreateDepthStencilView());
-
-	// 렌더링 대상 뷰와 깊이 스텐실 버퍼를 출력 렌더 파이프 라인에 바인딩합니다
-	m_deviceContext->OMSetRenderTargets(1, &m_renderTargetView, m_depthStencilView);
-	
-	// 이제 래스터 라이저 상태를 설정합니다
-	m_deviceContext->RSSetState(m_rasterState);
-
-	// 렌더링을 위해 뷰포트를 설정합니다
-	m_viewports[0].Width = (float)screenWidth;
-	m_viewports[0].Height = (float)screenHeight;
-	m_viewports[0].MinDepth = 0.0f;
-	m_viewports[0].MaxDepth = 1.0f;
-	m_viewports[0].TopLeftX = 0.0f;
-	m_viewports[0].TopLeftY = 0.0f;
-				  
-	m_viewports[1].Width = (float)screenWidth/4;
-	m_viewports[1].Height = (float)screenHeight / 4;
-	m_viewports[1].MinDepth = 0.0f;
-	m_viewports[1].MaxDepth = 1.0f;
-	m_viewports[1].TopLeftX = screenWidth-200;
-	m_viewports[1].TopLeftY = 0.0f;
-
-	// 뷰포트를 생성합니다
-	m_deviceContext->RSSetViewports(2, m_viewports);
-
-	// 투영 행렬을 설정합니다
-	float fieldOfView = XM_PI / 4.0f;
-	float screenAspect = (float)screenWidth / (float)screenHeight;
-
-	// 3D 렌더링을위한 투영 행렬을 만듭니다
-	m_projectionMatrix = XMMatrixPerspectiveFovLH(fieldOfView, screenAspect, screenNear, screenDepth);
-
-	// 세계 행렬을 항등 행렬로 초기화합니다
-	m_worldMatrix = XMMatrixIdentity();
-
-	// 2D 렌더링을위한 직교 투영 행렬을 만듭니다
-	m_orthoMatrix = XMMatrixOrthographicLH((float)screenWidth, (float)screenHeight, screenNear, screenDepth);
-
-	IF_NOTX_RTFALSE(CreateDepthDisableStencilState());
-	IF_NOTX_RTFALSE(CreateBlendState());
-	
-	return true;
-}
-
-void D3DClass::Shutdown()
-{
-	// Before shutting down set to windowed mode or when you release the swap chain it will throw an exception.
-	if (m_swapChain)
-	{
-		m_swapChain->SetFullscreenState(false, NULL);
-	}
-	SAFE_RELEASE_D3D(m_rasterState);
-	SAFE_RELEASE_D3D(m_depthStencilView);
-	SAFE_RELEASE_D3D(m_depthStencilState);
-	SAFE_RELEASE_D3D(m_depthStencilBuffer);
-	SAFE_RELEASE_D3D(m_renderTargetView);
-	SAFE_RELEASE_D3D(m_deviceContext);
-	SAFE_RELEASE_D3D(m_device);
-	SAFE_RELEASE_D3D(m_swapChain);
-	SAFE_RELEASE_D3D(m_depthDisabledStencilState);
-	SAFE_RELEASE_D3D(m_alphaEnableBlendingState);
-	SAFE_RELEASE_D3D(m_alphaDisableBlendingState);
-
-
-}
-
-void D3DClass::BeginScene(float red, float green, float blue, float alpha)
-{
-	float color[4];
-
-
-	// Setup the color to clear the buffer to.
-	color[0] = red;
-	color[1] = green;
-	color[2] = blue;
-	color[3] = alpha;
-
-	// Clear the back buffer.
-	m_deviceContext->ClearRenderTargetView(m_renderTargetView, color);
-
-
-	// Clear the depth buffer.
-	m_deviceContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
-}
-
-void D3DClass::EndScene()
-{
-	// Present the back buffer to the screen since rendering is complete.
-	if (m_vsync_enabled)
-	{
-		// Lock to screen refresh rate.
-		m_swapChain->Present(1, 0);
-	}
-	else
-	{
-		// Present as fast as possible.
-		m_swapChain->Present(0, 0);
-	}
-
-	return;
-}
-
-ID3D11Device* D3DClass::GetDevice()
-{
-	return m_device;
-}
-
-ID3D11DeviceContext* D3DClass::GetDeviceContext()
-{
-	return m_deviceContext;
-}
-
-void D3DClass::GetProjectionMatrix(XMMATRIX& projectionMatrix)
-{
-	projectionMatrix = m_projectionMatrix;
-}
-
-void D3DClass::GetWorldMatrix(XMMATRIX& worldMatrix)
-{
-	worldMatrix = m_worldMatrix;
-}
-
-void D3DClass::GetOrthoMatrix(XMMATRIX& orthoMatrix)
-{
-	orthoMatrix = m_orthoMatrix;
-}
-
-void D3DClass::GetVideoCardInfo(char* cardName, int& memory)
-{
-	strcpy_s(cardName, 128, m_videoCardDescription);
-	memory = m_videoCardMemory;
-}
-
-void D3DClass::TurnZBufferOn()
-{
-	m_deviceContext->OMSetDepthStencilState(m_depthStencilState, 1);
-}
-
-void D3DClass::TurnZBufferOff()
-{
-	m_deviceContext->OMSetDepthStencilState(m_depthDisabledStencilState, 1);
-}
-
-void D3DClass::TurnOnAlphaBlending()
-{
-	// Setup the blend factor.
-	float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
-
-	// Turn on the alpha blending.
-	m_deviceContext->OMSetBlendState(m_alphaEnableBlendingState, blendFactor, 0xffffffff);
-}
-
-
-void D3DClass::TurnOffAlphaBlending()
-{
-	// Setup the blend factor.
-	float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
-
-	// Turn off the alpha blending.
-	m_deviceContext->OMSetBlendState(m_alphaDisableBlendingState, blendFactor, 0xffffffff);
-}
-
-void D3DClass::SetFirstViewport()
-{
-	m_deviceContext->RSSetViewports(1, &m_viewports[0]);
-
-}
-
-void D3DClass::SetSecondViewport()
-{
-	m_deviceContext->RSSetViewports(1, &m_viewports[1]);
-}
-
-
-bool D3DClass::CreateSwapChain(int screenW, int screenH, unsigned int numerator,
-	unsigned int denominator, bool fullscreen, HWND hwnd)
-{
-
+	// 스왑체인 구조체를 초기화합니다
 	DXGI_SWAP_CHAIN_DESC swapChainDesc;
 	ZeroMemory(&swapChainDesc, sizeof(swapChainDesc));
 
@@ -318,8 +121,8 @@ bool D3DClass::CreateSwapChain(int screenW, int screenH, unsigned int numerator,
 	swapChainDesc.BufferCount = 1;
 
 	// 백버퍼의 넓이와 높이를 지정합니다
-	swapChainDesc.BufferDesc.Width = screenW;
-	swapChainDesc.BufferDesc.Height = screenH;
+	swapChainDesc.BufferDesc.Width = screenWidth;
+	swapChainDesc.BufferDesc.Height = screenHeight;
 
 	// 32bit 서페이스를 설정합니다
 	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -375,18 +178,14 @@ bool D3DClass::CreateSwapChain(int screenW, int screenH, unsigned int numerator,
 	{
 		return false;
 	}
-	return true;
-}
 
-bool D3DClass::CreateRenderTargerView()
-{
 	// 백버퍼 포인터를 얻어옵니다
-
 	ID3D11Texture2D* backBufferPtr = nullptr;
 	if (FAILED(m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBufferPtr)))
 	{
 		return false;
 	}
+
 	// 백 버퍼 포인터로 렌더 타겟 뷰를 생성한다.
 	if (FAILED(m_device->CreateRenderTargetView(backBufferPtr, NULL, &m_renderTargetView)))
 	{
@@ -394,12 +193,9 @@ bool D3DClass::CreateRenderTargerView()
 	}
 
 	// 백버퍼 포인터를 해제합니다
-	SAFE_RELEASE_D3D(backBufferPtr);
-	return true;
-}
+	backBufferPtr->Release();
+	backBufferPtr = 0;
 
-bool D3DClass::CreateDepthBuffer(int screenWidth, int screenHeight)
-{
 	// 깊이 버퍼 구조체를 초기화합니다
 	D3D11_TEXTURE2D_DESC depthBufferDesc;
 	ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
@@ -418,13 +214,11 @@ bool D3DClass::CreateDepthBuffer(int screenWidth, int screenHeight)
 	depthBufferDesc.MiscFlags = 0;
 
 	// 설정된 깊이버퍼 구조체를 사용하여 깊이 버퍼 텍스쳐를 생성합니다
-	IF_FAILED_RTFALSE(m_device->CreateTexture2D(&depthBufferDesc, NULL, &m_depthStencilBuffer));
+	if (FAILED(m_device->CreateTexture2D(&depthBufferDesc, NULL, &m_depthStencilBuffer)))
+	{
+		return false;
+	}
 
-	return true;
-}
-
-bool D3DClass::CreateDepthStencilState()
-{
 	// 스텐실 상태 구조체를 초기화합니다
 	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
 	ZeroMemory(&depthStencilDesc, sizeof(depthStencilDesc));
@@ -456,11 +250,9 @@ bool D3DClass::CreateDepthStencilState()
 		return false;
 	}
 
-	return true;
-}
+	// 깊이 스텐실 상태를 설정합니다
+	m_deviceContext->OMSetDepthStencilState(m_depthStencilState, 1);
 
-bool D3DClass::CreateDepthStencilView()
-{
 	// 깊이 스텐실 뷰의 구조체를 초기화합니다
 	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
 	ZeroMemory(&depthStencilViewDesc, sizeof(depthStencilViewDesc));
@@ -470,40 +262,62 @@ bool D3DClass::CreateDepthStencilView()
 	depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 	depthStencilViewDesc.Texture2D.MipSlice = 0;
 
-
 	// 깊이 스텐실 뷰를 생성합니다
 	if (FAILED(m_device->CreateDepthStencilView(m_depthStencilBuffer, &depthStencilViewDesc, &m_depthStencilView)))
 	{
 		return false;
 	}
-	return true;
-}
 
-bool D3DClass::CreateRasterizeState()
-{
-// 그려지는 폴리곤과 방법을 결정할 래스터 구조체를 설정합니다
-D3D11_RASTERIZER_DESC rasterDesc;
-rasterDesc.AntialiasedLineEnable = false;
-rasterDesc.CullMode = D3D11_CULL_BACK;
-rasterDesc.DepthBias = 0;
-rasterDesc.DepthBiasClamp = 0.0f;
-rasterDesc.DepthClipEnable = true;
-rasterDesc.FillMode = D3D11_FILL_SOLID;
-rasterDesc.FrontCounterClockwise = false;
-rasterDesc.MultisampleEnable = false;
-rasterDesc.ScissorEnable = false;
-rasterDesc.SlopeScaledDepthBias = 0.0f;
+	// 렌더링 대상 뷰와 깊이 스텐실 버퍼를 출력 렌더 파이프 라인에 바인딩합니다
+	m_deviceContext->OMSetRenderTargets(1, &m_renderTargetView, m_depthStencilView);
 
-// 방금 작성한 구조체에서 래스터 라이저 상태를 만듭니다
-if (FAILED(m_device->CreateRasterizerState(&rasterDesc, &m_rasterState)))
-{
-	return false;
-}
-	return true;
-}
+	// 그려지는 폴리곤과 방법을 결정할 래스터 구조체를 설정합니다
+	D3D11_RASTERIZER_DESC rasterDesc;
+	rasterDesc.AntialiasedLineEnable = false;
+	rasterDesc.CullMode = D3D11_CULL_BACK;
+	rasterDesc.DepthBias = 0;
+	rasterDesc.DepthBiasClamp = 0.0f;
+	rasterDesc.DepthClipEnable = true;
+	rasterDesc.FillMode = D3D11_FILL_SOLID;
+	rasterDesc.FrontCounterClockwise = false;
+	rasterDesc.MultisampleEnable = false;
+	rasterDesc.ScissorEnable = false;
+	rasterDesc.SlopeScaledDepthBias = 0.0f;
 
-bool D3DClass::CreateDepthDisableStencilState()
-{
+	// 방금 작성한 구조체에서 래스터 라이저 상태를 만듭니다
+	if (FAILED(m_device->CreateRasterizerState(&rasterDesc, &m_rasterState)))
+	{
+		return false;
+	}
+
+	// 이제 래스터 라이저 상태를 설정합니다
+	m_deviceContext->RSSetState(m_rasterState);
+
+	// 렌더링을 위해 뷰포트를 설정합니다
+	D3D11_VIEWPORT viewport;
+	viewport.Width = (float)screenWidth;
+	viewport.Height = (float)screenHeight;
+	viewport.MinDepth = 0.0f;
+	viewport.MaxDepth = 1.0f;
+	viewport.TopLeftX = 0.0f;
+	viewport.TopLeftY = 0.0f;
+
+	// 뷰포트를 생성합니다
+	m_deviceContext->RSSetViewports(1, &viewport);
+
+	// 투영 행렬을 설정합니다
+	float fieldOfView = XM_PI / 4.0f;
+	float screenAspect = (float)screenWidth / (float)screenHeight;
+
+	// 3D 렌더링을위한 투영 행렬을 만듭니다
+	m_projectionMatrix = XMMatrixPerspectiveFovLH(fieldOfView, screenAspect, screenNear, screenDepth);
+
+	// 세계 행렬을 항등 행렬로 초기화합니다
+	m_worldMatrix = XMMatrixIdentity();
+
+	// 2D 렌더링을위한 직교 투영 행렬을 만듭니다
+	m_orthoMatrix = XMMatrixOrthographicLH((float)screenWidth, (float)screenHeight, screenNear, screenDepth);
+
 	// 이제 2D 렌더링을위한 Z 버퍼를 끄는 두 번째 깊이 스텐실 상태를 만듭니다. 유일한 차이점은
 	// DepthEnable을 false로 설정하면 다른 모든 매개 변수는 다른 깊이 스텐실 상태와 동일합니다.
 	D3D11_DEPTH_STENCIL_DESC depthDisabledStencilDesc;
@@ -523,19 +337,18 @@ bool D3DClass::CreateDepthDisableStencilState()
 	depthDisabledStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
 	depthDisabledStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
 	depthDisabledStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
 	// 장치를 사용하여 상태를 만듭니다.
-	IF_FAILED_RTFALSE(m_device->CreateDepthStencilState(&depthDisabledStencilDesc, &m_depthDisabledStencilState));
+	if (FAILED(m_device->CreateDepthStencilState(&depthDisabledStencilDesc, &m_depthDisabledStencilState)))
+	{
+		return false;
+	}
 
-	return true;
-}
-
-bool D3DClass::CreateBlendState()
-{
-	// Clear the blend state description.
+	// 블렌드 상태 구조체를 초기화 합니다.
 	D3D11_BLEND_DESC blendStateDescription;
 	ZeroMemory(&blendStateDescription, sizeof(D3D11_BLEND_DESC));
 
-	// Create an alpha enabled blend state description.
+	// 알파블렌드 값을 설정합니다.
 	blendStateDescription.RenderTarget[0].BlendEnable = TRUE;
 	blendStateDescription.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
 	blendStateDescription.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
@@ -545,11 +358,204 @@ bool D3DClass::CreateBlendState()
 	blendStateDescription.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
 	blendStateDescription.RenderTarget[0].RenderTargetWriteMask = 0x0f;
 
-	// Create the blend state using the description.
-	IF_FAILED_RTFALSE(m_device->CreateBlendState(&blendStateDescription, &m_alphaEnableBlendingState));
-	// Modify the description to create an alpha disabled blend state description.
+	// 블렌드 상태를 생성합니다.
+	if (FAILED(m_device->CreateBlendState(&blendStateDescription, &m_alphaEnableBlendingState)))
+	{
+		return false;
+	}
+
+	// 알파 블렌드를 비활성화 설정합니다.
 	blendStateDescription.RenderTarget[0].BlendEnable = FALSE;
-	// Create the blend state using the description.
-	IF_FAILED_RTFALSE(m_device->CreateBlendState(&blendStateDescription, &m_alphaDisableBlendingState));
+
+	// 블렌드 상태를 생성합니다.
+	if (FAILED(m_device->CreateBlendState(&blendStateDescription, &m_alphaDisableBlendingState)))
+	{
+		return false;
+	}
+
 	return true;
+}
+
+
+void D3DClass::Shutdown()
+{
+	// 종료 전 윈도우 모드로 설정하지 않으면 스왑 체인을 해제 할 때 예외가 발생합니다.
+	if (m_swapChain)
+	{
+		m_swapChain->SetFullscreenState(false, NULL);
+	}
+
+	if (m_alphaEnableBlendingState)
+	{
+		m_alphaEnableBlendingState->Release();
+		m_alphaEnableBlendingState = 0;
+	}
+
+	if (m_alphaDisableBlendingState)
+	{
+		m_alphaDisableBlendingState->Release();
+		m_alphaDisableBlendingState = 0;
+	}
+
+	if (m_rasterState)
+	{
+		m_rasterState->Release();
+		m_rasterState = 0;
+	}
+
+	if (m_depthStencilView)
+	{
+		m_depthStencilView->Release();
+		m_depthStencilView = 0;
+	}
+
+	if (m_depthDisabledStencilState)
+	{
+		m_depthDisabledStencilState->Release();
+		m_depthDisabledStencilState = 0;
+	}
+
+	if (m_depthStencilState)
+	{
+		m_depthStencilState->Release();
+		m_depthStencilState = 0;
+	}
+
+	if (m_depthStencilBuffer)
+	{
+		m_depthStencilBuffer->Release();
+		m_depthStencilBuffer = 0;
+	}
+
+	if (m_renderTargetView)
+	{
+		m_renderTargetView->Release();
+		m_renderTargetView = 0;
+	}
+
+	if (m_deviceContext)
+	{
+		m_deviceContext->Release();
+		m_deviceContext = 0;
+	}
+
+	if (m_device)
+	{
+		m_device->Release();
+		m_device = 0;
+	}
+
+	if (m_swapChain)
+	{
+		m_swapChain->Release();
+		m_swapChain = 0;
+	}
+}
+
+
+void D3DClass::BeginScene(float red, float green, float blue, float alpha)
+{
+	// 버퍼를 지울 색을 설정합니다
+	float color[4] = { red, green, blue, alpha };
+
+	// 백버퍼를 지웁니다
+	m_deviceContext->ClearRenderTargetView(m_renderTargetView, color);
+
+	// 깊이 버퍼를 지웁니다
+	m_deviceContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+}
+
+
+void D3DClass::EndScene()
+{
+	// 렌더링이 완료되었으므로 화면에 백 버퍼를 표시합니다.
+	if (m_vsync_enabled)
+	{
+		// 화면 새로 고침 비율을 고정합니다.
+		m_swapChain->Present(1, 0);
+	}
+	else
+	{
+		// 가능한 빠르게 출력합니다
+		m_swapChain->Present(0, 0);
+	}
+}
+
+
+ID3D11Device* D3DClass::GetDevice()
+{
+	return m_device;
+}
+
+
+ID3D11DeviceContext* D3DClass::GetDeviceContext()
+{
+	return m_deviceContext;
+}
+
+
+void D3DClass::GetProjectionMatrix(XMMATRIX& projectionMatrix)
+{
+	projectionMatrix = m_projectionMatrix;
+}
+
+
+void D3DClass::GetWorldMatrix(XMMATRIX& worldMatrix)
+{
+	worldMatrix = m_worldMatrix;
+}
+
+
+void D3DClass::GetOrthoMatrix(XMMATRIX& orthoMatrix)
+{
+	orthoMatrix = m_orthoMatrix;
+}
+
+
+void D3DClass::GetVideoCardInfo(char* cardName, int& memory)
+{
+	strcpy_s(cardName, 128, m_videoCardDescription);
+	memory = m_videoCardMemory;
+}
+
+void D3DClass::TurnZBufferOn()
+{
+	m_deviceContext->OMSetDepthStencilState(m_depthStencilState, 1);
+}
+
+
+void D3DClass::TurnZBufferOff()
+{
+	m_deviceContext->OMSetDepthStencilState(m_depthDisabledStencilState, 1);
+}
+
+void D3DClass::TurnOnAlphaBlending()
+{
+	// 블렌드 인수를 설정합니다.
+	float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+	// 알파 블렌딩을 켭니다.
+	m_deviceContext->OMSetBlendState(m_alphaEnableBlendingState, blendFactor, 0xffffffff);
+}
+
+
+void D3DClass::TurnOffAlphaBlending()
+{
+	// 블렌드 인수를 설정합니다.
+	float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+	// 알파 블렌딩을 끕니다.
+	m_deviceContext->OMSetBlendState(m_alphaDisableBlendingState, blendFactor, 0xffffffff);
+}
+
+ID3D11DepthStencilView* D3DClass::GetDepthStencilView()
+{
+	return m_depthStencilView;
+}
+
+
+void D3DClass::SetBackBufferRenderTarget()
+{
+	// 렌더링 대상 뷰와 깊이 스텐실 버퍼를 출력 렌더 파이프 라인에 바인딩합니다.
+	m_deviceContext->OMSetRenderTargets(1, &m_renderTargetView, m_depthStencilView);
 }

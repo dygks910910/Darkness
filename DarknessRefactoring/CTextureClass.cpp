@@ -1,21 +1,21 @@
 #include"stdafx.h"
 #include "CTextureClass.h"
-CTextureClass::CTextureClass():
+TextureClass::TextureClass():
 	m_texture(nullptr)
 {
 }
 
-CTextureClass::CTextureClass(const CTextureClass&)
+TextureClass::TextureClass(const TextureClass&)
 {
 }
 
-CTextureClass::~CTextureClass()
+TextureClass::~TextureClass()
 {
 }
 
 
 
-bool CTextureClass::Initialize(ID3D11Device* device,const wchar_t* filename)
+bool TextureClass::Initialize(ID3D11Device* device,const wchar_t* filename)
 {
 	HRESULT result;
 
@@ -28,14 +28,14 @@ bool CTextureClass::Initialize(ID3D11Device* device,const wchar_t* filename)
 }
 
 
-void CTextureClass::Shutdown()
+void TextureClass::Shutdown()
 {
 	// Release the texture resource.
 	SAFE_RELEASE_D3D(m_texture);
 }
 
 
-ID3D11ShaderResourceView* CTextureClass::GetTexture()
+ID3D11ShaderResourceView* TextureClass::GetTexture()
 {
 	return m_texture;
 }

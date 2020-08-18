@@ -2,8 +2,11 @@
 #include "CD3dClass.h"
 #include "CCameraClass.h"
 #include "CModelClass.h"
-#include "SpecMapShaderClass.h"
+#include "CLightShaderClass.h"
 #include "CLightClass.h"
+#include "RenderTextureClass.h"
+#include "DebugWindowClass.h"
+#include "CTextureShaderClass.h"
 #include "CGraphicsClass.h"
 
 
@@ -45,12 +48,6 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return false;
 	}
 
-	// 카메라 포지션 설정
-	XMMATRIX baseViewMatrix;
-	m_Camera->SetPosition(0.0f, 0.0f, -1.0f);
-	m_Camera->Render();
-	m_Camera->GetViewMatrix(baseViewMatrix);
-
 	// 모델 객체 생성
 	m_Model = new ModelClass;
 	if (!m_Model)
@@ -59,24 +56,23 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 
 	// 모델 객체 초기화
-	if (!m_Model->Initialize(m_Direct3D->GetDevice(), (char*)"data/cube.txt", (WCHAR*)L"data/stone02.dds",
-		(WCHAR*)L"data/bump02.dds", (WCHAR*)L"data/spec02.dds"))
+	if (!m_Model->Initialize(m_Direct3D->GetDevice(), (WCHAR*)L"data/seafloor.dds", (char*)"data/cube.txt"))
 	{
 		MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
 		return false;
 	}
 
-	// specular map shader 객체를 생성한다.
-	m_SpecMapShader = new SpecMapShaderClass;
-	if (!m_SpecMapShader)
+	// 라이트 쉐이더 객체를 만듭니다.
+	m_LightShader = new LightShaderClass;
+	if (!m_LightShader)
 	{
 		return false;
 	}
 
-	// specular map shader 객체를 초기화한다.
-	if (!m_SpecMapShader->Initialize(m_Direct3D->GetDevice(), hwnd))
+	// 라이트 쉐이더 객체를 초기화합니다.
+	if (!m_LightShader->Initialize(m_Direct3D->GetDevice(), hwnd))
 	{
-		MessageBox(hwnd, L"Could not initialize the specular map shader object.", L"Error", MB_OK);
+		MessageBox(hwnd, L"Could not initialize the light shader object.", L"Error", MB_OK);
 		return false;
 	}
 
@@ -90,8 +86,47 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	// 조명 객체를 초기화합니다.
 	m_Light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
 	m_Light->SetDirection(0.0f, 0.0f, 1.0f);
-	m_Light->SetSpecularColor(1.0f, 1.0f, 1.0f, 1.0f);
-	m_Light->SetSpecularPower(16.0f);
+
+	// 렌더링 텍스처 객체를 생성한다.
+	m_RenderTexture = new RenderTextureClass;
+	if (!m_RenderTexture)
+	{
+		return false;
+	}
+
+	// 렌더링 텍스처 객체를 초기화한다.
+	if (!m_RenderTexture->Initialize(m_Direct3D->GetDevice(), screenWidth, screenHeight))
+	{
+		return false;
+	}
+
+	// 디버그 창 객체를 만듭니다.
+	m_DebugWindow = new DebugWindowClass;
+	if (!m_DebugWindow)
+	{
+		return false;
+	}
+
+	// 디버그 창 객체를 초기화 합니다.
+	if (!m_DebugWindow->Initialize(m_Direct3D->GetDevice(), screenWidth, screenHeight, 100, 100))
+	{
+		MessageBox(hwnd, L"Could not initialize the debug window object.", L"Error", MB_OK);
+		return false;
+	}
+
+	// 텍스처 쉐이더 객체를 생성한다.
+	m_TextureShader = new TextureShaderClass();
+	if (!m_TextureShader)
+	{
+		return false;
+	}
+
+	// 텍스처 쉐이더 객체를 초기화한다.
+	if (!m_TextureShader->Initialize(m_Direct3D->GetDevice(), hwnd))
+	{
+		MessageBox(hwnd, L"Could not initialize the texture shader object.", L"Error", MB_OK);
+		return false;
+	}
 
 	return true;
 }
@@ -99,6 +134,30 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 void GraphicsClass::Shutdown()
 {
+	// 텍스처 쉐이더 객체를 해제한다.
+	if (m_TextureShader)
+	{
+		m_TextureShader->Shutdown();
+		delete m_TextureShader;
+		m_TextureShader = 0;
+	}
+
+	// 디버그 창 객체를 해제합니다.
+	if (m_DebugWindow)
+	{
+		m_DebugWindow->Shutdown();
+		delete m_DebugWindow;
+		m_DebugWindow = 0;
+	}
+
+	// 렌더를 텍스쳐 객체로 릴리즈한다.
+	if (m_RenderTexture)
+	{
+		m_RenderTexture->Shutdown();
+		delete m_RenderTexture;
+		m_RenderTexture = 0;
+	}
+
 	// 조명 객체를 해제한다.
 	if (m_Light)
 	{
@@ -106,12 +165,12 @@ void GraphicsClass::Shutdown()
 		m_Light = 0;
 	}
 
-	// specular map shader 객체를 해제한다.
-	if (m_SpecMapShader)
+	// 라이트 쉐이더 객체를 해제합니다.
+	if (m_LightShader)
 	{
-		m_SpecMapShader->Shutdown();
-		delete m_SpecMapShader;
-		m_SpecMapShader = 0;
+		m_LightShader->Shutdown();
+		delete m_LightShader;
+		m_LightShader = 0;
 	}
 
 	// 모델 객체 반환
@@ -150,9 +209,76 @@ bool GraphicsClass::Frame()
 
 bool GraphicsClass::Render()
 {
+	// 전체 장면을 먼저 텍스처로 렌더링합니다.
+	if (!RenderToTexture())
+	{
+		return false;
+	}
+
 	// 씬을 그리기 위해 버퍼를 지웁니다
 	m_Direct3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 
+	// 백 버퍼의 장면을 정상적으로 렌더링합니다.
+	if (!RenderScene())
+	{
+		return false;
+	}
+
+	// 모든 2D 렌더링을 시작하려면 Z 버퍼를 끕니다.
+	m_Direct3D->TurnZBufferOff();
+
+	// 카메라 및 d3d 객체에서 월드, 뷰 및 투영 행렬을 가져옵니다
+	XMMATRIX worldMatrix, viewMatrix, orthoMatrix;
+
+	m_Camera->GetViewMatrix(viewMatrix);
+	m_Direct3D->GetWorldMatrix(worldMatrix);
+	m_Direct3D->GetOrthoMatrix(orthoMatrix);
+
+	// 디버그 윈도우 버텍스와 인덱스 버퍼를 그래픽 파이프 라인에 배치하여 그리기를 준비합니다.
+	if (!m_DebugWindow->Render(m_Direct3D->GetDeviceContext(), 50, 50))
+	{
+		return false;
+	}
+
+	// 텍스처 셰이더를 사용해 디버그 윈도우를 렌더링한다.
+	if (!m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_DebugWindow->GetIndexCount(), worldMatrix, viewMatrix,
+		orthoMatrix, m_RenderTexture->GetShaderResourceView()))
+	{
+		return false;
+	}
+
+	// 모든 2D 렌더링이 완료되었으므로 Z 버퍼를 다시 켜십시오.
+	m_Direct3D->TurnZBufferOn();
+
+	// 버퍼의 내용을 화면에 출력합니다
+	m_Direct3D->EndScene();
+
+	return true;
+}
+
+bool GraphicsClass::RenderToTexture()
+{
+	// 렌더링 대상을 렌더링에 맞게 설정합니다.
+	m_RenderTexture->SetRenderTarget(m_Direct3D->GetDeviceContext(), m_Direct3D->GetDepthStencilView());
+
+	// 렌더링을 텍스처에 지웁니다.
+	m_RenderTexture->ClearRenderTarget(m_Direct3D->GetDeviceContext(), m_Direct3D->GetDepthStencilView(), 0.0f, 0.0f, 1.0f, 1.0f);
+
+	// 이제 장면을 렌더링하면 백 버퍼 대신 텍스처로 렌더링됩니다.
+	if (!RenderScene())
+	{
+		return false;
+	}
+
+	// 렌더링 대상을 원래의 백 버퍼로 다시 설정하고 렌더링에 대한 렌더링을 더 이상 다시 설정하지 않습니다.
+	m_Direct3D->SetBackBufferRenderTarget();
+
+	return true;
+}
+
+
+bool GraphicsClass::RenderScene()
+{
 	// 카메라의 위치에 따라 뷰 행렬을 생성합니다
 	m_Camera->Render();
 
@@ -177,14 +303,7 @@ bool GraphicsClass::Render()
 	// 모델 버텍스와 인덱스 버퍼를 그래픽 파이프 라인에 배치하여 렌더링 합니다.
 	m_Model->Render(m_Direct3D->GetDeviceContext());
 
-
-	// 범프 맵 셰이더를 사용하여 모델을 렌더링합니다.
-	m_SpecMapShader->Render(m_Direct3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
-		m_Model->GetTextureArray(), m_Light->GetDirection(), m_Light->GetDiffuseColor(),
-		m_Camera->GetPosition(), m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
-
-	// 버퍼의 내용을 화면에 출력합니다
-	m_Direct3D->EndScene();
-
-	return true;
+	// 라이트 쉐이더를 사용하여 모델을 렌더링합니다.
+	return m_LightShader->Render(m_Direct3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		m_Model->GetTexture(), m_Light->GetDirection(), m_Light->GetDiffuseColor());
 }

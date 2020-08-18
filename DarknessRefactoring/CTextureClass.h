@@ -1,11 +1,11 @@
 #pragma once
 
-class CTextureClass
+class TextureClass
 {
 public:
-	CTextureClass();
-	CTextureClass(const CTextureClass&);
-	~CTextureClass();
+	TextureClass();
+	TextureClass(const TextureClass&);
+	~TextureClass();
 
 	bool Initialize(ID3D11Device*, const wchar_t* filename);
 	void Shutdown();

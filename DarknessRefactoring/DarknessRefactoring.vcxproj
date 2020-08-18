@@ -166,6 +166,7 @@
     <ClInclude Include="d3dx11effect.h" />
     <ClInclude Include="d3dxGlobal.h" />
     <ClInclude Include="DDSTextureLoader.h" />
+    <ClInclude Include="DebugWindowClass.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="DxDefine.h" />
     <ClInclude Include="dxerr.h" />
@@ -177,6 +178,7 @@
     <ClInclude Include="ModelListClass.h" />
     <ClInclude Include="MultiTextureShaderClass.h" />
     <ClInclude Include="PositionClass.h" />
+    <ClInclude Include="RenderTextureClass.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SoundClass.h" />
     <ClInclude Include="SpecMapShaderClass.h" />
@@ -212,6 +214,7 @@
     <ClCompile Include="CTextureClass.cpp" />
     <ClCompile Include="CTextureShaderClass.cpp" />
     <ClCompile Include="DDSTextureLoader.cpp" />
+    <ClCompile Include="DebugWindowClass.cpp" />
     <ClCompile Include="dxerr.cpp" />
     <ClCompile Include="FontClass.cpp" />
     <ClCompile Include="FontShaderClass.cpp" />
@@ -222,6 +225,7 @@
     <ClCompile Include="ModelListClass.cpp" />
     <ClCompile Include="MultiTextureShaderClass.cpp" />
     <ClCompile Include="PositionClass.cpp" />
+    <ClCompile Include="RenderTextureClass.cpp" />
     <ClCompile Include="SoundClass.cpp" />
     <ClCompile Include="SpecMapShaderClass.cpp" />
     <ClCompile Include="stdafx.cpp" />

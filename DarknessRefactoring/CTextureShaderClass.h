@@ -2,7 +2,7 @@
 
 
 
-class CTextureShaderClass
+class TextureShaderClass
 {
 private:
 	struct MatrixBufferType
@@ -13,9 +13,9 @@ private:
 	};
 
 public:
-	CTextureShaderClass();
-	CTextureShaderClass(const CTextureShaderClass&);
-	~CTextureShaderClass();
+	TextureShaderClass();
+	TextureShaderClass(const TextureShaderClass&);
+	~TextureShaderClass();
 
 	bool Initialize(ID3D11Device*, HWND);
 	void Shutdown();

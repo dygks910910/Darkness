@@ -8,9 +8,9 @@ const float SCREEN_NEAR = 0.1f;
 class D3DClass;
 class CameraClass;
 class ModelClass;
-class CLightShaderClass;
+class LightShaderClass;
 class LightClass;
-class CTextureShaderClass;
+class TextureShaderClass;
 class BitmapClass;
 class TextClass;
 class ModelListClass;
@@ -21,6 +21,8 @@ class LightMapShaderClass;
 class AlphaMapShaderClass;
 class BumpMapShaderClass;
 class SpecMapShaderClass;
+class RenderTextureClass;
+class DebugWindowClass;
 
 class GraphicsClass
 {
@@ -35,10 +37,17 @@ public:
 	bool Render();
 
 private:
+	bool RenderToTexture();
+	bool RenderScene();
+
+private:
 	D3DClass* m_Direct3D = nullptr;
 	CameraClass* m_Camera = nullptr;
 	ModelClass* m_Model = nullptr;
-	SpecMapShaderClass* m_SpecMapShader = nullptr;
+	LightShaderClass* m_LightShader = nullptr;
 	LightClass* m_Light = nullptr;
+	RenderTextureClass* m_RenderTexture = nullptr;
+	DebugWindowClass* m_DebugWindow = nullptr;
+	TextureShaderClass* m_TextureShader = nullptr;
 
 };

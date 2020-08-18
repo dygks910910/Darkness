@@ -3,7 +3,7 @@
 #include <fstream>
 using namespace std;
 
-CTextureShaderClass::CTextureShaderClass() : 
+TextureShaderClass::TextureShaderClass() : 
 	m_vertexShader(nullptr)
 	, m_pixelShader(nullptr)
 	,m_layout(nullptr)
@@ -14,17 +14,17 @@ CTextureShaderClass::CTextureShaderClass() :
 }
 
 
-CTextureShaderClass::CTextureShaderClass(const CTextureShaderClass& other)
+TextureShaderClass::TextureShaderClass(const TextureShaderClass& other)
 {
 }
 
 
-CTextureShaderClass::~CTextureShaderClass()
+TextureShaderClass::~TextureShaderClass()
 {
 }
 
 
-bool CTextureShaderClass::Initialize(ID3D11Device* device, HWND hwnd)
+bool TextureShaderClass::Initialize(ID3D11Device* device, HWND hwnd)
 {
 	bool result;
 
@@ -37,7 +37,7 @@ bool CTextureShaderClass::Initialize(ID3D11Device* device, HWND hwnd)
 }
 
 
-void CTextureShaderClass::Shutdown()
+void TextureShaderClass::Shutdown()
 {
 	// Shutdown the vertex and pixel shaders as well as the related objects.
 	ShutdownShader();
@@ -46,7 +46,7 @@ void CTextureShaderClass::Shutdown()
 }
 
 
-bool CTextureShaderClass::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
+bool TextureShaderClass::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
 	XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture)
 {
 	bool result;
@@ -63,7 +63,7 @@ bool CTextureShaderClass::Render(ID3D11DeviceContext* deviceContext, int indexCo
 }
 
 
-bool CTextureShaderClass::InitializeShader(ID3D11Device* device, HWND hwnd, const wchar_t* vsFilename, const wchar_t* psFilename)
+bool TextureShaderClass::InitializeShader(ID3D11Device* device, HWND hwnd, const wchar_t* vsFilename, const wchar_t* psFilename)
 {
 	HRESULT result;
 	ID3D10Blob* errorMessage;
@@ -194,7 +194,7 @@ bool CTextureShaderClass::InitializeShader(ID3D11Device* device, HWND hwnd, cons
 }
 
 
-void CTextureShaderClass::ShutdownShader()
+void TextureShaderClass::ShutdownShader()
 {
 	// Release the sampler state.
 	if (m_sampleState)
@@ -235,7 +235,7 @@ void CTextureShaderClass::ShutdownShader()
 }
 
 
-void CTextureShaderClass::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, const wchar_t* shaderFilename)
+void TextureShaderClass::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, const wchar_t* shaderFilename)
 {
 	char* compileErrors;
 	unsigned long bufferSize, i;
@@ -271,7 +271,7 @@ void CTextureShaderClass::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWN
 }
 
 
-bool CTextureShaderClass::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
+bool TextureShaderClass::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
 	XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture)
 {
 	HRESULT result;
@@ -316,7 +316,7 @@ bool CTextureShaderClass::SetShaderParameters(ID3D11DeviceContext* deviceContext
 }
 
 
-void CTextureShaderClass::RenderShader(ID3D11DeviceContext* deviceContext, int indexCount)
+void TextureShaderClass::RenderShader(ID3D11DeviceContext* deviceContext, int indexCount)
 {
 	// Set the vertex input layout.
 	deviceContext->IASetInputLayout(m_layout);

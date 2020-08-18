@@ -1,6 +1,6 @@
 #pragma once
 
-class CTextureClass;
+class TextureClass;
 
 class FontClass
 {
@@ -37,5 +37,5 @@ private:
 
 private:
 	FontType* m_Font = nullptr;
-	CTextureClass* m_Texture = nullptr;
+	TextureClass* m_Texture = nullptr;
 };
