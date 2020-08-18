@@ -1,12 +1,12 @@
 #pragma once
 
 
-class CD3dClass : public AlignedAllocationPolicy<16>
+class D3DClass : public AlignedAllocationPolicy<16>
 {
 public:
-	CD3dClass();
-	CD3dClass(const CD3dClass&);
-	~CD3dClass();
+	D3DClass();
+	D3DClass(const D3DClass&);
+	~D3DClass();
 
 	bool Initialize(int screenWidth, int screenHeight, bool vsync, HWND hwnd, bool fullscreen,
 		float screenDepth, float screenNear);

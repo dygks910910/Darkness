@@ -5,9 +5,9 @@ const bool VSYNC_ENABLED = true;
 const float SCREEN_DEPTH = 1000.0f;
 const float SCREEN_NEAR = 0.1f;
 
-class CD3dClass;
-class CCameraClass;
-class CModelClass;
+class D3DClass;
+class CameraClass;
+class ModelClass;
 class CLightShaderClass;
 class CLightClass;
 class CTextureShaderClass;
@@ -16,36 +16,24 @@ class TextClass;
 class ModelListClass;
 class FrustumClass;
 class CEffect;
+class MultiTextureShaderClass;
 
-class CGraphicsClass
+class GraphicsClass
 {
 public:
-	CGraphicsClass();
-	CGraphicsClass(const CGraphicsClass&);
-	~CGraphicsClass();
+	GraphicsClass();
+	GraphicsClass(const GraphicsClass&);
+	~GraphicsClass();
 
 	bool Initialize(int, int, HWND);
 	void Shutdown();
-	bool Frame(int mouseX, int mouseY, int cpu, int fps, float frameTime, float rotateY);
+	bool Frame();
 	bool Render();
-private:
-	bool DebugRender();
-	bool RenderTest();
-private:
-	CD3dClass* m_pD3d							 = nullptr;
-	CCameraClass* m_Camera				= nullptr;
-	CCameraClass* m_CameraTop			= nullptr;
 
-	CModelClass* m_Model						 = nullptr;
-	CLightShaderClass* m_LightShader = nullptr;
-	CLightClass* m_Light						= nullptr;
-
-	CTextureShaderClass* m_textureShader		 = nullptr;
-	BitmapClass* m_Bitmap								 = nullptr;
-	TextClass* m_Text											= nullptr;
-	ModelListClass* m_ModelList = nullptr;
-	FrustumClass* m_Frustum = nullptr;
-	static float m_Rotation;
+private:
+	D3DClass* m_Direct3D = nullptr;
+	CameraClass* m_Camera = nullptr;
+	ModelClass* m_Model = nullptr;
+	MultiTextureShaderClass* m_MultiTextureShader = nullptr;
 
 };
-

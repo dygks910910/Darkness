@@ -1,34 +1,27 @@
-#include"stdafx.h"
+#include "stdafx.h"
+#include "TextureArrayClass.h"
 #include "CModelClass.h"
+
 #include <fstream>
-CModelClass::CModelClass():
-	m_vertexBuffer(nullptr)
-	,m_indexBuffer(nullptr)
-	,m_Texture(nullptr)
-{
-}
+using namespace std;
 
-CModelClass::CModelClass(const CModelClass&)
-{
-}
 
-CModelClass::~CModelClass()
+ModelClass::ModelClass()
 {
 }
 
 
-bool CModelClass::Initialize(ID3D11Device* device, const wchar_t* textureName)
+ModelClass::ModelClass(const ModelClass& other)
 {
-	bool result;
-	// Initialize the vertex and index buffers.
-	result = InitializeBuffers(device);
-	IF_NOTX_RTFALSE(result);
-	result &= LoadTexture(device, textureName);
-	IF_NOTX_RTFALSE(result);
-	return true;
 }
 
-bool CModelClass::Initialize(ID3D11Device* device,const char* modelFilename, const wchar_t* textureName)
+
+ModelClass::~ModelClass()
+{
+}
+
+
+bool ModelClass::Initialize(ID3D11Device* device, char* modelFilename, WCHAR* textureFilename1, WCHAR* textureFilename2)
 {
 	// 모델 데이터를 로드합니다.
 	if (!LoadModel(modelFilename))
@@ -43,49 +36,43 @@ bool CModelClass::Initialize(ID3D11Device* device,const char* modelFilename, con
 	}
 
 	// 이 모델의 텍스처를 로드합니다.
-	return LoadTexture(device, textureName);
+	return LoadTextures(device, textureFilename1, textureFilename2);
 }
 
-void CModelClass::Shutdown()
+
+void ModelClass::Shutdown()
 {
-	ReleaseTexture();
+	// 모델 텍스쳐를 반환합니다.
+	ReleaseTextures();
+
+	// 버텍스 및 인덱스 버퍼를 종료합니다.
 	ShutdownBuffers();
+
+	// 모델 데이터 반환
+	ReleaseModel();
 }
 
-void CModelClass::Render(ID3D11DeviceContext* deviceContext)
+
+void ModelClass::Render(ID3D11DeviceContext* deviceContext)
 {
-	// Put the vertex and index buffers on the graphics pipeline to prepare them for drawing.
+	// 그리기를 준비하기 위해 그래픽 파이프 라인에 꼭지점과 인덱스 버퍼를 놓습니다.
 	RenderBuffers(deviceContext);
 }
 
-int CModelClass::GetIndexCount()
+
+int ModelClass::GetIndexCount()
 {
 	return m_indexCount;
 }
 
-ID3D11ShaderResourceView* CModelClass::GetTexture()
+
+ID3D11ShaderResourceView** ModelClass::GetTextureArray()
 {
-	return m_Texture->GetTexture();
+	return m_TextureArray->GetTextureArray();
 }
 
-bool CModelClass::LoadTexture(ID3D11Device* device, const wchar_t* fineName)
-{
-	bool result;
-	m_Texture = new CTextureClass;
-	IF_NOTX_RTFALSE(m_Texture);
 
-	result = m_Texture->Initialize(device, fineName);
-	IF_NOTX_RTFALSE(m_Texture);
-
-	return true;
-}
-
-void CModelClass::ReleaseTexture()
-{
-	SAFE_DELETE_SHUTDOWN(m_Texture);
-}
-
-bool CModelClass::InitializeBuffers(ID3D11Device* device)
+bool ModelClass::InitializeBuffers(ID3D11Device* device)
 {
 	// 정점 배열을 만듭니다.
 	VertexType* vertices = new VertexType[m_vertexCount];
@@ -106,7 +93,6 @@ bool CModelClass::InitializeBuffers(ID3D11Device* device)
 	{
 		vertices[i].position = XMFLOAT3(m_model[i].x, m_model[i].y, m_model[i].z);
 		vertices[i].texture = XMFLOAT2(m_model[i].tu, m_model[i].tv);
-		vertices[i].normal = XMFLOAT3(m_model[i].nx, m_model[i].ny, m_model[i].nz);
 
 		indices[i] = i;
 	}
@@ -163,37 +149,71 @@ bool CModelClass::InitializeBuffers(ID3D11Device* device)
 	return true;
 }
 
-void CModelClass::ShutdownBuffers()
+
+void ModelClass::ShutdownBuffers()
 {
-	// Release the index buffer.
-	SAFE_RELEASE_D3D(m_indexBuffer);
-	SAFE_RELEASE_D3D(m_vertexBuffer);
+	// 인덱스 버퍼를 해제합니다.
+	if (m_indexBuffer)
+	{
+		m_indexBuffer->Release();
+		m_indexBuffer = 0;
+	}
+
+	// 정점 버퍼를 해제합니다.
+	if (m_vertexBuffer)
+	{
+		m_vertexBuffer->Release();
+		m_vertexBuffer = 0;
+	}
 }
 
-void CModelClass::RenderBuffers(ID3D11DeviceContext* deviceContext)
+
+void ModelClass::RenderBuffers(ID3D11DeviceContext* deviceContext)
 {
-	unsigned int stride;
-	unsigned int offset;
+	// 정점 버퍼의 단위와 오프셋을 설정합니다.
+	UINT stride = sizeof(VertexType);
+	UINT offset = 0;
 
-
-	// Set vertex buffer stride and offset.
-	stride = sizeof(VertexType);
-	offset = 0;
-
-	// Set the vertex buffer to active in the input assembler so it can be rendered.
+	// 렌더링 할 수 있도록 입력 어셈블러에서 정점 버퍼를 활성으로 설정합니다.
 	deviceContext->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
 
-	// Set the index buffer to active in the input assembler so it can be rendered.
+	// 렌더링 할 수 있도록 입력 어셈블러에서 인덱스 버퍼를 활성으로 설정합니다.
 	deviceContext->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
-	// Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
+	// 정점 버퍼로 그릴 기본형을 설정합니다. 여기서는 삼각형으로 설정합니다.
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
-bool CModelClass::LoadModel(const char* filename)
+
+bool ModelClass::LoadTextures(ID3D11Device* device, WCHAR* filename1, WCHAR* filename2)
+{
+	// 텍스처 배열 오브젝트를 생성한다.
+	m_TextureArray = new TextureArrayClass;
+	if (!m_TextureArray)
+	{
+		return false;
+	}
+
+	// 텍스처 배열 오브젝트를 초기화한다.
+	return m_TextureArray->Initialize(device, filename1, filename2);
+}
+
+
+void ModelClass::ReleaseTextures()
+{
+	// 텍스처 배열 오브젝트를 릴리즈한다.
+	if (m_TextureArray)
+	{
+		m_TextureArray->Shutdown();
+		delete m_TextureArray;
+		m_TextureArray = 0;
+	}
+}
+
+bool ModelClass::LoadModel(char* filename)
 {
 	// 모델 파일을 엽니다.
-	std::ifstream fin;
+	ifstream fin;
 	fin.open(filename);
 
 	// 파일을 열 수 없으면 종료합니다.
@@ -246,7 +266,12 @@ bool CModelClass::LoadModel(const char* filename)
 	return true;
 }
 
-void CModelClass::ReleaseModel()
+
+void ModelClass::ReleaseModel()
 {
-	SAFE_DELETE_ARR(m_model);
+	if (m_model)
+	{
+		delete[] m_model;
+		m_model = 0;
+	}
 }

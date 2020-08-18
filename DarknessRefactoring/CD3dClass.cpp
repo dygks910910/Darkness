@@ -1,7 +1,7 @@
 #include"stdafx.h"
 #include "CD3dClass.h"
 
-CD3dClass::CD3dClass() : 
+D3DClass::D3DClass() : 
   m_swapChain(nullptr)
 , m_device(nullptr)
 , m_deviceContext(nullptr)
@@ -15,17 +15,17 @@ CD3dClass::CD3dClass() :
 {
 }
 
-CD3dClass::CD3dClass(const CD3dClass&)
+D3DClass::D3DClass(const D3DClass&)
 {
 }
 
 
 
-CD3dClass::~CD3dClass()
+D3DClass::~D3DClass()
 {
 }
 
-bool CD3dClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hwnd, bool fullscreen,
+bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hwnd, bool fullscreen,
 	float screenDepth, float screenNear)
 {
 	// 수직동기화 상태를 저장합니다
@@ -177,7 +177,7 @@ bool CD3dClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND h
 	return true;
 }
 
-void CD3dClass::Shutdown()
+void D3DClass::Shutdown()
 {
 	// Before shutting down set to windowed mode or when you release the swap chain it will throw an exception.
 	if (m_swapChain)
@@ -199,7 +199,7 @@ void CD3dClass::Shutdown()
 
 }
 
-void CD3dClass::BeginScene(float red, float green, float blue, float alpha)
+void D3DClass::BeginScene(float red, float green, float blue, float alpha)
 {
 	float color[4];
 
@@ -218,7 +218,7 @@ void CD3dClass::BeginScene(float red, float green, float blue, float alpha)
 	m_deviceContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
 
-void CD3dClass::EndScene()
+void D3DClass::EndScene()
 {
 	// Present the back buffer to the screen since rendering is complete.
 	if (m_vsync_enabled)
@@ -235,48 +235,48 @@ void CD3dClass::EndScene()
 	return;
 }
 
-ID3D11Device* CD3dClass::GetDevice()
+ID3D11Device* D3DClass::GetDevice()
 {
 	return m_device;
 }
 
-ID3D11DeviceContext* CD3dClass::GetDeviceContext()
+ID3D11DeviceContext* D3DClass::GetDeviceContext()
 {
 	return m_deviceContext;
 }
 
-void CD3dClass::GetProjectionMatrix(XMMATRIX& projectionMatrix)
+void D3DClass::GetProjectionMatrix(XMMATRIX& projectionMatrix)
 {
 	projectionMatrix = m_projectionMatrix;
 }
 
-void CD3dClass::GetWorldMatrix(XMMATRIX& worldMatrix)
+void D3DClass::GetWorldMatrix(XMMATRIX& worldMatrix)
 {
 	worldMatrix = m_worldMatrix;
 }
 
-void CD3dClass::GetOrthoMatrix(XMMATRIX& orthoMatrix)
+void D3DClass::GetOrthoMatrix(XMMATRIX& orthoMatrix)
 {
 	orthoMatrix = m_orthoMatrix;
 }
 
-void CD3dClass::GetVideoCardInfo(char* cardName, int& memory)
+void D3DClass::GetVideoCardInfo(char* cardName, int& memory)
 {
 	strcpy_s(cardName, 128, m_videoCardDescription);
 	memory = m_videoCardMemory;
 }
 
-void CD3dClass::TurnZBufferOn()
+void D3DClass::TurnZBufferOn()
 {
 	m_deviceContext->OMSetDepthStencilState(m_depthStencilState, 1);
 }
 
-void CD3dClass::TurnZBufferOff()
+void D3DClass::TurnZBufferOff()
 {
 	m_deviceContext->OMSetDepthStencilState(m_depthDisabledStencilState, 1);
 }
 
-void CD3dClass::TurnOnAlphaBlending()
+void D3DClass::TurnOnAlphaBlending()
 {
 	// Setup the blend factor.
 	float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
@@ -286,7 +286,7 @@ void CD3dClass::TurnOnAlphaBlending()
 }
 
 
-void CD3dClass::TurnOffAlphaBlending()
+void D3DClass::TurnOffAlphaBlending()
 {
 	// Setup the blend factor.
 	float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
@@ -295,19 +295,19 @@ void CD3dClass::TurnOffAlphaBlending()
 	m_deviceContext->OMSetBlendState(m_alphaDisableBlendingState, blendFactor, 0xffffffff);
 }
 
-void CD3dClass::SetFirstViewport()
+void D3DClass::SetFirstViewport()
 {
 	m_deviceContext->RSSetViewports(1, &m_viewports[0]);
 
 }
 
-void CD3dClass::SetSecondViewport()
+void D3DClass::SetSecondViewport()
 {
 	m_deviceContext->RSSetViewports(1, &m_viewports[1]);
 }
 
 
-bool CD3dClass::CreateSwapChain(int screenW, int screenH, unsigned int numerator,
+bool D3DClass::CreateSwapChain(int screenW, int screenH, unsigned int numerator,
 	unsigned int denominator, bool fullscreen, HWND hwnd)
 {
 
@@ -378,7 +378,7 @@ bool CD3dClass::CreateSwapChain(int screenW, int screenH, unsigned int numerator
 	return true;
 }
 
-bool CD3dClass::CreateRenderTargerView()
+bool D3DClass::CreateRenderTargerView()
 {
 	// 백버퍼 포인터를 얻어옵니다
 
@@ -398,7 +398,7 @@ bool CD3dClass::CreateRenderTargerView()
 	return true;
 }
 
-bool CD3dClass::CreateDepthBuffer(int screenWidth, int screenHeight)
+bool D3DClass::CreateDepthBuffer(int screenWidth, int screenHeight)
 {
 	// 깊이 버퍼 구조체를 초기화합니다
 	D3D11_TEXTURE2D_DESC depthBufferDesc;
@@ -423,7 +423,7 @@ bool CD3dClass::CreateDepthBuffer(int screenWidth, int screenHeight)
 	return true;
 }
 
-bool CD3dClass::CreateDepthStencilState()
+bool D3DClass::CreateDepthStencilState()
 {
 	// 스텐실 상태 구조체를 초기화합니다
 	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
@@ -459,7 +459,7 @@ bool CD3dClass::CreateDepthStencilState()
 	return true;
 }
 
-bool CD3dClass::CreateDepthStencilView()
+bool D3DClass::CreateDepthStencilView()
 {
 	// 깊이 스텐실 뷰의 구조체를 초기화합니다
 	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
@@ -479,7 +479,7 @@ bool CD3dClass::CreateDepthStencilView()
 	return true;
 }
 
-bool CD3dClass::CreateRasterizeState()
+bool D3DClass::CreateRasterizeState()
 {
 // 그려지는 폴리곤과 방법을 결정할 래스터 구조체를 설정합니다
 D3D11_RASTERIZER_DESC rasterDesc;
@@ -502,7 +502,7 @@ if (FAILED(m_device->CreateRasterizerState(&rasterDesc, &m_rasterState)))
 	return true;
 }
 
-bool CD3dClass::CreateDepthDisableStencilState()
+bool D3DClass::CreateDepthDisableStencilState()
 {
 	// 이제 2D 렌더링을위한 Z 버퍼를 끄는 두 번째 깊이 스텐실 상태를 만듭니다. 유일한 차이점은
 	// DepthEnable을 false로 설정하면 다른 모든 매개 변수는 다른 깊이 스텐실 상태와 동일합니다.
@@ -529,7 +529,7 @@ bool CD3dClass::CreateDepthDisableStencilState()
 	return true;
 }
 
-bool CD3dClass::CreateBlendState()
+bool D3DClass::CreateBlendState()
 {
 	// Clear the blend state description.
 	D3D11_BLEND_DESC blendStateDescription;

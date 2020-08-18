@@ -2,7 +2,7 @@
 
 
 class CInputClass;
-class CGraphicsClass;
+class GraphicsClass;
 class SoundClass;
 class FpsClass;
 class CpuClass;
@@ -31,7 +31,7 @@ private:
 	HWND m_hWnd;
 
 	CInputClass* m_pInput = nullptr;
-	CGraphicsClass* m_pGraphics = nullptr;
+	GraphicsClass* m_pGraphics = nullptr;
 	SoundClass* m_Sound = nullptr;
 	FpsClass* m_Fps = nullptr;
 	CpuClass* m_Cpu = nullptr;

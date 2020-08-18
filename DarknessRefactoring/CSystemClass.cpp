@@ -35,7 +35,7 @@ bool CSystemClass::Initialize()
 		MessageBox(m_hWnd, L"could not initialize the input obj", L"Error", MB_OK);
 		return false;
 	}
-	m_pGraphics = new CGraphicsClass;
+	m_pGraphics = new GraphicsClass;
 	IF_NOTX_RTFALSE(m_pGraphics);
 
 	result = m_pGraphics->Initialize(nScreenWidth, nScreenHeight,m_hWnd);
@@ -141,9 +141,7 @@ bool CSystemClass::Frame()
 	float rotationY = 0;
 	m_Position->GetRotation(rotationY);
 
-	bResult = m_pGraphics->Frame(mouseX, mouseY, m_Cpu->GetCpuPercentage(),
- m_Fps->GetFps(),
-		m_Timer->GetTime(), rotationY);
+	bResult = m_pGraphics->Frame();
 	IF_NOTX_RTFALSE(bResult);
 	return m_pGraphics->Render();
 }

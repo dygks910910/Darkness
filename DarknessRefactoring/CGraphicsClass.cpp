@@ -1,478 +1,156 @@
-#include"stdafx.h"
+#include "stdafx.h"
+#include "CD3dClass.h"
+#include "CCameraClass.h"
+#include "CModelClass.h"
+#include "MultiTextureShaderClass.h"
 #include "CGraphicsClass.h"
-#include"CD3dClass.h"
-#include"CCameraClass.h"
-#include"CModelClass.h"
-#include"CColorShaderClass.h"
-#include"CTextureShaderClass.h"
-#include"CLightShaderClass.h"
-#include"CLightClass.h"
-#include"BitmapClass.h"
-#include"TextClass.h"
-#include"ModelListClass.h"
-#include"FrustumClass.h"
-#include"CEffect.h"
-float CGraphicsClass::m_Rotation = 0;
 
-CGraphicsClass::CGraphicsClass():
-	m_pD3d(nullptr)
-	,m_Camera(nullptr)
-	,m_Model(nullptr)
-	,m_LightShader(nullptr)
-	,m_Light(nullptr)
-{
-}
-CGraphicsClass::CGraphicsClass(const CGraphicsClass&)
+
+GraphicsClass::GraphicsClass()
 {
 }
 
-CGraphicsClass::~CGraphicsClass()
+
+GraphicsClass::GraphicsClass(const GraphicsClass& other)
 {
 }
 
-bool CGraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
+
+GraphicsClass::~GraphicsClass()
 {
-	bool result;
-
-	// Create the Direct3D object.
-	m_pD3d = new CD3dClass;
-	IF_NOTX_RTFALSE(m_pD3d);
-	
-	// Initialize the Direct3D object.
-	//수직동기화 사용.
-	//result = m_pD3d->Initialize(screenWidth, screenHeight, VSYNC_ENABLED, hwnd, FULL_SCREEN, SCREEN_DEPTH, SCREEN_NEAR);
-	//수직동기화 사용안함
-	result = m_pD3d->Initialize(screenWidth, screenHeight, !VSYNC_ENABLED, hwnd, FULL_SCREEN, SCREEN_DEPTH, SCREEN_NEAR);
+}
 
 
+bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
+{
+	// Direct3D 객체 생성
+	m_Direct3D = new D3DClass;
+	if (!m_Direct3D)
+	{
+		return false;
+	}
 
-	if (!result)
+	// Direct3D 객체 초기화
+	if (!m_Direct3D->Initialize(screenWidth, screenHeight, VSYNC_ENABLED, hwnd, FULL_SCREEN, SCREEN_DEPTH, SCREEN_NEAR))
 	{
 		MessageBox(hwnd, L"Could not initialize Direct3D.", L"Error", MB_OK);
 		return false;
 	}
 
-	// Create the camera object.
-	m_Camera = new CCameraClass;
+	// m_Camera 객체 생성
+	m_Camera = new CameraClass;
 	if (!m_Camera)
 	{
 		return false;
 	}
 
-	// Set the initial position of the camera.
-	m_Camera->SetPosition(0.0f, 0.0f, -6.0f);
-	m_CameraTop = new CCameraClass;
-	if (!m_CameraTop)
+	// 카메라 포지션 설정
+	XMMATRIX baseViewMatrix;
+	m_Camera->SetPosition(0.0f, 0.0f, -1.0f);
+	m_Camera->Render();
+	m_Camera->GetViewMatrix(baseViewMatrix);
+
+	// 모델 객체 생성
+	m_Model = new ModelClass;
+	if (!m_Model)
 	{
 		return false;
 	}
-	m_CameraTop->SetPosition(0.0f, 6.0f, -10.0f);
-	m_CameraTop->Render(XMFLOAT3(0,-0.5f,0.5f));
-	// Create the model object.
-	m_Model = new CModelClass;
-	IF_NOTX_RTFALSE(m_Model);
 
-	// Initialize the model object.
-	result = m_Model->Initialize(m_pD3d->GetDevice(),"data/sphere.txt",L"data/seafloor.dds");
-	if (!result)
+	// 모델 객체 초기화
+	if (!m_Model->Initialize(m_Direct3D->GetDevice(), (char*)"data/square.txt",
+		(WCHAR*)L"data/stone01.dds", (WCHAR*)L"data/dirt01.dds"))
 	{
 		MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
 		return false;
 	}
-	// Create the color shader object.
-	m_LightShader = new CLightShaderClass;
-	IF_NOTX_RTFALSE(m_LightShader);
 
-	// Initialize the color shader object.
-	result = m_LightShader->Initialize(m_pD3d->GetDevice(), hwnd);
-	if (!result)
+	// 멀티 텍스처 쉐이더 객체 생성
+	m_MultiTextureShader = new MultiTextureShaderClass;
+	if (!m_MultiTextureShader)
+		return false;
+
+	// 멀티 텍스처 쉐이더 객체 초기화
+	if (!m_MultiTextureShader->Initialize(m_Direct3D->GetDevice(), hwnd))
 	{
-		MessageBox(hwnd, L"Could not initialize the light shader object.", L"Error", MB_OK);
+		MessageBox(hwnd, L"Could not initialize the multitexture shader object.", L"Error", MB_OK);
 		return false;
 	}
-
-
-	m_textureShader = new CTextureShaderClass;
-	IF_NOTX_RTFALSE(m_textureShader);
-
-	// Initialize the color shader object.
-	result = m_textureShader->Initialize(m_pD3d->GetDevice(), hwnd);
-	if (!result)
-	{
-		MessageBox(hwnd, L"Could not initialize the texture shader object.", L"Error", MB_OK);
-		return false;
-	}
-
-	m_Bitmap = new BitmapClass;
-	IF_NOTX_RTFALSE(m_Bitmap);
-	if (!m_Bitmap->Initialize(m_pD3d->GetDevice(), screenWidth, screenHeight, L"data/seafloor.dds", 256, 256))
-	{
-		MessageBox(hwnd, L"Could not initialize the bitmap object.", L"Error", MB_OK);
-		return false;
-	}
-
-	XMMATRIX baseViewMatrix;
-	//m_Camera->SetPosition(0, 0, -1.0f);
-	m_Camera->Render();
-	m_Camera->GetViewMatrix(baseViewMatrix);
-
-	m_Text = new TextClass;
-	IF_NOTX_RTFALSE(m_Text);
-	if (!m_Text->Initialize(m_pD3d->GetDevice(),m_pD3d->GetDeviceContext(),
-		hwnd,screenWidth,screenHeight, baseViewMatrix))
-	{
-		MessageBox(hwnd, L"Could not initialize the Text object.", L"Error", MB_OK);
-		return false;
-	}
-	
-	m_Light = new CLightClass;
-	IF_NOTX_RTFALSE(m_Light);
-	m_Light->SetAmbientColor(0.15f, 0.15f, 0.15f, 1.0f);
-	//m_Light->SetAmbientColor(0,0,0, 1.0f);
-	m_Light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
-	m_Light->SetDirection(0.0f, 0.0f, 1.0f);
-	m_Light->SetSpecularColor(1.0f, 1.0f, 1.0f, 1.0f);
-	m_Light->SetSpecularPower(32.0f);
-
-	m_ModelList = new ModelListClass;
-	IF_NOTX_RTFALSE(m_ModelList);
-	if (!m_ModelList->Initialize(25))
-	{
-		MessageBox(hwnd, L"Could not initialize the ModelList object.", L"Error", MB_OK);
-		return false;
-	}
-
-	m_Frustum = new FrustumClass;
-	IF_NOTX_RTFALSE(m_Frustum);
-
-	CEffects::InitAll(m_pD3d->GetDevice());
 
 	return true;
 }
 
-void CGraphicsClass::Shutdown()
+
+void GraphicsClass::Shutdown()
 {
-	// Release the D3D object.
-	SAFE_DELETE_SHUTDOWN(m_pD3d);
-	SAFE_DELETE_SHUTDOWN(m_Model);
-	SAFE_DELETE_SHUTDOWN(m_LightShader);
-	SAFE_DELETE_SHUTDOWN(m_textureShader);
-	SAFE_DELETE_SHUTDOWN(m_Text);
-	SAFE_DELETE(m_Camera);
-	SAFE_DELETE(m_Light);
-	SAFE_DELETE(m_Bitmap);
-	SAFE_DELETE_SHUTDOWN(m_Text);
-	SAFE_DELETE(m_CameraTop);
-	SAFE_DELETE_SHUTDOWN(m_ModelList);
-	SAFE_DELETE(m_Frustum);
-	CEffects::DestroyAll();
+	// 멀티 텍스처 쉐이더 객체 반환
+	if (m_MultiTextureShader)
+	{
+		m_MultiTextureShader->Shutdown();
+		delete m_MultiTextureShader;
+		m_MultiTextureShader = 0;
+	}
 
+	// 모델 객체 반환
+	if (m_Model)
+	{
+		m_Model->Shutdown();
+		delete m_Model;
+		m_Model = 0;
+	}
 
+	// m_Camera 객체 반환
+	if (m_Camera)
+	{
+		delete m_Camera;
+		m_Camera = 0;
+	}
+
+	// Direct3D 객체 반환
+	if (m_Direct3D)
+	{
+		m_Direct3D->Shutdown();
+		delete m_Direct3D;
+		m_Direct3D = 0;
+	}
 }
 
-bool CGraphicsClass::Frame(int mouseX, int mouseY, int cpu, int fps, float frameTime, float rotateY)
+
+bool GraphicsClass::Frame()
 {
-	bool bResult = false;
-
-	m_Rotation += (float)XM_PI * 0.001f * frameTime;
-	if (m_Rotation > 360.0f)
-		m_Rotation -= 360.0f;
-
-	// Render the graphics scene.
-	//bResult = Render();
-	//IF_NOTX_RTFALSE(bResult);
-	if (!m_Text->SetMousePosition(mouseX, mouseY, m_pD3d->GetDeviceContext()))
-		return false;
-	if (!m_Text->SetCpu(cpu, m_pD3d->GetDeviceContext()))
-		return false;
-	if (!m_Text->SetFps(fps, m_pD3d->GetDeviceContext()))
-		return false;
-
-	m_Camera->SetPosition(0, 0, -20.0f);
-	m_Camera->SetRotation(0, rotateY, 0);
-	m_CameraTop->SetPosition(0.0f, 6.0f, -20.0f);
+	// 카메라 위치 설정
+	m_Camera->SetPosition(0.0f, 0.0f, -3.0f);
 
 	return true;
 }
 
-bool CGraphicsClass::Render()
+
+bool GraphicsClass::Render()
 {
+	// 씬을 그리기 위해 버퍼를 지웁니다
+	m_Direct3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 
-	float positionX = 0;
-	float positionY = 0;
-	float positionZ = 0;
-	float radius= 1.0f;
-	XMFLOAT4 color;
-	// Clear the buffers to begin the scene.
-	m_pD3d->BeginScene(0, 0,0, 1.0f);
-	bool result;
-
-	// Generate the view matrix based on the camera's position.
-	m_pD3d->SetFirstViewport();
+	// 카메라의 위치에 따라 뷰 행렬을 생성합니다
 	m_Camera->Render();
 
-	// Get the world, view, and projection matrices from the camera and d3d objects.
-	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, othMatrix;
-	
+	// 카메라 및 d3d 객체에서 월드, 뷰 및 투영 행렬을 가져옵니다
+	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, orthoMatrix;
 	m_Camera->GetViewMatrix(viewMatrix);
-	m_pD3d->GetWorldMatrix(worldMatrix);
-	m_pD3d->GetProjectionMatrix(projectionMatrix);
-	m_pD3d->GetOrthoMatrix(othMatrix);
+	m_Direct3D->GetWorldMatrix(worldMatrix);
+	m_Direct3D->GetProjectionMatrix(projectionMatrix);
+	m_Direct3D->GetOrthoMatrix(orthoMatrix);
 
-	m_pD3d->TurnZBufferOff();
-	m_pD3d->TurnOnAlphaBlending();
 
-	
-	
-	if (!m_Text->Render(m_pD3d->GetDeviceContext(), worldMatrix, othMatrix))
-		return false;
+	// 모델 버텍스와 인덱스 버퍼를 그래픽 파이프 라인에 배치하여 렌더링 합니다.
+	m_Model->Render(m_Direct3D->GetDeviceContext());
 
-	/*if (!m_Bitmap->Render(m_pD3d->GetDeviceContext(), 100,100))
-		return false;
-	if (!m_textureShader->Render(m_pD3d->GetDeviceContext(), m_Bitmap->GetIndexCount(),
-		worldMatrix, viewMatrix, othMatrix, m_Bitmap->GetTexture()))
-		return false;*/
 
-	m_pD3d->TurnOffAlphaBlending();
-	m_pD3d->TurnZBufferOn();
+	// 멀티 텍스처 셰이더를 사용하여 모델을 렌더링 합니다.
+	m_MultiTextureShader->Render(m_Direct3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		m_Model->GetTextureArray());
 
-	/*m_Frustum->ConstructFrustum(SCREEN_DEPTH, projectionMatrix, viewMatrix);
-	int nModelCount = m_ModelList->GetModelCount();
-	int renderCount = 0;
-
-	for (int index = 0; index < nModelCount; ++index)
-	{
-		m_ModelList->GetData(index, positionX, positionY, positionZ, color);
-		if (m_Frustum->CheckSphere(positionX, positionY, positionZ, radius))
-		{
-			worldMatrix = XMMatrixTranslation(positionX, positionY, positionZ);
-			m_Model->Render(m_pD3d->GetDeviceContext());
-			m_LightShader->Render(m_pD3d->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
-				m_Model->GetTexture(), m_Light->GetDirection(), m_Light->GetAmbientColor(), m_Light->GetDiffuseColor(), m_Camera->GetPosition(),
-				m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
-			m_pD3d->GetWorldMatrix(worldMatrix);
-			renderCount++;
-		}
-	}*/
-	worldMatrix = XMMatrixRotationY(m_Rotation);
-	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
-	
-	// Render the model using the color shader.
-	m_Model->Render(m_pD3d->GetDeviceContext());
-	result = m_LightShader->Render(m_pD3d->GetDeviceContext(),
-		m_Model->GetIndexCount(),
-		worldMatrix, viewMatrix, projectionMatrix, m_Model->GetTexture(),
-		m_Light->GetDirection(), m_Light->GetDiffuseColor(), m_Light->GetAmbientColor(), m_Camera->GetPosition()
-		, m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
-
-#ifdef _DEBUG
-	DebugRender();
-	RenderTest();
-#endif
-
-	IF_NOTX_RTFALSE(result);
-
-	// Present the rendered scene to the screen.
-	m_pD3d->EndScene();
-	return true;
-}
-
-bool CGraphicsClass::DebugRender()
-{
-	float positionX = 0;
-	float positionY = 0;
-	float positionZ = 0;
-	float radius = 1.0f;
-	XMFLOAT4 color;
-
-	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, othMatrix;
-
-	m_Camera->GetViewMatrix(viewMatrix);
-	m_pD3d->GetWorldMatrix(worldMatrix);
-	m_pD3d->GetProjectionMatrix(projectionMatrix);
-	m_pD3d->GetOrthoMatrix(othMatrix);
-
-	m_pD3d->SetSecondViewport();
-	//worldMatrix = XMMatrixRotationY(m_Rotation);
-	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
-	m_Model->Render(m_pD3d->GetDeviceContext());
-	bool result = true;
-
-	m_CameraTop->Render();
-	// Render the model using the color shader.
-	m_CameraTop->GetViewMatrix(viewMatrix);
-	worldMatrix = XMMatrixRotationY(m_Rotation);
-	result = m_LightShader->Render(m_pD3d->GetDeviceContext(),
-		m_Model->GetIndexCount(),
-		worldMatrix, viewMatrix, projectionMatrix, m_Model->GetTexture(),
-		m_Light->GetDirection(), m_Light->GetDiffuseColor(), m_Light->GetAmbientColor(), m_CameraTop->GetPosition()
-		, m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
-
-	IF_NOTX_RTFALSE(result);
-	int nModelCount = m_ModelList->GetModelCount();
-
-	int renderCount = 0;
-	m_Model->Render(m_pD3d->GetDeviceContext());
-	for (int index = 0; index < nModelCount; ++index)
-	{
-		m_ModelList->GetData(index, positionX, positionY, positionZ, color);
-		if (m_Frustum->CheckCube(positionX, positionY, positionZ, radius))
-		{
-			worldMatrix = XMMatrixTranslation(positionX, positionY, positionZ);
-			m_Model->Render(m_pD3d->GetDeviceContext());
-			result = m_LightShader->Render(m_pD3d->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
-				m_Model->GetTexture(), m_Light->GetDirection(), m_Light->GetAmbientColor(), m_Light->GetDiffuseColor(), m_Camera->GetPosition(),
-				m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
-			m_pD3d->GetWorldMatrix(worldMatrix);
-			IF_NOTX_RTFALSE(result);
-			renderCount++;
-		}
-	}
-	return true;
-}
-
-bool CGraphicsClass::RenderTest()
-{
-	m_pD3d->SetSecondViewport();
-	static float rotationY = 0;
-	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, othMatrix;
-
-	m_CameraTop->GetViewMatrix(viewMatrix);
-	m_pD3d->GetWorldMatrix(worldMatrix);
-	m_pD3d->GetProjectionMatrix(projectionMatrix);
-
-	XMVECTOR tmpV = XMVectorZero();
-	m_Model->Render(m_pD3d->GetDeviceContext());
-	m_CameraTop->Render();
-	CEffects::LightFX->SetLightDir(m_Light->GetDirection());
-	tmpV = XMLoadFloat4(&m_Light->GetAmbientColor());
-	CEffects::LightFX->SetAmbientColor(tmpV);
-	tmpV = XMLoadFloat4(&m_Light->GetDiffuseColor());
-	CEffects::LightFX->SetDiffuseColor(tmpV);
-	tmpV = XMLoadFloat4(&m_Light->GetDiffuseColor());
-
-	CEffects::LightFX->SetSpecularColor(tmpV);
-	CEffects::LightFX->SetSpecularPower(m_Light->GetSpecularPower());
-	CEffects::LightFX->SetCamPos(m_CameraTop->GetPosition());
-
-	D3DX11_TECHNIQUE_DESC techDesc;
-
-	//
-	// Draw the box with alpha clipping.
-	// 
-
-	ID3DX11EffectTechnique* boxTech = CEffects::LightFX->LightTexTech;
-	boxTech->GetDesc(&techDesc);
-	for (UINT p = 0; p < techDesc.Passes; ++p)
-	{
-		m_Model->Render(m_pD3d->GetDeviceContext());
-		CEffects::LightFX->SetWorld(worldMatrix);
-		CEffects::LightFX->SetView(viewMatrix);
-		CEffects::LightFX->SetProj(projectionMatrix);
-		CEffects::LightFX->SetDiffuseMap(m_Model->GetTexture());
-
-		boxTech->GetPassByIndex(p)->Apply(0, m_pD3d->GetDeviceContext());
-
-		// Restore default render state.
-		m_pD3d->GetDeviceContext()->DrawIndexed(m_Model->GetIndexCount(), 0, 0);
-	}
-	return false;
-}
-
-bool TextClass::SetMousePosition(int mouseX, int mouseY, ID3D11DeviceContext* deviceContext)
-{
-	// mouseX 정수를 문자열 형식으로 변환합니다.
-	char tempString[16] = { 0, };
-	_itoa_s(mouseX, tempString, 10);
-
-	// mouseX 문자열을 설정합니다.
-	char mouseString[16] = { 0, };
-	strcpy_s(mouseString, "Mouse X: ");
-	strcat_s(mouseString, tempString);
-
-	// 문장 정점 버퍼를 새 문자열 정보로 업데이트합니다.
-	if (!UpdateSentence(m_sentence1, mouseString, 20, 20, 1.0f, 1.0f, 1.0f, deviceContext))
-	{
-		return false;
-	}
-
-	// mouseY 정수를 문자열 형식으로 변환합니다.
-	_itoa_s(mouseY, tempString, 10);
-
-	// mouseY 문자열을 설정합니다.
-	strcpy_s(mouseString, "Mouse Y: ");
-	strcat_s(mouseString, tempString);
-
-	// 문장 정점 버퍼를 새 문자열 정보로 업데이트합니다.
-	if (!UpdateSentence(m_sentence2, mouseString, 20, 40, 1.0f, 1.0f, 1.0f, deviceContext))
-	{
-		return false;
-	}
+	// 버퍼의 내용을 화면에 출력합니다
+	m_Direct3D->EndScene();
 
 	return true;
-}
-
-bool TextClass::SetFps(int fps, ID3D11DeviceContext* deviceContext)
-{
-	// fps를 10,000 이하로 자릅니다.
-	if (fps > 9999)
-	{
-		fps = 9999;
-	}
-
-	// fps 정수를 문자열 형식으로 변환합니다.
-	char tempString[16] = { 0, };
-	_itoa_s(fps, tempString, 10);
-
-	// fps 문자열을 설정합니다.
-	char fpsString[16] = { 0, };
-	strcpy_s(fpsString, "Fps: ");
-	strcat_s(fpsString, tempString);
-
-	float red = 0;
-	float green = 0;
-	float blue = 0;
-
-	// fps가 60 이상이면 fps 색상을 녹색으로 설정합니다.
-	if (fps >= 60)
-	{
-		red = 0.0f;
-		green = 1.0f;
-		blue = 0.0f;
-	}
-
-	// fps가 60보다 작은 경우 fps 색상을 노란색으로 설정합니다.
-	if (fps < 60)
-	{
-		red = 1.0f;
-		green = 1.0f;
-		blue = 0.0f;
-	}
-
-	// fps가 30 미만이면 fps 색상을 빨간색으로 설정합니다.
-	if (fps < 30)
-	{
-		red = 1.0f;
-		green = 0.0f;
-		blue = 0.0f;
-	}
-
-	// 문장 정점 버퍼를 새 문자열 정보로 업데이트합니다.
-	return UpdateSentence(m_sentence3, fpsString, 20, 60, red, green, blue, deviceContext);
-}
-
-bool TextClass::SetCpu(int cpu, ID3D11DeviceContext* deviceContext)
-{
-	// cpu 정수를 문자열 형식으로 변환합니다.
-	char tempString[16] = { 0, };
-	_itoa_s(cpu, tempString, 10);
-
-	// cpu 문자열을 설정합니다.
-	char cpuString[16] = { 0, };
-	strcpy_s(cpuString, "Cpu: ");
-	strcat_s(cpuString, tempString);
-	strcat_s(cpuString, "%");
-
-	// 문장 정점 버퍼를 새 문자열 정보로 업데이트합니다.
-	return UpdateSentence(m_sentence4, cpuString, 20, 80, 0.0f, 1.0f, 0.0f, deviceContext);
 }

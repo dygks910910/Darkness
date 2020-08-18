@@ -1,11 +1,11 @@
 #pragma once
 
-class CCameraClass : public AlignedAllocationPolicy<16>
+class CameraClass : public AlignedAllocationPolicy<16>
 {
 public:
-	CCameraClass();
-	CCameraClass(const CCameraClass&);
-	~CCameraClass();
+	CameraClass();
+	CameraClass(const CameraClass&);
+	~CameraClass();
 	void SetPosition(float, float, float);
 	void SetRotation(float, float, float);
 
