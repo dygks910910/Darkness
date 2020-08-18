@@ -158,6 +158,7 @@
     <ClInclude Include="CInputLayouts.h" />
     <ClInclude Include="CLightClass.h" />
     <ClInclude Include="CLightShaderClass.h" />
+    <ClInclude Include="ClipPlaneShaderClass.h" />
     <ClInclude Include="CModelClass.h" />
     <ClInclude Include="CpuClass.h" />
     <ClInclude Include="CSystemClass.h" />
@@ -188,6 +189,7 @@
     <ClInclude Include="TextClass.h" />
     <ClInclude Include="TextureArrayClass.h" />
     <ClInclude Include="TimerClass.h" />
+    <ClInclude Include="TranslateShaderClass.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DarknessRefactoring.rc" />
@@ -209,6 +211,7 @@
     <ClCompile Include="CInputLayouts.cpp" />
     <ClCompile Include="CLightClass.cpp" />
     <ClCompile Include="CLightShaderClass.cpp" />
+    <ClCompile Include="ClipPlaneShaderClass.cpp" />
     <ClCompile Include="CModelClass.cpp" />
     <ClCompile Include="CpuClass.cpp" />
     <ClCompile Include="CSystemClass.cpp" />
@@ -234,6 +237,7 @@
     <ClCompile Include="TextClass.cpp" />
     <ClCompile Include="TextureArrayClass.cpp" />
     <ClCompile Include="TimerClass.cpp" />
+    <ClCompile Include="TranslateShaderClass.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="alphamap.ps" />
@@ -242,6 +246,8 @@
     <None Include="bumpmap.vs" />
     <None Include="C:\Users\dygks\Downloads\Dx11Demo_21\specmap.ps" />
     <None Include="C:\Users\dygks\Downloads\Dx11Demo_21\specmap.vs" />
+    <None Include="clipplane.ps" />
+    <None Include="clipplane.vs" />
     <None Include="color.vs">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
@@ -290,6 +296,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
+    <None Include="translate.ps" />
+    <None Include="translate.vs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fontPS.hlsl">

@@ -24,6 +24,8 @@ class SpecMapShaderClass;
 class RenderTextureClass;
 class DebugWindowClass;
 class FogShaderClass;
+class ClipPlaneShaderClass;
+class TranslateShaderClass;
 class GraphicsClass
 {
 public:
@@ -40,5 +42,5 @@ private:
 	D3DClass* m_Direct3D = nullptr;
 	CameraClass* m_Camera = nullptr;
 	ModelClass* m_Model = nullptr;
-	FogShaderClass* m_FogShader = nullptr;
+	TranslateShaderClass* m_TranslateShader = nullptr;
 };

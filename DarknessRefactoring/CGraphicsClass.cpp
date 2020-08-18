@@ -2,7 +2,7 @@
 #include "CD3dClass.h"
 #include "CCameraClass.h"
 #include "CModelClass.h"
-#include "FogShaderClass.h"
+#include "TranslateShaderClass.h"
 #include "CGraphicsClass.h"
 
 
@@ -52,23 +52,23 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 
 	// 모델 객체 초기화
-	if (!m_Model->Initialize(m_Direct3D->GetDevice(), (WCHAR*)L"data/seafloor.dds", (char*)"data/cube.txt"))
+	if (!m_Model->Initialize(m_Direct3D->GetDevice(), (WCHAR*)L"data/seafloor.dds", (char*)"data/triangle.txt"))
 	{
 		MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
 		return false;
 	}
 
-	// 안개 쉐이더 객체를 생성한다.
-	m_FogShader = new FogShaderClass;
-	if (!m_FogShader)
+	// m_TranslateShader 객체를 생성합니다.
+	m_TranslateShader = new TranslateShaderClass;
+	if (!m_TranslateShader)
 	{
 		return false;
 	}
 
-	// 안개 쉐이더 객체를 초기화 합니다.
-	if (!m_FogShader->Initialize(m_Direct3D->GetDevice(), hwnd))
+	// m_TranslateShader 객체를 초기화합니다.
+	if (!m_TranslateShader->Initialize(m_Direct3D->GetDevice(), hwnd))
 	{
-		MessageBox(hwnd, L"Could not initialize the fog shader object.", L"Error", MB_OK);
+		MessageBox(hwnd, L"Could not initialize the texture translation shader object.", L"Error", MB_OK);
 		return false;
 	}
 
@@ -78,12 +78,12 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 void GraphicsClass::Shutdown()
 {
-	// 안개 쉐이더 객체 반환
-	if (m_FogShader)
+	// m_TranslateShader 객체 반환
+	if (m_TranslateShader)
 	{
-		m_FogShader->Shutdown();
-		delete m_FogShader;
-		m_FogShader = 0;
+		m_TranslateShader->Shutdown();
+		delete m_TranslateShader;
+		m_TranslateShader = 0;
 	}
 
 	// 모델 객체 반환
@@ -122,42 +122,33 @@ bool GraphicsClass::Frame()
 
 bool GraphicsClass::Render()
 {
-	// 안개의 색을 회색으로 설정합니다.
-	float fogColor = 0.5f;
+	static float textureTranslation = 0.0f;
 
-	// 안개의 시작과 끝을 설정합니다.
-	float fogStart = 0.0f;
-	float fogEnd = 5.0f;
+	// 텍스처 변환 위치를 증가시킵니다.
+	textureTranslation += 0.005f;
+	if (textureTranslation > 1.0f)
+	{
+		textureTranslation -= 1.0f;
+	}
 
 	// 씬을 그리기 위해 버퍼를 지웁니다
-	m_Direct3D->BeginScene(fogColor, fogColor, fogColor, 1.0f);
+	m_Direct3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 
 	// 카메라의 위치에 따라 뷰 행렬을 생성합니다
 	m_Camera->Render();
 
 	// 카메라 및 d3d 객체에서 월드, 뷰 및 투영 행렬을 가져옵니다
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix;
-	m_Camera->GetViewMatrix(viewMatrix);
 	m_Direct3D->GetWorldMatrix(worldMatrix);
+	m_Camera->GetViewMatrix(viewMatrix);
 	m_Direct3D->GetProjectionMatrix(projectionMatrix);
-
-	// 각 프레임의 rotation 변수를 업데이트합니다.
-	static float rotation = 0.0f;
-	rotation += (float)XM_PI * 0.0025f;
-	if (rotation > 360.0f)
-	{
-		rotation -= 360.0f;
-	}
-
-	// 회전 값으로 월드 행렬을 회전합니다.
-	worldMatrix = XMMatrixRotationY(rotation);
 
 	// 모델 버텍스와 인덱스 버퍼를 그래픽 파이프 라인에 배치하여 렌더링 합니다.
 	m_Model->Render(m_Direct3D->GetDeviceContext());
 
-	// 안개 쉐이더로 모델을 렌더링합니다.	
-	if (!m_FogShader->Render(m_Direct3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
-		m_Model->GetTexture(), fogStart, fogEnd))
+	// 텍스처 번역 셰이더로 모델을 렌더링합니다.
+	if (!m_TranslateShader->Render(m_Direct3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix,
+		projectionMatrix, m_Model->GetTexture(), textureTranslation))
 	{
 		return false;
 	}

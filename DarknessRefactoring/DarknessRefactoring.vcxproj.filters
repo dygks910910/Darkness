@@ -144,6 +144,12 @@
     <ClInclude Include="FogShaderClass.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="ClipPlaneShaderClass.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="TranslateShaderClass.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DarknessRefactoring.rc">
@@ -270,6 +276,12 @@
     <ClCompile Include="FogShaderClass.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="ClipPlaneShaderClass.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="TranslateShaderClass.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="color.vs" />
@@ -291,6 +303,10 @@
     <None Include="bumpmap.vs" />
     <None Include="C:\Users\dygks\Downloads\Dx11Demo_21\specmap.ps" />
     <None Include="C:\Users\dygks\Downloads\Dx11Demo_21\specmap.vs" />
+    <None Include="clipplane.ps" />
+    <None Include="clipplane.vs" />
+    <None Include="translate.ps" />
+    <None Include="translate.vs" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="multiTexture.hlsl" />
