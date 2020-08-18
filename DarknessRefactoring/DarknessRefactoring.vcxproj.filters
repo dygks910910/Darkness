@@ -159,6 +159,12 @@
     <ClInclude Include="FadeShaderClass.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="WaterShaderClass.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="RefractionShaderClass.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DarknessRefactoring.rc">
@@ -300,6 +306,12 @@
     <ClCompile Include="FadeShaderClass.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="WaterShaderClass.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="RefractionShaderClass.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="color.vs" />
@@ -334,5 +346,11 @@
     <FxCompile Include="ps_texture.hlsl" />
     <FxCompile Include="vs_fade.hlsl" />
     <FxCompile Include="vs_texture.hlsl" />
+    <FxCompile Include="water_ps.hlsl" />
+    <FxCompile Include="water_vs.hlsl" />
+    <FxCompile Include="refraction_ps.hlsl" />
+    <FxCompile Include="refraction_vs.hlsl" />
+    <FxCompile Include="light_vs.hlsl" />
+    <FxCompile Include="light_ps.hlsl" />
   </ItemGroup>
 </Project>

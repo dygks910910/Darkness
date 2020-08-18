@@ -29,9 +29,11 @@ class TranslateShaderClass;
 class TransparentShaderClass;
 class ReflectionShaderClass;
 class FadeShaderClass;
-
+class RefractionShaderClass;
+class WaterShaderClass;
 class GraphicsClass
 {
+public:
 public:
 	GraphicsClass();
 	GraphicsClass(const GraphicsClass&);
@@ -39,24 +41,27 @@ public:
 
 	bool Initialize(int, int, HWND);
 	void Shutdown();
-	bool Frame(float);
+	bool Frame(float dt);
 	bool Render();
 
 private:
-	bool RenderToTexture(float);
-	bool RenderFadingScene();
-	bool RenderNormalScene(float);
+	bool RenderRefractionToTexture();
+	bool RenderReflectionToTexture();
+	bool RenderScene();
 
 private:
 	D3DClass* m_Direct3D = nullptr;
 	CameraClass* m_Camera = nullptr;
-	ModelClass* m_Model = nullptr;
-	TextureShaderClass* m_TextureShader = nullptr;
-	RenderTextureClass* m_RenderTexture = nullptr;
-	BitmapClass* m_Bitmap = nullptr;
-	FadeShaderClass* m_FadeShader = nullptr;
-	float m_fadeInTime = 0;
-	float m_accumulatedTime = 0;
-	float m_fadePercentage = 0;
-	bool m_fadeDone = false;
+	ModelClass* m_GroundModel = nullptr;
+	ModelClass* m_WallModel = nullptr;
+	ModelClass* m_BathModel = nullptr;
+	ModelClass* m_WaterModel = nullptr;
+	LightClass* m_Light = nullptr;
+	RenderTextureClass* m_RefractionTexture = nullptr;
+	RenderTextureClass* m_ReflectionTexture = nullptr;
+	LightShaderClass* m_LightShader = nullptr;
+	RefractionShaderClass* m_RefractionShader = nullptr;
+	WaterShaderClass* m_WaterShader = nullptr;
+	float m_waterHeight = 0;
+	float m_waterTranslation = 0;
 };
