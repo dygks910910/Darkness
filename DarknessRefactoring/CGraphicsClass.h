@@ -27,7 +27,7 @@ class FogShaderClass;
 class ClipPlaneShaderClass;
 class TranslateShaderClass;
 class TransparentShaderClass;
-
+class ReflectionShaderClass;
 class GraphicsClass
 {
 public:
@@ -41,10 +41,15 @@ public:
 	bool Render();
 
 private:
+	bool RenderToTexture();
+	bool RenderScene();
+
+private:
 	D3DClass* m_Direct3D = nullptr;
 	CameraClass* m_Camera = nullptr;
-	ModelClass* m_Model1 = nullptr;
-	ModelClass* m_Model2 = nullptr;
+	ModelClass* m_Model = nullptr;
 	TextureShaderClass* m_TextureShader = nullptr;
-	TransparentShaderClass* m_TransparentShader = nullptr;
+	RenderTextureClass* m_RenderTexture = nullptr;
+	ModelClass* m_FloorModel = nullptr;
+	ReflectionShaderClass* m_ReflectionShader = nullptr;
 };

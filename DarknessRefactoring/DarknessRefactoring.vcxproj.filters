@@ -153,6 +153,9 @@
     <ClInclude Include="TransparentShaderClass.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="ReflectionShaderClass.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DarknessRefactoring.rc">
@@ -288,6 +291,9 @@
     <ClCompile Include="TransparentShaderClass.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="ReflectionShaderClass.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="color.vs" />
@@ -313,6 +319,8 @@
     <None Include="clipplane.vs" />
     <None Include="translate.ps" />
     <None Include="translate.vs" />
+    <None Include="reflection.ps" />
+    <None Include="reflection.vs" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="multiTexture.hlsl" />
