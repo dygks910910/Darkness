@@ -5,10 +5,20 @@
 
 
 TextClass::TextClass()
+	:
+	m_sentence1(nullptr),
+	m_sentence2(nullptr),
+	m_sentence3(nullptr),
+	m_sentence4(nullptr)
 {
 }
 
 TextClass::TextClass(const TextClass& other)
+	:
+	m_sentence1(nullptr),
+	m_sentence2(nullptr),
+	m_sentence3(nullptr),
+	m_sentence4(nullptr)
 {
 }
 

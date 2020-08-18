@@ -9,7 +9,11 @@ CColorShaderClass::CColorShaderClass():
 {
 }
 
-CColorShaderClass::CColorShaderClass(const CColorShaderClass& other)
+CColorShaderClass::CColorShaderClass(const CColorShaderClass& other):
+	m_vertexShader(nullptr)
+	, m_pixelShader(nullptr)
+	, m_layout(0)
+	, m_matrixBuffer(nullptr)
 {
 
 }

@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="00.Sound">
+      <UniqueIdentifier>{b3af2ea7-ae96-4d0c-a8e8-af1805322739}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -79,9 +82,6 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="TextClass.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="SoundClass.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="FpsClass.h">
@@ -165,6 +165,15 @@
     <ClInclude Include="RefractionShaderClass.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="SoundClass.h">
+      <Filter>00.Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound2D.h">
+      <Filter>00.Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound3D.h">
+      <Filter>00.Sound</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DarknessRefactoring.rc">
@@ -232,9 +241,6 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="CINPUTCLASS.CPP">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="SoundClass.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="FpsClass.cpp">
@@ -311,6 +317,15 @@
     </ClCompile>
     <ClCompile Include="RefractionShaderClass.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundClass.cpp">
+      <Filter>00.Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound2D.cpp">
+      <Filter>00.Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound3D.cpp">
+      <Filter>00.Sound</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

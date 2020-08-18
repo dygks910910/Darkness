@@ -3,6 +3,8 @@
 
 
 FrustumClass::FrustumClass()
+	:
+	m_planes{0,0,0,0,0,0}
 {
 }
 

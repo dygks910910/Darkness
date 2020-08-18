@@ -2,18 +2,27 @@
 #include "CSystemClass.h"
 #include"CInputClass.h"
 #include"CGraphicsClass.h"
-#include"SoundClass.h"
+#include"Sound3D.h"
 #include"FpsClass.h"
 #include"TimerClass.h"
 #include"CpuClass.h"
 #include"PositionClass.h"
 SystemClass::SystemClass()
-	:m_pInput(nullptr),m_pGraphics(nullptr)
+	:m_pInput(nullptr), 
+	m_pGraphics(nullptr),
+	m_applicationName(L""),
+	m_hInstance(nullptr),
+	m_hWnd(nullptr)
 {
 	
 }
 
 SystemClass::SystemClass(const SystemClass&)
+	:m_pInput(nullptr),
+	m_pGraphics(nullptr),
+	m_applicationName(L""),
+	m_hInstance(nullptr),
+	m_hWnd(nullptr)
 {
 }
 
@@ -41,7 +50,7 @@ bool SystemClass::Initialize()
 	result = m_pGraphics->Initialize(nScreenWidth, nScreenHeight,m_hWnd);
 	IF_NOTX_RTFALSE(result);
 	m_pInput->Initialize(m_hInstance, m_hWnd,nScreenWidth,nScreenHeight);
-	m_Sound = new SoundClass;
+	m_Sound = new Sound3D;
 	if (!m_Sound->Initialize(m_hWnd))
 	{
 		MessageBox(m_hWnd, L"could not initialize the Sound obj", L"Error", MB_OK);

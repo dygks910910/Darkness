@@ -15,6 +15,12 @@ TextureShaderClass::TextureShaderClass() :
 
 
 TextureShaderClass::TextureShaderClass(const TextureShaderClass& other)
+	:
+	m_vertexShader(nullptr)
+	, m_pixelShader(nullptr)
+	, m_layout(nullptr)
+	, m_matrixBuffer(nullptr)
+	, m_sampleState(nullptr)
 {
 }
 

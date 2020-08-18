@@ -1,11 +1,14 @@
 #include"stdafx.h"
 #include "CTextureClass.h"
-TextureClass::TextureClass():
+TextureClass::TextureClass()
+	:
 	m_texture(nullptr)
 {
 }
 
 TextureClass::TextureClass(const TextureClass&)
+	:
+	m_texture(nullptr)
 {
 }
 

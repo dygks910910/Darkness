@@ -185,6 +185,8 @@
     <ClInclude Include="RefractionShaderClass.h" />
     <ClInclude Include="RenderTextureClass.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="Sound2D.h" />
+    <ClInclude Include="Sound3D.h" />
     <ClInclude Include="SoundClass.h" />
     <ClInclude Include="SpecMapShaderClass.h" />
     <ClInclude Include="stdafx.h" />
@@ -239,6 +241,8 @@
     <ClCompile Include="ReflectionShaderClass.cpp" />
     <ClCompile Include="RefractionShaderClass.cpp" />
     <ClCompile Include="RenderTextureClass.cpp" />
+    <ClCompile Include="Sound2D.cpp" />
+    <ClCompile Include="Sound3D.cpp" />
     <ClCompile Include="SoundClass.cpp" />
     <ClCompile Include="SpecMapShaderClass.cpp" />
     <ClCompile Include="stdafx.cpp" />

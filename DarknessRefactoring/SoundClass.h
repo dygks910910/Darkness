@@ -2,7 +2,7 @@
 
 class SoundClass
 {
-private:
+protected:
 	struct WaveHeaderType
 	{
 		char chunkId[4];
@@ -21,23 +21,15 @@ private:
 	};
 
 public:
-	SoundClass();
-	SoundClass(const SoundClass&);
-	~SoundClass();
+	SoundClass() {};
+	SoundClass(const SoundClass&) {};
+	virtual ~SoundClass() {};
 
-	bool Initialize(HWND);
-	void Shutdown();
+	virtual bool Initialize(HWND)PURE;
+	virtual void Shutdown()PURE;
 
-private:
-	bool InitializeDirectSound(HWND);
-	void ShutdownDirectSound();
 
-	bool LoadWaveFile(const char*, IDirectSoundBuffer8**);
-	void ShutdownWaveFile(IDirectSoundBuffer8**);
-
-	bool PlayWaveFile();
-
-private:
+protected:
 	IDirectSound8* m_DirectSound = nullptr;
 	IDirectSoundBuffer* m_primaryBuffer = nullptr;
 	IDirectSoundBuffer8* m_secondaryBuffer1 = nullptr;
