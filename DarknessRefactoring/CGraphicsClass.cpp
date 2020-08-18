@@ -2,7 +2,7 @@
 #include "CD3dClass.h"
 #include "CCameraClass.h"
 #include "CModelClass.h"
-#include "BumpMapShaderClass.h"
+#include "SpecMapShaderClass.h"
 #include "CLightClass.h"
 #include "CGraphicsClass.h"
 
@@ -59,24 +59,24 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 
 	// 모델 객체 초기화
-	if (!m_Model->Initialize(m_Direct3D->GetDevice(), (char*)"data/cube.txt", (WCHAR*)L"data/stone01.dds",
-		(WCHAR*)L"data/bump01.dds"))
+	if (!m_Model->Initialize(m_Direct3D->GetDevice(), (char*)"data/cube.txt", (WCHAR*)L"data/stone02.dds",
+		(WCHAR*)L"data/bump02.dds", (WCHAR*)L"data/spec02.dds"))
 	{
 		MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
 		return false;
 	}
 
-	// 범프 맵 쉐이더 객체를 생성합니다.
-	m_BumpMapShader = new BumpMapShaderClass;
-	if (!m_BumpMapShader)
+	// specular map shader 객체를 생성한다.
+	m_SpecMapShader = new SpecMapShaderClass;
+	if (!m_SpecMapShader)
 	{
 		return false;
 	}
 
-	// 범프 맵 쉐이더 객체를 초기화한다.
-	if (!m_BumpMapShader->Initialize(m_Direct3D->GetDevice(), hwnd))
+	// specular map shader 객체를 초기화한다.
+	if (!m_SpecMapShader->Initialize(m_Direct3D->GetDevice(), hwnd))
 	{
-		MessageBox(hwnd, L"Could not initialize the bump map shader object.", L"Error", MB_OK);
+		MessageBox(hwnd, L"Could not initialize the specular map shader object.", L"Error", MB_OK);
 		return false;
 	}
 
@@ -90,6 +90,8 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	// 조명 객체를 초기화합니다.
 	m_Light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
 	m_Light->SetDirection(0.0f, 0.0f, 1.0f);
+	m_Light->SetSpecularColor(1.0f, 1.0f, 1.0f, 1.0f);
+	m_Light->SetSpecularPower(16.0f);
 
 	return true;
 }
@@ -104,12 +106,12 @@ void GraphicsClass::Shutdown()
 		m_Light = 0;
 	}
 
-	// 범프 맵 쉐이더 객체를 해제한다.
-	if (m_BumpMapShader)
+	// specular map shader 객체를 해제한다.
+	if (m_SpecMapShader)
 	{
-		m_BumpMapShader->Shutdown();
-		delete m_BumpMapShader;
-		m_BumpMapShader = 0;
+		m_SpecMapShader->Shutdown();
+		delete m_SpecMapShader;
+		m_SpecMapShader = 0;
 	}
 
 	// 모델 객체 반환
@@ -177,8 +179,9 @@ bool GraphicsClass::Render()
 
 
 	// 범프 맵 셰이더를 사용하여 모델을 렌더링합니다.
-	m_BumpMapShader->Render(m_Direct3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
-		m_Model->GetTextureArray(), m_Light->GetDirection(), m_Light->GetDiffuseColor());
+	m_SpecMapShader->Render(m_Direct3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		m_Model->GetTextureArray(), m_Light->GetDirection(), m_Light->GetDiffuseColor(),
+		m_Camera->GetPosition(), m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
 
 	// 버퍼의 내용을 화면에 출력합니다
 	m_Direct3D->EndScene();

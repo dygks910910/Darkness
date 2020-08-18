@@ -20,6 +20,8 @@ class MultiTextureShaderClass;
 class LightMapShaderClass;
 class AlphaMapShaderClass;
 class BumpMapShaderClass;
+class SpecMapShaderClass;
+
 class GraphicsClass
 {
 public:
@@ -36,6 +38,7 @@ private:
 	D3DClass* m_Direct3D = nullptr;
 	CameraClass* m_Camera = nullptr;
 	ModelClass* m_Model = nullptr;
-	BumpMapShaderClass* m_BumpMapShader = nullptr;
+	SpecMapShaderClass* m_SpecMapShader = nullptr;
 	LightClass* m_Light = nullptr;
+
 };

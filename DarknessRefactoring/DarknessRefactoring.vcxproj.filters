@@ -132,6 +132,9 @@
     <ClInclude Include="BumpMapShaderClass.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="SpecMapShaderClass.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DarknessRefactoring.rc">
@@ -246,6 +249,9 @@
     <ClCompile Include="BumpMapShaderClass.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="SpecMapShaderClass.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="color.vs" />
@@ -265,6 +271,8 @@
     <None Include="alphamap.vs" />
     <None Include="bumpmap.ps" />
     <None Include="bumpmap.vs" />
+    <None Include="C:\Users\dygks\Downloads\Dx11Demo_21\specmap.ps" />
+    <None Include="C:\Users\dygks\Downloads\Dx11Demo_21\specmap.vs" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="multiTexture.hlsl" />

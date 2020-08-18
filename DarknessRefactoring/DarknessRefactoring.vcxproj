@@ -179,6 +179,7 @@
     <ClInclude Include="PositionClass.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SoundClass.h" />
+    <ClInclude Include="SpecMapShaderClass.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TextClass.h" />
@@ -222,6 +223,7 @@
     <ClCompile Include="MultiTextureShaderClass.cpp" />
     <ClCompile Include="PositionClass.cpp" />
     <ClCompile Include="SoundClass.cpp" />
+    <ClCompile Include="SpecMapShaderClass.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="TextClass.cpp" />
     <ClCompile Include="TextureArrayClass.cpp" />
@@ -232,6 +234,8 @@
     <None Include="alphamap.vs" />
     <None Include="bumpmap.ps" />
     <None Include="bumpmap.vs" />
+    <None Include="C:\Users\dygks\Downloads\Dx11Demo_21\specmap.ps" />
+    <None Include="C:\Users\dygks\Downloads\Dx11Demo_21\specmap.vs" />
     <None Include="color.vs">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
