@@ -2,7 +2,8 @@
 #include "CD3dClass.h"
 #include "CCameraClass.h"
 #include "CModelClass.h"
-#include "AlphaMapShaderClass.h"
+#include "BumpMapShaderClass.h"
+#include "CLightClass.h"
 #include "CGraphicsClass.h"
 
 
@@ -58,26 +59,37 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 
 	// 모델 객체 초기화
-	if (!m_Model->Initialize(m_Direct3D->GetDevice(), (char*)"data/square.txt", (WCHAR*)L"data/stone01.dds",
-		(WCHAR*)L"data/dirt01.dds", (WCHAR*)L"data/alpha01.dds"))
+	if (!m_Model->Initialize(m_Direct3D->GetDevice(), (char*)"data/cube.txt", (WCHAR*)L"data/stone01.dds",
+		(WCHAR*)L"data/bump01.dds"))
 	{
 		MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
 		return false;
 	}
 
-	// 알파맵 쉐이더 객체 생성
-	m_AlphaMapShader = new AlphaMapShaderClass;
-	if (!m_AlphaMapShader)
+	// 범프 맵 쉐이더 객체를 생성합니다.
+	m_BumpMapShader = new BumpMapShaderClass;
+	if (!m_BumpMapShader)
 	{
 		return false;
 	}
 
-	// 알파맵 쉐이더 객체 초기화
-	if (!m_AlphaMapShader->Initialize(m_Direct3D->GetDevice(), hwnd))
+	// 범프 맵 쉐이더 객체를 초기화한다.
+	if (!m_BumpMapShader->Initialize(m_Direct3D->GetDevice(), hwnd))
 	{
-		MessageBox(hwnd, L"Could not initialize the alpha map shader object.", L"Error", MB_OK);
+		MessageBox(hwnd, L"Could not initialize the bump map shader object.", L"Error", MB_OK);
 		return false;
 	}
+
+	// 조명 객체를 만듭니다.
+	m_Light = new LightClass;
+	if (!m_Light)
+	{
+		return false;
+	}
+
+	// 조명 객체를 초기화합니다.
+	m_Light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
+	m_Light->SetDirection(0.0f, 0.0f, 1.0f);
 
 	return true;
 }
@@ -85,12 +97,19 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 void GraphicsClass::Shutdown()
 {
-	// 알파맵 쉐이더 객체 반환
-	if (m_AlphaMapShader)
+	// 조명 객체를 해제한다.
+	if (m_Light)
 	{
-		m_AlphaMapShader->Shutdown();
-		delete m_AlphaMapShader;
-		m_AlphaMapShader = 0;
+		delete m_Light;
+		m_Light = 0;
+	}
+
+	// 범프 맵 쉐이더 객체를 해제한다.
+	if (m_BumpMapShader)
+	{
+		m_BumpMapShader->Shutdown();
+		delete m_BumpMapShader;
+		m_BumpMapShader = 0;
 	}
 
 	// 모델 객체 반환
@@ -121,7 +140,7 @@ void GraphicsClass::Shutdown()
 bool GraphicsClass::Frame()
 {
 	// 카메라 위치 설정
-	m_Camera->SetPosition(0.0f, 0.0f, -3.0f);
+	m_Camera->SetPosition(0.0f, 0.0f, -5.0f);
 
 	return true;
 }
@@ -142,14 +161,24 @@ bool GraphicsClass::Render()
 	m_Direct3D->GetProjectionMatrix(projectionMatrix);
 	m_Direct3D->GetOrthoMatrix(orthoMatrix);
 
+	// 각 프레임의 rotation 변수를 업데이트합니다.
+	static float rotation = 0.0f;
+	rotation += (float)XM_PI * 0.0025f;
+	if (rotation > 360.0f)
+	{
+		rotation -= 360.0f;
+	}
+
+	// 회전 값으로 월드 행렬을 회전합니다.
+	worldMatrix = XMMatrixRotationY(rotation);
 
 	// 모델 버텍스와 인덱스 버퍼를 그래픽 파이프 라인에 배치하여 렌더링 합니다.
 	m_Model->Render(m_Direct3D->GetDeviceContext());
 
 
-	// 라이트 맵 셰이더를 사용하여 모델을 렌더링합니다.
-	m_AlphaMapShader->Render(m_Direct3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
-		m_Model->GetTextureArray());
+	// 범프 맵 셰이더를 사용하여 모델을 렌더링합니다.
+	m_BumpMapShader->Render(m_Direct3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		m_Model->GetTextureArray(), m_Light->GetDirection(), m_Light->GetDiffuseColor());
 
 	// 버퍼의 내용을 화면에 출력합니다
 	m_Direct3D->EndScene();

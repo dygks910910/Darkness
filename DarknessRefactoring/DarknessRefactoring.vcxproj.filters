@@ -129,6 +129,9 @@
     <ClInclude Include="AlphaMapShaderClass.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="BumpMapShaderClass.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DarknessRefactoring.rc">
@@ -240,6 +243,9 @@
     <ClCompile Include="AlphaMapShaderClass.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="BumpMapShaderClass.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="color.vs" />
@@ -257,6 +263,8 @@
     <None Include="lightmap.vs" />
     <None Include="alphamap.ps" />
     <None Include="alphamap.vs" />
+    <None Include="bumpmap.ps" />
+    <None Include="bumpmap.vs" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="multiTexture.hlsl" />

@@ -148,6 +148,7 @@
     <ClInclude Include="AlignedAllocationPolicy.h" />
     <ClInclude Include="AlphaMapShaderClass.h" />
     <ClInclude Include="BitmapClass.h" />
+    <ClInclude Include="BumpMapShaderClass.h" />
     <ClInclude Include="CCameraClass.h" />
     <ClInclude Include="CColorShaderClass.h" />
     <ClInclude Include="CD3dClass.h" />
@@ -194,6 +195,7 @@
   <ItemGroup>
     <ClCompile Include="AlphaMapShaderClass.cpp" />
     <ClCompile Include="BitmapClass.cpp" />
+    <ClCompile Include="BumpMapShaderClass.cpp" />
     <ClCompile Include="CCameraClass.cpp" />
     <ClCompile Include="CColorShaderClass.cpp" />
     <ClCompile Include="CD3dClass.cpp" />
@@ -228,6 +230,8 @@
   <ItemGroup>
     <None Include="alphamap.ps" />
     <None Include="alphamap.vs" />
+    <None Include="bumpmap.ps" />
+    <None Include="bumpmap.vs" />
     <None Include="color.vs">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>

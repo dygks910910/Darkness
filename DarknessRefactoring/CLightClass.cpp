@@ -1,72 +1,72 @@
 #include"stdafx.h"
 #include "CLightClass.h"
 
-CLightClass::CLightClass()
+LightClass::LightClass()
 {
 }
 
 
-CLightClass::CLightClass(const CLightClass& other)
+LightClass::LightClass(const LightClass& other)
 {
 }
 
 
-CLightClass::~CLightClass()
+LightClass::~LightClass()
 {
 }
 
 
-void CLightClass::SetAmbientColor(float red, float green, float blue, float alpha)
+void LightClass::SetAmbientColor(float red, float green, float blue, float alpha)
 {
 	m_ambientColor = XMFLOAT4(red, green, blue, alpha);
 }
 
-void CLightClass::SetDiffuseColor(float red, float green, float blue, float alpha)
+void LightClass::SetDiffuseColor(float red, float green, float blue, float alpha)
 {
 	m_diffuseColor = XMFLOAT4(red, green, blue, alpha);
 	return;
 }
 
-void CLightClass::SetSpecularColor(float red, float green, float blue, float alpha)
+void LightClass::SetSpecularColor(float red, float green, float blue, float alpha)
 {
 	m_diffuseColor = XMFLOAT4(red, green, blue, alpha);
 }
 
-void CLightClass::SetSpecularPower(float power)
+void LightClass::SetSpecularPower(float power)
 {
 	m_specularPower = power;
 }
 
 
-void CLightClass::SetDirection(float x, float y, float z)
+void LightClass::SetDirection(float x, float y, float z)
 {
 	m_direction = XMFLOAT3(x, y, z);
 	return;
 }
 
 
-XMFLOAT4 CLightClass::GetAmbientColor()
+XMFLOAT4 LightClass::GetAmbientColor()
 {
 	return m_ambientColor;
 }
 
-XMFLOAT4 CLightClass::GetDiffuseColor()
+XMFLOAT4 LightClass::GetDiffuseColor()
 {
 	return m_diffuseColor;
 }
 
 
-XMFLOAT3 CLightClass::GetDirection()
+XMFLOAT3 LightClass::GetDirection()
 {
 	return m_direction;
 }
 
-XMFLOAT4 CLightClass::GetSpecularColor()
+XMFLOAT4 LightClass::GetSpecularColor()
 {
 	return m_specularColor;
 }
 
-float CLightClass::GetSpecularPower()
+float LightClass::GetSpecularPower()
 {
 	return m_specularPower;
 }

@@ -9,7 +9,7 @@ class D3DClass;
 class CameraClass;
 class ModelClass;
 class CLightShaderClass;
-class CLightClass;
+class LightClass;
 class CTextureShaderClass;
 class BitmapClass;
 class TextClass;
@@ -19,7 +19,7 @@ class CEffect;
 class MultiTextureShaderClass;
 class LightMapShaderClass;
 class AlphaMapShaderClass;
-
+class BumpMapShaderClass;
 class GraphicsClass
 {
 public:
@@ -36,5 +36,6 @@ private:
 	D3DClass* m_Direct3D = nullptr;
 	CameraClass* m_Camera = nullptr;
 	ModelClass* m_Model = nullptr;
-	AlphaMapShaderClass* m_AlphaMapShader = nullptr;
+	BumpMapShaderClass* m_BumpMapShader = nullptr;
+	LightClass* m_Light = nullptr;
 };

@@ -1,12 +1,12 @@
 #pragma once
 
 
-class CLightClass
+class LightClass
 {
 public:
-	CLightClass();
-	CLightClass(const CLightClass&);
-	~CLightClass();
+	LightClass();
+	LightClass(const LightClass&);
+	~LightClass();
 
 	void SetAmbientColor(float, float, float, float);
 	void SetDiffuseColor(float, float, float, float);
