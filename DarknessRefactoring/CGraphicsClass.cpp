@@ -2,7 +2,7 @@
 #include "CD3dClass.h"
 #include "CCameraClass.h"
 #include "CModelClass.h"
-#include "LightMapShaderClass.h"
+#include "AlphaMapShaderClass.h"
 #include "CGraphicsClass.h"
 
 
@@ -58,23 +58,24 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 
 	// 모델 객체 초기화
-	if (!m_Model->Initialize(m_Direct3D->GetDevice(), (char*)"data/square.txt", (WCHAR*)L"data/stone01.dds", (WCHAR*)L"data/light01.dds"))
+	if (!m_Model->Initialize(m_Direct3D->GetDevice(), (char*)"data/square.txt", (WCHAR*)L"data/stone01.dds",
+		(WCHAR*)L"data/dirt01.dds", (WCHAR*)L"data/alpha01.dds"))
 	{
 		MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
 		return false;
 	}
 
-	// 라이트 맵 쉐이더 객체를 만듭니다.
-	m_LightMapShader = new LightMapShaderClass;
-	if (!m_LightMapShader)
+	// 알파맵 쉐이더 객체 생성
+	m_AlphaMapShader = new AlphaMapShaderClass;
+	if (!m_AlphaMapShader)
 	{
 		return false;
 	}
 
-	// 라이트 맵 셰이더 객체를 초기화합니다.
-	if (!m_LightMapShader->Initialize(m_Direct3D->GetDevice(), hwnd))
+	// 알파맵 쉐이더 객체 초기화
+	if (!m_AlphaMapShader->Initialize(m_Direct3D->GetDevice(), hwnd))
 	{
-		MessageBox(hwnd, L"Could not initialize the light map shader object.", L"Error", MB_OK);
+		MessageBox(hwnd, L"Could not initialize the alpha map shader object.", L"Error", MB_OK);
 		return false;
 	}
 
@@ -84,12 +85,12 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 void GraphicsClass::Shutdown()
 {
-	// 라이트 맵 셰이더 객체를 해제합니다.
-	if (m_LightMapShader)
+	// 알파맵 쉐이더 객체 반환
+	if (m_AlphaMapShader)
 	{
-		m_LightMapShader->Shutdown();
-		delete m_LightMapShader;
-		m_LightMapShader = 0;
+		m_AlphaMapShader->Shutdown();
+		delete m_AlphaMapShader;
+		m_AlphaMapShader = 0;
 	}
 
 	// 모델 객체 반환
@@ -147,7 +148,7 @@ bool GraphicsClass::Render()
 
 
 	// 라이트 맵 셰이더를 사용하여 모델을 렌더링합니다.
-	m_LightMapShader->Render(m_Direct3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+	m_AlphaMapShader->Render(m_Direct3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
 		m_Model->GetTextureArray());
 
 	// 버퍼의 내용을 화면에 출력합니다

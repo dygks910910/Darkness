@@ -21,7 +21,7 @@ ModelClass::~ModelClass()
 }
 
 
-bool ModelClass::Initialize(ID3D11Device* device, char* modelFilename, WCHAR* textureFilename1, WCHAR* textureFilename2)
+bool ModelClass::Initialize(ID3D11Device* device, char* modelFilename, WCHAR* textureFilename1, WCHAR* textureFilename2, WCHAR* textureFilename3)
 {
 	// 모델 데이터를 로드합니다.
 	if (!LoadModel(modelFilename))
@@ -36,7 +36,7 @@ bool ModelClass::Initialize(ID3D11Device* device, char* modelFilename, WCHAR* te
 	}
 
 	// 이 모델의 텍스처를 로드합니다.
-	return LoadTextures(device, textureFilename1, textureFilename2);
+	return LoadTextures(device, textureFilename1, textureFilename2, textureFilename3);
 }
 
 
@@ -185,7 +185,7 @@ void ModelClass::RenderBuffers(ID3D11DeviceContext* deviceContext)
 }
 
 
-bool ModelClass::LoadTextures(ID3D11Device* device, WCHAR* filename1, WCHAR* filename2)
+bool ModelClass::LoadTextures(ID3D11Device* device, WCHAR* filename1, WCHAR* filename2, WCHAR* filename3)
 {
 	// 텍스처 배열 오브젝트를 생성한다.
 	m_TextureArray = new TextureArrayClass;
@@ -195,7 +195,7 @@ bool ModelClass::LoadTextures(ID3D11Device* device, WCHAR* filename1, WCHAR* fil
 	}
 
 	// 텍스처 배열 오브젝트를 초기화한다.
-	return m_TextureArray->Initialize(device, filename1, filename2);
+	return m_TextureArray->Initialize(device, filename1, filename2, filename3);
 }
 
 
