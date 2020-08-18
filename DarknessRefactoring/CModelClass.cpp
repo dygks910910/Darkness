@@ -21,7 +21,7 @@ ModelClass::~ModelClass()
 }
 
 
-bool ModelClass::Initialize(ID3D11Device* device, WCHAR* textureFilename, char* modelFilename)
+bool ModelClass::Initialize(ID3D11Device* device, const char* modelFilename, const WCHAR* colorTextureFilename, const WCHAR* normalTextureFilename)
 {
 	// 모델 데이터를 로드합니다.
 	if (!LoadModel(modelFilename))
@@ -36,14 +36,14 @@ bool ModelClass::Initialize(ID3D11Device* device, WCHAR* textureFilename, char* 
 	}
 
 	// 이 모델의 텍스처를 로드합니다.
-	return LoadTexture(device, textureFilename);
+	return LoadTextures(device, colorTextureFilename, normalTextureFilename);
 }
 
 
 void ModelClass::Shutdown()
 {
 	// 모델 텍스쳐를 반환합니다.
-	ReleaseTexture();
+	ReleaseTextures();
 
 	// 버텍스 및 인덱스 버퍼를 종료합니다.
 	ShutdownBuffers();
@@ -72,6 +72,12 @@ ID3D11ShaderResourceView* ModelClass::GetTexture()
 }
 
 
+ID3D11ShaderResourceView* ModelClass::GetNormalMap()
+{
+	return m_NormalMap->GetTexture();
+}
+
+
 bool ModelClass::InitializeBuffers(ID3D11Device* device)
 {
 	// 정점 배열을 만듭니다.
@@ -93,8 +99,6 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 	{
 		vertices[i].position = XMFLOAT3(m_model[i].x, m_model[i].y, m_model[i].z);
 		vertices[i].texture = XMFLOAT2(m_model[i].tu, m_model[i].tv);
-		vertices[i].normal = XMFLOAT3(m_model[i].nx, m_model[i].ny, m_model[i].nz);
-
 		indices[i] = i;
 	}
 
@@ -186,7 +190,7 @@ void ModelClass::RenderBuffers(ID3D11DeviceContext* deviceContext)
 }
 
 
-bool ModelClass::LoadTexture(ID3D11Device* device, WCHAR* filename)
+bool ModelClass::LoadTextures(ID3D11Device* device, const WCHAR* colorTextureFilename, const WCHAR* normalTextureFilename)
 {
 	// 텍스처 오브젝트를 생성한다.
 	m_Texture = new TextureClass;
@@ -195,12 +199,32 @@ bool ModelClass::LoadTexture(ID3D11Device* device, WCHAR* filename)
 		return false;
 	}
 
-	// 텍스처 오브젝트를 초기화한다.
-	return m_Texture->Initialize(device, filename);
+	// Initialize the texture object.
+	bool result = m_Texture->Initialize(device, colorTextureFilename);
+	if (!result)
+	{
+		return false;
+	}
+
+	// Create the texture object.
+	m_NormalMap = new TextureClass;
+	if (!m_NormalMap)
+	{
+		return false;
+	}
+
+	// Initialize the texture object.
+	result = m_NormalMap->Initialize(device, normalTextureFilename);
+	if (!result)
+	{
+		return false;
+	}
+
+	return true;
 }
 
 
-void ModelClass::ReleaseTexture()
+void ModelClass::ReleaseTextures()
 {
 	// 텍스처 오브젝트를 릴리즈한다.
 	if (m_Texture)
@@ -209,9 +233,16 @@ void ModelClass::ReleaseTexture()
 		delete m_Texture;
 		m_Texture = 0;
 	}
+
+	if (m_NormalMap)
+	{
+		m_NormalMap->Shutdown();
+		delete m_NormalMap;
+		m_NormalMap = 0;
+	}
 }
 
-bool ModelClass::LoadModel(char* filename)
+bool ModelClass::LoadModel(const char* filename)
 {
 	// 모델 파일을 엽니다.
 	ifstream fin;

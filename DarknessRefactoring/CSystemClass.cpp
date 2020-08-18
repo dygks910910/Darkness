@@ -14,7 +14,6 @@ SystemClass::SystemClass()
 	m_hInstance(nullptr),
 	m_hWnd(nullptr)
 {
-	
 }
 
 SystemClass::SystemClass(const SystemClass&)
@@ -153,7 +152,7 @@ bool SystemClass::Frame()
 	//IF_NOTX_RTFALSE(m_pGraphics->Frame(m_Timer->GetTime()));
 	IF_NOTX_RTFALSE(m_pGraphics->Frame());
 
-	return m_pGraphics->Render();
+	return true/* m_pGraphics->Render()*/;
 }
 
 void SystemClass::InitializeWindows(int& screenWidth, int& screenHeight)

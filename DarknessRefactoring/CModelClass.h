@@ -9,7 +9,6 @@ private:
 	{
 		XMFLOAT3 position;
 		XMFLOAT2 texture;
-		XMFLOAT3 normal;
 	};
 
 	struct ModelType
@@ -24,22 +23,23 @@ public:
 	ModelClass(const ModelClass&);
 	~ModelClass();
 
-	bool Initialize(ID3D11Device*, WCHAR*, char*);
+	bool Initialize(ID3D11Device*, const char*, const WCHAR*, const WCHAR*);
 	void Shutdown();
 	void Render(ID3D11DeviceContext*);
 
 	int GetIndexCount();
 	ID3D11ShaderResourceView* GetTexture();
+	ID3D11ShaderResourceView* GetNormalMap();
 
 private:
 	bool InitializeBuffers(ID3D11Device*);
 	void ShutdownBuffers();
 	void RenderBuffers(ID3D11DeviceContext*);
 
-	bool LoadTexture(ID3D11Device*, WCHAR*);
-	void ReleaseTexture();
+	bool LoadTextures(ID3D11Device*, const WCHAR*, const WCHAR*);
+	void ReleaseTextures();
 
-	bool LoadModel(char*);
+	bool LoadModel(const char*);
 	void ReleaseModel();
 
 private:
@@ -48,5 +48,6 @@ private:
 	int m_vertexCount = 0;
 	int m_indexCount = 0;
 	TextureClass* m_Texture = nullptr;
+	TextureClass* m_NormalMap = nullptr;
 	ModelType* m_model = nullptr;
 };

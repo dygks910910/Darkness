@@ -31,6 +31,8 @@ class ReflectionShaderClass;
 class FadeShaderClass;
 class RefractionShaderClass;
 class WaterShaderClass;
+class GlassShaderClass;
+
 class GraphicsClass
 {
 public:
@@ -41,17 +43,17 @@ public:
 	bool Initialize(int, int, HWND);
 	void Shutdown();
 	bool Frame();
-	bool Render();
 
 private:
+	bool RenderToTexture(float);
+	bool Render(float);
 
 private:
 	D3DClass* m_Direct3D = nullptr;
 	CameraClass* m_Camera = nullptr;
 	ModelClass* m_Model = nullptr;
-	LightShaderClass* m_LightShader = nullptr;
-	LightClass* m_Light1 = nullptr;
-	LightClass* m_Light2 = nullptr;
-	LightClass* m_Light3 = nullptr;
-	LightClass* m_Light4 = nullptr;
+	ModelClass* m_WindowModel = nullptr;
+	RenderTextureClass* m_RenderTexture = nullptr;
+	TextureShaderClass* m_TextureShader = nullptr;
+	GlassShaderClass* m_GlassShader = nullptr;
 };

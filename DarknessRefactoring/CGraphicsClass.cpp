@@ -2,8 +2,9 @@
 #include "CD3dClass.h"
 #include "CCameraClass.h"
 #include "CModelClass.h"
-#include "CLightClass.h"
-#include "CLightShaderClass.h"
+#include "CTextureShaderClass.h"
+#include "RenderTextureClass.h"
+#include "GlassShaderClass.h"
 #include "CGraphicsClass.h"
 
 
@@ -32,93 +33,93 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 
 	// Direct3D 객체 초기화
-	bool result = m_Direct3D->Initialize(screenWidth, screenHeight, VSYNC_ENABLED, hwnd, FULL_SCREEN, SCREEN_DEPTH, SCREEN_NEAR);
-	if (!result)
+	if (!m_Direct3D->Initialize(screenWidth, screenHeight, VSYNC_ENABLED, hwnd, FULL_SCREEN, SCREEN_DEPTH, SCREEN_NEAR))
 	{
 		MessageBox(hwnd, L"Could not initialize Direct3D.", L"Error", MB_OK);
 		return false;
 	}
 
-	// m_Camera 객체 생성
+	// 카메라 객체 생성
 	m_Camera = new CameraClass;
 	if (!m_Camera)
 	{
 		return false;
 	}
 
-	// 모델 객체를 생성합니다.
+	// 모델 객체 생성
 	m_Model = new ModelClass;
 	if (!m_Model)
 	{
 		return false;
 	}
 
-	// 모델 객체를 초기화합니다.
-	result = m_Model->Initialize(m_Direct3D->GetDevice(), (WCHAR*)L"data/stone01.dds", (char*)"data/plane01.txt");
-	if (!result)
+	// 모델 객체 초기화
+	if (!m_Model->Initialize(m_Direct3D->GetDevice(), (char*)"data/cube.txt", (WCHAR*)L"data/seafloor.dds", (WCHAR*)L"data/bump03.dds"))
 	{
 		MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
 		return false;
 	}
 
-	// 라이트 쉐이더 객체를 만듭니다.
-	m_LightShader = new LightShaderClass;
-	if (!m_LightShader)
+	// 창 모델 객체를 만듭니다.
+	m_WindowModel = new ModelClass;
+	if (!m_WindowModel)
 	{
 		return false;
 	}
 
-	// 라이트 쉐이더 객체를 초기화합니다.
-	result = m_LightShader->Initialize(m_Direct3D->GetDevice(), hwnd);
-	if (!result)
+#define GLASS	false	// t유리, f얼음
+
+	// 창 모델 객체를 초기화합니다.	
+#if GLASS
+	if (!m_WindowModel->Initialize(m_Direct3D->GetDevice(), "data/square.txt", L"data/glass01.dds", L"data/bump03.dds"))	// 유리
+#else
+	if (!m_WindowModel->Initialize(m_Direct3D->GetDevice(), "data/square.txt", L"data/ice01.dds", L"data/icebump01.dds"))	// 얼음
+#endif
 	{
-		MessageBox(hwnd, L"Could not initialize the light shader object.", L"Error", MB_OK);
+		MessageBox(hwnd, L"Could not initialize the window model object.", L"Error", MB_OK);
 		return false;
 	}
 
-	// 첫 번째 조명 객체를 만듭니다.
-	m_Light1 = new LightClass;
-	if (!m_Light1)
-	{
-		return false;
-	}
-
-	// 첫 번째 조명 객체를초기화합니다.
-	m_Light1->SetDiffuseColor(1.0f, 0.0f, 0.0f, 1.0f);
-	m_Light1->SetPosition(-3.0f, 1.0f, 3.0f);
-
-	// 두 번째 조명 객체를 만듭니다.
-	m_Light2 = new LightClass;
-	if (!m_Light2)
+	// 렌더링 텍스처 객체를 생성한다.
+	m_RenderTexture = new RenderTextureClass;
+	if (!m_RenderTexture)
 	{
 		return false;
 	}
 
-	// 두 번째 조명 객체를 초기화합니다.
-	m_Light2->SetDiffuseColor(0.0f, 1.0f, 0.0f, 1.0f);
-	m_Light2->SetPosition(3.0f, 1.0f, 3.0f);
-
-	// 세 번째 조명 객체를 만듭니다.
-	m_Light3 = new LightClass;
-	if (!m_Light3)
+	// 렌더링 텍스처 객체를 초기화한다.
+	if (!m_RenderTexture->Initialize(m_Direct3D->GetDevice(), screenWidth, screenHeight))
 	{
 		return false;
 	}
 
-	// 세 번째 조명 객체를 초기화합니다.
-	m_Light3->SetDiffuseColor(0.0f, 0.0f, 1.0f, 1.0f);
-	m_Light3->SetPosition(-3.0f, 1.0f, -3.0f);
-
-	// 네 번째 조명 객체를 만듭니다.
-	m_Light4 = new LightClass;
-	if (!m_Light4)
+	// 텍스처 쉐이더 객체를 생성한다.
+	m_TextureShader = new TextureShaderClass;
+	if (!m_TextureShader)
 	{
 		return false;
 	}
 
-	// 네 번째 조명 객체를 초기화합니다.
-	m_Light4->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
-	m_Light4->SetPosition(3.0f, 1.0f, -3.0f);
+	// 텍스처 쉐이더 객체를 초기화한다.
+	if (!m_TextureShader->Initialize(m_Direct3D->GetDevice(), hwnd))
+	{
+		MessageBox(hwnd, L"Could not initialize the texture shader object.", L"Error", MB_OK);
+		return false;
+	}
+
+	// 유리 쉐이더 객체를 만듭니다.
+	m_GlassShader = new GlassShaderClass;
+	if (!m_GlassShader)
+	{
+		return false;
+	}
+
+	// 유리 쉐이더 객체를 초기화합니다.
+	if (!m_GlassShader->Initialize(m_Direct3D->GetDevice(), hwnd))
+	{
+		MessageBox(hwnd, L"Could not initialize the glass shader object.", L"Error", MB_OK);
+		return false;
+	}
 
 	return true;
 }
@@ -126,37 +127,36 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 void GraphicsClass::Shutdown()
 {
-	// 조명 객체들을 해제합니다.
-	if (m_Light1)
+	// 유리 쉐이더 객체를 해제합니다.
+	if (m_GlassShader)
 	{
-		delete m_Light1;
-		m_Light1 = 0;
+		m_GlassShader->Shutdown();
+		delete m_GlassShader;
+		m_GlassShader = 0;
 	}
 
-	if (m_Light2)
+	// 텍스처 쉐이더 객체를 해제합니다.
+	if (m_TextureShader)
 	{
-		delete m_Light2;
-		m_Light2 = 0;
+		m_TextureShader->Shutdown();
+		delete m_TextureShader;
+		m_TextureShader = 0;
 	}
 
-	if (m_Light3)
+	// 렌더 텍스쳐 객체를 해제합니다.
+	if (m_RenderTexture)
 	{
-		delete m_Light3;
-		m_Light3 = 0;
+		m_RenderTexture->Shutdown();
+		delete m_RenderTexture;
+		m_RenderTexture = 0;
 	}
 
-	if (m_Light4)
+	// 창 모델 객체를 해제합니다.
+	if (m_WindowModel)
 	{
-		delete m_Light4;
-		m_Light4 = 0;
-	}
-
-	// 라이트 쉐이더 객체를 해제합니다.
-	if (m_LightShader)
-	{
-		m_LightShader->Shutdown();
-		delete m_LightShader;
-		m_LightShader = 0;
+		m_WindowModel->Shutdown();
+		delete m_WindowModel;
+		m_WindowModel = 0;
 	}
 
 	// 모델 객체를 해제합니다.
@@ -186,36 +186,42 @@ void GraphicsClass::Shutdown()
 
 bool GraphicsClass::Frame()
 {
-	// 카메라 위치를 설정합니다.
-	m_Camera->SetPosition(0.0f, 2.0f, -12.0f);
+	static float rotation = 0.0f;
 
-	// 장면을 렌더링합니다.
-	return Render();
+	// 각 프레임의 rotation 변수를 업데이트합니다.
+	rotation += (float)XM_PI * 0.005f;
+	if (rotation > 360.0f)
+	{
+		rotation -= 360.0f;
+	}
+
+	// 카메라 위치를 설정합니다.
+	m_Camera->SetPosition(0.0f, 0.0f, -5.0f);
+
+	// 페이드 인이 완료되지 않은 경우 장면을 텍스처로 렌더링하고 텍스처를 페이드 인합니다.
+	if (!RenderToTexture(rotation))
+	{
+		return false;
+	}
+
+	// 장면을 렌더링 합니다.
+	if (!Render(rotation))
+	{
+		return false;
+	}
+
+	return true;
 }
 
-
-bool GraphicsClass::Render()
+bool GraphicsClass::RenderToTexture(float rotation)
 {
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix;
-	XMFLOAT4 diffuseColor[4];
-	XMFLOAT4 lightPosition[4];
-	bool result;
 
+	// 렌더링 대상을 렌더링에 맞게 설정합니다.
+	m_RenderTexture->SetRenderTarget(m_Direct3D->GetDeviceContext(), m_Direct3D->GetDepthStencilView());
 
-	// 4 개의 밝은 색상에서 확산 색상 배열을 만듭니다.
-	diffuseColor[0] = m_Light1->GetDiffuseColor();
-	diffuseColor[1] = m_Light2->GetDiffuseColor();
-	diffuseColor[2] = m_Light3->GetDiffuseColor();
-	diffuseColor[3] = m_Light4->GetDiffuseColor();
-
-	// 네 개의 가벼운 위치에서 가벼운 위치 배열을 만듭니다.
-	lightPosition[0] = m_Light1->GetPosition();
-	lightPosition[1] = m_Light2->GetPosition();
-	lightPosition[2] = m_Light3->GetPosition();
-	lightPosition[3] = m_Light4->GetPosition();
-
-	// 장면을 시작할 버퍼를 지운다.
-	m_Direct3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
+	// 렌더링을 텍스처에 지 웁니다.
+	m_RenderTexture->ClearRenderTarget(m_Direct3D->GetDeviceContext(), m_Direct3D->GetDepthStencilView(), 0.0f, 0.0f, 0.0f, 1.0f);
 
 	// 카메라의 위치에 따라 뷰 행렬을 생성합니다.
 	m_Camera->Render();
@@ -225,13 +231,71 @@ bool GraphicsClass::Render()
 	m_Camera->GetViewMatrix(viewMatrix);
 	m_Direct3D->GetProjectionMatrix(projectionMatrix);
 
+	// 회전에 의해 월드 행렬에 곱합니다.
+	worldMatrix = XMMatrixRotationY(rotation);
+
 	// 모델 버텍스와 인덱스 버퍼를 그래픽 파이프 라인에 배치하여 드로잉을 준비합니다.
 	m_Model->Render(m_Direct3D->GetDeviceContext());
 
-	// 라이트 쉐이더와 광원 배열을 사용하여 모델을 렌더링합니다.
-	result = m_LightShader->Render(m_Direct3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
-		m_Model->GetTexture(), diffuseColor, lightPosition);
-	if (!result)
+	// 텍스처 쉐이더로 모델을 렌더링한다.
+	m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix,
+		projectionMatrix, m_Model->GetTexture());
+
+	// 렌더링 대상을 원래의 백 버퍼로 다시 설정하고 렌더링에 대한 렌더링을 더 이상 다시 설정하지 않습니다.
+	m_Direct3D->SetBackBufferRenderTarget();
+
+	return true;
+}
+
+
+bool GraphicsClass::Render(float rotation)
+{
+	XMMATRIX worldMatrix, viewMatrix, projectionMatrix;
+
+	// 유리 쉐이더의 굴절 스케일을 설정합니다.
+#if GLASS
+	float refractionScale = 0.01f;	// 유리 효과
+#else
+	float refractionScale = 0.1f;	// 얼음 효과
+#endif
+
+	// 장면을 시작할 버퍼를 지운다.
+	m_Direct3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
+
+	// 카메라의 위치에 따라 뷰 행렬을 생성합니다.
+	m_Camera->Render();
+
+	// 카메라 및 d3d 객체에서 월드, 뷰 및 오쏘 (ortho) 행렬을 가져옵니다.
+	m_Direct3D->GetWorldMatrix(worldMatrix);
+	m_Camera->GetViewMatrix(viewMatrix);
+	m_Direct3D->GetProjectionMatrix(projectionMatrix);
+
+	// 회전에 의해 월드 행렬에 곱합니다.
+	worldMatrix = XMMatrixRotationY(rotation);
+
+	// 모델 버텍스와 인덱스 버퍼를 그래픽 파이프 라인에 배치하여 드로잉을 준비합니다.
+	m_Model->Render(m_Direct3D->GetDeviceContext());
+
+	// 텍스처 쉐이더로 모델을 렌더링한다.
+	if (!m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix,
+		projectionMatrix, m_Model->GetTexture()))
+	{
+		return false;
+	}
+
+	// 월드 행렬을 재설정합니다.
+	m_Direct3D->GetWorldMatrix(worldMatrix);
+
+	// 윈도우 모델이 렌더링 될 곳으로 되돌립니다.
+	worldMatrix = XMMatrixTranslation(0.0f, 0.0f, -1.5f);
+
+	// 창 모델 정점과 인덱스 버퍼를 그래픽 파이프 라인에 배치하여 그리기를 준비합니다.
+	m_WindowModel->Render(m_Direct3D->GetDeviceContext());
+
+	// 유리 쉐이더를 사용하여 창 모델을 렌더링합니다.
+	if (!m_GlassShader->Render(m_Direct3D->GetDeviceContext(), m_WindowModel->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		m_WindowModel->GetTexture(), m_WindowModel->GetNormalMap(), m_RenderTexture->GetShaderResourceView(),
+		refractionScale))
 	{
 		return false;
 	}
