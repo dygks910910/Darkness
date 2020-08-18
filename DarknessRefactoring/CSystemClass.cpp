@@ -141,7 +141,9 @@ bool SystemClass::Frame()
 	float rotationY = 0;
 	m_Position->GetRotation(rotationY);
 	
-	IF_NOTX_RTFALSE(m_pGraphics->Frame(m_Timer->GetTime()));
+	//IF_NOTX_RTFALSE(m_pGraphics->Frame(m_Timer->GetTime()));
+	IF_NOTX_RTFALSE(m_pGraphics->Frame());
+
 	return m_pGraphics->Render();
 }
 
