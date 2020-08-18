@@ -170,6 +170,7 @@
     <ClInclude Include="Define.h" />
     <ClInclude Include="DxDefine.h" />
     <ClInclude Include="dxerr.h" />
+    <ClInclude Include="FogShaderClass.h" />
     <ClInclude Include="FontClass.h" />
     <ClInclude Include="FontShaderClass.h" />
     <ClInclude Include="FpsClass.h" />
@@ -216,6 +217,7 @@
     <ClCompile Include="DDSTextureLoader.cpp" />
     <ClCompile Include="DebugWindowClass.cpp" />
     <ClCompile Include="dxerr.cpp" />
+    <ClCompile Include="FogShaderClass.cpp" />
     <ClCompile Include="FontClass.cpp" />
     <ClCompile Include="FontShaderClass.cpp" />
     <ClCompile Include="FpsClass.cpp" />

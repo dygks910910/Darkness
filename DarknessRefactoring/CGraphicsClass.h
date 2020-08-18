@@ -23,7 +23,7 @@ class BumpMapShaderClass;
 class SpecMapShaderClass;
 class RenderTextureClass;
 class DebugWindowClass;
-
+class FogShaderClass;
 class GraphicsClass
 {
 public:
@@ -37,17 +37,8 @@ public:
 	bool Render();
 
 private:
-	bool RenderToTexture();
-	bool RenderScene();
-
-private:
 	D3DClass* m_Direct3D = nullptr;
 	CameraClass* m_Camera = nullptr;
 	ModelClass* m_Model = nullptr;
-	LightShaderClass* m_LightShader = nullptr;
-	LightClass* m_Light = nullptr;
-	RenderTextureClass* m_RenderTexture = nullptr;
-	DebugWindowClass* m_DebugWindow = nullptr;
-	TextureShaderClass* m_TextureShader = nullptr;
-
+	FogShaderClass* m_FogShader = nullptr;
 };
